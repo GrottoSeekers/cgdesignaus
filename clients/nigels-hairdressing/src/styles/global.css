@@ -312,7 +312,23 @@ a.nh-work { text-decoration: none; color: var(--choc); }
 }
 .footer-name { font-family: var(--font-display); font-size: 20px; color: var(--cream); }
 .site-footer a { color: var(--cream); }
-.footer-credit a { font-weight: 600; }
+
+/* ---------- CG Design credit strip ---------- */
+.cg-credit { background: var(--cream); color: rgba(42, 26, 20, 0.72); padding: 28px 0 32px; font-size: 14px; }
+.cg-credit .container { display: flex; flex-direction: column; gap: 14px; }
+.cg-credit-lead { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.cg-credit-lead img { display: block; width: 62px; height: 24px; }
+.cg-credit-links { display: flex; flex-wrap: wrap; gap: 6px 24px; }
+.cg-credit-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  color: var(--choc);
+  text-decoration: none;
+}
+.cg-credit-links a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.cg-credit-links svg { width: 16px; height: 16px; flex: 0 0 16px; }
 
 /* ---------- Responsive & motion preferences ---------- */
 @media (max-width: 900px) { .nh-nav { display: none; } }

@@ -49,6 +49,41 @@ const faqs = [
   { q: "Can you do colour at home?", a: ["Yes — root tints from £40 and foil highlights or lowlights from £50, plus semi-permanent shades like the pink & amethyst above when you fancy something different."] },
 ];
 
+// CG Design & Co. credit strip (same links as the NIR-MA-TA footer).
+// Replaces the reference's "Website by CG Design & Co." line at the client's request.
+const cgLinks = [
+  {
+    label: "cgdesignaus.com",
+    href: "https://cgdesignaus.com",
+    external: true,
+    icon: '<path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/><path d="M3.6 9h16.8"/><path d="M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18"/><path d="M12.5 3a17 17 0 0 1 0 18"/>',
+  },
+  {
+    label: "cgdesignaus@outlook.com",
+    href: "mailto:cgdesignaus@outlook.com",
+    external: false,
+    icon: '<path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"/><path d="M3 7l9 6l9 -6"/>',
+  },
+  {
+    label: "WhatsApp",
+    href: "https://wa.me/447306100251",
+    external: true,
+    icon: '<path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"/><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1"/>',
+  },
+  {
+    label: "@cgdesignaus",
+    href: "https://www.instagram.com/cgdesignaus",
+    external: true,
+    icon: '<rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z"/><path d="M17.5 6.5h.01"/>',
+  },
+  {
+    label: "cgdesignaus",
+    href: "https://www.facebook.com/cgdesignaus",
+    external: true,
+    icon: '<path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3"/>',
+  },
+];
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "HairSalon",
@@ -241,9 +276,25 @@ const jsonLd = {
       <footer class="site-footer">
         <div class="container">
           <span><span class="footer-name">Nigel's Hairdressing</span> · Mobile hairdresser, Wigan &amp; Rochdale · <a href={phone}>07801 235104</a> · <a href={instagram}>Instagram</a></span>
-          <span class="footer-credit">Website by <a href="https://cgdesignaus.com">CG Design &amp; Co.</a></span>
         </div>
       </footer>
+
+      <aside class="cg-credit" aria-label="Website credit">
+        <div class="container">
+          <div class="cg-credit-lead">
+            <img src="/images/cgd-logo.webp" alt="CG Design" width="62" height="24" />
+            <span>Want a website like this? Reach out to CG Design —</span>
+          </div>
+          <div class="cg-credit-links">
+            {cgLinks.map((l) => (
+              <a href={l.href} {...(l.external && { target: "_blank", rel: "noopener noreferrer" })}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={l.icon} />
+                {l.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </aside>
     </div>
   </body>
 </html>

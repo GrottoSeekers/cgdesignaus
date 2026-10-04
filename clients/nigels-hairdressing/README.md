@@ -32,7 +32,10 @@ node qa/verify.cjs --impl http://localhost:4321   # writes qa/report/
 ```
 
 The machine running it needs internet access so the reference page can load Google Fonts.
-Last result: **PASS, 205/205 checks. Pixel diff 0.01% on desktop and 0.02% on mobile.**
+Last result: **203/205 checks.** Pixel diff is 0.02% on desktop and 0.45% on mobile.
+The two failures are expected. The reference's "Website by CG Design & Co." line was replaced,
+at the client's request, by a CG Design credit strip under the footer (logo plus website, email,
+WhatsApp, Instagram and Facebook links), so the checker can't find the "Website by" text.
 
 ## Deploy (Vercel)
 
