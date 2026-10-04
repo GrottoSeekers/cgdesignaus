@@ -22,7 +22,7 @@ const facts = [
   { value: "37 years", note: "Salon trained in Manchester" },
   { value: "Fully mobile", note: "Every appointment in your home" },
   { value: "Mon – Sat", note: "10am – 7pm" },
-  { value: "Cut & blow £30", note: "Ladies, in your own home" },
+  { value: "Cut & blow £45", note: "Ladies, in your own home" },
 ];
 
 const work = [
@@ -46,7 +46,7 @@ const faqs = [
   },
   { q: "How do I book?", a: ["Call 07801 235104, Monday to Saturday between 10am and 7pm, and we'll sort a time."] },
   { q: "Do you work with curly hair?", a: ["Yes — curly hair is one of Nigel's specialities."] },
-  { q: "Can you do colour at home?", a: ["Yes — root tints from £40 and foil highlights or lowlights from £50, plus semi-permanent shades like the pink & amethyst above when you fancy something different."] },
+  { q: "Can you do colour at home?", a: ["Yes — root tints from £50 and foil highlights or lowlights from £75, plus semi-permanent shades like the pink & amethyst above when you fancy something different."] },
 ];
 
 // CG Design & Co. credit strip (same links as the NIR-MA-TA footer).
@@ -92,7 +92,7 @@ const jsonLd = {
   url: site,
   telephone: "+447801235104",
   image: new URL("/images/half-and-half-colour.webp", site).href,
-  priceRange: "£17–£50",
+  priceRange: "£25–£75",
   areaServed: [
     { "@type": "City", name: "Wigan" },
     { "@type": "City", name: "Rochdale" },
@@ -211,21 +211,22 @@ const jsonLd = {
               <span class="label">01 · Ladies</span>
               <h3>Cut &amp; blow</h3>
               <p>Precision cuts finished with a blow-dry, tailored to your hair type — curly hair included.</p>
-              <strong class="price">£30</strong>
+              <strong class="price">£45</strong>
+              <div class="price-row price-row-dark"><span class="price-row-name">Blow-dry</span><span class="price-row-amount">£25</span></div>
             </div>
             <div class="nh-svc svc-mens">
               <span class="label">02 · Men's</span>
               <h3>Cut &amp; blow</h3>
               <p>Sharp short hair work and texturising, done properly without leaving the house.</p>
-              <strong class="price">£17</strong>
+              <strong class="price">£25</strong>
             </div>
             <div class="nh-svc svc-colour">
               <span class="label">03 · Colour</span>
               <h3>Tints &amp; foils</h3>
               <p>Root touch-ups, foils, and bold semi-permanent shades on pre-lightened ends.</p>
               <div class="price-rows">
-                <div class="price-row"><span class="price-row-name">Root tint</span><span class="price-row-amount">£40</span></div>
-                <div class="price-row"><span class="price-row-name">Foil highlights / lowlights</span><span class="price-row-amount">from £50</span></div>
+                <div class="price-row"><span class="price-row-name">Root tint</span><span class="price-row-amount">£50</span></div>
+                <div class="price-row"><span class="price-row-name">Foil highlights / lowlights</span><span class="price-row-amount">from £75</span></div>
               </div>
             </div>
           </div>
