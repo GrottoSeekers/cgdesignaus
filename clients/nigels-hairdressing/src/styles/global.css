@@ -221,6 +221,8 @@ a.nh-work { text-decoration: none; color: var(--choc); }
 }
 .price-row-name { font-weight: 600; }
 .price-row-amount { font-family: var(--font-display); font-size: 36px; line-height: 1; white-space: nowrap; }
+.price-row-dark { margin-top: 6px; border-top-color: var(--rule-dark); color: var(--cream); }
+.price-row-dark .price-row-amount { color: var(--blush); }
 
 /* ---------- About ---------- */
 .about { background: var(--choc); color: var(--cream); padding: 120px 0; }
