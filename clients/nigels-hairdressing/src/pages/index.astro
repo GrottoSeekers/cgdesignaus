@@ -1,0 +1,249 @@
+---
+import "../styles/fonts.css";
+import "../styles/global.css";
+
+const site = "https://www.nigelshairdressingwiganandrochdale.com/";
+const title = "Nigel's Hairdressing — Mobile Hairdresser, Wigan & Rochdale";
+const description =
+  "Nigel's Hairdressing — mobile hairdresser in Wigan & Rochdale. 37 years of salon-trained cutting and colour, in your own home.";
+const phone = "tel:+447801235104";
+const instagram = "https://www.instagram.com/nigelshairdressing/";
+
+const strands = [
+  { d: "M1250 -40 C 980 120, 1080 300, 860 380 S 560 520, 520 760", stroke: "#efc3b0", width: 2.5 },
+  { d: "M1250 10 C 1000 160, 1110 330, 890 420 S 600 560, 580 760", stroke: "#efc3b0", width: 1.5, style: "animation-delay: .15s; opacity: .8" },
+  { d: "M1250 60 C 1030 200, 1140 360, 920 460 S 650 600, 640 760", stroke: "#c98b5a", width: 3.5, style: "animation-delay: .3s" },
+  { d: "M1250 110 C 1060 240, 1160 400, 960 500 S 700 640, 700 760", stroke: "#c98b5a", width: 1.5, style: "animation-delay: .45s; opacity: .7" },
+  { d: "M1250 160 C 1090 280, 1180 440, 1000 540 S 760 680, 770 760", stroke: "#f7f0e6", width: 1.2, style: "animation-delay: .6s; opacity: .45" },
+  { d: "M1250 210 C 1120 320, 1200 480, 1040 580 S 830 720, 840 760", stroke: "#efc3b0", width: 2, style: "animation-delay: .75s; opacity: .6" },
+];
+
+const facts = [
+  { value: "37 years", note: "Salon trained in Manchester" },
+  { value: "Fully mobile", note: "Every appointment in your home" },
+  { value: "Mon – Sat", note: "10am – 7pm" },
+  { value: "Cut & blow £30", note: "Ladies, in your own home" },
+];
+
+const work = [
+  { stem: "blunt-bob", caption: "Blunt bob", alt: "Sleek grey bob with a full fringe", position: "60% 40%" },
+  { stem: "butterfly-layers", caption: "Butterfly face-framing layers", alt: "Butterfly face-framing layers in long brunette hair", position: "50% 88%" },
+  { stem: "violet-ombre", caption: "Violet ombré", alt: "Purple colour through the ends", position: "40% 55%" },
+  { stem: "half-and-half-colour", caption: "Half & half colour", alt: "Long hair in hot pink and amethyst purple, half-and-half colour", position: "55% 45%" },
+  { stem: "classic-graduated-bob", caption: "Classic graduated bob", alt: "Rounded brunette bob from behind", position: "50% 35%" },
+];
+
+const faqs = [
+  { q: "Where do you cover?", a: ["Wigan and Rochdale. Call to check your area and find a time that suits."] },
+  { q: "Who is Nigel?", a: ["Hello, my name is Nigel Ashtonhurst, a mobile hairdresser located in Rochdale and Wigan. I've been a hairdresser for the past 37 years. I'm salon trained in Manchester city centre and learned from some of the best in the business."] },
+  { q: "What do you specialise in?", a: ["Precision haircutting, short hair work and texturising techniques — and I work well with curly hair."] },
+  {
+    q: "How was the pink & amethyst colour done?",
+    a: [
+      "This colour was achieved using a half-and-half technique. I used JOICO Colour Intensity semi-permanent Hot Pink and JOICO Colour Intensity semi-permanent Amethyst Purple on previously pre-lightened ends.",
+      "This colour range works extremely well to brighten up blondes who are looking for something completely different for a few weeks.",
+    ],
+  },
+  { q: "How do I book?", a: ["Call 07801 235104, Monday to Saturday between 10am and 7pm, and we'll sort a time."] },
+  { q: "Do you work with curly hair?", a: ["Yes — curly hair is one of Nigel's specialities."] },
+  { q: "Can you do colour at home?", a: ["Yes — root tints from £40 and foil highlights or lowlights from £50, plus semi-permanent shades like the pink & amethyst above when you fancy something different."] },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "HairSalon",
+  name: "Nigel's Hairdressing",
+  description,
+  url: site,
+  telephone: "+447801235104",
+  image: new URL("/images/half-and-half-colour.webp", site).href,
+  priceRange: "£17–£50",
+  areaServed: [
+    { "@type": "City", name: "Wigan" },
+    { "@type": "City", name: "Rochdale" },
+  ],
+  openingHours: "Mo-Sa 10:00-19:00",
+  sameAs: [instagram],
+};
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={site} />
+    <link rel="preload" href="/fonts/gloock-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/hanken-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#2a1a14" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:site_name" content="Nigel's Hairdressing" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={site} />
+    <meta property="og:image" content={new URL("/images/half-and-half-colour.webp", site).href} />
+    <meta name="twitter:card" content="summary" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <div class="page">
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a href="#top" class="brand">Nigel's Hairdressing</a>
+          <nav class="nh-nav" aria-label="Primary">
+            <a href="#work">Recent work</a>
+            <a href="#services">Services</a>
+            <a href="#about">About Nigel</a>
+            <a href="#faq">FAQ</a>
+          </nav>
+          <a class="nh-btn btn-blush header-cta" href={phone}>Book a visit</a>
+        </div>
+      </header>
+
+      <section id="top" class="hero">
+        <svg class="nh-sway hero-strands" viewBox="0 0 1200 700" preserveAspectRatio="none" aria-hidden="true">
+          {strands.map((s) => (
+            <path class="nh-strand" pathLength="1" d={s.d} fill="none" stroke={s.stroke} stroke-width={s.width} stroke-linecap="round" style={s.style} />
+          ))}
+        </svg>
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <span class="eyebrow"><span class="eyebrow-rule"></span>Mobile hairdresser · Wigan &amp; Rochdale</span>
+            <h1>Beautiful hair, done at <span class="accent">home.</span></h1>
+            <p class="hero-lead">Thirty-seven years of salon-trained cutting and colour, learned in Manchester city centre from some of the best in the business. Nigel brings the whole salon to your front door.</p>
+            <div class="hero-actions">
+              <a class="nh-btn btn-lg btn-blush" href={phone}>Call 07801 235104</a>
+              <a class="nh-btn btn-lg btn-outline" href="#services">View prices</a>
+            </div>
+          </div>
+          <div class="facts">
+            {facts.map((f) => (
+              <div class="fact"><strong>{f.value}</strong><span>{f.note}</span></div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="specialities" class="statement">
+        <div class="container">
+          <p>Precision haircutting. Short hair work. Texturising techniques. <em>And a real way with curly hair</em> — all without leaving the house.</p>
+        </div>
+      </section>
+
+      <section id="work" class="work">
+        <div class="container">
+          <div class="section-head">
+            <div class="work-intro">
+              <h2 class="h2">Recent work</h2>
+              <p>From sharp short bobs and soft face-framing layers to low-maintenance pixies and clean scissor cuts. Nigel tailors every style to fit your features, hair type and daily routine. Got an idea in mind? Get in touch and let's talk through what will work best for you.</p>
+            </div>
+            <a class="nh-btn btn-insta" href={instagram}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="0.8"></circle></svg>@nigelshairdressing
+            </a>
+          </div>
+          <div class="work-grid">
+            {work.map((w) => (
+              <figure class="nh-work">
+                <div class="photo">
+                  <img src={`/images/${w.stem}.webp`} alt={w.alt} width="512" height="640" style={`object-position: ${w.position}`} />
+                </div>
+                <figcaption>{w.caption}</figcaption>
+              </figure>
+            ))}
+            <a class="nh-work" href={phone}>
+              <div class="next-tile">
+                <span class="next-tile-title">Your look, next</span>
+                <span class="next-tile-sub">Layers, 90s cuts, bobs, pixies &amp; more</span>
+              </div>
+              <span class="caption">Get in touch →</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="services" class="services">
+        <div class="container">
+          <div class="section-head">
+            <h2 class="h2">Honest prices. No salon fuss.</h2>
+            <p class="services-note">Every appointment happens in your own home. Not sure what you need? Give Nigel a ring and talk it through.</p>
+          </div>
+          <div class="price-grid">
+            <div class="nh-svc svc-ladies">
+              <span class="label">01 · Ladies</span>
+              <h3>Cut &amp; blow</h3>
+              <p>Precision cuts finished with a blow-dry, tailored to your hair type — curly hair included.</p>
+              <strong class="price">£30</strong>
+            </div>
+            <div class="nh-svc svc-mens">
+              <span class="label">02 · Men's</span>
+              <h3>Cut &amp; blow</h3>
+              <p>Sharp short hair work and texturising, done properly without leaving the house.</p>
+              <strong class="price">£17</strong>
+            </div>
+            <div class="nh-svc svc-colour">
+              <span class="label">03 · Colour</span>
+              <h3>Tints &amp; foils</h3>
+              <p>Root touch-ups, foils, and bold semi-permanent shades on pre-lightened ends.</p>
+              <div class="price-rows">
+                <div class="price-row"><span class="price-row-name">Root tint</span><span class="price-row-amount">£40</span></div>
+                <div class="price-row"><span class="price-row-name">Foil highlights / lowlights</span><span class="price-row-amount">from £50</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="about">
+        <div class="container">
+          <div class="about-copy">
+            <span class="eyebrow"><span class="eyebrow-rule"></span>Meet Nigel</span>
+            <p class="quote">“I'm salon trained in Manchester city centre, and I learned from <span class="accent">some of the best in the business.</span>”</p>
+            <p class="about-body">Nigel Ashtonhurst has been cutting hair for 37 years. He specialises in precision cutting, short hair work and texturising techniques, and works especially well with curly hair. His knowledge goes far beyond the cut, too — after 37 years, there's very little about hair he doesn't know.</p>
+          </div>
+          <div class="trained-card">
+            <span class="label">Trained by</span>
+            <strong>Pierre Alexandre</strong>
+            <p>The late Manchester hairdressing icon whose clients included David Bowie and Rod Stewart. Credited with pioneering unisex salons and foils, he opened his own school of hairdressing in Manchester in 1973.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" class="faq">
+        <div class="container">
+          <h2 class="h2">Good to know</h2>
+          <div class="faq-list">
+            {faqs.map((f, i) => (
+              <details class="nh-faq" open={i === 0}>
+                <summary>{f.q}<span class="nh-plus" aria-hidden="true">+</span></summary>
+                {f.a.map((para) => <p>{para}</p>)}
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="book" class="book">
+        <div class="book-panel">
+          <svg class="book-strands" viewBox="0 0 600 400" aria-hidden="true"><path d="M620 -20 C 420 80, 520 200, 360 260 S 160 360, 140 440" fill="none" stroke="#2a1a14" stroke-width="2" stroke-linecap="round" opacity=".35"></path><path d="M620 30 C 450 120, 540 240, 390 300 S 210 390, 200 440" fill="none" stroke="#f7f0e6" stroke-width="3" stroke-linecap="round" opacity=".5"></path><path d="M620 80 C 480 160, 560 280, 420 340 S 260 420, 260 440" fill="none" stroke="#2a1a14" stroke-width="1.5" stroke-linecap="round" opacity=".3"></path></svg>
+          <span class="label">Book a home visit</span>
+          <h2>Ready for a fresh cut?</h2>
+          <div class="book-actions">
+            <a class="nh-btn btn-dark" href={phone}>Call 07801 235104</a>
+            <span class="book-hours">Monday – Saturday, 10am – 7pm</span>
+          </div>
+        </div>
+      </section>
+
+      <footer class="site-footer">
+        <div class="container">
+          <span><span class="footer-name">Nigel's Hairdressing</span> · Mobile hairdresser, Wigan &amp; Rochdale · <a href={phone}>07801 235104</a> · <a href={instagram}>Instagram</a></span>
+          <span class="footer-credit">Website by <a href="https://cgdesignaus.com">CG Design &amp; Co.</a></span>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
