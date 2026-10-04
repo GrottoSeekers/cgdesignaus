@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Nigel's Hairdressing — mobile hairdresser in Wigan &amp; Rochdale. 37 years of salon-trained cutting and colour, in your own home.">
+<title>Nigel's Hairdressing — Mobile Hairdresser, Wigan &amp; Rochdale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gloock&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#2a1a14}
+a{color:inherit}
+.nh-nav{display:flex}
+.nh-btn{transition:transform .3s cubic-bezier(.16,1,.3,1),background .2s ease,color .2s ease}
+.nh-btn:hover{transform:translateY(-2px)}
+@keyframes nhdraw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes nhsway{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-14px) rotate(-1.2deg)}}
+.nh-strand{stroke-dasharray:1;stroke-dashoffset:1;animation:nhdraw 3.2s cubic-bezier(.65,0,.35,1) forwards}
+.nh-sway{transform-origin:70% 50%;animation:nhsway 9s ease-in-out infinite}
+.nh-svc{transition:transform .45s cubic-bezier(.16,1,.3,1)}
+.nh-svc:hover{transform:translateY(-8px) rotate(-1deg)}
+.nh-work img{filter:grayscale(1) sepia(.35) contrast(1.05);transition:filter .5s ease,transform .8s cubic-bezier(.16,1,.3,1)}
+.nh-work:hover img{filter:none;transform:scale(1.06)}
+.nh-faq summary{list-style:none;cursor:pointer}
+.nh-faq summary::-webkit-details-marker{display:none}
+.nh-faq[open] .nh-plus{transform:rotate(45deg)}
+@media (max-width: 900px){.nh-nav{display:none}}
+@media (prefers-reduced-motion: reduce){.nh-strand{animation:none;stroke-dashoffset:0}.nh-sway{animation:none}}
+</style>
+</head>
+<body>
+
+
+
+<div style="font-family: 'Hanken Grotesk', 'Helvetica Neue', sans-serif; color: #2a1a14; background: #f7f0e6; line-height: 1.6; font-size: 16px">
+
+<!-- Header -->
+<header style="position: sticky; top: 0; z-index: 20; background: rgba(42, 26, 20, 0.96)">
+<div style="max-width: 1280px; margin: 0 auto; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px">
+<a href="#top" style="text-decoration: none; color: #f7f0e6; font-family: 'Gloock', Georgia, serif; font-size: 26px; line-height: 1">Nigel's Hairdressing</a>
+<nav class="nh-nav" aria-label="Primary" style="gap: 34px; font-size: 15px; font-weight: 500">
+<a href="#work" style="color: rgba(247, 240, 230, 0.8); text-decoration: none">Recent work</a>
+<a href="#services" style="color: rgba(247, 240, 230, 0.8); text-decoration: none">Services</a>
+<a href="#about" style="color: rgba(247, 240, 230, 0.8); text-decoration: none">About Nigel</a>
+<a href="#faq" style="color: rgba(247, 240, 230, 0.8); text-decoration: none">FAQ</a>
+</nav>
+<a class="nh-btn" href="tel:+447801235104" style="display: inline-flex; align-items: center; padding: 11px 22px; min-height: 44px; box-sizing: border-box; border-radius: 999px; background: #efc3b0; color: #2a1a14; font-weight: 700; font-size: 15px; text-decoration: none; white-space: nowrap">Book a visit</a>
+</div>
+</header>
+
+<!-- Hero -->
+<section id="top" style="background: #2a1a14; color: #f7f0e6; position: relative; overflow: hidden">
+<svg class="nh-sway" viewBox="0 0 1200 700" preserveAspectRatio="none" aria-hidden="true" style="position: absolute; right: 0; top: 0; width: 58%; height: 76%; pointer-events: none">
+<path class="nh-strand" pathLength="1" d="M1250 -40 C 980 120, 1080 300, 860 380 S 560 520, 520 760" fill="none" stroke="#efc3b0" stroke-width="2.5" stroke-linecap="round"></path>
+<path class="nh-strand" pathLength="1" d="M1250 10 C 1000 160, 1110 330, 890 420 S 600 560, 580 760" fill="none" stroke="#efc3b0" stroke-width="1.5" stroke-linecap="round" style="animation-delay: .15s; opacity: .8"></path>
+<path class="nh-strand" pathLength="1" d="M1250 60 C 1030 200, 1140 360, 920 460 S 650 600, 640 760" fill="none" stroke="#c98b5a" stroke-width="3.5" stroke-linecap="round" style="animation-delay: .3s"></path>
+<path class="nh-strand" pathLength="1" d="M1250 110 C 1060 240, 1160 400, 960 500 S 700 640, 700 760" fill="none" stroke="#c98b5a" stroke-width="1.5" stroke-linecap="round" style="animation-delay: .45s; opacity: .7"></path>
+<path class="nh-strand" pathLength="1" d="M1250 160 C 1090 280, 1180 440, 1000 540 S 760 680, 770 760" fill="none" stroke="#f7f0e6" stroke-width="1.2" stroke-linecap="round" style="animation-delay: .6s; opacity: .45"></path>
+<path class="nh-strand" pathLength="1" d="M1250 210 C 1120 320, 1200 480, 1040 580 S 830 720, 840 760" fill="none" stroke="#efc3b0" stroke-width="2" stroke-linecap="round" style="animation-delay: .75s; opacity: .6"></path>
+</svg>
+<div style="max-width: 1280px; margin: 0 auto; padding: 112px 32px 72px; position: relative; display: flex; flex-direction: column; gap: 56px">
+<div style="display: flex; flex-direction: column; gap: 28px; max-width: 860px">
+<span style="display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #efc3b0"><span style="width: 28px; height: 1.5px; background: #efc3b0"></span>Mobile hairdresser · Wigan &amp; Rochdale</span>
+<h1 style="margin: 0; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: clamp(3.2rem, 8vw, 7.2rem); line-height: 0.95; letter-spacing: -0.02em; text-wrap: balance">Beautiful hair, done at <span style="color: #efc3b0">home.</span></h1>
+<p style="margin: 0; font-size: 20px; line-height: 1.55; color: rgba(247, 240, 230, 0.82); max-width: 560px; text-wrap: pretty">Thirty-seven years of salon-trained cutting and colour, learned in Manchester city centre from some of the best in the business. Nigel brings the whole salon to your front door.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; margin-top: 4px">
+<a class="nh-btn" href="tel:+447801235104" style="display: inline-flex; align-items: center; padding: 17px 30px; min-height: 56px; box-sizing: border-box; border-radius: 999px; background: #efc3b0; color: #2a1a14; font-weight: 700; font-size: 17px; text-decoration: none">Call 07801 235104</a>
+<a class="nh-btn" href="#services" style="display: inline-flex; align-items: center; padding: 17px 30px; min-height: 56px; box-sizing: border-box; border-radius: 999px; border: 1.5px solid rgba(247, 240, 230, 0.4); color: #f7f0e6; font-weight: 600; font-size: 17px; text-decoration: none">View prices</a>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 0; border-top: 1px solid rgba(247, 240, 230, 0.2)">
+<div style="padding: 26px 24px 0 0; display: flex; flex-direction: column; gap: 4px"><strong style="font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 34px; line-height: 1.1">37 years</strong><span style="font-size: 15px; color: rgba(247, 240, 230, 0.72)">Salon trained in Manchester</span></div>
+<div style="padding: 26px 24px 0; display: flex; flex-direction: column; gap: 4px; border-left: 1px solid rgba(247, 240, 230, 0.2)"><strong style="font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 34px; line-height: 1.1">Fully mobile</strong><span style="font-size: 15px; color: rgba(247, 240, 230, 0.72)">Every appointment in your home</span></div>
+<div style="padding: 26px 24px 0; display: flex; flex-direction: column; gap: 4px; border-left: 1px solid rgba(247, 240, 230, 0.2)"><strong style="font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 34px; line-height: 1.1">Mon – Sat</strong><span style="font-size: 15px; color: rgba(247, 240, 230, 0.72)">10am – 7pm</span></div>
+<div style="padding: 26px 24px 0; display: flex; flex-direction: column; gap: 4px; border-left: 1px solid rgba(247, 240, 230, 0.2)"><strong style="font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 34px; line-height: 1.1">Cut &amp; blow £30</strong><span style="font-size: 15px; color: rgba(247, 240, 230, 0.72)">Ladies, in your own home</span></div>
+</div>
+</div>
+</section>
+
+<!-- Statement -->
+<section id="specialities" style="background: #efc3b0; padding: 112px 0">
+<div style="max-width: 1180px; margin: 0 auto; padding: 0 32px">
+<p style="margin: 0; font-family: 'Gloock', Georgia, serif; font-size: clamp(2rem, 4.6vw, 4rem); line-height: 1.2; letter-spacing: -0.01em; text-wrap: pretty">Precision haircutting. Short hair work. Texturising techniques. <span style="font-style: italic">And a real way with curly hair</span> — all without leaving the house.</p>
+</div>
+</section>
+
+<!-- Recent work -->
+<section id="work" style="background: #f7f0e6; padding: 112px 0 0">
+<div style="max-width: 1280px; margin: 0 auto; padding: 0 32px; display: flex; flex-direction: column; gap: 44px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 640px"><h2 style="margin: 0; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: clamp(2.6rem, 5vw, 4.4rem); line-height: 1; letter-spacing: -0.015em">Recent work</h2><p style="margin: 0; font-size: 17px; color: rgba(42, 26, 20, 0.78); text-wrap: pretty">From sharp short bobs and soft face-framing layers to low-maintenance pixies and clean scissor cuts. Nigel tailors every style to fit your features, hair type and daily routine. Got an idea in mind? Get in touch and let's talk through what will work best for you.</p></div>
+<a class="nh-btn" href="https://www.instagram.com/nigelshairdressing/" style="display: inline-flex; align-items: center; gap: 10px; padding: 12px 22px; min-height: 48px; box-sizing: border-box; border-radius: 999px; background: #2a1a14; color: #f7f0e6; font-weight: 600; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="0.8"></circle></svg>@nigelshairdressing</a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap: 20px">
+<figure class="nh-work" style="margin: 0; display: flex; flex-direction: column; gap: 12px">
+<div style="aspect-ratio: 1 / 1; border-radius: 999px; overflow: hidden; background: #e8dccb"><img src="../assets/images/blunt-bob.jpg" alt="Sleek grey bob with a full fringe" style="width: 100%; height: 100%; object-fit: cover; object-position: 60% 40%; display: block"></div>
+<figcaption style="text-align: center; font-weight: 600; font-size: 15px">Blunt bob</figcaption>
+</figure>
+<figure class="nh-work" style="margin: 0; display: flex; flex-direction: column; gap: 12px">
+<div style="aspect-ratio: 1 / 1; border-radius: 999px; overflow: hidden; background: #e8dccb"><img src="../assets/images/butterfly-layers.jpg" alt="Butterfly face-framing layers in long brunette hair" style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 88%; display: block"></div>
+<figcaption style="text-align: center; font-weight: 600; font-size: 15px">Butterfly face-framing layers</figcaption>
+</figure>
+<figure class="nh-work" style="margin: 0; display: flex; flex-direction: column; gap: 12px">
+<div style="aspect-ratio: 1 / 1; border-radius: 999px; overflow: hidden; background: #e8dccb"><img src="../assets/images/violet-ombre.jpg" alt="Purple colour through the ends" style="width: 100%; height: 100%; object-fit: cover; object-position: 40% 55%; display: block"></div>
+<figcaption style="text-align: center; font-weight: 600; font-size: 15px">Violet ombré</figcaption>
+</figure>
+<figure class="nh-work" style="margin: 0; display: flex; flex-direction: column; gap: 12px">
+<div style="aspect-ratio: 1 / 1; border-radius: 999px; overflow: hidden; background: #e8dccb"><img src="../assets/images/half-and-half-colour.jpg" alt="Long hair in hot pink and amethyst purple, half-and-half colour" style="width: 100%; height: 100%; object-fit: cover; object-position: 55% 45%; display: block"></div>
+<figcaption style="text-align: center; font-weight: 600; font-size: 15px">Half &amp; half colour</figcaption>
+</figure>
+<figure class="nh-work" style="margin: 0; display: flex; flex-direction: column; gap: 12px">
+<div style="aspect-ratio: 1 / 1; border-radius: 999px; overflow: hidden; background: #e8dccb"><img src="../assets/images/classic-graduated-bob.jpg" alt="Rounded brunette bob from behind" style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; display: block"></div>
+<figcaption style="text-align: center; font-weight: 600; font-size: 15px">Classic graduated bob</figcaption>
+</figure>
+<a class="nh-work" href="tel:+447801235104" style="text-decoration: none; display: flex; flex-direction: column; gap: 12px; color: #2a1a14">
+<div style="aspect-ratio: 1 / 1; border-radius: 999px; background: #2a1a14; color: #f7f0e6; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 6px; padding: 22px; box-sizing: border-box"><span style="font-family: 'Gloock', Georgia, serif; font-size: 26px; line-height: 1.05; color: #efc3b0">Your look, next</span><span style="font-size: 13px; line-height: 1.4; color: rgba(247, 240, 230, 0.82)">Layers, 90s cuts, bobs, pixies &amp; more</span></div>
+<span style="text-align: center; font-weight: 600; font-size: 15px">Get in touch →</span>
+</a>
+</div>
+</div>
+</section>
+
+<!-- Services -->
+<section id="services" style="background: #f7f0e6; padding: 120px 0">
+<div style="max-width: 1280px; margin: 0 auto; padding: 0 32px; display: flex; flex-direction: column; gap: 56px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px">
+<h2 style="margin: 0; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: clamp(2.6rem, 5vw, 4.4rem); line-height: 1; letter-spacing: -0.015em; max-width: 640px">Honest prices. No salon fuss.</h2>
+<p style="margin: 0; max-width: 380px; font-size: 17px; color: rgba(42, 26, 20, 0.75)">Every appointment happens in your own home. Not sure what you need? Give Nigel a ring and talk it through.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 24px">
+<div class="nh-svc" style="background: #2a1a14; color: #f7f0e6; border-radius: 32px; padding: 40px; min-height: 380px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #efc3b0">01 · Ladies</span>
+<h3 style="margin: 0; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 40px; line-height: 1">Cut &amp; blow</h3>
+<p style="margin: 0; color: rgba(247, 240, 230, 0.78)">Precision cuts finished with a blow-dry, tailored to your hair type — curly hair included.</p>
+<strong style="margin-top: auto; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 72px; line-height: 1; color: #efc3b0">£30</strong>
+</div>
+<div class="nh-svc" style="background: #c98b5a; color: #2a1a14; border-radius: 32px; padding: 40px; min-height: 380px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase">02 · Men's</span>
+<h3 style="margin: 0; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 40px; line-height: 1">Cut &amp; blow</h3>
+<p style="margin: 0; color: rgba(42, 26, 20, 0.82)">Sharp short hair work and texturising, done properly without leaving the house.</p>
+<strong style="margin-top: auto; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 72px; line-height: 1">£17</strong>
+</div>
+<div class="nh-svc" style="background: #ffffff; color: #2a1a14; border: 1.5px solid #2a1a14; border-radius: 32px; padding: 40px; min-height: 380px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase">03 · Colour</span>
+<h3 style="margin: 0; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 40px; line-height: 1">Tints &amp; foils</h3>
+<p style="margin: 0; color: rgba(42, 26, 20, 0.78)">Root touch-ups, foils, and bold semi-permanent shades on pre-lightened ends.</p>
+<div style="margin-top: auto; display: flex; flex-direction: column">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 0; border-top: 1px solid rgba(42, 26, 20, 0.2)"><span style="font-weight: 600">Root tint</span><span style="font-family: 'Gloock', Georgia, serif; font-size: 36px; line-height: 1">£40</span></div>
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 0; border-top: 1px solid rgba(42, 26, 20, 0.2)"><span style="font-weight: 600">Foil highlights / lowlights</span><span style="font-family: 'Gloock', Georgia, serif; font-size: 36px; line-height: 1; white-space: nowrap">from £50</span></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- About -->
+<section id="about" style="background: #2a1a14; color: #f7f0e6; padding: 120px 0">
+<div style="max-width: 1280px; margin: 0 auto; padding: 0 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(460px, 100%), 1fr)); gap: 72px; align-items: center">
+<div style="display: flex; flex-direction: column; gap: 28px">
+<span style="display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #efc3b0"><span style="width: 28px; height: 1.5px; background: #efc3b0"></span>Meet Nigel</span>
+<p style="margin: 0; font-family: 'Gloock', Georgia, serif; font-size: clamp(2rem, 3.8vw, 3.3rem); line-height: 1.12; text-wrap: pretty">“I'm salon trained in Manchester city centre, and I learned from <span style="color: #efc3b0">some of the best in the business.</span>”</p>
+<p style="margin: 0; font-size: 17px; color: rgba(247, 240, 230, 0.8); max-width: 560px; text-wrap: pretty">Nigel Ashtonhurst has been cutting hair for 37 years. He specialises in precision cutting, short hair work and texturising techniques, and works especially well with curly hair. His knowledge goes far beyond the cut, too — after 37 years, there's very little about hair he doesn't know.</p>
+</div>
+<div style="background: #3a2620; border-radius: 32px; padding: 40px; display: flex; flex-direction: column; gap: 16px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(247, 240, 230, 0.72)">Trained by</span>
+<strong style="font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 48px; line-height: 1">Pierre Alexandre</strong>
+<p style="margin: 0; color: rgba(247, 240, 230, 0.8); text-wrap: pretty">The late Manchester hairdressing icon whose clients included David Bowie and Rod Stewart. Credited with pioneering unisex salons and foils, he opened his own school of hairdressing in Manchester in 1973.</p>
+</div>
+</div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="background: #efe4d4; padding: 112px 0">
+<div style="max-width: 1280px; margin: 0 auto; padding: 0 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr)); gap: 56px">
+<h2 style="margin: 0; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: clamp(2.6rem, 5vw, 4.4rem); line-height: 1; letter-spacing: -0.015em">Good to know</h2>
+<div style="display: flex; flex-direction: column; gap: 12px">
+<details class="nh-faq" open="" style="background: #f7f0e6; border-radius: 24px; padding: 20px 28px">
+<summary style="display: flex; justify-content: space-between; align-items: center; gap: 20px; font-weight: 700; font-size: 19px; min-height: 44px">Where do you cover?<span class="nh-plus" aria-hidden="true" style="width: 36px; height: 36px; flex: 0 0 36px; border-radius: 50%; background: #2a1a14; color: #f7f0e6; display: flex; align-items: center; justify-content: center; font-size: 22px; transition: transform .3s ease">+</span></summary>
+<p style="margin: 8px 0 6px; color: rgba(42, 26, 20, 0.78)">Wigan and Rochdale. Call to check your area and find a time that suits.</p>
+</details>
+<details class="nh-faq" style="background: #f7f0e6; border-radius: 24px; padding: 20px 28px">
+<summary style="display: flex; justify-content: space-between; align-items: center; gap: 20px; font-weight: 700; font-size: 19px; min-height: 44px">Who is Nigel?<span class="nh-plus" aria-hidden="true" style="width: 36px; height: 36px; flex: 0 0 36px; border-radius: 50%; background: #2a1a14; color: #f7f0e6; display: flex; align-items: center; justify-content: center; font-size: 22px; transition: transform .3s ease">+</span></summary>
+<p style="margin: 8px 0 6px; color: rgba(42, 26, 20, 0.78)">Hello, my name is Nigel Ashtonhurst, a mobile hairdresser located in Rochdale and Wigan. I've been a hairdresser for the past 37 years. I'm salon trained in Manchester city centre and learned from some of the best in the business.</p>
+</details>
+<details class="nh-faq" style="background: #f7f0e6; border-radius: 24px; padding: 20px 28px">
+<summary style="display: flex; justify-content: space-between; align-items: center; gap: 20px; font-weight: 700; font-size: 19px; min-height: 44px">What do you specialise in?<span class="nh-plus" aria-hidden="true" style="width: 36px; height: 36px; flex: 0 0 36px; border-radius: 50%; background: #2a1a14; color: #f7f0e6; display: flex; align-items: center; justify-content: center; font-size: 22px; transition: transform .3s ease">+</span></summary>
+<p style="margin: 8px 0 6px; color: rgba(42, 26, 20, 0.78)">Precision haircutting, short hair work and texturising techniques — and I work well with curly hair.</p>
+</details>
+<details class="nh-faq" style="background: #f7f0e6; border-radius: 24px; padding: 20px 28px">
+<summary style="display: flex; justify-content: space-between; align-items: center; gap: 20px; font-weight: 700; font-size: 19px; min-height: 44px">How was the pink &amp; amethyst colour done?<span class="nh-plus" aria-hidden="true" style="width: 36px; height: 36px; flex: 0 0 36px; border-radius: 50%; background: #2a1a14; color: #f7f0e6; display: flex; align-items: center; justify-content: center; font-size: 22px; transition: transform .3s ease">+</span></summary>
+<p style="margin: 8px 0 6px; color: rgba(42, 26, 20, 0.78)">This colour was achieved using a half-and-half technique. I used JOICO Colour Intensity semi-permanent Hot Pink and JOICO Colour Intensity semi-permanent Amethyst Purple on previously pre-lightened ends.</p>
+<p style="margin: 8px 0 6px; color: rgba(42, 26, 20, 0.78)">This colour range works extremely well to brighten up blondes who are looking for something completely different for a few weeks.</p>
+</details>
+<details class="nh-faq" style="background: #f7f0e6; border-radius: 24px; padding: 20px 28px">
+<summary style="display: flex; justify-content: space-between; align-items: center; gap: 20px; font-weight: 700; font-size: 19px; min-height: 44px">How do I book?<span class="nh-plus" aria-hidden="true" style="width: 36px; height: 36px; flex: 0 0 36px; border-radius: 50%; background: #2a1a14; color: #f7f0e6; display: flex; align-items: center; justify-content: center; font-size: 22px; transition: transform .3s ease">+</span></summary>
+<p style="margin: 8px 0 6px; color: rgba(42, 26, 20, 0.78)">Call 07801 235104, Monday to Saturday between 10am and 7pm, and we'll sort a time.</p>
+</details>
+<details class="nh-faq" style="background: #f7f0e6; border-radius: 24px; padding: 20px 28px">
+<summary style="display: flex; justify-content: space-between; align-items: center; gap: 20px; font-weight: 700; font-size: 19px; min-height: 44px">Do you work with curly hair?<span class="nh-plus" aria-hidden="true" style="width: 36px; height: 36px; flex: 0 0 36px; border-radius: 50%; background: #2a1a14; color: #f7f0e6; display: flex; align-items: center; justify-content: center; font-size: 22px; transition: transform .3s ease">+</span></summary>
+<p style="margin: 8px 0 6px; color: rgba(42, 26, 20, 0.78)">Yes — curly hair is one of Nigel's specialities.</p>
+</details>
+<details class="nh-faq" style="background: #f7f0e6; border-radius: 24px; padding: 20px 28px">
+<summary style="display: flex; justify-content: space-between; align-items: center; gap: 20px; font-weight: 700; font-size: 19px; min-height: 44px">Can you do colour at home?<span class="nh-plus" aria-hidden="true" style="width: 36px; height: 36px; flex: 0 0 36px; border-radius: 50%; background: #2a1a14; color: #f7f0e6; display: flex; align-items: center; justify-content: center; font-size: 22px; transition: transform .3s ease">+</span></summary>
+<p style="margin: 8px 0 6px; color: rgba(42, 26, 20, 0.78)">Yes — root tints from £40 and foil highlights or lowlights from £50, plus semi-permanent shades like the pink &amp; amethyst above when you fancy something different.</p>
+</details>
+</div>
+</div>
+</section>
+
+<!-- Book -->
+<section id="book" style="background: #f7f0e6; padding: 96px 32px">
+<div style="max-width: 1216px; margin: 0 auto; background: #c98b5a; border-radius: 40px; padding: 80px 56px; display: flex; flex-direction: column; gap: 28px; position: relative; overflow: hidden">
+<svg viewBox="0 0 600 400" aria-hidden="true" style="position: absolute; right: -40px; top: -20px; width: 560px; height: 380px; pointer-events: none"><path d="M620 -20 C 420 80, 520 200, 360 260 S 160 360, 140 440" fill="none" stroke="#2a1a14" stroke-width="2" stroke-linecap="round" opacity=".35"></path><path d="M620 30 C 450 120, 540 240, 390 300 S 210 390, 200 440" fill="none" stroke="#f7f0e6" stroke-width="3" stroke-linecap="round" opacity=".5"></path><path d="M620 80 C 480 160, 560 280, 420 340 S 260 420, 260 440" fill="none" stroke="#2a1a14" stroke-width="1.5" stroke-linecap="round" opacity=".3"></path></svg>
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; position: relative">Book a home visit</span>
+<h2 style="margin: 0; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: clamp(2.8rem, 6.4vw, 5.6rem); line-height: 0.98; letter-spacing: -0.02em; position: relative; max-width: 760px">Ready for a fresh cut?</h2>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; position: relative">
+<a class="nh-btn" href="tel:+447801235104" style="display: inline-flex; align-items: center; padding: 18px 32px; min-height: 58px; box-sizing: border-box; border-radius: 999px; background: #2a1a14; color: #f7f0e6; font-weight: 700; font-size: 18px; text-decoration: none">Call 07801 235104</a>
+<span style="font-weight: 600">Monday – Saturday, 10am – 7pm</span>
+</div>
+</div>
+</section>
+
+<!-- Footer -->
+<footer style="background: #2a1a14; color: rgba(247, 240, 230, 0.72); padding: 40px 0">
+<div style="max-width: 1280px; margin: 0 auto; padding: 0 32px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; font-size: 14px">
+<span><span style="font-family: 'Gloock', Georgia, serif; font-size: 20px; color: #f7f0e6">Nigel's Hairdressing</span> · Mobile hairdresser, Wigan &amp; Rochdale · <a href="tel:+447801235104" style="color: #f7f0e6">07801 235104</a> · <a href="https://www.instagram.com/nigelshairdressing/" style="color: #f7f0e6">Instagram</a></span>
+<span>Website by <a href="https://cgdesignaus.com" style="color: #f7f0e6; font-weight: 600">CG Design &amp; Co.</a></span>
+</div>
+</footer>
+
+</div>
+
+</body>
+</html>

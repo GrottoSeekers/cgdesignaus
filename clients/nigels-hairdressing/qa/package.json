@@ -1,0 +1,11 @@
+{
+  "name": "nigels-hairdressing-qa",
+  "private": true,
+  "description": "Fidelity check: compares the built site against reference/index.html",
+  "scripts": {
+    "verify": "node verify.cjs --impl http://localhost:4321"
+  },
+  "devDependencies": {
+    "playwright": "^1.47.0"
+  }
+}
