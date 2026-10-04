@@ -19,6 +19,7 @@ npm run build      # static output in dist/
 - Fonts: Gloock and Hanken Grotesk, self-hosted copies of the Google Fonts files (`public/fonts`, `src/styles/fonts.css`)
 - Photos: `public/images/*.webp`. Originals are in `assets/images/`.
 - No JavaScript ships: hover effects, hero strand animation and FAQ are all CSS / `<details>`.
+- Floating chat button (bottom right) replaces the old Wix chat. It opens a native `popover` card with Text / Call / Instagram message links.
 
 ## Fidelity check
 
