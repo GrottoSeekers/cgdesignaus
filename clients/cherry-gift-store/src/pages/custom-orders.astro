@@ -1,0 +1,129 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import OrderForm from "../components/OrderForm.astro";
+import Reviews from "../components/Reviews.astro";
+import { customSteps } from "../data/site";
+
+const ideas = [
+  { icon: "gift", title: "Custom gift packages", text: "Choose every item, from chocolates and skincare to perfume, watches and jewellery, around your budget." },
+  { icon: "flower", title: "Personalised bouquets", text: "Roses in any number and colour, baby's breath, initials, money bouquets and luxury add-ons." },
+  { icon: "heart", title: "Care & period packs", text: "Comfort packs with her preferred brands, perfect for students, partners and friends." },
+  { icon: "box", title: "Corporate gifting", text: "Staff appreciation, client thank-yous and event giveaways, with branded cards and bulk pricing." },
+  { icon: "sparkle", title: "Picnics & surprises", text: "Styled picnic setups for dates, birthdays and proposals, with décor, treats and flowers." },
+  { icon: "card", title: "Holiday pre-orders", text: "Valentine's, Mother's Day, Father's Day and Girlfriends' Day packages. Slots are limited, so book early." },
+] as const;
+
+const site = Astro.site!;
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  serviceType: "Custom gift packages and personalised bouquets",
+  provider: { "@id": new URL("/#store", site).href },
+  areaServed: { "@type": "City", name: "Nairobi" },
+  description: "Custom gift packages, personalised flower bouquets, corporate gifts and picnic setups in Nairobi with delivery.",
+};
+---
+
+<Base
+  title="Custom Gift Packages & Personalised Bouquets Nairobi | Cherry Gift Store"
+  description="Design your own gift package or bouquet in Nairobi. Custom gift boxes, personalised rose bouquets, corporate gifts, care packs and picnic setups, with free wrapping and delivery."
+  schema={[serviceSchema]}
+>
+  <section class="hero gingham">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Custom orders</span>
+        <h1 class="h1">Made for them, <em>down to the ribbon</em></h1>
+        <p class="lead">Tell us who it's for, the occasion and your budget. We'll design a package or bouquet that feels like it was made just for them, because it was.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#order">Start your custom order</a>
+        </div>
+      </div>
+      <div class="hero-pics" aria-hidden="true">
+        <img src="/images/initial-bouquet.webp" alt="" width="397" height="387" />
+        <img src="/images/grand-rose-box.webp" alt="" width="399" height="452" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">What we can make</span>
+        <h2 class="h2">Ideas to <em>get you started</em></h2>
+      </div>
+      <div class="ideas" data-reveal-group>
+        {ideas.map((i) => (
+          <div class="idea card" data-reveal>
+            <span class="ic"><Icon name={i.icon} size={26} /></span>
+            <h3 class="h3">{i.title}</h3>
+            <p>{i.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section how">
+    <div class="container how-grid">
+      <div>
+        <div class="section-head">
+          <span class="eyebrow">How it works</span>
+          <h2 class="h2">Four easy <em>steps</em></h2>
+        </div>
+        <ol class="steps" data-reveal-group>
+          {customSteps.map((s, i) => (
+            <li data-reveal><span class="n">{i + 1}</span><div><strong>{s.title}</strong><p>{s.text}</p></div></li>
+          ))}
+        </ol>
+        <div class="policy">
+          <h3 class="h3">Good to know</h3>
+          <ul>
+            <li><Icon name="check" />A deposit or full payment confirms your order.</li>
+            <li><Icon name="check" />Custom orders are made fresh for you, so they can't be cancelled once confirmed.</li>
+            <li><Icon name="check" />Delivery fees depend on your location. Busy holidays may affect delivery times.</li>
+            <li><Icon name="check" />Wrapping, gift box and card message are always free.</li>
+          </ul>
+        </div>
+      </div>
+      <div id="order">
+        <OrderForm defaultItem="custom" heading="Tell us about your custom order" />
+      </div>
+    </div>
+  </section>
+
+  <Reviews />
+</Base>
+
+<style>
+  .hero { padding: clamp(48px, 7vw, 96px) 0; }
+  .hero-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
+  .hero-copy { display: grid; gap: 20px; justify-items: start; }
+  .hero-pics { position: relative; height: clamp(300px, 36vw, 440px); }
+  .hero-pics img { position: absolute; width: 60%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 24px; border: 6px solid #fff; box-shadow: var(--shadow-lift); }
+  .hero-pics img:first-child { left: 0; top: 0; rotate: -4deg; }
+  .hero-pics img:last-child { right: 0; bottom: 0; rotate: 4deg; }
+  @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; } .hero-pics { max-width: 440px; width: 100%; } }
+
+  .ideas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .idea { display: grid; gap: 10px; align-content: start; padding: 28px; }
+  .idea p { font-size: 15.5px; }
+  .ic { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: var(--blush); color: var(--cherry); margin-bottom: 6px; }
+  @media (max-width: 900px) { .ideas { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .ideas { grid-template-columns: 1fr; } }
+
+  .how { background: var(--paper); }
+  .how-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(32px, 5vw, 64px); align-items: start; }
+  #order { scroll-margin-top: 100px; }
+  .steps { list-style: none; margin: 0 0 32px; padding: 0; display: grid; gap: 18px; }
+  .steps li { display: flex; gap: 16px; }
+  .n { width: 40px; height: 40px; flex: none; border-radius: 50%; display: grid; place-items: center; background: var(--cherry); color: #fff; font-family: var(--font-display); font-weight: 600; }
+  .steps strong { color: var(--ink); }
+  .steps p { font-size: 15.5px; }
+  .policy { padding: 24px; border-radius: var(--radius-sm); background: var(--blush); display: grid; gap: 12px; }
+  .policy ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: 15px; }
+  .policy li { display: flex; gap: 10px; }
+  .policy svg { flex: none; color: var(--cherry); margin-top: 3px; }
+  @media (max-width: 900px) { .how-grid { grid-template-columns: 1fr; } }
+</style>

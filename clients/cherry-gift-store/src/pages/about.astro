@@ -1,0 +1,87 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import Perks from "../components/Perks.astro";
+import Reviews from "../components/Reviews.astro";
+import Faq from "../components/Faq.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { business, faqs } from "../data/site";
+
+const values = [
+  { icon: "heart", title: "Personal, always", text: "Every package is put together by hand, with a card message written for you." },
+  { icon: "sparkle", title: "Pretty in every detail", text: "Ribbons, boxes and wrapping chosen to make the unboxing part of the gift." },
+  { icon: "truck", title: "On time, on the day", text: "Same-day delivery across Nairobi and countrywide delivery when you need it." },
+] as const;
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+};
+---
+
+<Base
+  title="About Us | Cherry Candy & Gift Store, Nairobi"
+  description="Meet Cherry Candy & Gift Store, a Nairobi gift shop in Dynamic Mall creating hand-wrapped gift packages, luxury bouquets, candy packs and care packs with same-day delivery."
+  schema={[faqSchema]}
+>
+  <section class="about-hero">
+    <div class="container about-grid">
+      <div class="copy">
+        <span class="eyebrow">About us</span>
+        <h1 class="h1">Every gift should feel <em>personal</em></h1>
+        <p class="lead">
+          Cherry Candy &amp; Gift Store is a Nairobi gift shop at {business.address.street}. We make gift packages, candy packs,
+          care &amp; period packs, luxury rose bouquets, corporate gifts and picnic setups for every kind of occasion.
+        </p>
+        <p>
+          It started with a love of the little details: the right ribbon, a box that feels special to open, a note that says
+          exactly what you meant. Today we wrap gifts for birthdays, anniversaries, proposals and "just because" moments across
+          Nairobi, and deliver them countrywide.
+        </p>
+        <p>
+          Our shop is getting a refresh right now, but we're still taking orders and delivering every day. Send us a message
+          and tell us who you're shopping for.
+        </p>
+        <a class="btn btn-whatsapp" href="/contact/#order"><Icon name="whatsapp" />Order or say hello</a>
+      </div>
+      <div class="about-pics" aria-hidden="true">
+        <img class="logo" src="/images/logo.webp" alt="" width="300" height="300" />
+        <img class="photo" src="/images/luxury-red-roses.webp" alt="" width="399" height="361" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight values-section gingham">
+    <div class="container">
+      <div class="values" data-reveal-group>
+        {values.map((v) => (
+          <div class="value card" data-reveal>
+            <span class="ic"><Icon name={v.icon} size={26} /></span>
+            <h2 class="h3">{v.title}</h2>
+            <p>{v.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight"><div class="container"><Perks /></div></section>
+  <Reviews />
+  <Faq />
+  <CtaBand />
+</Base>
+
+<style>
+  .about-hero { padding: clamp(48px, 7vw, 96px) 0; }
+  .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
+  .copy { display: grid; gap: 18px; justify-items: start; }
+  .about-pics { position: relative; aspect-ratio: 1; max-width: 480px; width: 100%; justify-self: center; }
+  .about-pics .photo { position: absolute; right: 0; bottom: 0; width: 72%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 28px; border: 6px solid #fff; box-shadow: var(--shadow-lift); rotate: 3deg; }
+  .about-pics .logo { position: absolute; left: 0; top: 0; width: 46%; z-index: 2; border-radius: 50%; filter: drop-shadow(0 16px 24px rgba(77, 11, 27, .3)); rotate: -6deg; }
+  @media (max-width: 860px) { .about-grid { grid-template-columns: 1fr; } }
+  .values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .value { display: grid; gap: 10px; padding: 28px; align-content: start; }
+  .ic { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: var(--blush); color: var(--cherry); }
+  @media (max-width: 820px) { .values { grid-template-columns: 1fr; } }
+</style>

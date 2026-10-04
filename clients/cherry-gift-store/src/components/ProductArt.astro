@@ -1,0 +1,45 @@
+---
+// Branded stand-in illustration for products that don't have a photo yet.
+// Add `image` to the product in src/data/site.ts and this is replaced automatically.
+interface Props { category: string; label: string }
+const { category, label } = Astro.props;
+
+const tones: Record<string, { bg: string; box: string; lid: string; ribbon: string }> = {
+  "gift-packages": { bg: "#fde4e9", box: "#c8102e", lid: "#9e0b23", ribbon: "#f9c9d3" },
+  "care-packs": { bg: "#fbe9f1", box: "#ef8fa6", lid: "#d9708a", ribbon: "#ffffff" },
+  "for-him": { bg: "#ece8f2", box: "#4d0b1b", lid: "#33060f", ribbon: "#ef8fa6" },
+  "candy-packs": { bg: "#fff1d9", box: "#ef8fa6", lid: "#c8102e", ribbon: "#fff8f3" },
+  corporate: { bg: "#efe7df", box: "#2a0c13", lid: "#4d0b1b", ribbon: "#c8102e" },
+  flowers: { bg: "#fde4e9", box: "#c8102e", lid: "#9e0b23", ribbon: "#f9c9d3" },
+};
+const t = tones[category] ?? tones["gift-packages"];
+---
+<div class="art" style={`--art-bg:${t.bg}`} role="img" aria-label={label}>
+  <svg viewBox="0 0 200 200" aria-hidden="true">
+    <ellipse cx="100" cy="172" rx="62" ry="9" fill="rgba(77,11,27,.12)" />
+    <rect x="44" y="84" width="112" height="86" rx="8" fill={t.box} />
+    <rect x="36" y="66" width="128" height="26" rx="7" fill={t.lid} />
+    <rect x="92" y="66" width="16" height="104" fill={t.ribbon} />
+    <path d="M100 66c-10-22-40-26-40-10 0 12 26 12 40 10z" fill={t.ribbon} />
+    <path d="M100 66c10-22 40-26 40-10 0 12-26 12-40 10z" fill={t.ribbon} />
+    <circle cx="100" cy="64" r="7" fill={t.lid} />
+    <g transform="translate(138 34)">
+      <path d="M8 0c2 9 6 14 12 17M8 0c-2 9-5 13-9 16" stroke="#4f7a3a" stroke-width="2.4" fill="none" stroke-linecap="round" />
+      <circle cx="-1" cy="22" r="8" fill="#c8102e" />
+      <circle cx="20" cy="22" r="8" fill="#c8102e" />
+      <circle cx="-3.5" cy="19" r="2" fill="#fff" opacity=".55" />
+      <circle cx="17.5" cy="19" r="2" fill="#fff" opacity=".55" />
+    </g>
+  </svg>
+</div>
+
+<style>
+  .art {
+    position: relative;
+    width: 100%; height: 100%;
+    display: grid; place-items: center;
+    background-color: var(--art-bg);
+    background-image: var(--gingham);
+  }
+  .art svg { width: 62%; height: auto; }
+</style>

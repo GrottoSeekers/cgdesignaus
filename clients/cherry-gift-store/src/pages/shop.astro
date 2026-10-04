@@ -1,0 +1,129 @@
+---
+import Base from "../layouts/Base.astro";
+import Perks from "../components/Perks.astro";
+import ProductCard from "../components/ProductCard.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { business, products, categories } from "../data/site";
+
+const site = Astro.site!;
+const groups = categories
+  .map((c) => ({ ...c, items: products.filter((p) => p.category === c.id) }))
+  .filter((g) => g.items.length);
+
+const productSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Gifts, flowers and gift packages",
+  itemListElement: products.map((p, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    item: {
+      "@type": "Product",
+      name: p.name,
+      description: p.description,
+      ...(p.image && { image: new URL(p.image, site).href }),
+      brand: { "@type": "Brand", name: business.shortName },
+      ...(p.price !== null && {
+        offers: {
+          "@type": "Offer",
+          priceCurrency: "KES",
+          price: p.price,
+          availability: "https://schema.org/InStock",
+          url: new URL(`/shop/#${p.category}`, site).href,
+          seller: { "@id": new URL("/#store", site).href },
+        },
+      }),
+    },
+  })),
+};
+const breadcrumbs = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: new URL("/", site).href },
+    { "@type": "ListItem", position: 2, name: "Shop", item: new URL("/shop/", site).href },
+  ],
+};
+---
+
+<Base
+  title="Shop Gifts & Flowers in Nairobi | Prices from KSh 1,000 | Cherry Gift Store"
+  description="Browse gift packages, rose bouquets, care & period packs, gifts for him, candy packs and corporate gifts with prices in KSh. Free wrapping and gift box, same-day delivery in Nairobi."
+  schema={[productSchema, breadcrumbs]}
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">The shop</span>
+      <h1 class="h1">Gifts, flowers <em>&amp; sweet things</em></h1>
+      <p class="lead">
+        Every package includes free wrapping, a free gift box and a free card message. Tap <strong>Order on WhatsApp</strong> on any
+        gift, or choose <strong>Customise</strong> to change the contents.
+      </p>
+    </div>
+  </section>
+
+  <nav class="chips" aria-label="Gift categories">
+    <div class="container chips-inner">
+      {groups.map((g) => <a href={`#${g.id}`}>{g.label}</a>)}
+    </div>
+  </nav>
+
+  {groups.map((g, i) => (
+    <section id={g.id} class:list={["shop-group", { alt: i % 2 === 1 }]} aria-labelledby={`${g.id}-title`}>
+      <div class="container">
+        <div class="group-head">
+          <h2 id={`${g.id}-title`} class="h2">{g.label}</h2>
+          <p>{g.blurb}</p>
+        </div>
+        <div class="product-grid" data-reveal-group>
+          {g.items.map((p) => <ProductCard product={p} />)}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section-tight"><div class="container"><Perks /></div></section>
+  <CtaBand title="Don't see quite the right gift?" text="We build custom packages around any budget. Tell us who it's for and we'll put together options." />
+</Base>
+
+<style>
+  .page-hero { padding: clamp(48px, 7vw, 88px) 0 clamp(28px, 4vw, 40px); }
+  .page-hero .container { display: grid; gap: 18px; justify-items: start; }
+  .page-hero strong { color: var(--ink); }
+
+  .chips { position: sticky; top: 77px; z-index: 30; background: rgba(255, 248, 243, .92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .chips-inner { display: flex; gap: 8px; overflow-x: auto; padding-block: 12px; scrollbar-width: none; }
+  .chips-inner::-webkit-scrollbar { display: none; }
+  .chips a {
+    flex: none; padding: 10px 16px; border-radius: 999px;
+    background: var(--paper); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--line);
+    font-weight: 600; font-size: 15px; text-decoration: none; white-space: nowrap;
+    transition: background .2s ease, color .2s ease, box-shadow .2s ease;
+  }
+  .chips a:hover, .chips a.active { background: var(--cherry); color: #fff; box-shadow: none; }
+
+  .shop-group { padding: clamp(48px, 6vw, 80px) 0; scroll-margin-top: 140px; }
+  .shop-group.alt { background: var(--paper); }
+  .group-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 24px; margin-bottom: 32px; }
+  .group-head p { color: var(--muted); }
+</style>
+
+<script>
+  // Highlight the category chip for the section on screen.
+  const chips = new Map(
+    [...document.querySelectorAll<HTMLAnchorElement>(".chips a")].map((a) => [a.hash.slice(1), a]),
+  );
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        chips.forEach((a) => a.classList.remove("active"));
+        const chip = chips.get(e.target.id);
+        chip?.classList.add("active");
+        chip?.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+      });
+    },
+    { rootMargin: "-45% 0px -50% 0px" },
+  );
+  document.querySelectorAll(".shop-group").forEach((s) => io.observe(s));
+</script>

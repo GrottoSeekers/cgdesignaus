@@ -1,0 +1,42 @@
+---
+import { faqs } from "../data/site";
+interface Props { id?: string }
+const { id = "faq" } = Astro.props;
+---
+<section id={id} class="section faq" aria-labelledby="faq-title">
+  <div class="container faq-inner">
+    <div class="section-head">
+      <span class="eyebrow">Good to know</span>
+      <h2 id="faq-title" class="h2">Ordering &amp; <em>delivery</em></h2>
+      <p class="lead">Still unsure? Send us a message on WhatsApp and we'll help you pick the perfect gift.</p>
+    </div>
+    <div class="faq-list">
+      {faqs.map((f, i) => (
+        <details open={i === 0}>
+          <summary>{f.q}<span aria-hidden="true">+</span></summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-inner { display: grid; grid-template-columns: 1fr 1.4fr; gap: 56px; align-items: start; }
+  .faq-list { display: grid; gap: 12px; }
+  details { background: var(--paper); border-radius: var(--radius-sm); box-shadow: var(--shadow); }
+  summary {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    padding: 20px 22px; cursor: pointer; list-style: none;
+    font-weight: 700; font-size: 1.05rem; color: var(--ink);
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary span {
+    width: 32px; height: 32px; flex: none; border-radius: 50%;
+    display: grid; place-items: center; background: var(--blush); color: var(--cherry);
+    font-size: 22px; line-height: 1; transition: transform .35s var(--ease-out), background .2s ease, color .2s ease;
+  }
+  details[open] summary span { transform: rotate(45deg); background: var(--cherry); color: #fff; }
+  details p { padding: 0 22px 22px; }
+  @media (max-width: 860px) { .faq-inner { grid-template-columns: 1fr; gap: 8px; } }
+</style>

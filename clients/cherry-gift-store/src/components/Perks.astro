@@ -1,0 +1,33 @@
+---
+import Icon from "./Icon.astro";
+import { perks } from "../data/site";
+const icons = ["gift", "box", "card", "truck"] as const;
+---
+<ul class="perks" data-reveal-group>
+  {perks.map((p, i) => (
+    <li data-reveal>
+      <span class="perk-icon"><Icon name={icons[i % icons.length]} size={22} /></span>
+      <span><strong>{p.title}</strong><small>{p.note}</small></span>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .perks {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+  }
+  .perks li {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 18px; border-radius: var(--radius-sm);
+    background: var(--paper); box-shadow: var(--shadow);
+  }
+  .perk-icon {
+    width: 44px; height: 44px; flex: none; border-radius: 50%;
+    display: grid; place-items: center; background: var(--blush); color: var(--cherry);
+  }
+  .perks strong { display: block; color: var(--ink); font-size: 15.5px; }
+  .perks small { display: block; color: var(--muted); font-size: 13.5px; line-height: 1.35; }
+  @media (max-width: 960px) { .perks { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .perks { grid-template-columns: 1fr; gap: 10px; } .perks li { padding: 12px 14px; } .perk-icon { width: 40px; height: 40px; } }
+</style>

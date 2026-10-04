@@ -1,0 +1,366 @@
+---
+import "@fontsource-variable/dm-sans/wght.css";
+import "@fontsource-variable/fraunces/soft.css";
+import "@fontsource-variable/fraunces/soft-italic.css";
+import "../styles/global.css";
+import Icon from "../components/Icon.astro";
+import { business, whatsapp, whatsappUrl, announcement } from "../data/site";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Extra JSON-LD objects for this page (products, FAQ, breadcrumbs…). */
+  schema?: object[];
+  image?: string;
+}
+
+const { title, description, schema = [], image = "/images/og.jpg" } = Astro.props;
+const site = Astro.site!;
+const canonical = new URL(Astro.url.pathname, site).href;
+const ogImage = new URL(image, site).href;
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+
+const nav = [
+  { href: "/", label: "Home" },
+  { href: "/shop/", label: "Shop" },
+  { href: "/custom-orders/", label: "Custom orders" },
+  { href: "/about/", label: "About" },
+  { href: "/contact/", label: "Contact" },
+];
+const isCurrent = (href: string) => (href === "/" ? path === "/" : path.startsWith(href.replace(/\/$/, "")));
+
+const socials = [
+  { name: "instagram" as const, href: business.instagram, label: "Instagram" },
+  { name: "tiktok" as const, href: business.tiktok, label: "TikTok" },
+  { name: "facebook" as const, href: business.facebook, label: "Facebook" },
+].filter((s) => s.href);
+
+const storeSchema = {
+  "@context": "https://schema.org",
+  "@type": ["Store", "Florist"],
+  "@id": new URL("/#store", site).href,
+  name: business.name,
+  alternateName: business.shortName,
+  description: business.description,
+  url: new URL("/", site).href,
+  logo: new URL("/images/logo.webp", site).href,
+  image: [new URL("/images/og.jpg", site).href, new URL("/images/luxury-red-roses.webp", site).href],
+  priceRange: "KSh 1,000+",
+  currenciesAccepted: "KES",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: business.address.street,
+    addressLocality: business.address.locality,
+    addressRegion: business.address.region,
+    addressCountry: business.address.country,
+  },
+  areaServed: [{ "@type": "City", name: "Nairobi" }, { "@type": "Country", name: "Kenya" }],
+  ...(whatsapp.number && { telephone: `+${whatsapp.number}` }),
+  sameAs: [business.instagram, business.tiktok, business.facebook].filter(Boolean),
+};
+---
+
+<!doctype html>
+<html lang="en-KE">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="geo.region" content="KE-30" />
+    <meta name="geo.placename" content="Nairobi" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#c8102e" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_KE" />
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(storeSchema)} />
+    {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    {announcement.show && (
+      <div class="announce">
+        <div class="container">
+          <span>{announcement.text}</span>
+          <a href={whatsapp.link} target="_blank" rel="noopener">{announcement.linkLabel} →</a>
+        </div>
+      </div>
+    )}
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="/" class="brand" aria-label={`${business.name} home`}>
+          <img src="/images/logo-256.webp" alt="" width="52" height="52" />
+          <span class="brand-text">
+            <strong>Cherry</strong>
+            <small>Candy &amp; Gift Store</small>
+          </span>
+        </a>
+
+        <nav class="nav" aria-label="Main">
+          {nav.map((n) => <a href={n.href} aria-current={isCurrent(n.href) ? "page" : undefined}>{n.label}</a>)}
+        </nav>
+
+        <a class="btn btn-primary btn-sm header-cta" href="/contact/#order">Order now</a>
+
+        <button class="menu-btn" type="button" popovertarget="mobile-menu" aria-label="Open menu">
+          <Icon name="menu" size={24} />
+        </button>
+      </div>
+    </header>
+
+    <div id="mobile-menu" class="mobile-menu" popover>
+      <div class="mobile-menu-head">
+        <img src="/images/logo-256.webp" alt="" width="48" height="48" />
+        <button type="button" popovertarget="mobile-menu" popovertargetaction="hide" aria-label="Close menu">
+          <Icon name="close" size={26} />
+        </button>
+      </div>
+      <nav aria-label="Mobile">
+        {nav.map((n) => <a href={n.href} aria-current={isCurrent(n.href) ? "page" : undefined}>{n.label}</a>)}
+      </nav>
+      <div class="mobile-menu-actions">
+        <a class="btn btn-whatsapp btn-block" href={whatsapp.link} target="_blank" rel="noopener"><Icon name="whatsapp" />Chat on WhatsApp</a>
+        <a class="btn btn-ghost btn-block" href="/contact/#order">Order / enquiry form</a>
+      </div>
+    </div>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <img src="/images/logo-256.webp" alt={business.name} width="96" height="96" loading="lazy" />
+          <p>{business.tagline}. Free wrapping, free gift box and a free personalised card with every package.</p>
+          <div class="socials">
+            {socials.map((s) => (
+              <a href={s.href} target="_blank" rel="noopener" aria-label={s.label}><Icon name={s.name} size={22} /></a>
+            ))}
+            <a href={whatsapp.link} target="_blank" rel="noopener" aria-label="WhatsApp"><Icon name="whatsapp" size={22} /></a>
+          </div>
+        </div>
+        <div>
+          <h2 class="footer-h">Shop</h2>
+          <ul>
+            <li><a href="/shop/#flowers">Flowers &amp; bouquets</a></li>
+            <li><a href="/shop/#gift-packages">Gift packages</a></li>
+            <li><a href="/shop/#care-packs">Care &amp; period packs</a></li>
+            <li><a href="/shop/#for-him">Gifts for him</a></li>
+            <li><a href="/shop/#corporate">Corporate &amp; picnics</a></li>
+            <li><a href="/custom-orders/">Custom orders</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="footer-h">Visit &amp; contact</h2>
+          <ul class="contact-list">
+            <li><Icon name="pin" /><a href={business.mapsUrl} target="_blank" rel="noopener">{business.address.street}, {business.address.region}</a></li>
+            <li><Icon name="whatsapp" /><a href={whatsapp.link} target="_blank" rel="noopener">Order on WhatsApp</a></li>
+            <li><Icon name="instagram" /><a href={business.instagram} target="_blank" rel="noopener">{business.instagramHandle}</a></li>
+            <li><Icon name="truck" />Same-day Nairobi &amp; countrywide delivery</li>
+          </ul>
+        </div>
+      </div>
+      <div class="container footer-base">
+        <span>© {new Date().getFullYear()} {business.name}, Nairobi, Kenya</span>
+        <a href="/about/#faq">Delivery &amp; ordering FAQ</a>
+      </div>
+    </footer>
+
+    <aside class="cg-credit" aria-label="Website credit">
+      <div class="container">
+        <img src="/images/cgd-logo.webp" alt="CG Design" width="62" height="24" loading="lazy" />
+        <span>Website by <a href="https://cgdesignaus.com" target="_blank" rel="noopener">CG Design &amp; Co.</a></span>
+      </div>
+    </aside>
+
+    <a class="wa-fab" href={whatsappUrl("Hi Cherry Gift Store! I'd like to place an order.")} target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp" data-wa-message="Hi Cherry Gift Store! I'd like to place an order.">
+      <Icon name="whatsapp" size={30} />
+      <span class="wa-fab-label">Order on WhatsApp</span>
+    </a>
+
+    <div class="toast" role="status" aria-live="polite" hidden></div>
+
+    <script>
+      import { animate, inView, stagger } from "motion";
+
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // Scroll reveals: content is fully visible without JS; Motion only adds the entrance.
+      if (!reduce) {
+        document.querySelectorAll<HTMLElement>("[data-reveal-group]").forEach((group) => {
+          const items = group.querySelectorAll<HTMLElement>("[data-reveal]");
+          items.forEach((el) => (el.style.opacity = "0"));
+          inView(group, () => {
+            animate(items, { opacity: [0, 1], y: [24, 0] }, { duration: 0.7, delay: stagger(0.07), ease: [0.16, 1, 0.3, 1] });
+          }, { amount: 0.15 });
+        });
+        document.querySelectorAll<HTMLElement>("[data-reveal]:not([data-reveal-group] [data-reveal])").forEach((el) => {
+          el.style.opacity = "0";
+          inView(el, () => {
+            animate(el, { opacity: [0, 1], y: [24, 0] }, { duration: 0.8, ease: [0.16, 1, 0.3, 1] });
+          }, { amount: 0.2 });
+        });
+      }
+
+      // WhatsApp: without a saved number the short link can't carry text,
+      // so copy the order details for the customer to paste into the chat.
+      const toast = document.querySelector<HTMLElement>(".toast")!;
+      let toastTimer: number | undefined;
+      const showToast = (msg: string) => {
+        toast.textContent = msg;
+        toast.hidden = false;
+        if (!reduce) animate(toast, { opacity: [0, 1], y: [12, 0] }, { duration: 0.35 });
+        clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => (toast.hidden = true), 4500);
+      };
+      document.addEventListener("click", (e) => {
+        const link = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[data-wa-message]");
+        if (!link || link.href.includes("?text=")) return;
+        navigator.clipboard?.writeText(link.dataset.waMessage!).then(
+          () => showToast("Order details copied. Paste them into the WhatsApp chat."),
+          () => {},
+        );
+      });
+
+      // Close the mobile menu after picking a link.
+      document.querySelectorAll("#mobile-menu a").forEach((a) =>
+        a.addEventListener("click", () => document.getElementById("mobile-menu")?.hidePopover?.()),
+      );
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  .skip {
+    position: absolute; left: 12px; top: -60px; z-index: 100;
+    padding: 10px 16px; border-radius: 10px; background: var(--ink); color: #fff; font-weight: 700;
+  }
+  .skip:focus { top: 12px; }
+
+  .announce { background: var(--wine); color: #fde4e9; font-size: 14px; }
+  .announce .container {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+    gap: 4px 14px; padding-block: 9px; text-align: center;
+  }
+  .announce a { color: #fff; font-weight: 700; text-underline-offset: 3px; }
+
+  .site-header {
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(255, 248, 243, .9);
+    backdrop-filter: saturate(1.4) blur(12px);
+    -webkit-backdrop-filter: saturate(1.4) blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .header-inner { display: flex; align-items: center; gap: 24px; min-height: 76px; }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; margin-right: auto; }
+  .brand img { width: 52px; height: 52px; border-radius: 50%; box-shadow: 0 4px 12px -4px rgba(200, 16, 46, .35); }
+  .brand-text { display: grid; line-height: 1.05; }
+  .brand-text strong { font-family: var(--font-display); font-size: 1.55rem; font-weight: 600; color: var(--cherry); font-style: italic; }
+  .brand-text small { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--wine); }
+  .nav { display: flex; gap: 4px; }
+  .nav a {
+    padding: 10px 14px; border-radius: 999px;
+    font-weight: 600; font-size: 15.5px; color: var(--ink); text-decoration: none;
+    transition: background .2s ease, color .2s ease;
+  }
+  .nav a:hover { background: var(--blush); }
+  .nav a[aria-current="page"] { color: var(--cherry); background: var(--blush); }
+  .menu-btn {
+    display: none; width: 48px; height: 48px; border: 0; border-radius: 50%;
+    background: var(--blush); color: var(--wine); cursor: pointer; place-items: center;
+  }
+
+  .mobile-menu {
+    position: fixed; inset: 0 0 0 auto; margin: 0;
+    width: min(88vw, 380px); height: 100dvh; max-height: none;
+    border: 0; padding: 20px 24px 32px;
+    background: var(--cream); color: var(--ink);
+    box-shadow: -20px 0 60px -20px rgba(77, 11, 27, .4);
+    flex-direction: column; gap: 24px;
+  }
+  .mobile-menu:popover-open { display: flex; }
+  .mobile-menu::backdrop { background: rgba(42, 12, 19, .45); }
+  .mobile-menu-head { display: flex; justify-content: space-between; align-items: center; }
+  .mobile-menu-head img { border-radius: 50%; }
+  .mobile-menu-head button { width: 48px; height: 48px; border: 0; border-radius: 50%; background: var(--blush); color: var(--wine); cursor: pointer; display: grid; place-items: center; }
+  .mobile-menu nav { display: grid; }
+  .mobile-menu nav a {
+    padding: 14px 4px; border-bottom: 1px solid var(--line);
+    font-family: var(--font-display); font-size: 1.6rem; text-decoration: none; color: var(--ink);
+  }
+  .mobile-menu nav a[aria-current="page"] { color: var(--cherry); font-style: italic; }
+  .mobile-menu-actions { display: grid; gap: 12px; margin-top: auto; }
+
+  @media (max-width: 960px) {
+    .nav, .header-cta { display: none; }
+    .menu-btn { display: grid; }
+  }
+  @media (max-width: 420px) {
+    .brand-text small { font-size: 10.5px; }
+    .brand img { width: 44px; height: 44px; }
+  }
+
+  .site-footer { background: var(--wine); color: rgba(253, 228, 233, .82); padding: 72px 0 0; margin-top: 0; }
+  .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1.2fr; gap: 48px; }
+  .footer-brand { display: grid; gap: 18px; align-content: start; max-width: 360px; }
+  .footer-brand img { border-radius: 50%; }
+  .footer-h { font-family: var(--font-text); font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #fff; margin-bottom: 16px; }
+  .site-footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .site-footer a { text-decoration: none; }
+  .site-footer a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+  .contact-list li { display: flex; gap: 10px; align-items: flex-start; }
+  .contact-list svg { margin-top: 3px; color: var(--pink); flex: none; }
+  .socials { display: flex; gap: 10px; }
+  .socials a {
+    width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+    background: rgba(255, 255, 255, .08); color: #fff; transition: background .2s ease, transform .3s var(--ease-out);
+  }
+  .socials a:hover { background: var(--cherry); transform: translateY(-2px); text-decoration: none; }
+  .footer-base {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px;
+    margin-top: 56px; padding-block: 22px; border-top: 1px solid rgba(253, 228, 233, .15); font-size: 14px;
+  }
+  @media (max-width: 820px) { .footer-grid { grid-template-columns: 1fr; gap: 36px; } }
+
+  .cg-credit { background: #23060d; color: rgba(255, 255, 255, .6); font-size: 13px; padding: 14px 0 96px; }
+  .cg-credit .container { display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .cg-credit img { height: 18px; width: auto; opacity: .85; }
+  .cg-credit a { color: #fff; }
+  @media (min-width: 700px) { .cg-credit { padding-bottom: 14px; } }
+
+  .wa-fab {
+    position: fixed; right: 18px; bottom: 18px; z-index: 50;
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 13px; border-radius: 999px;
+    background: var(--whatsapp); color: #fff; text-decoration: none; font-weight: 700;
+    box-shadow: 0 14px 30px -10px rgba(31, 168, 85, .75), 0 2px 6px rgba(0, 0, 0, .15);
+    transition: transform .35s var(--ease-out), background .2s ease;
+  }
+  .wa-fab:hover { transform: translateY(-3px) scale(1.03); background: #178a45; }
+  .wa-fab-label { display: none; padding-right: 8px; }
+  @media (min-width: 700px) { .wa-fab-label { display: inline; } .wa-fab { padding: 13px 18px 13px 14px; } }
+
+  .toast {
+    position: fixed; left: 0; right: 0; bottom: 96px; z-index: 60; margin: 0 auto;
+    width: max-content; max-width: calc(100vw - 32px);
+    padding: 12px 18px; border-radius: 14px; background: var(--ink); color: #fff;
+    font-size: 15px; font-weight: 500; box-shadow: var(--shadow-lift); text-align: center;
+  }
+</style>

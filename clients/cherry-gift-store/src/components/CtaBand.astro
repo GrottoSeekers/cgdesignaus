@@ -1,0 +1,41 @@
+---
+import Icon from "./Icon.astro";
+import { whatsapp } from "../data/site";
+interface Props { title?: string; text?: string }
+const {
+  title = "Ready to make someone's day?",
+  text = "Message us on WhatsApp with the occasion and your budget. We'll take care of the rest, wrapping and card included.",
+} = Astro.props;
+---
+<section class="cta-band">
+  <div class="container">
+    <div class="cta-card" data-reveal>
+      <svg class="cta-cherries" viewBox="0 0 120 120" aria-hidden="true">
+        <path d="M60 10c4 26 16 42 34 52M60 10c-4 24-14 40-28 50" stroke="#4f7a3a" stroke-width="4" fill="none" stroke-linecap="round" />
+        <path d="M60 10c10-6 24-4 30 4-10 4-22 3-30-4z" fill="#4f7a3a" />
+        <circle cx="32" cy="78" r="22" fill="#c8102e" /><circle cx="94" cy="82" r="22" fill="#c8102e" />
+        <circle cx="24" cy="70" r="6" fill="#fff" opacity=".45" /><circle cx="86" cy="74" r="6" fill="#fff" opacity=".45" />
+      </svg>
+      <h2 class="h2">{title}</h2>
+      <p class="lead">{text}</p>
+      <div class="cta-actions">
+        <a class="btn btn-whatsapp" href={whatsapp.link} target="_blank" rel="noopener"><Icon name="whatsapp" />Chat on WhatsApp</a>
+        <a class="btn btn-ghost" href="/contact/#order">Use the order form</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-band { padding: 0 0 clamp(64px, 9vw, 112px); }
+  .cta-card {
+    position: relative; overflow: hidden;
+    display: grid; justify-items: center; gap: 18px; text-align: center;
+    padding: clamp(48px, 7vw, 80px) 24px;
+    border-radius: 32px;
+    background-color: var(--blush); background-image: var(--gingham);
+  }
+  .cta-card .lead { max-width: 34em; }
+  .cta-cherries { width: 84px; height: 84px; }
+  .cta-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 8px; }
+</style>

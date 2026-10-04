@@ -1,0 +1,21 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base title="Page not found | Cherry Gift Store" description="This page doesn't exist. Browse gifts, flowers and gift packages at Cherry Gift Store, Nairobi.">
+  <section class="section">
+    <div class="container nf">
+      <img src="/images/logo.webp" alt="" width="180" height="180" />
+      <h1 class="h1">Oops, this gift <em>got lost</em></h1>
+      <p class="lead">The page you're looking for isn't here. Let's get you back to the good stuff.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="/shop/">Browse gifts</a>
+        <a class="btn btn-ghost" href="/">Home</a>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .nf { display: grid; justify-items: center; text-align: center; gap: 20px; }
+  .nf img { border-radius: 50%; }
+  .actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+</style>

@@ -1,0 +1,130 @@
+/* Cherry Candy & Gift Store — design tokens and shared styles.
+   Palette pulled from the logo: cherry red, ribbon pink, cream, stem green. */
+
+:root {
+  --cream: #fff8f3;
+  --paper: #ffffff;
+  --blush: #fde4e9;
+  --blush-deep: #f9c9d3;
+  --pink: #ef8fa6;
+  --cherry: #c8102e;
+  --cherry-dark: #9e0b23;
+  --wine: #4d0b1b;
+  --ink: #2a0c13;
+  --body: #5e3a42;
+  --muted: #8a6870;
+  --leaf: #4f7a3a;
+  --line: rgba(77, 11, 27, 0.12);
+  --whatsapp: #1fa855;
+
+  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
+  --font-text: "DM Sans Variable", "Helvetica Neue", Arial, sans-serif;
+
+  --radius: 22px;
+  --radius-sm: 14px;
+  --shadow: 0 1px 2px rgba(77, 11, 27, 0.06), 0 12px 32px -12px rgba(77, 11, 27, 0.22);
+  --shadow-lift: 0 2px 4px rgba(77, 11, 27, 0.06), 0 24px 48px -16px rgba(77, 11, 27, 0.3);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+
+  --gingham:
+    repeating-linear-gradient(0deg, rgba(200, 16, 46, .07) 0 14px, transparent 14px 28px),
+    repeating-linear-gradient(90deg, rgba(200, 16, 46, .07) 0 14px, transparent 14px 28px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--body);
+  font-family: var(--font-text);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--cherry); outline-offset: 3px; border-radius: 6px; }
+
+.container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.section { padding: clamp(64px, 9vw, 112px) 0; }
+.section-tight { padding: clamp(48px, 6vw, 72px) 0; }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ---------- Type ---------- */
+h1, h2, h3, h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  font-variation-settings: "SOFT" 100;
+}
+.h1 { font-size: clamp(2.6rem, 6.4vw, 4.9rem); }
+.h2 { font-size: clamp(2rem, 4.2vw, 3.2rem); }
+.h3 { font-size: 1.35rem; line-height: 1.2; }
+h1 em, h2 em, .h1 em, .h2 em {
+  font-style: italic;
+  color: var(--cherry);
+  font-variation-settings: "SOFT" 100;
+}
+p { margin: 0; }
+.lead { font-size: clamp(1.06rem, 1.6vw, 1.2rem); color: var(--body); max-width: 38em; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--cherry);
+}
+.eyebrow::before {
+  content: ""; width: 18px; height: 18px; flex: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3c1 4 3 7 6 9' stroke='%234f7a3a' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3Cpath d='M12 3c-1 4-3 7-5 9' stroke='%234f7a3a' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='7' cy='16' r='5' fill='%23c8102e'/%3E%3Ccircle cx='17.5' cy='16' r='5' fill='%23c8102e'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.section-head { display: grid; gap: 14px; margin-bottom: clamp(32px, 4vw, 48px); max-width: 44rem; }
+.section-head.center { margin-inline: auto; text-align: center; justify-items: center; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 52px; padding: 14px 26px;
+  border-radius: 999px; border: 0;
+  font: 700 16px/1 var(--font-text);
+  text-decoration: none; cursor: pointer;
+  transition: transform .35s var(--ease-out), box-shadow .35s var(--ease-out), background .2s ease, color .2s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn svg { width: 20px; height: 20px; flex: none; }
+.btn-primary { background: var(--cherry); color: #fff; box-shadow: 0 10px 24px -10px rgba(200, 16, 46, .7); }
+.btn-primary:hover { background: var(--cherry-dark); }
+.btn-whatsapp { background: var(--whatsapp); color: #fff; box-shadow: 0 10px 24px -10px rgba(31, 168, 85, .7); }
+.btn-whatsapp:hover { background: #178a45; }
+.btn-ghost { background: var(--paper); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--line); }
+.btn-ghost:hover { box-shadow: inset 0 0 0 1.5px var(--cherry); color: var(--cherry); }
+.btn-sm { min-height: 44px; padding: 11px 18px; font-size: 15px; }
+.btn-block { width: 100%; }
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--paper);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* ---------- Product grid ---------- */
+.product-grid {
+  display: grid;
+  gap: 22px;
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+}
+
+/* ---------- Ribbon divider ---------- */
+.gingham { background-color: var(--blush); background-image: var(--gingham); }
+
+/* ---------- Reveal (Motion adds the movement; content is visible without JS) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}

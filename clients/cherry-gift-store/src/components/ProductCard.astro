@@ -1,0 +1,80 @@
+---
+import Icon from "./Icon.astro";
+import ProductArt from "./ProductArt.astro";
+import { formatPrice, whatsappUrl, type Product } from "../data/site";
+
+interface Props { product: Product; headingLevel?: "h2" | "h3" }
+const { product: p, headingLevel = "h3" } = Astro.props;
+const Heading = headingLevel;
+const price = formatPrice(p);
+const message = `Hi Cherry Gift Store! I'd like to order the ${p.name} (${price}). Delivery date: \nDelivery area: `;
+---
+<article class="product card" data-category={p.category} data-reveal>
+  <div class="product-media">
+    {p.image
+      ? <img src={p.image} alt={p.imageAlt ?? p.name} width="400" height="400" loading="lazy" decoding="async" />
+      : <ProductArt category={p.category} label={`${p.name} illustration`} />}
+    {p.badge && <span class="badge">{p.badge}</span>}
+  </div>
+  <div class="product-body">
+    <Heading class="h3">{p.name}</Heading>
+    <p class="price">{price}</p>
+    <p class="desc">{p.description}</p>
+    {p.contents && (
+      <details class="contents">
+        <summary>What's inside</summary>
+        <ul>{p.contents.map((c) => <li>{c}</li>)}</ul>
+      </details>
+    )}
+    <div class="product-actions">
+      <a
+        class="btn btn-whatsapp btn-sm"
+        href={whatsappUrl(message)}
+        target="_blank"
+        rel="noopener"
+        data-wa-message={message}
+      >
+        <Icon name="whatsapp" />Order on WhatsApp
+      </a>
+      <a class="enquire" href={`/contact/?item=${p.slug}#order`}>Customise or enquire</a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .product {
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    transition: transform .45s var(--ease-out), box-shadow .45s var(--ease-out);
+  }
+  .product:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+  .product-media { position: relative; aspect-ratio: 1; overflow: hidden; background: var(--blush); }
+  .product-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease-out); }
+  .product:hover .product-media img { transform: scale(1.04); }
+  .badge {
+    position: absolute; top: 14px; left: 14px;
+    padding: 6px 12px; border-radius: 999px;
+    background: var(--paper); color: var(--cherry);
+    font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    box-shadow: 0 4px 14px -6px rgba(77, 11, 27, .4);
+  }
+  @media (max-width: 640px) { .product-media { aspect-ratio: 4 / 3; } }
+  .product-body { display: flex; flex-direction: column; gap: 10px; padding: 20px 20px 22px; flex: 1; }
+  .price { font-family: var(--font-display); font-size: 1.3rem; color: var(--cherry); font-weight: 600; }
+  .desc { font-size: 15px; color: var(--body); }
+  .contents { font-size: 14.5px; }
+  .contents summary {
+    cursor: pointer; font-weight: 700; color: var(--ink); list-style: none;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .contents summary::-webkit-details-marker { display: none; }
+  .contents summary::after { content: "+"; font-size: 18px; line-height: 1; color: var(--cherry); transition: transform .3s var(--ease-out); }
+  .contents[open] summary::after { transform: rotate(45deg); }
+  .contents ul { margin: 8px 0 0; padding-left: 18px; columns: 2; column-gap: 18px; }
+  .contents li { margin: 2px 0; break-inside: avoid; }
+  .contents li::marker { color: var(--pink); }
+  .product-actions { margin-top: auto; padding-top: 8px; display: grid; gap: 10px; justify-items: center; }
+  .product-actions .btn { width: 100%; }
+  .enquire { font-size: 14.5px; font-weight: 600; color: var(--muted); text-underline-offset: 3px; }
+  .enquire:hover { color: var(--cherry); }
+</style>

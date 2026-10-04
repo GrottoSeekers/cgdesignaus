@@ -1,0 +1,45 @@
+---
+import Icon from "./Icon.astro";
+import { reviews, business } from "../data/site";
+---
+<section class="section reviews" aria-labelledby="reviews-title">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">Kind words</span>
+      <h2 id="reviews-title" class="h2">Loved by Nairobi's <em>best gift-givers</em></h2>
+    </div>
+    <div class="review-grid" data-reveal-group>
+      {reviews.map((r) => (
+        <figure class="review card" data-reveal>
+          {r.sample && <span class="sample-tag">Sample: replace with a real review</span>}
+          <div class="stars" aria-label="5 out of 5 stars">
+            {[0, 1, 2, 3, 4].map(() => <Icon name="star" size={18} />)}
+          </div>
+          <blockquote>“{r.quote}”</blockquote>
+          <figcaption><strong>{r.name}</strong><span>{r.detail}</span></figcaption>
+        </figure>
+      ))}
+    </div>
+    <p class="reviews-more">
+      See more happy customers on <a href={business.instagram} target="_blank" rel="noopener">Instagram {business.instagramHandle}</a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .reviews { background: var(--paper); }
+  .review-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .review { position: relative; display: flex; flex-direction: column; gap: 16px; margin: 0; padding: 30px 28px; background: var(--cream); box-shadow: none; border: 1px solid var(--line); }
+  .sample-tag {
+    align-self: flex-start; padding: 4px 10px; border-radius: 999px;
+    background: #fff3c4; color: #6b5200; font-size: 12px; font-weight: 700;
+  }
+  .stars { display: flex; gap: 2px; color: var(--cherry); }
+  .review blockquote { margin: 0; font-family: var(--font-display); font-size: 1.15rem; line-height: 1.45; color: var(--ink); }
+  .review figcaption { margin-top: auto; display: grid; font-size: 14.5px; }
+  .review figcaption strong { color: var(--ink); }
+  .review figcaption span { color: var(--muted); }
+  .reviews-more { margin-top: 32px; text-align: center; }
+  .reviews-more a { color: var(--cherry); font-weight: 700; text-underline-offset: 3px; }
+  @media (max-width: 900px) { .review-grid { grid-template-columns: 1fr; max-width: 560px; margin-inline: auto; } }
+</style>

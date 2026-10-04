@@ -1,0 +1,89 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import OrderForm from "../components/OrderForm.astro";
+import { business, whatsapp } from "../data/site";
+
+const site = Astro.site!;
+const breadcrumbs = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: new URL("/", site).href },
+    { "@type": "ListItem", position: 2, name: "Contact & order", item: new URL("/contact/", site).href },
+  ],
+};
+---
+
+<Base
+  title="Order & Contact | Cherry Gift Store, Dynamic Mall Nairobi"
+  description="Order gifts, flowers and gift packages from Cherry Candy & Gift Store on WhatsApp or with our quick order form. Dynamic Mall, 3rd Floor, Shop 142B, Nairobi. Same-day delivery."
+  schema={[breadcrumbs]}
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Order &amp; contact</span>
+      <h1 class="h1">Let's make it <em>special</em></h1>
+      <p class="lead">The quickest way to order is WhatsApp. Prefer a form? Fill in the one below and it lands in our chat.</p>
+    </div>
+  </section>
+
+  <section class="contact-section">
+    <div class="container contact-grid">
+      <div class="contact-cards" data-reveal-group>
+        <a class="contact-card wa" href={whatsapp.link} target="_blank" rel="noopener" data-reveal>
+          <span class="ic"><Icon name="whatsapp" size={28} /></span>
+          <span><strong>WhatsApp</strong><small>Fastest replies. Order, ask or send a photo for inspiration.</small></span>
+        </a>
+        <a class="contact-card" href={business.instagram} target="_blank" rel="noopener" data-reveal>
+          <span class="ic"><Icon name="instagram" size={26} /></span>
+          <span><strong>Instagram</strong><small>{business.instagramHandle} for our latest packages and DMs.</small></span>
+        </a>
+        <a class="contact-card" href={business.mapsUrl} target="_blank" rel="noopener" data-reveal>
+          <span class="ic"><Icon name="pin" size={26} /></span>
+          <span><strong>Our shop</strong><small>{business.address.street}, {business.address.locality}</small></span>
+        </a>
+        <div class="contact-card" data-reveal>
+          <span class="ic"><Icon name="truck" size={26} /></span>
+          <span><strong>Delivery</strong><small>Same-day across Nairobi, countrywide on request. Fees depend on location.</small></span>
+        </div>
+        <div class="map card" data-reveal>
+          <iframe
+            title="Map showing Dynamic Mall, Nairobi"
+            src="https://www.google.com/maps?q=Dynamic+Mall,+Nairobi&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </div>
+      <div id="order">
+        <OrderForm />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-hero { padding: clamp(48px, 7vw, 88px) 0 clamp(28px, 4vw, 40px); }
+  .page-hero .container { display: grid; gap: 18px; justify-items: start; }
+  .contact-section { padding-bottom: clamp(64px, 9vw, 112px); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: 32px; align-items: start; }
+  #order { scroll-margin-top: 100px; }
+  .contact-cards { display: grid; gap: 14px; }
+  .contact-card {
+    display: flex; gap: 16px; align-items: center; padding: 18px 20px;
+    border-radius: var(--radius-sm); background: var(--paper); box-shadow: var(--shadow);
+    text-decoration: none; transition: transform .4s var(--ease-out), box-shadow .4s var(--ease-out);
+  }
+  a.contact-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); }
+  .contact-card strong { display: block; color: var(--ink); font-size: 1.05rem; }
+  .contact-card small { display: block; font-size: 14.5px; color: var(--muted); line-height: 1.45; }
+  .ic { width: 52px; height: 52px; flex: none; border-radius: 50%; display: grid; place-items: center; background: var(--blush); color: var(--cherry); }
+  .wa .ic { background: var(--whatsapp); color: #fff; }
+  .map { overflow: hidden; aspect-ratio: 16 / 10; }
+  .map iframe { width: 100%; height: 100%; border: 0; display: block; }
+  @media (max-width: 900px) {
+    .contact-grid { grid-template-columns: 1fr; }
+    #order { order: -1; }
+  }
+</style>

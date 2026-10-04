@@ -1,0 +1,175 @@
+---
+// Order / enquiry form. No server needed: it turns the answers into a tidy
+// WhatsApp message. With whatsapp.number set (src/data/site.ts) the chat opens
+// with the message typed out; without it, the message is copied for pasting.
+import Icon from "./Icon.astro";
+import { products, occasions, whatsapp, formatPrice } from "../data/site";
+
+interface Props { defaultItem?: string; heading?: string }
+const { defaultItem = "", heading = "Place an order or enquiry" } = Astro.props;
+---
+<form class="order-form card" id="order-form" data-wa-number={whatsapp.number} data-wa-link={whatsapp.link} novalidate>
+  <div class="form-head">
+    <h2 class="h3">{heading}</h2>
+    <p>Fill this in and we'll send it straight to our WhatsApp. We reply with the total, delivery fee and payment details.</p>
+  </div>
+
+  <div class="grid">
+    <label>
+      <span>Your name *</span>
+      <input name="name" autocomplete="name" required />
+    </label>
+    <label>
+      <span>Phone / WhatsApp *</span>
+      <input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="07XX XXX XXX" required />
+    </label>
+    <label class="full">
+      <span>What would you like? *</span>
+      <select name="item" required>
+        <option value="">Choose a gift…</option>
+        <option value="Custom package (build my own)" selected={defaultItem === "custom"}>Custom package (build my own)</option>
+        {products.map((p) => (
+          <option value={`${p.name} (${formatPrice(p)})`} selected={p.slug === defaultItem} data-slug={p.slug}>
+            {p.name} · {formatPrice(p)}
+          </option>
+        ))}
+      </select>
+    </label>
+    <label>
+      <span>Occasion</span>
+      <select name="occasion">
+        <option value="">Select…</option>
+        {occasions.map((o) => <option>{o}</option>)}
+        <option>Corporate / event</option>
+        <option>Other</option>
+      </select>
+    </label>
+    <label>
+      <span>Budget (KSh)</span>
+      <input name="budget" inputmode="numeric" placeholder="e.g. 3,000" />
+    </label>
+    <label>
+      <span>Delivery date *</span>
+      <input name="date" type="date" required />
+    </label>
+    <fieldset>
+      <legend>Delivery or pick-up</legend>
+      <div class="radios">
+        <label class="radio"><input type="radio" name="method" value="Delivery" checked /> Delivery</label>
+        <label class="radio"><input type="radio" name="method" value="Pick-up" /> Pick-up</label>
+      </div>
+    </fieldset>
+    <label class="full">
+      <span>Delivery area / address</span>
+      <input name="address" autocomplete="street-address" placeholder="e.g. Kilimani, Nairobi" />
+    </label>
+    <label class="full">
+      <span>Card message (free)</span>
+      <textarea name="card" rows="2" placeholder="What should the card say?"></textarea>
+    </label>
+    <label class="full">
+      <span>Anything else? Colours, items to add or swap, inspiration…</span>
+      <textarea name="notes" rows="3"></textarea>
+    </label>
+  </div>
+
+  <p class="form-error" role="alert" hidden>Please fill in the fields marked *.</p>
+  <button class="btn btn-whatsapp btn-block" type="submit"><Icon name="whatsapp" />Send order on WhatsApp</button>
+  <p class="form-done" role="status" hidden>
+    <Icon name="check" />
+    <span>Your order is copied. Paste it into the WhatsApp chat that just opened and press send.
+      <a href={whatsapp.link} target="_blank" rel="noopener">Open WhatsApp again</a></span>
+  </p>
+  <noscript><p>Our form needs JavaScript. You can still <a href={whatsapp.link}>message us on WhatsApp</a>.</p></noscript>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("#order-form");
+  if (form) {
+    // Pre-select the gift when arriving from a product's "Customise" link.
+    const item = new URLSearchParams(location.search).get("item");
+    if (item) {
+      const opt = form.querySelector<HTMLOptionElement>(`option[data-slug="${CSS.escape(item)}"]`);
+      if (opt) opt.selected = true;
+    }
+    const date = form.querySelector<HTMLInputElement>('input[name="date"]')!;
+    date.min = new Date().toISOString().slice(0, 10);
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const error = form.querySelector<HTMLElement>(".form-error")!;
+      const required = [...form.querySelectorAll<HTMLInputElement | HTMLSelectElement>("[required]")];
+      const missing = required.filter((f) => !f.value.trim());
+      required.forEach((f) => f.toggleAttribute("aria-invalid", missing.includes(f)));
+      if (missing.length) {
+        error.hidden = false;
+        missing[0].focus();
+        return;
+      }
+      error.hidden = true;
+
+      const d = new FormData(form);
+      const v = (k: string) => String(d.get(k) ?? "").trim();
+      const lines = [
+        "Hi Cherry Gift Store! New order / enquiry 🍒",
+        "",
+        `Name: ${v("name")}`,
+        `Phone: ${v("phone")}`,
+        `Gift: ${v("item")}`,
+        v("occasion") && `Occasion: ${v("occasion")}`,
+        v("budget") && `Budget: KSh ${v("budget")}`,
+        `Date: ${v("date")}`,
+        `${v("method")}${v("address") ? `: ${v("address")}` : ""}`,
+        v("card") && `Card message: "${v("card")}"`,
+        v("notes") && `Notes: ${v("notes")}`,
+      ];
+      const message = lines.filter((l, i) => i === 1 || l).join("\n");
+
+      const number = form.dataset.waNumber;
+      if (number) {
+        window.open(`https://wa.me/${number}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
+        return;
+      }
+      // Start the copy before opening the new tab: it needs this page focused,
+      // and opening synchronously keeps the click's popup permission.
+      navigator.clipboard?.writeText(message).catch(() => {});
+      window.open(form.dataset.waLink, "_blank", "noopener");
+      form.querySelector<HTMLElement>(".form-done")!.hidden = false;
+    });
+  }
+</script>
+
+<style>
+  .order-form { display: grid; gap: 22px; padding: clamp(24px, 4vw, 40px); scroll-margin-top: 100px; }
+  .form-head { display: grid; gap: 8px; }
+  .form-head p { font-size: 15.5px; color: var(--muted); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .full { grid-column: 1 / -1; }
+  label, fieldset { display: grid; gap: 6px; min-width: 0; }
+  label > span, legend { font-size: 14px; font-weight: 700; color: var(--ink); }
+  fieldset { border: 0; margin: 0; padding: 0; }
+  legend { padding: 0; margin-bottom: 6px; }
+  input:not([type="radio"]), select, textarea {
+    width: 100%; min-height: 50px; padding: 12px 14px;
+    border: 1.5px solid var(--line); border-radius: 12px; background: var(--cream);
+    font: 16px/1.4 var(--font-text); color: var(--ink);
+    transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+  textarea { resize: vertical; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--cherry); background: #fff; box-shadow: 0 0 0 4px rgba(200, 16, 46, .12); }
+  [aria-invalid] { border-color: var(--cherry) !important; background: #fff5f6 !important; }
+  .radios { display: flex; gap: 10px; }
+  .radio {
+    display: flex; align-items: center; gap: 8px; flex: 1;
+    min-height: 50px; padding: 0 14px; border: 1.5px solid var(--line); border-radius: 12px;
+    background: var(--cream); font-weight: 600; color: var(--ink); cursor: pointer; white-space: nowrap;
+  }
+  .radio:has(input:checked) { border-color: var(--cherry); background: var(--blush); }
+  .radio input { accent-color: var(--cherry); width: 18px; height: 18px; }
+  .form-error { color: var(--cherry); font-weight: 700; }
+  .form-done { display: flex; gap: 10px; align-items: flex-start; padding: 14px 16px; border-radius: 12px; background: #e7f6ec; color: #145c30; font-size: 15px; }
+  .form-done[hidden] { display: none; }
+  .form-done svg { flex: none; margin-top: 2px; }
+  .form-done a { font-weight: 700; color: inherit; }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+</style>
