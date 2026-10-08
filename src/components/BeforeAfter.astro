@@ -5,17 +5,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 // Real client redesign: Nigel's Hairdressing (Wigan & Rochdale).
 // Full-page screenshots captured October 2026 (old Wix site archived in
-// clients/nigels-hairdressing/archive/old-wix-site/). Phones get the
-// phone-width captures so the text stays readable inside the frame.
+// clients/nigels-hairdressing/archive/old-wix-site/). The desktop captures
+// are shown at every screen size: zoomed out, and never upscaled (so sharp).
 const shots = {
   before: {
     desktop: `${base}/previews/nigels-before.webp`,
-    mobile: `${base}/previews/nigels-before-mobile.webp`,
     alt: "Nigel's Hairdressing's old Wix website: orange header, stock photo hero and plain price list",
   },
   after: {
     desktop: `${base}/previews/nigels-after-base.webp`,
-    mobile: `${base}/previews/nigels-after-mobile-base.webp`,
     alt: "Nigel's Hairdressing's new website by CG Design & Co.: chocolate and blush design with recent work, prices and FAQ",
   },
 };
@@ -61,17 +59,14 @@ const liveUrl = "https://www.nigelshairdressingwiganandrochdale.com";
           <div class="compare-stack">
             <div class="compare-after">
               <picture class="compare-shot">
-                <source media="(max-width: 640px)" srcset={shots.after.mobile} width="390" height="6874" />
                 <img src={shots.after.desktop} alt={shots.after.alt} width="1440" height="5449" loading="lazy" decoding="async" />
               </picture>
               <!-- The new site's animated hair strands, drawn when the slider scrolls into view -->
-              <NigelStrands class="strands-desktop" autoplay={false} box={{ left: 42, top: 1.5049, width: 58, height: 11.3846 }} />
-              <NigelStrands class="strands-mobile" autoplay={false} box={{ left: 0, top: 0.9892, width: 100, height: 4.3643 }} />
+              <NigelStrands autoplay={false} box={{ left: 42, top: 1.5049, width: 58, height: 11.3846 }} />
             </div>
 
             <div class="compare-before" id="compare-before">
               <picture class="compare-shot">
-                <source media="(max-width: 640px)" srcset={shots.before.mobile} width="390" height="3198" />
                 <img src={shots.before.desktop} alt={shots.before.alt} width="1440" height="4330" loading="lazy" decoding="async" />
               </picture>
             </div>
@@ -85,14 +80,14 @@ const liveUrl = "https://www.nigelshairdressingwiganandrochdale.com";
 
 <style>
   .compare {
-    max-width: 980px;
+    max-width: 760px;
     margin: 0 auto;
   }
 
   .compare-frame {
     --pos: 46%;
     position: relative;
-    height: clamp(360px, 48vw, 470px);
+    height: clamp(440px, 46vw, 580px);
     border-radius: var(--radius);
     overflow: hidden;
     border: 1px solid var(--line);
@@ -122,7 +117,7 @@ const liveUrl = "https://www.nigelshairdressingwiganandrochdale.com";
     top: 0;
     left: 0;
     right: 0;
-    height: clamp(360px, 48vw, 470px);
+    height: clamp(440px, 46vw, 580px);
     pointer-events: none;
   }
 
@@ -198,19 +193,6 @@ const liveUrl = "https://www.nigelshairdressingwiganandrochdale.com";
     cursor: grabbing;
   }
 
-  .compare-after :global(.strands-mobile) {
-    display: none;
-  }
-
-  @media (max-width: 640px) {
-    .compare-after :global(.strands-desktop) {
-      display: none;
-    }
-
-    .compare-after :global(.strands-mobile) {
-      display: block;
-    }
-  }
 
   .handle-grip svg {
     width: 20px;

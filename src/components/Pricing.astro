@@ -17,28 +17,28 @@ const pageOptions = [
 const featureOptions = [
   {
     id: "seo",
-    label: "Local SEO Package",
+    label: "Local SEO",
     desc: "Google Business optimisation and local keyword targeting",
     price: 280,
     recurring: false,
   },
   {
     id: "booking",
-    label: "Online Booking System",
+    label: "Online bookings",
     desc: "Real-time appointment, table, or callout booking",
     price: 400,
     recurring: false,
   },
   {
     id: "store",
-    label: "Online Store Setup",
+    label: "Online store",
     desc: "Product catalogue and checkout",
     price: 800,
     recurring: false,
   },
   {
     id: "maintenance",
-    label: "Monthly Maintenance",
+    label: "Maintenance",
     desc: "Hosting, security updates, and small content changes",
     price: 60,
     recurring: true,
@@ -160,7 +160,7 @@ const tiers = [
         </span>
         <span class="estimator-toggle-text">
           <span class="estimator-toggle-title">Or build your own quote here</span>
-          <span class="estimator-toggle-sub">Pick your pages and features and see the price move</span>
+          <span class="estimator-toggle-sub">Pick pages and extras, see the price</span>
         </span>
       </button>
 
@@ -168,11 +168,7 @@ const tiers = [
         <div class="estimator-config">
           <div class="config-block">
             <h4 class="config-label">Pages</h4>
-            <div class="included-row">
-              {includedPages.map((page) => (
-                <span class="pill included-pill">{page} · included</span>
-              ))}
-            </div>
+            <p class="included-note">{includedPages.join(" & ")} included. Add:</p>
             <div class="page-grid">
               {pageOptions.map((page) => (
                 <label class="page-chip">
@@ -189,10 +185,7 @@ const tiers = [
             <div class="feature-list">
               {featureOptions.map((feature) => (
                 <label class="feature-row">
-                  <span class="feature-text">
-                    <span class="feature-name">{feature.label}</span>
-                    <span class="feature-desc">{feature.desc}</span>
-                  </span>
+                  <span class="feature-name" title={feature.desc}>{feature.label}</span>
                   <span class="feature-price">
                     +${feature.price}{feature.recurring ? "/mo" : ""}
                   </span>
@@ -223,7 +216,7 @@ const tiers = [
           <button type="button" class="btn btn-primary summary-cta" id="estimate-cta">
             Send me this quote
           </button>
-          <p class="summary-note">No payment, no obligation — a starting point for your free check.</p>
+          <p class="summary-note">No payment, no obligation.</p>
         </div>
       </div>
     </div>
@@ -575,9 +568,9 @@ const tiers = [
   .estimator {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-    gap: 28px;
+    gap: 18px;
     align-items: start;
-    margin-top: 24px;
+    margin-top: 14px;
     overflow: hidden;
   }
 
@@ -588,7 +581,7 @@ const tiers = [
   .estimator-config {
     display: flex;
     flex-direction: column;
-    gap: 28px;
+    gap: 16px;
   }
 
   .config-label {
@@ -597,43 +590,35 @@ const tiers = [
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: rgba(20, 17, 26, 0.6);
-    margin: 0 0 12px;
+    margin: 0 0 8px;
     font-family: "Plus Jakarta Sans", sans-serif;
   }
 
-  .included-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
 
-  .included-pill {
-    min-height: 38px;
-    padding: 0 15px;
-    background: var(--bg-raised-2);
-    border-color: rgba(20, 17, 26, 0.16);
-    color: rgba(20, 17, 26, 0.7);
-    font-weight: 700;
+
+  .included-note {
+    margin: 0 0 8px;
+    font-size: 0.82rem;
+    color: rgba(20, 17, 26, 0.65);
   }
 
   .page-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
   }
 
   .page-chip {
     position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    min-height: 42px;
-    padding: 0 16px;
+    gap: 6px;
+    min-height: 38px;
+    padding: 0 12px;
     border-radius: 999px;
     background: var(--bg);
     border: 1.5px solid rgba(20, 17, 26, 0.16);
-    font-size: 0.88rem;
+    font-size: 0.82rem;
     font-weight: 600;
     color: rgba(20, 17, 26, 0.75);
     cursor: pointer;
@@ -675,10 +660,9 @@ const tiers = [
   .feature-row {
     display: flex;
     align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-    min-height: 56px;
-    padding: 12px 6px;
+    gap: 12px;
+    min-height: 44px;
+    padding: 4px 6px;
     border-bottom: 1px solid var(--line);
     border-radius: 10px;
     cursor: pointer;
@@ -698,23 +682,13 @@ const tiers = [
     outline-offset: -2px;
   }
 
-  .feature-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    flex: 1;
-    min-width: 160px;
-  }
 
   .feature-name {
+    flex: 1;
     font-weight: 700;
-    font-size: 0.94rem;
+    font-size: 0.9rem;
   }
 
-  .feature-desc {
-    font-size: 0.8rem;
-    color: rgba(20, 17, 26, 0.62);
-  }
 
   .feature-price {
     font-size: 0.84rem;
@@ -779,8 +753,8 @@ const tiers = [
   .estimator-summary {
     background: var(--bg);
     border: 1px solid rgba(20, 17, 26, 0.16);
-    border-radius: 20px;
-    padding: 28px;
+    border-radius: 18px;
+    padding: 20px 22px;
     box-shadow: 0 30px 60px -36px rgba(20, 17, 26, 0.35);
     display: flex;
     flex-direction: column;
@@ -796,10 +770,10 @@ const tiers = [
 
   .summary-total {
     font-family: "Fraunces", serif;
-    font-size: 2.7rem;
+    font-size: 2.2rem;
     font-weight: 600;
     line-height: 1.05;
-    margin: 8px 0 2px;
+    margin: 4px 0 2px;
     letter-spacing: -0.02em;
     transition: color 0.3s ease;
   }
@@ -816,12 +790,12 @@ const tiers = [
 
   .summary-breakdown {
     list-style: none;
-    margin: 16px 0 22px;
-    padding: 16px 0 0;
+    margin: 10px 0 14px;
+    padding: 10px 0 0;
     border-top: 1px solid rgba(20, 17, 26, 0.12);
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    gap: 4px;
     min-height: 20px;
   }
 
@@ -840,21 +814,17 @@ const tiers = [
 
   .summary-cta {
     width: 100%;
-    min-height: 50px;
+    min-height: 46px;
   }
 
   .summary-note {
-    margin: 12px 0 0;
+    margin: 8px 0 0;
     font-size: 0.78rem;
     color: rgba(20, 17, 26, 0.6);
     text-align: center;
   }
 
-  @media (max-width: 900px) {
-    .feature-row {
-      align-items: flex-start;
-    }
-  }
+
 </style>
 
 <script>
