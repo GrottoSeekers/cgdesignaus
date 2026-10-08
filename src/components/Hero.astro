@@ -1,5 +1,6 @@
 ---
 import Icon from "./Icon.astro";
+import NigelStrands from "./NigelStrands.astro";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -52,12 +53,13 @@ const trustItems = [
           aria-label="Visit Nigel's Hairdressing, a site we built"
         >
           <img
-            src={`${base}/previews/nigels-desktop.webp`}
+            src={`${base}/previews/nigels-desktop-base.webp`}
             alt="Nigel's Hairdressing homepage: 'Beautiful hair, done at home.' with call and price buttons"
             loading="eager"
             width="1120"
             height="680"
           />
+          <NigelStrands box={{ left: 42, top: 9.382, width: 58, height: 70.977 }} />
         </a>
       </div>
 
@@ -70,11 +72,6 @@ const trustItems = [
           height="1652"
         />
       </div>
-
-      <span class="mobile-badge">
-        <span class="badge-dot"></span>
-        Built mobile-first
-      </span>
     </div>
   </div>
 </section>
@@ -235,6 +232,8 @@ const trustItems = [
 
   .browser-body {
     display: block;
+    position: relative;
+    overflow: hidden;
     line-height: 0;
   }
 
@@ -262,30 +261,7 @@ const trustItems = [
     height: auto;
   }
 
-  .mobile-badge {
-    position: absolute;
-    top: -14px;
-    right: -8px;
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 8px 15px;
-    border-radius: 999px;
-    background: var(--accent-2);
-    color: var(--paper-on-dark);
-    font-size: 0.74rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    box-shadow: 0 14px 30px -14px rgba(20, 17, 26, 0.7);
-  }
 
-  .badge-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent-on-dark);
-    flex-shrink: 0;
-  }
 
   @media (max-width: 900px) {
     .hero-visual {

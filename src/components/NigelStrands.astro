@@ -1,0 +1,81 @@
+---
+// The animated hair strands from Nigel's Hairdressing hero, laid over a
+// screenshot of his site so the lines draw in and sway like the real thing.
+// Same paths, colours, timing and easing as clients/nigels-hairdressing.
+//
+// Position it with `box` (percentages of the screenshot it sits on), taken
+// from the strand SVG's bounding box in the page that was captured.
+// `autoplay={false}` holds the animation until an ancestor gets the
+// `is-visible` class (added by the reveal observer in BaseLayout).
+interface Props {
+  box: { left: number; top: number; width: number; height: number };
+  autoplay?: boolean;
+  class?: string;
+}
+
+const { box, autoplay = true, class: className } = Astro.props;
+
+// Real path lengths (getTotalLength) so the draw-in works in every browser,
+// including iOS Safari, without pathLength.
+const strands = [
+  { len: 1138, d: "M1250 -40 C 980 120, 1080 300, 860 380 S 560 520, 520 760", stroke: "#efc3b0", width: 2.5, delay: 0, opacity: 1 },
+  { len: 1059, d: "M1250 10 C 1000 160, 1110 330, 890 420 S 600 560, 580 760", stroke: "#efc3b0", width: 1.5, delay: 0.15, opacity: 0.8 },
+  { len: 978, d: "M1250 60 C 1030 200, 1140 360, 920 460 S 650 600, 640 760", stroke: "#c98b5a", width: 3.5, delay: 0.3, opacity: 1 },
+  { len: 895, d: "M1250 110 C 1060 240, 1160 400, 960 500 S 700 640, 700 760", stroke: "#c98b5a", width: 1.5, delay: 0.45, opacity: 0.7 },
+  { len: 808, d: "M1250 160 C 1090 280, 1180 440, 1000 540 S 760 680, 770 760", stroke: "#f7f0e6", width: 1.2, delay: 0.6, opacity: 0.45 },
+  { len: 719, d: "M1250 210 C 1120 320, 1200 480, 1040 580 S 830 720, 840 760", stroke: "#efc3b0", width: 2, delay: 0.75, opacity: 0.6 },
+];
+
+const style = `left:${box.left}%;top:${box.top}%;width:${box.width}%;height:${box.height}%`;
+---
+
+<svg
+  class:list={["nigel-strands", { "nigel-strands--wait": !autoplay }, className]}
+  viewBox="0 0 1200 700"
+  preserveAspectRatio="none"
+  aria-hidden="true"
+  style={style}
+>
+  {strands.map((s) => (
+    <path
+      d={s.d}
+      fill="none"
+      stroke={s.stroke}
+      stroke-width={s.width}
+      stroke-linecap="round"
+      style={`stroke-dasharray: ${s.len} 3000; stroke-dashoffset: ${s.len + 10}; animation-delay: ${s.delay}s; opacity: ${s.opacity}`}
+    />
+  ))}
+</svg>
+
+<style>
+  .nigel-strands {
+    position: absolute;
+    pointer-events: none;
+    overflow: visible;
+    transform-origin: 70% 50%;
+    animation: nigel-sway 9s ease-in-out infinite;
+  }
+
+  .nigel-strands path {
+    animation: nigel-draw 3.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  }
+
+  /* Wait for the reveal observer before drawing, so visitors see it happen. */
+  .nigel-strands--wait path {
+    animation-play-state: paused;
+  }
+
+  :global(.is-visible) .nigel-strands--wait path {
+    animation-play-state: running;
+  }
+
+  @keyframes nigel-draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  @keyframes nigel-sway {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-2%) rotate(-1.2deg); }
+  }
+</style>
