@@ -493,8 +493,9 @@ a.nh-work { text-decoration: none; color: var(--choc); }
   .chat-fab:active { transform: scale(.94); }
 }
 
+/* The hero strands and scroll-in motion play for every visitor, including
+   devices with Reduce Motion turned on (client decision: the animation is
+   part of the brand and is gentle). Only the chat card's pop-in is skipped. */
 @media (prefers-reduced-motion: reduce) {
-  .nh-strand { animation: none; stroke-dashoffset: 0 !important; }
-  .nh-sway { animation: none; }
   .chat-card { transition: none; }
 }

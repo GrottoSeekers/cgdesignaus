@@ -42,8 +42,10 @@ Blow-dry £25, Root tint £50, Foils from £75), and phones (600px and narrower)
 
 Hover effects can't fire on a touchscreen, so on touch devices a small inline script
 (bottom of `index.astro`) fades sections up as they scroll into view and switches the
-Recent work photos from sepia to colour. It is skipped when the visitor has Reduce Motion
-turned on, and desktop keeps the original hover effects.
+Recent work photos from sepia to colour. Desktop keeps the original hover effects.
+
+At the client's request, the hero strand animation and the scroll-in motion play for every
+visitor, including devices with Reduce Motion turned on.
 
 ## Deploy (Vercel)
 

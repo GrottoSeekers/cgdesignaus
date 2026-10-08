@@ -324,7 +324,6 @@ const jsonLd = {
       (function () {
         if (!("IntersectionObserver" in window)) return;
         if (!matchMedia("(hover: none)").matches) return;
-        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
         var targets = document.querySelectorAll(
           ".statement p, .section-head, .nh-work, .nh-svc, .about-copy, .trained-card, .faq .h2, .nh-faq, .book-panel, .site-footer .container, .cg-credit .container"
         );
