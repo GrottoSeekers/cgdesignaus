@@ -1,12 +1,31 @@
 ---
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+// Real client redesign: Nigel's Hairdressing (Wigan & Rochdale).
+// Full-page screenshots captured October 2026 (old Wix site archived in
+// clients/nigels-hairdressing/archive/old-wix-site/). Phones get the
+// phone-width captures so the text stays readable inside the frame.
+const shots = {
+  before: {
+    desktop: `${base}/previews/nigels-before.webp`,
+    mobile: `${base}/previews/nigels-before-mobile.webp`,
+    alt: "Nigel's Hairdressing's old Wix website: orange header, stock photo hero and plain price list",
+  },
+  after: {
+    desktop: `${base}/previews/nigels-after.webp`,
+    mobile: `${base}/previews/nigels-after-mobile.webp`,
+    alt: "Nigel's Hairdressing's new website by CG Design & Co.: chocolate and blush design with recent work, prices and FAQ",
+  },
+};
+const liveUrl = "https://www.nigelshairdressingwiganandrochdale.com";
 ---
 
 <section class="section" id="before-after">
   <div class="wrap">
     <div class="section-head reveal">
-      <span class="eyebrow">Redesigns</span>
-      <h2>Same trade. Completely different first impression.</h2>
-      <p>Drag to compare a typical dated trade site with the rebuild we'd hand back.</p>
+      <span class="eyebrow">Real redesign</span>
+      <h2>Nigel's Hairdressing, before and after.</h2>
+      <p>A mobile hairdresser in Wigan &amp; Rochdale, moved off a dated Wix template. Drag to compare the old site with the one we built.</p>
     </div>
 
     <div class="compare reveal">
@@ -22,7 +41,7 @@
                 max="100"
                 value="46"
                 step="1"
-                aria-label="Drag to compare a dated trade website with a modern rebuild"
+                aria-label="Drag to compare Nigel's Hairdressing's old Wix website with the new one"
               />
               <div class="compare-handle" id="compare-handle">
                 <span class="handle-line"></span>
@@ -38,184 +57,25 @@
           </div>
 
           <div class="compare-stack">
-            <div class="compare-after" aria-hidden="true">
-              <div class="new-site">
-                <div class="new-header">
-                  <span class="new-logo">Apex Heating &amp; Electrical</span>
-                  <span class="new-call-btn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                    02 8123 4567
-                  </span>
-                </div>
-                <div class="new-hero">
-                  <span class="new-hero-badge">24/7 Emergency Callout</span>
-                  <h3>Fast, Reliable Heating &amp; Electrical in Sydney</h3>
-                  <p>Licensed &amp; insured · Same-day quotes · Trusted by 500+ local homes</p>
-                  <div class="new-hero-ctas">
-                    <span class="new-btn-primary">Get a Free Quote</span>
-                    <span class="new-btn-ghost">Our Services</span>
-                  </div>
-                </div>
-                <div class="new-services">
-                  <div class="new-service-card">Boiler Repair</div>
-                  <div class="new-service-card">Emergency Callout</div>
-                  <div class="new-service-card">Rewiring</div>
-                </div>
-
-                <div class="new-whyus">
-                  <span class="new-section-label">Why homeowners call us</span>
-                  <div class="new-whyus-grid">
-                    <div class="new-whyus-item">
-                      <strong>Licensed &amp; insured</strong>
-                      <span>Fully certified electricians and gas fitters on every job.</span>
-                    </div>
-                    <div class="new-whyus-item">
-                      <strong>Upfront pricing</strong>
-                      <span>You approve the price before we pick up a tool.</span>
-                    </div>
-                    <div class="new-whyus-item">
-                      <strong>Same-day callout</strong>
-                      <span>Emergency jobs answered seven days a week.</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="new-quote">
-                  <p>&ldquo;Boiler died on a Sunday. Apex had someone out in two hours and the price was exactly what they quoted.&rdquo;</p>
-                  <span>Dave M. — Penrith</span>
-                </div>
-
-                <div class="new-cta-band">
-                  <div>
-                    <strong>Need a quote today?</strong>
-                    <span>Open 7am–7pm, seven days.</span>
-                  </div>
-                  <span class="new-cta-phone">02 8123 4567</span>
-                </div>
-
-                <div class="new-footer">
-                  <span>© 2026 Apex Heating &amp; Electrical</span>
-                  <span>Lic. 123456C</span>
-                  <span>Servicing all Sydney suburbs</span>
-                </div>
-              </div>
-              <span class="compare-badge badge-after">Fast, Modern &amp; Mobile-Ready!</span>
+            <div class="compare-after">
+              <div class="compare-pin"><span class="compare-badge badge-after">After<span class="badge-more">: built by CG Design</span></span></div>
+              <picture class="compare-shot">
+                <source media="(max-width: 640px)" srcset={shots.after.mobile} width="390" height="6874" />
+                <img src={shots.after.desktop} alt={shots.after.alt} width="1440" height="5449" loading="lazy" decoding="async" />
+              </picture>
             </div>
 
             <div class="compare-before" id="compare-before">
-              <div class="old-site">
-                <div class="old-topbar">CALL NOW: 02 8123 4XXX&nbsp; |&nbsp; Mon-Fri 8am-6pm&nbsp; |&nbsp; est. 1998</div>
-                <div class="old-header">
-                  <div class="old-logo">J&amp;S HEATING SERVICES LTD.</div>
-                  <div class="old-nav">Home&nbsp;|&nbsp;About&nbsp;Us&nbsp;|&nbsp;Our&nbsp;Services&nbsp;|&nbsp;Gallery&nbsp;|&nbsp;Contact&nbsp;Us</div>
-                </div>
-                <div class="old-ticker">*** WELCOME TO OUR WEBSITE — Family run business since 1998 ***</div>
-                <div class="old-table-wrap">
-                <table class="old-table" cellpadding="0" cellspacing="0">
-                  <tr>
-                    <td class="old-sidebar">
-                      <div class="old-box">
-                        <div class="old-box-title">Services</div>
-                        <ul>
-                          <li>Boiler Repair</li>
-                          <li>Central Heating</li>
-                          <li>Emergency Callout</li>
-                          <li>Landlord Certs</li>
-                        </ul>
-                      </div>
-                      <div class="old-box">
-                        <div class="old-box-title">Testimonials</div>
-                        <p>"Very good service!"<br />&mdash; Dave, Penrith</p>
-                        <p>"Came out same day!"<br />&mdash; Sue, Maroubra</p>
-                      </div>
-                      <div class="old-box">
-                        <div class="old-box-title">Site Awards</div>
-                        <div class="old-badges-row">
-                          <span class="old-web-badge badge-blue">Best Local<br />Biz 2009</span>
-                          <span class="old-web-badge badge-red">Webmaster's<br />Choice</span>
-                        </div>
-                        <div class="old-badges-row">
-                          <span class="old-web-badge badge-green">100%<br />Trusted</span>
-                          <span class="old-web-badge badge-purple">Est.<br />1998</span>
-                        </div>
-                      </div>
-                      <div class="old-counter">
-                        Visitors:<span class="old-counter-digits">004217</span>
-                      </div>
-                      <div class="old-box old-accred">
-                        <div class="old-box-title">We Accept</div>
-                        <p>Cash &middot; Cheque &middot; BACS Transfer</p>
-                        <p>Gas Safe Reg. No. 512837</p>
-                      </div>
-                    </td>
-                    <td class="old-main">
-                      <p class="old-heading">Welcome To J&amp;S Heating Services</p>
-                      <div class="old-banner"></div>
-                      <p>
-                        We are a family run heating and electrical business
-                        based in Sydney serving the local community for over
-                        20 years. Please browse our site using the links to
-                        the left for more information about what we do.
-                      </p>
-                      <p><b>Opening Hours:</b> Mon-Fri 8:00am-6:00pm, Sat 9:00am-1:00pm</p>
-                      <div class="old-under-construction">🚧 Site Under Construction 🚧</div>
-
-                      <div class="old-news">
-                        <div class="old-box-title">Latest News</div>
-                        <ul>
-                          <li><b>03/2011</b> &mdash; New van on the road!</li>
-                          <li><b>11/2010</b> &mdash; Now on Yell.com</li>
-                          <li><b>06/2010</b> &mdash; Website relaunched</li>
-                        </ul>
-                      </div>
-
-                      <div class="old-box old-gallery">
-                        <div class="old-box-title">Our Gallery</div>
-                        <div class="old-gallery-row">
-                          <div class="old-gallery-thumb">photo1.jpg</div>
-                          <div class="old-gallery-thumb">photo2.jpg</div>
-                          <div class="old-gallery-thumb old-gallery-missing">✗ image not found</div>
-                        </div>
-                        <p class="old-gallery-caption">More photos coming soon!!</p>
-                      </div>
-
-                      <div class="old-box old-guestbook">
-                        <div class="old-box-title">Sign Our Guestbook</div>
-                        <p><b>Gary (12/08/2010):</b> Nice website lads!</p>
-                        <p><b>Admin (04/02/2010):</b> Test post please ignore</p>
-                        <p class="old-guestbook-link"><u>Click here to sign the guestbook</u></p>
-                      </div>
-
-                      <div class="old-box old-contact-form">
-                        <div class="old-box-title">Contact Form</div>
-                        <p class="old-form-row">Name: <span class="old-form-input"></span></p>
-                        <p class="old-form-row">Email: <span class="old-form-input"></span></p>
-                        <p class="old-form-row">Message: <span class="old-form-textarea"></span></p>
-                        <span class="old-form-submit">Submit</span>
-                      </div>
-
-                      <div class="old-ad">ADVERTISEMENT<br /><span>Local Boiler Deals — Click Here!</span></div>
-                      <p class="old-webring">
-                        &laquo; Prev &nbsp;|&nbsp; <u>Sydney Trades WebRing</u> &nbsp;|&nbsp; Next &raquo;
-                      </p>
-                      <p class="old-emailus">
-                        Get in touch: <u>jsheatingservices@hotmail.com</u><br />
-                        This page was last updated 14th March 2011.
-                      </p>
-                    </td>
-                  </tr>
-                </table>
-                </div>
-                <div class="old-footer">
-                  Copyright &copy; 2011 J&amp;S Heating Services. Best viewed at 1024x768.
-                </div>
-              </div>
-              <span class="compare-badge badge-before">Outdated &amp; Losing Leads</span>
+              <div class="compare-pin"><span class="compare-badge badge-before">Before<span class="badge-more">: old Wix site</span></span></div>
+              <picture class="compare-shot">
+                <source media="(max-width: 640px)" srcset={shots.before.mobile} width="390" height="3198" />
+                <img src={shots.before.desktop} alt={shots.before.alt} width="1440" height="4330" loading="lazy" decoding="async" />
+              </picture>
             </div>
           </div>
         </div>
       </div>
-      <p class="compare-hint">Drag the handle to compare · scroll inside the frame to read both pages top to bottom</p>
+      <p class="compare-hint">Drag the handle to compare · scroll inside the frame to read both pages top to bottom · <a href={liveUrl} target="_blank" rel="noopener noreferrer">See the live site →</a></p>
     </div>
   </div>
 </section>
@@ -265,25 +125,36 @@
 
   .compare-stack {
     position: relative;
-    min-height: 1180px;
   }
 
-  .compare-after,
-  .compare-before {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-  }
-
+  /* The "after" screenshot sets the scroll height; the "before" one sits on
+     top of it and is clipped to the left of the handle. */
   .compare-after {
+    position: relative;
     z-index: 1;
   }
 
   .compare-before {
+    position: absolute;
+    inset: 0;
     z-index: 2;
-    background: #d9d9d9;
+    background: #fff;
     clip-path: inset(0 calc(100% - var(--pos)) 0 0);
     will-change: clip-path;
+  }
+
+  .compare-shot,
+  .compare-shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .compare-pin {
+    position: sticky;
+    top: 0;
+    height: 0;
+    z-index: 3;
   }
 
   .compare-badge {
@@ -301,8 +172,6 @@
   }
 
   .badge-after {
-    top: auto;
-    bottom: 16px;
     right: 16px;
     background: var(--accent-2);
     color: #fff;
@@ -312,571 +181,6 @@
     left: 16px;
     background: var(--error);
     color: #fff;
-  }
-
-  /* ---- "After": modern mockup ---- */
-  .new-site {
-    width: 100%;
-    min-height: 100%;
-    background: linear-gradient(165deg, #2a1740, var(--text));
-    color: var(--paper-on-dark);
-    font-family: "Plus Jakarta Sans", sans-serif;
-  }
-
-  .new-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 16px 20px;
-    border-bottom: 1px solid rgba(243, 238, 250, 0.12);
-  }
-
-  .new-logo {
-    font-family: "Fraunces", serif;
-    font-weight: 600;
-    font-size: 1rem;
-    letter-spacing: -0.01em;
-  }
-
-  .new-call-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    background: var(--accent-on-dark);
-    color: var(--on-accent);
-    font-weight: 700;
-    font-size: 0.78rem;
-    padding: 8px 14px;
-    border-radius: 999px;
-  }
-
-  .new-call-btn svg {
-    width: 13px;
-    height: 13px;
-  }
-
-  .new-hero {
-    padding: 26px 22px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .new-hero-badge {
-    align-self: flex-start;
-    background: rgba(124, 79, 199, 0.16);
-    color: var(--gold-on-dark-text);
-    border: 1px solid rgba(124, 79, 199, 0.4);
-    font-size: 0.68rem;
-    font-weight: 700;
-    padding: 5px 12px;
-    border-radius: 999px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .new-hero h3 {
-    margin: 0;
-    font-family: "Fraunces", serif;
-    font-weight: 500;
-    font-size: clamp(1.4rem, 3.4vw, 2.1rem);
-    line-height: 1.08;
-    letter-spacing: -0.02em;
-    color: #fff;
-    max-width: 22ch;
-  }
-
-  .new-hero p {
-    margin: 0;
-    font-size: 0.92rem;
-    color: rgba(243, 238, 250, 0.75);
-    max-width: 40ch;
-  }
-
-  .new-hero-ctas {
-    display: flex;
-    gap: 10px;
-    margin-top: 8px;
-    flex-wrap: wrap;
-  }
-
-  .new-btn-primary,
-  .new-btn-ghost {
-    font-size: 0.82rem;
-    font-weight: 700;
-    padding: 11px 20px;
-    border-radius: 999px;
-  }
-
-  .new-btn-primary {
-    background: var(--accent-on-dark);
-    color: var(--on-accent);
-  }
-
-  .new-btn-ghost {
-    border: 1.5px solid rgba(243, 238, 250, 0.3);
-    color: var(--paper-on-dark);
-  }
-
-  .new-services {
-    display: flex;
-    gap: 9px;
-    padding: 0 22px 22px;
-    flex-wrap: wrap;
-  }
-
-  .new-service-card {
-    flex: 1;
-    min-width: 110px;
-    background: rgba(243, 238, 250, 0.06);
-    border: 1px solid rgba(243, 238, 250, 0.12);
-    border-radius: 12px;
-    padding: 12px 14px;
-    font-size: 0.76rem;
-    font-weight: 600;
-    color: rgba(243, 238, 250, 0.88);
-  }
-
-  .new-whyus {
-    padding: 26px 22px;
-    border-top: 1px solid rgba(243, 238, 250, 0.12);
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .new-section-label {
-    font-size: 0.66rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--gold-on-dark-text);
-  }
-
-  .new-whyus-grid {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  .new-whyus-item {
-    flex: 1;
-    min-width: 150px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  .new-whyus-item strong {
-    font-family: "Fraunces", serif;
-    font-weight: 600;
-    font-size: 0.98rem;
-    color: #fff;
-  }
-
-  .new-whyus-item span {
-    font-size: 0.8rem;
-    color: rgba(243, 238, 250, 0.7);
-  }
-
-  .new-quote {
-    padding: 26px 22px;
-    border-top: 1px solid rgba(243, 238, 250, 0.12);
-    background: rgba(243, 238, 250, 0.04);
-  }
-
-  .new-quote p {
-    margin: 0 0 12px;
-    font-family: "Fraunces", serif;
-    font-style: italic;
-    font-weight: 500;
-    font-size: clamp(1rem, 2vw, 1.3rem);
-    line-height: 1.35;
-    color: #fff;
-    max-width: 46ch;
-  }
-
-  .new-quote span {
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: var(--gold-on-dark-text);
-  }
-
-  .new-cta-band {
-    padding: 26px 22px;
-    border-top: 1px solid rgba(243, 238, 250, 0.12);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-
-  .new-cta-band strong {
-    display: block;
-    font-family: "Fraunces", serif;
-    font-weight: 600;
-    font-size: 1.1rem;
-    color: #fff;
-  }
-
-  .new-cta-band span:not(.new-cta-phone) {
-    font-size: 0.82rem;
-    color: rgba(243, 238, 250, 0.7);
-  }
-
-  .new-cta-phone {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--accent-on-dark);
-    color: var(--on-accent);
-    font-weight: 700;
-    font-size: 0.82rem;
-    padding: 11px 20px;
-    border-radius: 999px;
-  }
-
-  .new-footer {
-    padding: 16px 22px;
-    border-top: 1px solid rgba(243, 238, 250, 0.12);
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    font-size: 0.72rem;
-    color: rgba(243, 238, 250, 0.55);
-  }
-
-  /* ---- "Before": deliberately clunky, non-responsive mockup ---- */
-  .old-site {
-    width: 100%;
-    min-width: 900px;
-    min-height: 100%;
-    background: #d9d9d9;
-    font-family: "Times New Roman", Times, serif;
-    color: #000;
-    font-size: 11px;
-    line-height: 1.35;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .old-topbar,
-  .old-header,
-  .old-ticker,
-  .old-footer {
-    flex-shrink: 0;
-  }
-
-  .old-topbar {
-    background: #003366;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    font-size: 10px;
-    padding: 3px 8px;
-    text-align: right;
-  }
-
-  .old-header {
-    background: linear-gradient(#f4f4f4, #cfcfcf);
-    border-bottom: 3px solid #003366;
-    padding: 8px 10px;
-  }
-
-  .old-logo {
-    font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: #003366;
-    text-shadow: 1px 1px 0 #fff;
-  }
-
-  .old-nav {
-    margin-top: 4px;
-    background: #003366;
-    color: #99ccff;
-    font-family: Arial, sans-serif;
-    font-size: 10px;
-    padding: 4px 8px;
-  }
-
-  .old-ticker {
-    background: #ffff66;
-    border-top: 1px dashed #999;
-    border-bottom: 1px dashed #999;
-    color: #cc0000;
-    font-family: Arial, sans-serif;
-    font-weight: 700;
-    font-size: 10px;
-    padding: 3px 8px;
-    white-space: nowrap;
-  }
-
-  .old-table {
-    width: 100%;
-    table-layout: fixed;
-  }
-
-  .old-sidebar {
-    width: 190px;
-    vertical-align: top;
-    background: #e8e8e8;
-    border-right: 2px solid #999;
-    padding: 8px;
-  }
-
-  .old-box {
-    border: 1px solid #999;
-    background: #fff;
-    padding: 6px;
-    margin-bottom: 10px;
-  }
-
-  .old-box-title {
-    background: #003366;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    font-weight: 700;
-    font-size: 10px;
-    padding: 3px 5px;
-    margin: -6px -6px 5px;
-  }
-
-  .old-box ul {
-    margin: 0;
-    padding-left: 16px;
-  }
-
-  .old-box li {
-    color: #0000ee;
-    text-decoration: underline;
-  }
-
-  .old-box p {
-    margin: 0 0 6px;
-  }
-
-  .old-box p:last-child {
-    margin-bottom: 0;
-  }
-
-  .old-badges-row {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 4px;
-  }
-
-  .old-badges-row:last-child {
-    margin-bottom: 0;
-  }
-
-  .old-web-badge {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    font-size: 7px;
-    font-weight: 700;
-    line-height: 1.2;
-    padding: 3px 2px;
-    border: 1px solid #000;
-  }
-
-  .badge-blue { background: #003399; }
-  .badge-red { background: #cc0000; }
-  .badge-green { background: #006600; }
-  .badge-purple { background: #660099; }
-
-  .old-counter {
-    background: #000;
-    color: #0f0;
-    font-family: "Courier New", monospace;
-    font-size: 10px;
-    text-align: center;
-    padding: 5px;
-    border: 1px solid #999;
-  }
-
-  .old-counter-digits {
-    display: inline-block;
-    margin-left: 5px;
-    letter-spacing: 1px;
-  }
-
-  .old-accred {
-    margin-top: 10px;
-  }
-
-  .old-news {
-    margin: 10px 0;
-    border: 1px solid #999;
-    background: #f7f7e8;
-    padding: 6px;
-  }
-
-  .old-news ul {
-    margin: 0;
-    padding-left: 16px;
-    list-style: square;
-  }
-
-  .old-gallery-row {
-    display: flex;
-    gap: 4px;
-    flex-wrap: wrap;
-  }
-
-  .old-gallery-thumb {
-    width: 88px;
-    height: 62px;
-    background: repeating-linear-gradient(45deg, #bbb, #bbb 6px, #ccc 6px, #ccc 12px);
-    border: 1px solid #999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: Arial, sans-serif;
-    font-size: 8px;
-    color: #555;
-  }
-
-  .old-gallery-missing {
-    background: #eee;
-    color: #c00;
-  }
-
-  .old-gallery-caption {
-    margin: 5px 0 0;
-    font-family: Arial, sans-serif;
-    font-size: 8px;
-    color: #555;
-  }
-
-  .old-guestbook-link {
-    margin: 0;
-  }
-
-  .old-guestbook-link u {
-    color: #0000ee;
-  }
-
-  .old-form-row {
-    margin: 0 0 4px;
-  }
-
-  .old-form-input {
-    display: inline-block;
-    width: 120px;
-    height: 14px;
-    border: 1px solid #666;
-    background: #fff;
-    vertical-align: middle;
-  }
-
-  .old-form-textarea {
-    display: inline-block;
-    width: 180px;
-    height: 38px;
-    border: 1px solid #666;
-    background: #fff;
-    vertical-align: middle;
-  }
-
-  .old-form-submit {
-    display: inline-block;
-    font-family: Arial, sans-serif;
-    font-size: 9px;
-    border: 2px outset #ccc;
-    background: #ddd;
-    padding: 2px 8px;
-    margin-top: 2px;
-  }
-
-  .old-ad {
-    margin: 10px 0;
-    background: repeating-linear-gradient(-45deg, #fff08a, #fff08a 8px, #ffe14d 8px, #ffe14d 16px);
-    border: 2px solid #cc9900;
-    text-align: center;
-    font-family: Arial, sans-serif;
-    font-weight: 700;
-    font-size: 9px;
-    letter-spacing: 0.06em;
-    color: #663300;
-    padding: 6px;
-  }
-
-  .old-ad span {
-    display: block;
-    font-weight: 400;
-    font-size: 10px;
-    letter-spacing: normal;
-    margin-top: 2px;
-  }
-
-  .old-webring {
-    font-family: Arial, sans-serif;
-    font-size: 10px;
-    text-align: center;
-    color: #0000ee;
-  }
-
-  .old-emailus {
-    font-family: Arial, sans-serif;
-    font-size: 9px;
-    color: #555;
-    text-align: center;
-    margin-top: 8px;
-  }
-
-  .old-emailus u {
-    color: #0000ee;
-  }
-
-  .old-main {
-    vertical-align: top;
-    padding: 10px 14px;
-    background: #fff;
-  }
-
-  .old-heading {
-    font-size: 18px;
-    font-weight: 700;
-    color: #003366;
-    margin: 0 0 8px;
-  }
-
-  .old-banner {
-    height: 46px;
-    background: repeating-linear-gradient(45deg, #ffcc00, #ffcc00 10px, #003366 10px, #003366 20px);
-    margin-bottom: 8px;
-    border: 2px solid #999;
-  }
-
-  .old-main p {
-    margin: 0 0 8px;
-  }
-
-  .old-under-construction {
-    font-family: Arial, sans-serif;
-    font-weight: 700;
-    color: #cc0000;
-    font-size: 12px;
-    border: 2px dashed #cc0000;
-    padding: 5px 8px;
-    display: inline-block;
-    margin-bottom: 8px;
-  }
-
-  .old-footer {
-    background: #003366;
-    color: #99ccff;
-    font-family: Arial, sans-serif;
-    font-size: 9px;
-    text-align: center;
-    padding: 5px;
   }
 
   /* ---- Drag handle ---- */
@@ -997,8 +301,15 @@
   }
 
   @media (max-width: 640px) {
-    .old-logo { font-size: 16px; }
-    .new-hero h3 { font-size: 1.05rem; }
+    .badge-more { display: none; }
+    .compare-badge { top: 12px; padding: 6px 12px; }
+    .badge-before { left: 12px; }
+    .badge-after { right: 12px; }
+  }
+
+  .compare-hint a {
+    color: inherit;
+    font-weight: 700;
   }
 </style>
 
