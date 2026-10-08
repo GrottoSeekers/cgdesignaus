@@ -126,12 +126,12 @@ a { color: inherit; }
 .fact strong { font-family: var(--font-display); font-weight: 400; font-size: 34px; line-height: 1.1; }
 .fact span { font-size: 15px; color: var(--on-dark-muted); }
 
-@keyframes nhdraw { from { stroke-dashoffset: 1 } to { stroke-dashoffset: 0 } }
+@keyframes nhdraw { to { stroke-dashoffset: 0 } }
 @keyframes nhsway {
   0%, 100% { transform: translateY(0) rotate(0deg) }
   50% { transform: translateY(-14px) rotate(-1.2deg) }
 }
-.nh-strand { stroke-dasharray: 1; stroke-dashoffset: 1; animation: nhdraw 3.2s cubic-bezier(.65, 0, .35, 1) forwards; }
+.nh-strand { animation: nhdraw 3.2s cubic-bezier(.65, 0, .35, 1) forwards; }
 .nh-sway { transform-origin: 70% 50%; animation: nhsway 9s ease-in-out infinite; }
 
 /* ---------- Specialities ---------- */
@@ -494,7 +494,7 @@ a.nh-work { text-decoration: none; color: var(--choc); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .nh-strand { animation: none; stroke-dashoffset: 0; }
+  .nh-strand { animation: none; stroke-dashoffset: 0 !important; }
   .nh-sway { animation: none; }
   .chat-card { transition: none; }
 }

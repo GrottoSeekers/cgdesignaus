@@ -9,13 +9,16 @@ const description =
 const phone = "tel:+447801235104";
 const instagram = "https://www.instagram.com/nigelshairdressing/";
 
+// Each strand is hidden with a dash as long as the path itself (real lengths,
+// measured with getTotalLength) and drawn by animating the offset to 0.
+// Real lengths rather than pathLength="1", which iOS Safari doesn't apply to dashes.
 const strands = [
-  { d: "M1250 -40 C 980 120, 1080 300, 860 380 S 560 520, 520 760", stroke: "#efc3b0", width: 2.5 },
-  { d: "M1250 10 C 1000 160, 1110 330, 890 420 S 600 560, 580 760", stroke: "#efc3b0", width: 1.5, style: "animation-delay: .15s; opacity: .8" },
-  { d: "M1250 60 C 1030 200, 1140 360, 920 460 S 650 600, 640 760", stroke: "#c98b5a", width: 3.5, style: "animation-delay: .3s" },
-  { d: "M1250 110 C 1060 240, 1160 400, 960 500 S 700 640, 700 760", stroke: "#c98b5a", width: 1.5, style: "animation-delay: .45s; opacity: .7" },
-  { d: "M1250 160 C 1090 280, 1180 440, 1000 540 S 760 680, 770 760", stroke: "#f7f0e6", width: 1.2, style: "animation-delay: .6s; opacity: .45" },
-  { d: "M1250 210 C 1120 320, 1200 480, 1040 580 S 830 720, 840 760", stroke: "#efc3b0", width: 2, style: "animation-delay: .75s; opacity: .6" },
+  { len: 1138, d: "M1250 -40 C 980 120, 1080 300, 860 380 S 560 520, 520 760", stroke: "#efc3b0", width: 2.5 },
+  { len: 1059, d: "M1250 10 C 1000 160, 1110 330, 890 420 S 600 560, 580 760", stroke: "#efc3b0", width: 1.5, style: "animation-delay: .15s; opacity: .8" },
+  { len: 978, d: "M1250 60 C 1030 200, 1140 360, 920 460 S 650 600, 640 760", stroke: "#c98b5a", width: 3.5, style: "animation-delay: .3s" },
+  { len: 895, d: "M1250 110 C 1060 240, 1160 400, 960 500 S 700 640, 700 760", stroke: "#c98b5a", width: 1.5, style: "animation-delay: .45s; opacity: .7" },
+  { len: 808, d: "M1250 160 C 1090 280, 1180 440, 1000 540 S 760 680, 770 760", stroke: "#f7f0e6", width: 1.2, style: "animation-delay: .6s; opacity: .45" },
+  { len: 719, d: "M1250 210 C 1120 320, 1200 480, 1040 580 S 830 720, 840 760", stroke: "#efc3b0", width: 2, style: "animation-delay: .75s; opacity: .6" },
 ];
 
 const facts = [
@@ -142,7 +145,7 @@ const jsonLd = {
       <section id="top" class="hero">
         <svg class="nh-sway hero-strands" viewBox="0 0 1200 700" preserveAspectRatio="none" aria-hidden="true">
           {strands.map((s) => (
-            <path class="nh-strand" pathLength="1" d={s.d} fill="none" stroke={s.stroke} stroke-width={s.width} stroke-linecap="round" style={s.style} />
+            <path class="nh-strand" d={s.d} fill="none" stroke={s.stroke} stroke-width={s.width} stroke-linecap="round" style={`stroke-dasharray: ${s.len} 3000; stroke-dashoffset: ${s.len + 10};${s.style ? " " + s.style : ""}`} />
           ))}
         </svg>
         <div class="hero-inner">
