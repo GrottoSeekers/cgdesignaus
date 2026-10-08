@@ -133,7 +133,7 @@ img {
 }
 
 .section {
-  padding: 144px 0;
+  padding: 112px 0;
   position: relative;
   z-index: 1;
 }
@@ -167,7 +167,7 @@ img {
 
 .section-head {
   max-width: 620px;
-  margin-bottom: 64px;
+  margin-bottom: 48px;
 }
 
 .section-head h2 {
@@ -318,7 +318,7 @@ img {
 }
 
 @media (max-width: 640px) {
-  .section { padding: 88px 0; }
+  .section { padding: 72px 0; }
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
 }
 
