@@ -88,11 +88,7 @@ const clients = [
                 <h2>{client.headline}</h2>
                 <p>{client.description}</p>
 
-                <div class="client-stats">
-                  {client.stats.map((stat) => (
-                    <span class="client-stat">{stat}</span>
-                  ))}
-                </div>
+                <p class="client-meta">{client.stats.join(" · ")}</p>
 
                 <a href={client.href} target="_blank" rel="noopener noreferrer" class="btn btn-primary client-cta">
                   {client.ctaLabel}
@@ -213,19 +209,9 @@ const clients = [
     margin: 0 0 26px;
   }
 
-  .client-stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 32px;
-  }
-
-  .client-stat {
-    padding: 8px 15px;
-    border-radius: 999px;
-    background: var(--bg-raised);
-    border: 1px solid var(--line);
-    font-size: 0.8rem;
+  .client-meta {
+    margin: 0 0 28px;
+    font-size: 0.86rem;
     font-weight: 700;
     color: var(--text-dim);
   }
@@ -385,9 +371,54 @@ const clients = [
     }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 640px) {
+    .client-head {
+      margin-bottom: 10px;
+    }
+
+    .client-slide {
+      padding-bottom: 16px;
+    }
+
+    .client-grid {
+      gap: 18px;
+    }
+
+    .client-copy h2 {
+      font-size: 1.32rem;
+      margin-bottom: 10px;
+    }
+
+    .client-copy > p {
+      font-size: 0.92rem;
+      margin-bottom: 12px;
+    }
+
+    .client-meta {
+      font-size: 0.78rem;
+      margin-bottom: 16px;
+    }
+
+    .client-cta {
+      min-height: 46px;
+      padding: 0 22px;
+    }
+
+    .client-visual {
+      max-width: 190px;
+      margin: 0 auto;
+    }
+
+    .client-phone {
+      border-radius: 16px;
+    }
+
+    .client-phone-main a {
+      max-height: 250px;
+    }
+
     .client-phone-inset {
-      left: -24px;
+      display: none;
     }
   }
 </style>
