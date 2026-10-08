@@ -23,9 +23,9 @@ const liveUrl = "https://www.nigelshairdressingwiganandrochdale.com";
 <section class="section" id="before-after">
   <div class="wrap">
     <div class="section-head reveal">
-      <span class="eyebrow">Real redesign</span>
-      <h2>Nigel's Hairdressing, before and after.</h2>
-      <p>A mobile hairdresser in Wigan &amp; Rochdale, moved off a dated Wix template. Drag to compare the old site with the one we built.</p>
+      <span class="eyebrow">Before &amp; after</span>
+      <h2>Nigel's old website, and the one we built him.</h2>
+      <p>Nigel has been cutting hair around Wigan and Rochdale for 37 years, but his website didn't show it. Drag the handle to see where he started and where he is now.</p>
     </div>
 
     <div class="compare reveal">
@@ -58,7 +58,6 @@ const liveUrl = "https://www.nigelshairdressingwiganandrochdale.com";
 
           <div class="compare-stack">
             <div class="compare-after">
-              <div class="compare-pin"><span class="compare-badge badge-after">After<span class="badge-more">: built by CG Design</span></span></div>
               <picture class="compare-shot">
                 <source media="(max-width: 640px)" srcset={shots.after.mobile} width="390" height="6874" />
                 <img src={shots.after.desktop} alt={shots.after.alt} width="1440" height="5449" loading="lazy" decoding="async" />
@@ -66,7 +65,6 @@ const liveUrl = "https://www.nigelshairdressingwiganandrochdale.com";
             </div>
 
             <div class="compare-before" id="compare-before">
-              <div class="compare-pin"><span class="compare-badge badge-before">Before<span class="badge-more">: old Wix site</span></span></div>
               <picture class="compare-shot">
                 <source media="(max-width: 640px)" srcset={shots.before.mobile} width="390" height="3198" />
                 <img src={shots.before.desktop} alt={shots.before.alt} width="1440" height="4330" loading="lazy" decoding="async" />
@@ -148,39 +146,6 @@ const liveUrl = "https://www.nigelshairdressingwiganandrochdale.com";
     display: block;
     width: 100%;
     height: auto;
-  }
-
-  .compare-pin {
-    position: sticky;
-    top: 0;
-    height: 0;
-    z-index: 3;
-  }
-
-  .compare-badge {
-    position: absolute;
-    top: 16px;
-    display: inline-flex;
-    align-items: center;
-    padding: 7px 14px;
-    border-radius: 999px;
-    font-size: 0.74rem;
-    font-weight: 700;
-    letter-spacing: 0.01em;
-    white-space: nowrap;
-    box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.5);
-  }
-
-  .badge-after {
-    right: 16px;
-    background: var(--accent-2);
-    color: #fff;
-  }
-
-  .badge-before {
-    left: 16px;
-    background: var(--error);
-    color: #fff;
   }
 
   /* ---- Drag handle ---- */
@@ -300,12 +265,6 @@ const liveUrl = "https://www.nigelshairdressingwiganandrochdale.com";
     color: var(--text-faint);
   }
 
-  @media (max-width: 640px) {
-    .badge-more { display: none; }
-    .compare-badge { top: 12px; padding: 6px 12px; }
-    .badge-before { left: 12px; }
-    .badge-after { right: 12px; }
-  }
 
   .compare-hint a {
     color: inherit;
