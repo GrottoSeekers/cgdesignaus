@@ -414,6 +414,85 @@ a.nh-work { text-decoration: none; color: var(--choc); }
 
 /* ---------- Responsive & motion preferences ---------- */
 @media (max-width: 900px) { .nh-nav { display: none; } }
+
+/* ---------- Phones: more breathing room, less wrapping ---------- */
+@media (max-width: 600px) {
+  .container { padding: 0 20px; }
+
+  .site-header-inner { padding: 12px 20px; gap: 12px; }
+  .brand { font-size: 22px; white-space: nowrap; }
+  .header-cta { padding: 10px 18px; font-size: 14px; }
+
+  .hero-strands { width: 78%; height: 25%; opacity: .75; }
+  .hero-inner { padding: 72px 20px 56px; gap: 44px; }
+  .hero-copy { gap: 22px; }
+  .hero-actions { flex-direction: column; gap: 12px; }
+  .hero-actions .nh-btn { justify-content: center; width: 100%; }
+  .facts { grid-template-columns: 1fr 1fr; row-gap: 28px; }
+  .fact, .fact:first-child { padding: 22px 12px 0 0; border-left: 0; }
+  .fact:nth-child(even) { padding-left: 16px; border-left: 1px solid var(--rule-dark); }
+  .fact strong { font-size: 24px; }
+  .fact span { font-size: 14px; }
+
+  .statement { padding: 72px 0; }
+
+  .work { padding: 72px 0 0; }
+  .work .container { gap: 32px; }
+  .work-grid { grid-template-columns: 1fr 1fr; gap: 24px 16px; }
+  .nh-work figcaption, .caption { font-size: 14px; line-height: 1.35; }
+  .next-tile { padding: 14px; gap: 4px; }
+  .next-tile-title { font-size: 20px; }
+  .next-tile-sub { font-size: 11px; line-height: 1.3; }
+
+  .services { padding: 80px 0; }
+  .services .container { gap: 36px; }
+  .price-grid { gap: 18px; }
+  .nh-svc { padding: 32px 26px; min-height: 0; border-radius: 28px; }
+  .nh-svc h3 { font-size: 34px; }
+  .price { font-size: 60px; padding-top: 8px; }
+  .price-row-amount { font-size: 30px; }
+
+  .about { padding: 80px 0; }
+  .about .container { gap: 40px; }
+  .trained-card { padding: 32px 26px; border-radius: 28px; }
+  .trained-card strong { font-size: 40px; }
+
+  .faq { padding: 80px 0; }
+  .faq .container { gap: 32px; }
+  .nh-faq { padding: 16px 20px; border-radius: 20px; }
+  .nh-faq summary { font-size: 17px; gap: 14px; }
+
+  .book { padding: 56px 16px; }
+  .book-panel { padding: 52px 26px; border-radius: 32px; gap: 24px; }
+  .book-strands { width: 340px; height: 230px; right: -90px; top: -30px; }
+  .book-actions .nh-btn { justify-content: center; width: 100%; white-space: nowrap; }
+
+  .site-footer { padding: 32px 0; }
+  .cg-credit-lead span { flex: 1 1 200px; }
+}
+
+/* ---------- Touch screens: scroll-in motion instead of hover ----------
+   Hover effects can't fire on a phone, so the reveal script (index.astro)
+   adds .js-reveal to <html> on touch devices and .is-in to elements as
+   they scroll into view. Desktop keeps the approved hover behaviour. */
+.js-reveal .reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .7s ease, transform .9s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+}
+.js-reveal .reveal.is-in { opacity: 1; transform: none; }
+.js-reveal .nh-work.is-in img {
+  filter: none;
+  transform: scale(1.06);
+  transition-delay: calc(var(--reveal-delay, 0s) + .35s);
+}
+@media (hover: none) {
+  .nh-btn:active { transform: translateY(-2px) scale(.98); }
+  .nh-svc:active { transform: translateY(-8px) rotate(-1deg); }
+  .chat-fab:active { transform: scale(.94); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nh-strand { animation: none; stroke-dashoffset: 0; }
   .nh-sway { animation: none; }

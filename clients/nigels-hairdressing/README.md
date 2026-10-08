@@ -33,10 +33,17 @@ node qa/verify.cjs --impl http://localhost:4321   # writes qa/report/
 ```
 
 The machine running it needs internet access so the reference page can load Google Fonts.
-Last result: **203/205 checks.** Pixel diff is 0.02% on desktop and 0.45% on mobile.
-The two failures are expected. The reference's "Website by CG Design & Co." line was replaced,
-at the client's request, by a CG Design credit strip under the footer (logo plus website, email,
-WhatsApp, Instagram and Facebook links), so the checker can't find the "Website by" text.
+The check now reports expected differences from the original reference, all approved by the client:
+the CG Design credit strip replaces "Website by", prices were updated (Ladies £45, Men's £25,
+Blow-dry £25, Root tint £50, Foils from £75), and phones (600px and narrower) get a roomier layout
+(2-up photo grid, full-width buttons, tighter section padding). Desktop layout is unchanged.
+
+## Mobile motion
+
+Hover effects can't fire on a touchscreen, so on touch devices a small inline script
+(bottom of `index.astro`) fades sections up as they scroll into view and switches the
+Recent work photos from sepia to colour. It is skipped when the visitor has Reduce Motion
+turned on, and desktop keeps the original hover effects.
 
 ## Deploy (Vercel)
 

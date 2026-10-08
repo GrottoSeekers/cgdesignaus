@@ -315,5 +315,29 @@ const jsonLd = {
       </div>
       <span class="chat-card-hours">Mon – Sat, 10am – 7pm</span>
     </div>
+    <script is:inline>
+      // Touch screens only: reveal sections and colour the photos as they
+      // scroll into view (stands in for the desktop hover effects).
+      (function () {
+        if (!("IntersectionObserver" in window)) return;
+        if (!matchMedia("(hover: none)").matches) return;
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        var targets = document.querySelectorAll(
+          ".statement p, .section-head, .nh-work, .nh-svc, .about-copy, .trained-card, .faq .h2, .nh-faq, .book-panel, .site-footer .container, .cg-credit .container"
+        );
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+          });
+        }, { rootMargin: "0px 0px -12% 0px", threshold: 0.12 });
+        targets.forEach(function (el) {
+          var sib = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+          if (el.matches(".nh-work, .nh-svc, .nh-faq")) el.style.setProperty("--reveal-delay", (sib % 2) * 0.12 + "s");
+          el.classList.add("reveal");
+          io.observe(el);
+        });
+        document.documentElement.classList.add("js-reveal");
+      })();
+    </script>
   </body>
 </html>
