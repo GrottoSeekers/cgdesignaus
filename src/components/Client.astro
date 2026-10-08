@@ -5,6 +5,28 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 const clients = [
   {
+    id: "nigels",
+    domain: "nigelshairdressingwiganandrochdale.com",
+    href: "https://www.nigelshairdressingwiganandrochdale.com",
+    headline: "Nigel's Hairdressing: 37 years of craft, now a site to match.",
+    description:
+      "A mobile hairdresser covering Wigan & Rochdale, moved off a dated Wix template onto a fast, modern site with his recent work, clear prices and one-tap booking.",
+    stats: ["37 years' experience", "Mobile · Wigan & Rochdale", "Rebuilt from Wix"],
+    ctaLabel: "Visit the live site",
+    mainImage: {
+      src: "nigels-hero.webp",
+      alt: "Nigel's Hairdressing homepage on a phone: 'Beautiful hair, done at home.' with a call button",
+      width: 760,
+      height: 1652,
+    },
+    insetImage: {
+      src: "nigels-prices.webp",
+      alt: "Nigel's Hairdressing price cards: ladies cut & blow £45, men's £25",
+      width: 620,
+      height: 1348,
+    },
+  },
+  {
     id: "nirmata",
     domain: "nir-ma-ta.com",
     href: "https://www.nir-ma-ta.com",
@@ -245,6 +267,9 @@ const clients = [
     font-weight: 600;
     letter-spacing: 0.02em;
     color: rgba(20, 17, 26, 0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .client-phone-dot {
@@ -257,6 +282,14 @@ const clients = [
 
   .client-phone-main {
     width: 100%;
+  }
+
+  /* Show the top of each phone screenshot rather than the whole page, so the
+     section doesn't sit tall and push everything below it down. */
+  .client-phone-main a {
+    display: block;
+    max-height: 560px;
+    overflow: hidden;
   }
 
   .client-phone-inset {
@@ -341,6 +374,10 @@ const clients = [
     .client-visual {
       max-width: 280px;
       margin: 8px auto 56px;
+    }
+
+    .client-phone-main a {
+      max-height: 460px;
     }
 
     .client-copy h2 {
