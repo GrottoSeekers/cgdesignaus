@@ -1,471 +1,140 @@
 ---
-import Icon from "./Icon.astro";
+const img = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/previews`;
 
-const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-
+// Add a client = add one entry here. Layout follows the count:
+// 1 → single centred, 2 → two centred, 3 → row with the middle one raised,
+// 4+ → swipeable track, three per view, with arrows and dots.
+// `dur`/`delay` set the phone screenshot's auto-scroll speed and offset.
 const clients = [
   {
-    id: "nirmata",
-    domain: "nir-ma-ta.com",
+    name: "NIR-MA-TA",
+    kicker: "Espresso cart · Lombok",
+    blurb: "A full menu, live pricing and an order builder, in Indonesian and English.",
     href: "https://www.nir-ma-ta.com",
-    headline: "NIR-MA-TA started as one cart on the road. Now it's online too.",
-    description:
-      "A hand-pulled espresso cart in Senggigi, Lombok — now with a full menu, live pricing, and an interactive order builder, in Indonesian and English.",
-    stats: ["5.0★ · 84 Google reviews", "Open daily · 7am–10pm", "Senggigi, Lombok, Indonesia"],
-    ctaLabel: "Visit the live site",
-    mainImage: {
-      src: "nirmata-hero.webp",
-      alt: "NIR-MA-TA homepage: 'Lombok's Soul, Brewed to Perfection' with Get Directions and See the Menu buttons",
-      width: 760,
-      height: 1652,
-    },
-    insetImage: {
-      src: "nirmata-menu.webp",
-      alt: "NIR-MA-TA menu page with coffee and non-coffee pricing in Indonesian rupiah",
-      width: 620,
-      height: 1348,
-    },
+    linkLabel: "Visit nir-ma-ta.com",
+    dur: "20s",
+    delay: "0s",
+    shots: [
+      { src: "nirmata-hero.webp", alt: "NIR-MA-TA homepage", width: 760, height: 1652 },
+      { src: "nirmata-menu.webp", alt: "NIR-MA-TA menu with prices", width: 620, height: 1348 },
+    ],
   },
   {
-    id: "rochses",
-    domain: "rochses.com",
-    href: "https://rochses.com",
-    headline: "Rochses is a new womenswear label, launching soon.",
-    description:
-      "An upcoming women's clothing brand building its first collection — we built the coming-soon site collecting priority access before launch.",
-    stats: ["Launching soon", "Women's fashion", "Priority access open"],
-    ctaLabel: "Preview the site",
-    mainImage: {
-      src: "rochses-hero.webp",
-      alt: "Rochses coming-soon homepage with the brand's handwritten logo and 'help shape the first collection'",
-      width: 760,
-      height: 1644,
-    },
-    insetImage: {
-      src: "rochses-signup.webp",
-      alt: "Rochses priority access email signup section",
-      width: 620,
-      height: 1341,
-    },
-  },
-  {
-    id: "nigels",
-    domain: "nigelshairdressingwiganandrochdale.com",
+    name: "Nigel's Hairdressing",
+    kicker: "Mobile hairdresser · Wigan & Rochdale",
+    blurb: "Rebuilt from a dated Wix template: recent work, clear prices and one-tap booking.",
     href: "https://www.nigelshairdressingwiganandrochdale.com",
-    headline: "Nigel's Hairdressing: 37 years of craft, now a site to match.",
-    description:
-      "A mobile hairdresser covering Wigan & Rochdale, moved off a dated Wix template onto a fast, modern site with his recent work, clear prices and one-tap booking.",
-    stats: ["37 years' experience", "Mobile · Wigan & Rochdale", "Rebuilt from Wix"],
-    ctaLabel: "Visit the live site",
-    mainImage: {
-      src: "nigels-hero.webp",
-      alt: "Nigel's Hairdressing homepage on a phone: 'Beautiful hair, done at home.' with a call button",
-      width: 760,
-      height: 1652,
-    },
-    insetImage: {
-      src: "nigels-prices.webp",
-      alt: "Nigel's Hairdressing price cards: ladies cut & blow £45, men's £25",
-      width: 620,
-      height: 1348,
-    },
+    linkLabel: "Visit the live site",
+    dur: "34s",
+    delay: "0s",
+    shots: [{ src: "nigels-after-mobile.webp", alt: "Nigel's Hairdressing full mobile homepage", width: 390, height: 6874 }],
+  },
+  {
+    name: "Rochses",
+    kicker: "Womenswear label · Launching soon",
+    blurb: "A coming-soon site collecting priority access ahead of the first collection.",
+    href: "https://rochses.com",
+    linkLabel: "Preview rochses.com",
+    dur: "18s",
+    delay: "-6s",
+    shots: [
+      { src: "rochses-hero.webp", alt: "Rochses coming-soon homepage", width: 760, height: 1644 },
+      { src: "rochses-signup.webp", alt: "Rochses priority access signup", width: 620, height: 1341 },
+    ],
   },
 ];
+
+const n = clients.length;
+const track = n > 3;
+const pageCount = Math.ceil(n / 3);
+const gridCols = track ? "none" : `repeat(${n}, minmax(0, 1fr))`;
+const gridMax = n === 1 ? "380px" : n === 2 ? "760px" : "none";
+const offset = (i: number) => (n === 3 && i !== 1 ? "56px" : "0px");
 ---
 
-<section class="section" id="client">
-  <div class="wrap">
-    <div class="client-head reveal">
-      <span class="eyebrow">Client testimonial</span>
-    </div>
-
-    <div class="client-carousel reveal">
-      <div class="client-track" id="client-track" role="region" aria-label="Client testimonials carousel" tabindex="0">
-        {clients.map((client) => (
-          <div class="client-slide">
-            <div class="client-grid">
-              <div class="client-copy">
-                <h2>{client.headline}</h2>
-                <p>{client.description}</p>
-
-                <p class="client-meta">{client.stats.join(" · ")}</p>
-
-                <a href={client.href} target="_blank" rel="noopener noreferrer" class="btn btn-primary client-cta">
-                  {client.ctaLabel}
-                  <Icon name="external-link" class="btn-icon" />
-                </a>
-              </div>
-
-              <div class="client-visual">
-                <div class="client-phone client-phone-main">
-                  <span class="client-phone-bar" aria-hidden="true">
-                    <span class="client-phone-dot"></span>
-                    {client.domain}
-                  </span>
-                  <a href={client.href} target="_blank" rel="noopener noreferrer" aria-label={`View the ${client.domain} homepage`}>
-                    <img
-                      src={`${base}/previews/${client.mainImage.src}`}
-                      alt={client.mainImage.alt}
-                      width={client.mainImage.width}
-                      height={client.mainImage.height}
-                      loading="lazy"
-                    />
-                  </a>
-                </div>
-
-                <div class="client-phone client-phone-inset">
-                  <span class="client-phone-bar" aria-hidden="true">
-                    <span class="client-phone-dot"></span>
-                    {client.domain}
-                  </span>
-                  <img
-                    src={`${base}/previews/${client.insetImage.src}`}
-                    alt={client.insetImage.alt}
-                    width={client.insetImage.width}
-                    height={client.insetImage.height}
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div class="client-nav">
-        <button type="button" class="client-nav-btn" id="client-prev" aria-label="Previous client">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-        </button>
-        <div class="client-dots" id="client-dots">
-          {clients.map((client, i) => (
-            <button type="button" class="client-dot" data-index={i} aria-label={`Go to ${client.domain}`}></button>
-          ))}
-        </div>
-        <button type="button" class="client-nav-btn" id="client-next" aria-label="Next client">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-        </button>
-      </div>
-    </div>
-  </div>
+<section id="client" style="position: relative; padding: 112px 0 96px; background: #ffffff; overflow: hidden">
+<div aria-hidden="true" style="position: absolute; inset: 0; background-image: radial-gradient(rgba(47,17,71,0.12) 1px, transparent 1px); background-size: 22px 22px; -webkit-mask-image: radial-gradient(ellipse at 50% 60%, #000 10%, transparent 65%); mask-image: radial-gradient(ellipse at 50% 60%, #000 10%, transparent 65%); pointer-events: none"></div>
+<div class="wrap" style="position: relative">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 48px; margin-bottom: 64px">
+<div style="max-width: 640px">
+<span class="eyebrow" style="margin-bottom: 18px">Our work</span>
+<h2 style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin-top: 14px">A few of the businesses we've helped <em style="font-style: italic; font-weight: 600; color: #5b2a96">get online.</em></h2>
+</div>
+<div style="max-width: 360px">
+<p style="color: rgba(20,17,26,0.68); font-size: 1rem; margin-bottom: 10px">We designed, wrote and launched every one of these ourselves. Tap any phone to see the live site.</p>
+<a href="#contact" style="display: inline-flex; align-items: center; gap: 7px; min-height: 44px; font-weight: 700; font-size: 0.9rem; color: #5b2695; text-decoration: none">Start your project →</a>
+</div>
+</div>
+<div class:list={["showcase", track ? "showcase-track" : "showcase-grid"]} id="showcase" style={`gap: 40px; align-items: start; grid-template-columns: ${gridCols}; max-width: ${gridMax}; margin: 0 auto`}>
+{clients.map((c, i) => (
+<div class="work-card" style={`display: flex; flex-direction: column; align-items: center; margin-top: ${offset(i)}`}>
+<a href={c.href} target="_blank" rel="noopener" class="device" aria-label={`Visit ${c.name}`} style="display: block; width: 276px; max-width: 100%; padding: 10px; border-radius: 46px; background: #14111a; box-shadow: 0 50px 80px -40px rgba(47,17,71,0.45), inset 0 0 0 1px rgba(255,255,255,0.08)">
+<span style="position: relative; display: block; height: 540px; border-radius: 36px; overflow: hidden; background: #ffffff">
+<span aria-hidden="true" style="position: absolute; z-index: 2; top: 10px; left: 50%; width: 84px; height: 24px; margin-left: -42px; border-radius: 999px; background: #14111a"></span>
+<span class="scroll-col" style={`display: block; animation-duration: ${c.dur}; animation-delay: ${c.delay}`}>{c.shots.map((shot) => <img src={`${img}/${shot.src}`} alt={shot.alt} width={shot.width} height={shot.height} loading="lazy" decoding="async" style="display: block; width: 100%; height: auto" />)}</span>
+</span>
+</a>
+<div style="width: 100%; max-width: 320px; margin-top: 32px; text-align: center">
+<span style="font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(20,17,26,0.55)">{c.kicker}</span>
+<h3 style="font-size: 1.5rem; margin: 6px 0 8px">{c.name}</h3>
+<p style="font-size: 0.92rem; color: rgba(20,17,26,0.68); margin-bottom: 6px">{c.blurb}</p>
+<a href={c.href} target="_blank" rel="noopener" class="visit">{c.linkLabel} <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
+</div>
+</div>
+))}
+</div>
+{track && (
+<div class="work-nav" style="display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 36px">
+<button type="button" aria-label="Previous clients" class="work-nav-btn" data-work-prev disabled><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button>
+<div style="display: flex; gap: 8px">
+{Array.from({ length: pageCount }, (_, i) => (
+<button type="button" aria-label={`Show clients ${i * 3 + 1}–${Math.min(n, i * 3 + 3)}`} class:list={["work-dot", { active: i === 0 }]} data-work-page={i}></button>
+))}
+</div>
+<button type="button" aria-label="Next clients" class="work-nav-btn" data-work-next><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button>
+</div>
+)}
+<p class="swipe-hint" style="align-items: center; justify-content: center; gap: 8px; margin-top: 8px; font-size: 0.82rem; font-weight: 600; color: rgba(20,17,26,0.6)">Swipe to see more <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></p>
+</div>
 </section>
 
 <style>
-  .client-head {
-    margin-bottom: 16px;
-  }
-
-  .client-head .eyebrow {
-    margin-bottom: 0;
-  }
-
-  .client-carousel {
-    position: relative;
-  }
-
-  .client-track {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-snap-stop: always;
-    -webkit-overflow-scrolling: touch;
-    -webkit-user-select: none;
-    user-select: none;
-  }
-
-  .client-track::-webkit-scrollbar {
-    display: none;
-  }
-
-  .client-track:focus-visible {
-    outline: 2px solid var(--accent-2);
-    outline-offset: 4px;
-    border-radius: 8px;
-  }
-
-  .client-slide {
-    flex: 0 0 100%;
-    width: 100%;
-    scroll-snap-align: start;
-    padding-bottom: 44px;
-  }
-
-  .client-grid {
-    display: grid;
-    grid-template-columns: minmax(320px, 1fr) minmax(300px, 420px);
-    gap: clamp(40px, 6vw, 80px);
-    align-items: center;
-  }
-
-  .client-copy h2 {
-    font-size: clamp(1.6rem, 3.2vw, 2.3rem);
-    margin: 0 0 18px;
-    max-width: 15ch;
-  }
-
-  .client-copy > p {
-    color: var(--text-dim);
-    font-size: 1.02rem;
-    max-width: 54ch;
-    margin: 0 0 26px;
-  }
-
-  .client-meta {
-    margin: 0 0 28px;
-    font-size: 0.86rem;
-    font-weight: 700;
-    color: var(--text-dim);
-  }
-
-  .client-cta {
-    min-height: 52px;
-    padding: 0 30px;
-  }
-
-  .client-visual {
-    position: relative;
-    justify-self: center;
-    width: 100%;
-    max-width: 320px;
-  }
-
-  .client-phone {
-    border-radius: 22px;
-    overflow: hidden;
-    border: 1px solid rgba(20, 17, 26, 0.16);
-    background: var(--bg-raised);
-    box-shadow: 0 40px 80px -40px rgba(20, 17, 26, 0.4);
-  }
-
-  .client-phone img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-
-  .client-phone-bar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 12px;
-    background: var(--bg-raised-2);
-    border-bottom: 1px solid rgba(20, 17, 26, 0.08);
-    font-size: 0.66rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: rgba(20, 17, 26, 0.5);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .client-phone-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--error);
-    flex-shrink: 0;
-  }
-
-  .client-phone-main {
-    width: 100%;
-  }
-
-  /* Show the top of each phone screenshot rather than the whole page, so the
-     section doesn't sit tall and push everything below it down. */
-  .client-phone-main a {
-    display: block;
-    max-height: 560px;
-    overflow: hidden;
-  }
-
-  .client-phone-inset {
-    position: absolute;
-    bottom: -34px;
-    left: -60px;
-    width: 42%;
-    box-shadow: 0 30px 60px -28px rgba(20, 17, 26, 0.55);
-  }
-
-  .client-nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 4px;
-  }
-
-  .client-nav-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background: var(--bg);
-    border: 1px solid var(--line-strong);
-    color: var(--text);
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
-  }
-
-  .client-nav-btn svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .client-nav-btn:hover:not(:disabled) {
-    background: var(--accent-2);
-    border-color: var(--accent-2);
-    color: var(--paper-on-dark);
-    transform: translateY(-2px);
-  }
-
-  .client-nav-btn:disabled {
-    opacity: 0.35;
-    cursor: default;
-  }
-
-  .client-dots {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-  }
-
-  .client-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--line-strong);
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    transition: background 0.25s ease, transform 0.25s ease;
-  }
-
-  .client-dot:hover {
-    background: var(--accent);
-  }
-
-  .client-dot.active {
-    background: var(--accent-2);
-    transform: scale(1.3);
-  }
-
-  @media (max-width: 900px) {
-    .client-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .client-visual {
-      max-width: 280px;
-      margin: 8px auto 56px;
-    }
-
-    .client-phone-main a {
-      max-height: 460px;
-    }
-
-    .client-copy h2 {
-      max-width: none;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .client-head {
-      margin-bottom: 10px;
-    }
-
-    .client-slide {
-      padding-bottom: 16px;
-    }
-
-    .client-grid {
-      gap: 18px;
-    }
-
-    .client-copy h2 {
-      font-size: 1.32rem;
-      margin-bottom: 10px;
-    }
-
-    .client-copy > p {
-      font-size: 0.92rem;
-      margin-bottom: 12px;
-    }
-
-    .client-meta {
-      font-size: 0.78rem;
-      margin-bottom: 16px;
-    }
-
-    .client-cta {
-      min-height: 46px;
-      padding: 0 22px;
-    }
-
-    .client-visual {
-      max-width: 190px;
-      margin: 0 auto;
-    }
-
-    .client-phone {
-      border-radius: 16px;
-    }
-
-    .client-phone-main a {
-      max-height: 250px;
-    }
-
-    .client-phone-inset {
-      display: none;
+  @media (max-width: 760px) {
+    .work-nav {
+      display: none !important;
     }
   }
 </style>
 
 <script>
-  const track = document.getElementById("client-track");
-  const prevBtn = document.getElementById("client-prev") as HTMLButtonElement | null;
-  const nextBtn = document.getElementById("client-next") as HTMLButtonElement | null;
-  const dots = Array.from(document.querySelectorAll<HTMLButtonElement>(".client-dot"));
+  // 4+ clients: arrows and dots page the track three cards at a time.
+  const track = document.querySelector<HTMLElement>("#showcase.showcase-track");
+  if (track) {
+    const cards = Array.from(track.querySelectorAll<HTMLElement>(".work-card"));
+    const dots = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-work-page]"));
+    const prev = document.querySelector<HTMLButtonElement>("[data-work-prev]");
+    const next = document.querySelector<HTMLButtonElement>("[data-work-next]");
+    const pageCount = dots.length;
+    let page = 0;
 
-  if (track && prevBtn && nextBtn) {
-    const step = () => track.clientWidth;
-
-    const updateUI = () => {
-      const maxScroll = track.scrollWidth - track.clientWidth - 1;
-      prevBtn.disabled = track.scrollLeft <= 0;
-      nextBtn.disabled = track.scrollLeft >= maxScroll;
-
-      const activeIndex = Math.round(track.scrollLeft / step());
-      dots.forEach((dot, i) => dot.classList.toggle("active", i === activeIndex));
+    const goPage = (i: number) => {
+      const card = cards[Math.max(0, Math.min(pageCount - 1, i)) * 3];
+      if (card) track.scrollTo({ left: card.offsetLeft - cards[0].offsetLeft, behavior: "smooth" });
     };
 
-    prevBtn.addEventListener("click", () => {
-      track.scrollBy({ left: -step(), behavior: "smooth" });
-    });
+    const sync = () => {
+      const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+      const step = cards[1] ? cards[1].offsetLeft - cards[0].offsetLeft : track.clientWidth;
+      page = atEnd ? pageCount - 1 : Math.round(track.scrollLeft / (step * 3));
+      dots.forEach((d, i) => d.classList.toggle("active", i === page));
+      if (prev) prev.disabled = page <= 0;
+      if (next) next.disabled = page >= pageCount - 1;
+    };
 
-    nextBtn.addEventListener("click", () => {
-      track.scrollBy({ left: step(), behavior: "smooth" });
-    });
-
-    dots.forEach((dot, i) => {
-      dot.addEventListener("click", () => {
-        track.scrollTo({ left: i * step(), behavior: "smooth" });
-      });
-    });
-
-    let ticking = false;
-    track.addEventListener("scroll", () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        updateUI();
-        ticking = false;
-      });
-    });
-
-    window.addEventListener("resize", updateUI);
-    updateUI();
+    dots.forEach((d, i) => d.addEventListener("click", () => goPage(i)));
+    prev?.addEventListener("click", () => goPage(page - 1));
+    next?.addEventListener("click", () => goPage(page + 1));
+    track.addEventListener("scroll", sync, { passive: true });
+    sync();
   }
 </script>

@@ -1,0 +1,35 @@
+---
+// Homepage layout: the redesign's own stylesheet (home.css) instead of the
+// legal pages' global.css, and the page-wide motion script.
+import "../styles/home.css";
+import SiteHead from "../components/SiteHead.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+}
+
+const { title, description, image = "/previews/nigels-desktop.webp" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <SiteHead
+      title={title}
+      description={description}
+      image={image}
+      fontsHref="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    />
+    <slot name="head" />
+  </head>
+  <body>
+    <div class="cg" style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #14111a; background: #ffffff; line-height: 1.6; -webkit-font-smoothing: antialiased">
+      <slot />
+    </div>
+    <script>
+      import "../scripts/home.ts";
+    </script>
+  </body>
+</html>

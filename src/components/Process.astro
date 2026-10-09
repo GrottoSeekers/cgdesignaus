@@ -1,145 +1,47 @@
----
-const stats = [
-  {
-    heading: "Sydney-based, working worldwide",
-    sub: "Randwick, NSW — the whole process runs over WhatsApp, email and video, so your timezone is fine",
-  },
-  {
-    heading: "One point of contact",
-    sub: "The person designing your site is the person you talk to",
-  },
-  {
-    heading: "Fixed pricing",
-    sub: "Agreed in writing before work starts",
-  },
-];
+<section id="process" style="padding: 112px 0 104px; background: #ffffff">
+<div class="wrap" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 72px; align-items: start">
+<div class="process-intro">
+<span class="eyebrow">How it works</span>
+<h2 style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin: 16px 0 20px">You deal with the designer. <em style="font-style: italic; font-weight: 600; color: #5b2a96">Start to finish.</em></h2>
+<p style="color: rgba(20,17,26,0.68); font-size: 1.05rem; margin-bottom: 36px; max-width: 30em">I'm Callum Disley, founder of CG Design &amp; Co. I'll design your site myself, and I'm the one you'll talk to the whole way through.</p>
+<div class="perks" style="display: flex; flex-direction: column; gap: 14px">
+<div class="perk" style="display: flex; gap: 16px; align-items: flex-start; padding: 18px 20px; border-radius: 18px; border: 1px solid rgba(20,17,26,0.08); background: #ffffff">
+<span class="perk-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path></svg></span>
+<span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 1.02rem">Sydney-based, working worldwide</strong><span style="font-size: 0.88rem; color: rgba(20,17,26,0.6)">Randwick, NSW. Everything runs over WhatsApp, email and video, so your timezone is fine.</span></span>
+</div>
+<div class="perk" style="display: flex; gap: 16px; align-items: flex-start; padding: 18px 20px; border-radius: 18px; border: 1px solid rgba(20,17,26,0.08); background: #ffffff">
+<span class="perk-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg></span>
+<span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 1.02rem">One point of contact</strong><span style="font-size: 0.88rem; color: rgba(20,17,26,0.6)">The person designing your site is the person you talk to.</span></span>
+</div>
+<div class="perk" style="display: flex; gap: 16px; align-items: flex-start; padding: 18px 20px; border-radius: 18px; border: 1px solid rgba(20,17,26,0.08); background: #ffffff">
+<span class="perk-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5M9 14l2 2 4-4"></path></svg></span>
+<span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 1.02rem">Fixed pricing</strong><span style="font-size: 0.88rem; color: rgba(20,17,26,0.6)">Agreed in writing before any work starts.</span></span>
+</div>
+</div>
+</div>
 
-const steps = [
-  {
-    number: "01",
-    title: "Free website check",
-    body: "Send your business name and current site, if you have one. You get an honest written read on what's costing you enquiries.",
-  },
-  {
-    number: "02",
-    title: "Fixed quote and a date",
-    body: "A package or a custom scope, priced to the dollar, with a launch date you can hold us to.",
-  },
-  {
-    number: "03",
-    title: "Live in under a week",
-    body: "We write the copy, source the images, build it and launch on your domain. The site is yours outright.",
-  },
-];
----
-
-<section class="section" id="process">
-  <div class="wrap process-wrap">
-    <div class="process-copy reveal">
-      <span class="eyebrow">How it works</span>
-      <h2>You deal with the designer. Start to finish.</h2>
-      <p>
-        No account managers, no offshore handoff, no surprise invoices. A
-        small Sydney studio that answers its own phone — for local
-        businesses here and anywhere else.
-      </p>
-
-      <div class="process-stats">
-        {stats.map((stat) => (
-          <div class="stat">
-            <strong>{stat.heading}</strong>
-            <span>{stat.sub}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-
-    <div class="process-steps reveal-stagger">
-      {steps.map((step) => (
-        <div class="step-card">
-          <span class="step-number">{step.number}</span>
-          <div>
-            <h3>{step.title}</h3>
-            <p>{step.body}</p>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
+<div class="timeline" style="position: relative; padding-left: 76px">
+<div aria-hidden="true" style="position: absolute; left: 27px; top: 28px; bottom: 28px; width: 2px; background: rgba(20,17,26,0.1); border-radius: 2px; overflow: hidden"><div class="timeline-fill" style="width: 100%; height: 100%; background: linear-gradient(#5b2a96, #b58cf0); transform-origin: top"></div></div>
+<div class="steps" style="display: flex; flex-direction: column; gap: 24px">
+<div class="step" style="position: relative; padding: 30px; background: #f3f0f8; border: 1px solid rgba(20,17,26,0.08); border-radius: 22px">
+<span class="step-node" aria-hidden="true" style="position: absolute; left: -76px; top: 22px; width: 56px; height: 56px; border-radius: 50%; background: #ffffff; border: 2px solid #5b2a96; color: #5b2a96; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600">01</span>
+<span style="font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(20,17,26,0.55)">Day one</span>
+<h3 style="font-size: 1.4rem; margin: 6px 0 8px">Free website check</h3>
+<p style="font-size: 0.95rem; color: rgba(20,17,26,0.68)">Send your business name and current site, if you have one. You get an honest written read on what's costing you enquiries.</p>
+</div>
+<div class="step" style="position: relative; padding: 30px; background: #f3f0f8; border: 1px solid rgba(20,17,26,0.08); border-radius: 22px">
+<span class="step-node" aria-hidden="true" style="position: absolute; left: -76px; top: 22px; width: 56px; height: 56px; border-radius: 50%; background: #ffffff; border: 2px solid #5b2a96; color: #5b2a96; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600">02</span>
+<span style="font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(20,17,26,0.55)">Before we start</span>
+<h3 style="font-size: 1.4rem; margin: 6px 0 8px">Fixed quote and a date</h3>
+<p style="font-size: 0.95rem; color: rgba(20,17,26,0.68)">A package or a custom scope, priced to the dollar, with a launch date you can hold us to.</p>
+</div>
+<div class="step" style="position: relative; padding: 30px; background: #2f1147; border: 1px solid #2f1147; border-radius: 22px; color: #f3eefa">
+<span class="step-node step-node-final" aria-hidden="true" style="position: absolute; left: -76px; top: 22px; width: 56px; height: 56px; border-radius: 50%; background: #5b2a96; border: 2px solid #5b2a96; color: #ffffff; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600">03</span>
+<span style="font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #d8bff0">Within a week</span>
+<h3 style="font-size: 1.4rem; margin: 6px 0 8px; color: #ffffff">Live in under a week</h3>
+<p style="font-size: 0.95rem; color: rgba(243,238,250,0.78)">We write the copy, source the images, build it and launch on your domain. The site is yours outright.</p>
+</div>
+</div>
+</div>
+</div>
 </section>
-
-<style>
-  .process-wrap {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: clamp(36px, 5vw, 64px);
-    align-items: start;
-  }
-
-  .process-copy p {
-    color: var(--text-dim);
-    font-size: 1.02rem;
-    max-width: 46ch;
-    margin: 0 0 26px;
-  }
-
-  .process-stats {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
-
-  .stat {
-    border-left: 2px solid var(--accent);
-    padding-left: 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .stat strong {
-    font-family: "Fraunces", serif;
-    font-size: 1.05rem;
-    font-weight: 600;
-  }
-
-  .stat span {
-    font-size: 0.88rem;
-    color: var(--text-faint);
-  }
-
-  .process-steps {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .step-card {
-    display: flex;
-    gap: 20px;
-    padding: 26px;
-    background: var(--bg-raised);
-    border: 1px solid var(--line);
-    border-radius: 18px;
-  }
-
-  .step-number {
-    font-family: "Fraunces", serif;
-    font-size: 1.5rem;
-    font-weight: 500;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .step-card h3 {
-    font-size: 1.1rem;
-    margin: 0 0 6px;
-    letter-spacing: -0.01em;
-  }
-
-  .step-card p {
-    margin: 0;
-    font-size: 0.92rem;
-    color: var(--text-dim);
-  }
-</style>

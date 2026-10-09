@@ -6,362 +6,153 @@ const serviceOptions = [
   { value: "Redesign", label: "Redesign" },
   { value: "Not Sure", label: "Not sure yet" },
 ];
+
+const nextSteps = [
+  "We reply within one business day",
+  "You get an honest written read on your site",
+  "If you'd like to go ahead, a fixed quote and a date",
+];
 ---
 
-<section class="section section-alt" id="contact">
-  <div class="orb orb-contact" aria-hidden="true"></div>
-  <div class="wrap contact-wrap">
-    <div class="contact-copy reveal">
-      <span class="eyebrow">Get in touch</span>
-      <h2>Get your free website check.</h2>
-      <p>
-        Tell us about the business. If you already have a site, add the
-        link — we'll tell you honestly what we'd change, whether or not you
-        hire us.
-      </p>
-
-      <div class="contact-cta-row">
-        <a
-          href="https://wa.me/447306100251"
-          class="btn btn-espresso whatsapp-link"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m0 1.67c2.2 0 4.27.86 5.82 2.42a8.19 8.19 0 0 1 2.42 5.82c0 4.54-3.7 8.24-8.25 8.24a8.3 8.3 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.23 8.23 0 0 1-1.26-4.4c0-4.55 3.7-8.22 8.26-8.22M8.53 7.33c-.16 0-.43.06-.66.31-.22.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.13.17 1.75 2.67 4.25 3.73.6.24 1.06.39 1.42.5.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.16-.48-.28-.25-.13-1.47-.73-1.7-.81-.23-.08-.39-.13-.56.13-.16.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.24-.42.08-.16.04-.31-.02-.43-.06-.13-.56-1.36-.77-1.86-.2-.48-.4-.42-.56-.42h-.47" />
-          </svg>
-          WhatsApp us
-        </a>
-        <a href="mailto:info@cgdesignaus.com" class="btn btn-ghost">info@cgdesignaus.com</a>
-      </div>
-
-      <p class="fine-print">Replies within one business day. ABN 25 672 082 550.</p>
-    </div>
-
-    <div class="contact-form-wrap reveal">
-      <p class="prefill-notice" id="prefill-notice" hidden></p>
-
-      <form class="contact-form" id="lead-form" action="https://api.web3forms.com/submit" method="POST" novalidate>
-        <input type="hidden" name="access_key" value="af8becda-b0eb-46ce-928f-29364cea38c2" />
-        <input type="hidden" name="subject" value="New enquiry — CG Design & Co. website" />
-        <input type="checkbox" name="botcheck" style="display: none;" tabindex="-1" autocomplete="off" />
-
-        <div class="field-grid">
-          <div class="field">
-            <label for="client_name">Your name</label>
-            <input type="text" id="client_name" name="client_name" autocomplete="name" placeholder="Jane Doe" required />
-            <span class="field-error" id="err-client_name" role="alert"></span>
-          </div>
-
-          <div class="field">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" autocomplete="email" placeholder="jane@business.com.au" required />
-            <span class="field-error" id="err-email" role="alert"></span>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="business_name">Business name</label>
-          <input type="text" id="business_name" name="business_name" autocomplete="organization" placeholder="Apex Heating & Electrical" required />
-          <span class="field-error" id="err-business_name" role="alert"></span>
-        </div>
-
-        <div class="field">
-          <label for="website">Existing website <span class="optional">(optional)</span></label>
-          <input type="text" id="website" name="website" placeholder="yourbusiness.com.au" />
-          <span class="field-error" id="err-website" role="alert"></span>
-        </div>
-
-        <div class="field field-service">
-          <span class="field-label">What do you need?</span>
-          <div class="service-chips" role="group" aria-label="What do you need?">
-            {serviceOptions.map((opt) => (
-              <button type="button" class="service-chip" data-value={opt.value}>{opt.label}</button>
-            ))}
-          </div>
-          <input type="hidden" id="service" name="service" />
-          <span class="field-error" id="err-service" role="alert"></span>
-        </div>
-
-        <input type="hidden" id="estimate_details" name="estimate_details" />
-
-        <div class="field field-consent">
-          <label class="consent-label" for="consent">
-            <input type="checkbox" id="consent" name="consent" class="consent-checkbox" required />
-            <span class="consent-text">
-              I agree to my details being used to reply to this enquiry, as
-              described in the <a href={`${base}/privacy-policy`} target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
-            </span>
-          </label>
-          <span class="field-error" id="err-consent" role="alert"></span>
-        </div>
-
-        <div class="field field-captcha">
-          <div class="h-captcha" data-captcha="true"></div>
-          <span class="field-error" id="err-captcha" role="alert"></span>
-        </div>
-
-        <button type="submit" class="btn btn-primary submit-btn" id="submit-btn">
-          <span class="spinner" aria-hidden="true"></span>
-          <span class="btn-label">Send it over</span>
-        </button>
-
-        <p class="submit-error" id="submit-error" role="alert" hidden>
-          Something went wrong sending that. Please email us directly at
-          <a href="mailto:info@cgdesignaus.com">info@cgdesignaus.com</a> instead.
-        </p>
-      </form>
-
-      <script src="https://web3forms.com/client/script.js" async defer></script>
-
-      <div class="form-success" id="form-success" hidden>
-        <svg class="success-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle class="success-icon-circle" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
-          <path class="success-icon-check" d="m8 12.5 2.5 2.5L16 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-        <h3>Got it — thanks!</h3>
-        <p>We'll take a look and get back to you within one business day.</p>
-        <button type="button" class="btn btn-ghost" id="reset-form">Send another enquiry</button>
-      </div>
-    </div>
-  </div>
+<section id="contact" style="position: relative; overflow: hidden; padding: 112px 0 104px; background: #f3f0f8">
+<div aria-hidden="true" class="blob-a" style="position: absolute; width: 560px; height: 560px; border-radius: 50%; background: #b58cf0; opacity: 0.18; filter: blur(110px); top: -200px; right: -160px; animation: cg-drift-a 20s ease-in-out infinite; pointer-events: none"></div>
+<div class="wrap" style="position: relative; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 64px; align-items: start">
+<div>
+<span class="eyebrow">Get in touch</span>
+<h2 style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin: 16px 0 18px">Get your free <em style="font-style: italic; font-weight: 600; color: #5b2a96">website check.</em></h2>
+<p style="color: rgba(20,17,26,0.68); font-size: 1.02rem; margin-bottom: 32px">Tell us about the business. If you already have a site, add the link — we'll tell you honestly what we'd change, whether or not you hire us.</p>
+<div class="contact-ways" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px">
+<a href="https://wa.me/447306100251" target="_blank" rel="noopener noreferrer" class="way whatsapp-link" style="display: flex; align-items: center; gap: 16px; padding: 18px 20px; border-radius: 20px; background: #ffffff; border: 1px solid rgba(20,17,26,0.08); text-decoration: none; color: #14111a">
+<span class="way-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.6-4.8A8.5 8.5 0 1 1 7.8 19.4z"></path></svg></span>
+<span style="display: flex; flex-direction: column; flex: 1; line-height: 1.35"><strong style="font-size: 1rem">WhatsApp</strong><span style="font-size: 0.86rem; color: rgba(20,17,26,0.6)">The quickest way to reach us</span></span>
+<svg class="way-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+</a>
+<a href="mailto:info@cgdesignaus.com" class="way" style="display: flex; align-items: center; gap: 16px; padding: 18px 20px; border-radius: 20px; background: #ffffff; border: 1px solid rgba(20,17,26,0.08); text-decoration: none; color: #14111a">
+<span class="way-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg></span>
+<span style="display: flex; flex-direction: column; flex: 1; line-height: 1.35"><strong style="font-size: 1rem">info@cgdesignaus.com</strong><span style="font-size: 0.86rem; color: rgba(20,17,26,0.6)">Replies within one business day</span></span>
+<svg class="way-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+</a>
+</div>
+<p style="font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(20,17,26,0.62); margin-bottom: 14px">What happens next</p>
+<ol class="next-steps" style="list-style: none; margin: 0 0 28px; padding: 0; display: flex; flex-direction: column; gap: 12px">
+{nextSteps.map((step, i) => <li style="display: flex; gap: 14px; align-items: center; font-size: 0.95rem"><span class="next-num" aria-hidden="true">{i + 1}</span>{step}</li>)}
+</ol>
+<p style="font-size: 0.84rem; color: rgba(20,17,26,0.66)">ABN 25 672 082 550</p>
+</div>
+<div class="contact-form-wrap">
+<form class="contact-form" id="lead-form" action="https://api.web3forms.com/submit" method="POST" novalidate style="position: relative; display: flex; flex-direction: column; gap: 18px; background: #ffffff; border: 1px solid rgba(20,17,26,0.08); border-radius: 28px; padding: 36px; box-shadow: 0 50px 100px -50px rgba(47,17,71,0.45)">
+<div style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 4px">
+<h3 style="font-size: 1.5rem">Tell us about your business</h3>
+<p style="font-size: 0.9rem; color: rgba(20,17,26,0.6)">Takes about a minute.</p>
+<p class="form-note" id="prefill-notice" hidden></p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap: 16px">
+<div class="field"><label for="client_name">Your name</label><input id="client_name" name="client_name" type="text" autocomplete="name" placeholder="Jane Doe" required><span class="field-error" id="err-client_name" role="alert"></span></div>
+<div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" placeholder="jane@business.com.au" required><span class="field-error" id="err-email" role="alert"></span></div>
+</div>
+<div class="field"><label for="business_name">Business name</label><input id="business_name" name="business_name" type="text" autocomplete="organization" placeholder="Apex Heating &amp; Electrical" required><span class="field-error" id="err-business_name" role="alert"></span></div>
+<div class="field"><label for="website">Existing website <span style="font-weight: 500; color: rgba(20,17,26,0.5)">(optional)</span></label><input id="website" name="website" type="text" inputmode="url" autocomplete="url" placeholder="yourbusiness.com.au"><span class="field-error" id="err-website" role="alert"></span></div>
+<div class="field-service" style="display: flex; flex-direction: column; gap: 8px"><span id="service-label" style="font-size: 0.8rem; font-weight: 700; color: rgba(20,17,26,0.7)">What do you need?</span>
+<div class="svc-group" role="group" aria-labelledby="service-label" style="display: flex; flex-wrap: wrap; gap: 8px">
+{serviceOptions.map((opt) => <button type="button" class="svc" aria-pressed="false" data-value={opt.value}>{opt.label}</button>)}
+</div>
+<input type="hidden" id="service" name="service">
+<span class="field-error" id="err-service" role="alert"></span>
+</div>
+<div class="field-consent">
+<label for="consent" style="display: flex; gap: 10px; align-items: flex-start; font-size: 0.85rem; color: rgba(20,17,26,0.7)"><input id="consent" name="consent" type="checkbox" required style="margin-top: 3px; width: 18px; height: 18px; accent-color: #5b2a96"><span>I agree to my details being used to reply to this enquiry, as described in the <a href={`${base}/privacy-policy`} target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</span></label>
+<span class="field-error" id="err-consent" role="alert"></span>
+</div>
+<div class="field-captcha">
+<div class="h-captcha" data-captcha="true"></div>
+<span class="field-error" id="err-captcha" role="alert"></span>
+</div>
+<button type="submit" class="btn btn-primary send-btn" id="submit-btn" style="min-height: 56px; font-family: inherit; font-size: 1rem"><span class="spinner" aria-hidden="true"></span><span class="btn-label">Send it over</span> <svg class="send-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+<p class="submit-error" id="submit-error" role="alert" hidden>Something went wrong sending that. Please email us directly at <a href="mailto:info@cgdesignaus.com">info@cgdesignaus.com</a> instead.</p>
+<input type="hidden" name="access_key" value="af8becda-b0eb-46ce-928f-29364cea38c2">
+<input type="hidden" name="subject" value="New enquiry — CG Design & Co. website">
+<input type="checkbox" name="botcheck" style="display: none;" tabindex="-1" autocomplete="off">
+<input type="hidden" id="estimate_details" name="estimate_details">
+</form>
+<div class="form-success" id="form-success" hidden>
+<svg class="success-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle class="success-icon-circle" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle><path class="success-icon-check" d="m8 12.5 2.5 2.5L16 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<h3>Got it — thanks!</h3>
+<p>We'll take a look and get back to you within one business day.</p>
+<button type="button" class="btn btn-ghost" id="reset-form">Send another enquiry</button>
+</div>
+<script is:inline src="https://web3forms.com/client/script.js" async defer></script>
+</div>
+</div>
 </section>
 
 <style>
-  .section-alt {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .orb-contact {
-    width: 420px;
-    height: 420px;
-    background: var(--accent-2);
-    opacity: 0.08;
-    top: -120px;
-    left: -140px;
-  }
-
-  .contact-wrap {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: clamp(36px, 5vw, 64px);
-    align-items: start;
-  }
-
-  .contact-copy p {
-    color: var(--text-dim);
-  }
-
-  .contact-cta-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin: 28px 0;
-  }
-
-  .whatsapp-link svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .fine-print {
-    margin: 0;
-    font-size: 0.88rem;
-    color: var(--text-faint);
-  }
-
   .contact-form-wrap {
     position: relative;
-  }
-
-  .prefill-notice {
-    margin: 0 0 14px;
-    padding: 12px 16px;
-    border-radius: var(--radius-sm);
-    background: var(--accent-2-soft);
-    border: 1px solid rgba(47, 17, 71, 0.3);
-    font-size: 0.88rem;
-    color: var(--text);
-  }
-
-  .prefill-notice strong {
-    color: var(--accent-2);
-  }
-
-  .contact-form,
-  .form-success {
-    background: var(--bg-raised);
-    border: 1px solid rgba(20, 17, 26, 0.16);
-    border-radius: 22px;
-    box-shadow: 0 40px 80px -44px rgba(20, 17, 26, 0.35);
-    padding: clamp(24px, 3vw, 34px);
-  }
-
-  .contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    min-width: 0;
   }
 
   .contact-form.is-hidden {
-    display: none;
-  }
-
-  .field-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-    gap: 18px;
-  }
-
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-  }
-
-  .field label,
-  .field-label {
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: rgba(20, 17, 26, 0.7);
-  }
-
-  .field label .optional {
-    color: rgba(20, 17, 26, 0.5);
-    font-weight: 500;
-  }
-
-  .contact-form input[type="text"],
-  .contact-form input[type="email"] {
-    font-family: inherit;
-    font-size: 0.96rem;
-    min-height: 48px;
-    padding: 0 14px;
-    border-radius: 12px;
-    border: 1.5px solid rgba(20, 17, 26, 0.18);
-    background: var(--bg);
-    color: var(--text);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .contact-form input[type="text"]:focus,
-  .contact-form input[type="email"]:focus {
-    outline: none;
-    border-color: var(--accent-2);
-    box-shadow: 0 0 0 3px rgba(47, 17, 71, 0.15);
-  }
-
-  .field.has-error input[type="text"],
-  .field.has-error input[type="email"] {
-    border-color: var(--error);
-  }
-
-  .field.has-error input:focus {
-    box-shadow: 0 0 0 3px var(--error-soft);
+    display: none !important;
   }
 
   .field-error {
     font-size: 0.8rem;
     color: var(--error);
-    min-height: 0;
-    margin-top: 2px;
   }
 
   .field-error:empty {
     display: none;
   }
 
-  .service-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+  .field.has-error input {
+    border-color: var(--error) !important;
   }
 
-  .service-chip {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 0 18px;
-    border-radius: 999px;
-    font-family: inherit;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    border: 1.5px solid rgba(20, 17, 26, 0.18);
-    background: var(--bg);
-    color: rgba(20, 17, 26, 0.75);
-    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+  .field.has-error input:focus {
+    box-shadow: 0 0 0 4px var(--error-soft) !important;
   }
 
-  .service-chip:hover {
-    border-color: rgba(20, 17, 26, 0.3);
-  }
-
-  .service-chip.is-selected {
-    border-color: var(--accent-2);
-    background: var(--accent-2);
-    color: var(--paper-on-dark);
-  }
-
-  .field-service.has-error .service-chips {
-    outline: 2px solid var(--error);
-    outline-offset: 4px;
-    border-radius: 999px;
-  }
-
+  .field-service.has-error .svc-group,
   .field-captcha.has-error .h-captcha {
     outline: 2px solid var(--error);
     outline-offset: 4px;
-    border-radius: 4px;
+    border-radius: 12px;
   }
 
   .field-consent {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .consent-label {
     display: flex;
-    align-items: flex-start;
-    gap: 11px;
-    cursor: pointer;
+    flex-direction: column;
+    gap: 6px;
   }
 
-  .consent-checkbox {
-    width: 19px;
-    height: 19px;
-    margin: 3px 0 0;
-    accent-color: var(--accent-2);
-    flex-shrink: 0;
-  }
-
-  .field-consent.has-error .consent-checkbox {
+  .field-consent.has-error input {
     outline: 2px solid var(--error);
     outline-offset: 2px;
   }
 
-  .consent-text {
-    font-size: 0.86rem;
-    line-height: 1.5;
-    color: rgba(20, 17, 26, 0.7);
-  }
-
-  .consent-text a {
-    color: var(--accent-text);
+  .field-consent a {
+    color: #5b2695;
     text-decoration: underline;
     text-underline-offset: 2px;
   }
 
-  .submit-btn {
-    margin-top: 4px;
-    min-height: 54px;
-    position: relative;
+  .field-captcha {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    overflow: hidden;
   }
 
-  .submit-btn[disabled] {
+  .field-captcha:has(.h-captcha:empty) {
+    display: none;
+  }
+
+  .field-captcha.has-error {
+    display: flex;
+  }
+
+  .send-btn[disabled] {
     opacity: 0.75;
     cursor: not-allowed;
     transform: none !important;
@@ -372,32 +163,32 @@ const serviceOptions = [
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    border: 2px solid var(--on-accent);
+    border: 2px solid #ffffff;
     border-top-color: transparent;
-    animation: spin 0.7s linear infinite;
+    animation: cg-spin-loader 0.7s linear infinite;
   }
 
-  .submit-btn.is-loading .spinner {
+  .send-btn.is-loading .spinner {
     display: inline-block;
   }
 
-  .submit-btn.is-loading .btn-label {
-    opacity: 0.85;
+  .send-btn.is-loading .send-arrow {
+    display: none;
   }
 
-  @keyframes spin {
+  @keyframes cg-spin-loader {
     to {
       transform: rotate(360deg);
     }
   }
 
   .submit-error {
-    font-size: 0.85rem;
-    color: var(--error);
-    background: var(--error-soft);
-    border-radius: var(--radius-sm);
-    padding: 10px 14px;
     margin: 0;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: var(--error-soft);
+    color: var(--error);
+    font-size: 0.85rem;
   }
 
   .submit-error a {
@@ -406,29 +197,31 @@ const serviceOptions = [
   }
 
   .form-success {
-    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
+    text-align: center;
+    background: #ffffff;
+    border: 1px solid rgba(20, 17, 26, 0.08);
+    border-radius: 28px;
+    padding: 36px;
+    box-shadow: 0 50px 100px -50px rgba(47, 17, 71, 0.45);
+    animation: cg-success-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   .form-success[hidden] {
     display: none;
   }
 
-  .form-success:not([hidden]) {
-    animation: popIn 0.45s var(--ease) forwards;
-  }
-
-  @keyframes popIn {
+  @keyframes cg-success-in {
     from {
       opacity: 0;
-      transform: scale(0.9);
+      transform: scale(0.94);
     }
     to {
       opacity: 1;
-      transform: scale(1);
+      transform: none;
     }
   }
 
@@ -442,29 +235,35 @@ const serviceOptions = [
   .success-icon-circle {
     stroke-dasharray: 63;
     stroke-dashoffset: 63;
-    animation: drawIcon 0.6s ease forwards 0.1s;
+    animation: cg-success-draw 0.6s ease forwards 0.1s;
   }
 
   .success-icon-check {
     stroke-dasharray: 14;
     stroke-dashoffset: 14;
-    animation: drawIcon 0.35s ease forwards 0.55s;
+    animation: cg-success-draw 0.35s ease forwards 0.55s;
   }
 
-  @keyframes drawIcon {
+  @keyframes cg-success-draw {
     to {
       stroke-dashoffset: 0;
     }
   }
 
   .form-success h3 {
-    font-size: 1.3rem;
-    margin-bottom: 2px;
+    font-size: 1.4rem;
   }
 
   .form-success p {
-    color: var(--text-dim);
-    margin: 0 0 20px;
+    color: rgba(20, 17, 26, 0.68);
+    margin-bottom: 18px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .success-icon-circle,
+    .success-icon-check {
+      stroke-dashoffset: 0;
+    }
   }
 </style>
 
@@ -478,73 +277,50 @@ const serviceOptions = [
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const urlPattern = /^(https?:\/\/)?[a-z0-9-]+(\.[a-z0-9-]+)+([/?#].*)?$/i;
 
-  function fieldWrap(input: HTMLElement) {
-    return input.closest(".field");
-  }
-
   function setError(id: string, message: string) {
     const input = document.getElementById(id);
     const err = document.getElementById(`err-${id}`);
     if (!input || !err) return;
     err.textContent = message;
-    fieldWrap(input)?.classList.toggle("has-error", Boolean(message));
+    input.closest(".field, .field-service, .field-consent")?.classList.toggle("has-error", Boolean(message));
+    if (input.tagName === "INPUT" && (input as HTMLInputElement).type !== "hidden") {
+      input.setAttribute("aria-invalid", message ? "true" : "false");
+      if (message) input.setAttribute("aria-describedby", `err-${id}`);
+    }
   }
 
   function clearErrors() {
     form?.querySelectorAll(".field-error").forEach((el) => (el.textContent = ""));
-    form?.querySelectorAll(".field.has-error").forEach((el) => el.classList.remove("has-error"));
+    form?.querySelectorAll(".has-error").forEach((el) => el.classList.remove("has-error"));
+    form?.querySelectorAll("[aria-invalid]").forEach((el) => el.setAttribute("aria-invalid", "false"));
   }
+
+  const value = (name: string) => ((form?.elements.namedItem(name) as HTMLInputElement | null)?.value ?? "").trim();
 
   function validate(): boolean {
     if (!form) return false;
     clearErrors();
     let firstInvalid: HTMLElement | null = null;
-    let ok = true;
+    const fail = (id: string, message: string, focusEl?: HTMLElement | null) => {
+      setError(id, message);
+      firstInvalid ||= focusEl ?? document.getElementById(id);
+    };
 
-    const clientName = (form.elements.namedItem("client_name") as HTMLInputElement).value.trim();
-    if (!clientName) {
-      setError("client_name", "Let us know your name.");
-      firstInvalid ||= document.getElementById("client_name");
-      ok = false;
-    }
+    if (!value("client_name")) fail("client_name", "Let us know your name.");
 
-    const email = (form.elements.namedItem("email") as HTMLInputElement).value.trim();
-    if (!email) {
-      setError("email", "Add an email so we can reply.");
-      firstInvalid ||= document.getElementById("email");
-      ok = false;
-    } else if (!emailPattern.test(email)) {
-      setError("email", "That doesn't look like a valid email.");
-      firstInvalid ||= document.getElementById("email");
-      ok = false;
-    }
+    const email = value("email");
+    if (!email) fail("email", "Add an email so we can reply.");
+    else if (!emailPattern.test(email)) fail("email", "That doesn't look like a valid email.");
 
-    const businessName = (form.elements.namedItem("business_name") as HTMLInputElement).value.trim();
-    if (!businessName) {
-      setError("business_name", "What's the business called?");
-      firstInvalid ||= document.getElementById("business_name");
-      ok = false;
-    }
+    if (!value("business_name")) fail("business_name", "What's the business called?");
 
-    const website = (form.elements.namedItem("website") as HTMLInputElement).value.trim();
-    if (website && !urlPattern.test(website)) {
-      setError("website", "That doesn't look like a valid website address.");
-      firstInvalid ||= document.getElementById("website");
-      ok = false;
-    }
+    const website = value("website");
+    if (website && !urlPattern.test(website)) fail("website", "That doesn't look like a valid website address.");
 
-    const service = (form.elements.namedItem("service") as HTMLInputElement).value;
-    if (!service) {
-      setError("service", "Let us know what you're after.");
-      firstInvalid ||= document.getElementById("service");
-      ok = false;
-    }
+    if (!value("service")) fail("service", "Let us know what you're after.", document.querySelector<HTMLElement>(".svc"));
 
-    const consent = (form.elements.namedItem("consent") as HTMLInputElement).checked;
-    if (!consent) {
-      setError("consent", "Please agree to the Privacy Policy to continue.");
-      firstInvalid ||= document.getElementById("consent");
-      ok = false;
+    if (!(form.elements.namedItem("consent") as HTMLInputElement).checked) {
+      fail("consent", "Please agree to the Privacy Policy to continue.");
     }
 
     const captchaResponse = form.querySelector<HTMLTextAreaElement>("textarea[name='h-captcha-response']")?.value;
@@ -552,12 +328,11 @@ const serviceOptions = [
       const err = document.getElementById("err-captcha");
       if (err) err.textContent = "Please complete the captcha.";
       document.querySelector(".field-captcha")?.classList.add("has-error");
-      firstInvalid ||= document.querySelector(".h-captcha");
-      ok = false;
+      firstInvalid ||= document.querySelector<HTMLElement>(".h-captcha");
     }
 
     firstInvalid?.focus();
-    return ok;
+    return !firstInvalid;
   }
 
   function setLoading(loading: boolean) {
@@ -566,26 +341,9 @@ const serviceOptions = [
     submitBtn.classList.toggle("is-loading", loading);
   }
 
-  function showSuccess() {
-    if (!form || !successPanel) return;
-    form.classList.add("is-hidden");
-    successPanel.hidden = false;
-  }
-
-  function resetToForm() {
-    if (!form || !successPanel) return;
-    form.reset();
-    clearErrors();
-    syncServiceChips();
-    if (submitError) submitError.hidden = true;
-    successPanel.hidden = true;
-    form.classList.remove("is-hidden");
-  }
-
   form?.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (submitError) submitError.hidden = true;
-
     if (!validate()) return;
 
     setLoading(true);
@@ -596,7 +354,8 @@ const serviceOptions = [
         headers: { Accept: "application/json" },
       });
       if (res.ok) {
-        showSuccess();
+        form.classList.add("is-hidden");
+        if (successPanel) successPanel.hidden = false;
       } else if (submitError) {
         submitError.hidden = false;
       }
@@ -607,15 +366,27 @@ const serviceOptions = [
     }
   });
 
-  resetBtn?.addEventListener("click", resetToForm);
+  resetBtn?.addEventListener("click", () => {
+    if (!form || !successPanel) return;
+    form.reset();
+    clearErrors();
+    syncServiceChips();
+    const notice = document.getElementById("prefill-notice");
+    if (notice) notice.hidden = true;
+    if (submitError) submitError.hidden = true;
+    successPanel.hidden = true;
+    form.classList.remove("is-hidden");
+  });
 
-  // Service chips: write to the hidden #service input the rest of the site already targets.
+  // Service chips write to the hidden #service input (Pricing's quote builder sets it too).
   const serviceInput = document.getElementById("service") as HTMLInputElement | null;
-  const serviceChips = Array.from(document.querySelectorAll<HTMLButtonElement>(".service-chip"));
+  const serviceChips = Array.from(document.querySelectorAll<HTMLButtonElement>(".svc"));
 
   function syncServiceChips() {
     serviceChips.forEach((chip) => {
-      chip.classList.toggle("is-selected", chip.dataset.value === serviceInput?.value);
+      const on = chip.dataset.value === serviceInput?.value;
+      chip.classList.toggle("on", on);
+      chip.setAttribute("aria-pressed", String(on));
     });
   }
 
@@ -627,29 +398,20 @@ const serviceOptions = [
       setError("service", "");
     });
   });
-
-  // Other components (Pricing) set #service.value programmatically and dispatch "change".
   serviceInput?.addEventListener("change", syncServiceChips);
 
   // WhatsApp: draft a message from whatever the visitor has filled in so far.
-  const whatsappLink = document.querySelector(".whatsapp-link") as HTMLAnchorElement | null;
+  const whatsappLink = document.querySelector<HTMLAnchorElement>(".whatsapp-link");
   const WHATSAPP_NUMBER = "447306100251";
-  const DEFAULT_WHATSAPP_MESSAGE = "Hi! I'd like to chat about getting a website.";
-
-  function fieldValue(id: string): string {
-    const el = document.getElementById(id) as HTMLInputElement | null;
-    return el?.value.trim() ?? "";
-  }
 
   function buildWhatsAppMessage(): string {
-    const name = fieldValue("client_name");
-    const email = fieldValue("email");
-    const business = fieldValue("business_name");
-    const website = fieldValue("website");
-    const service = fieldValue("service");
-    const estimate = fieldValue("estimate_details");
-
-    if (!name && !email && !business && !service) return DEFAULT_WHATSAPP_MESSAGE;
+    const name = value("client_name");
+    const email = value("email");
+    const business = value("business_name");
+    const website = value("website");
+    const service = value("service");
+    const estimate = value("estimate_details");
+    if (!name && !email && !business && !service) return "Hi! I'd like to chat about getting a website.";
 
     const intro = `Hi, I'm${name ? ` ${name}` : ""}${business ? ` from ${business}` : ""}.`;
     const details: string[] = [];
@@ -657,15 +419,13 @@ const serviceOptions = [
     if (website) details.push(`Existing site: ${website}.`);
     if (estimate) details.push(`Estimate: ${estimate}.`);
     if (email) details.push(`My email is ${email}.`);
-
     return [intro, ...details].join(" ");
   }
 
   whatsappLink?.addEventListener("click", (e) => {
     e.preventDefault();
-    const text = buildWhatsAppMessage();
     window.open(
-      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`,
+      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildWhatsAppMessage())}`,
       "_blank",
       "noopener,noreferrer"
     );
