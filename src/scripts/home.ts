@@ -69,12 +69,18 @@ const isOnScreen = (el: Element) => {
   // Footer items sit at the very bottom of the page and can never scroll above the 8% line, so they
   // reveal as soon as any part shows.
   const reveal = (el: Element) => {
-    const item = el as HTMLElement;
-    item.classList.add("in");
-    window.setTimeout(() => {
-      item.classList.remove("rv", "rv-x", "in");
-      item.style.transitionDelay = "";
-    }, 1400);
+    // a card in a swipe row brings its whole row in (covers layouts that switch after load)
+    const row = swipeRow(el);
+    const items = row ? [row, ...Array.from(row.children)] : [el];
+    items.forEach((node) => {
+      const item = node as HTMLElement;
+      if (!item.classList.contains("rv")) return;
+      item.classList.add("in");
+      window.setTimeout(() => {
+        item.classList.remove("rv", "rv-x", "in");
+        item.style.transitionDelay = "";
+      }, 1400);
+    });
   };
   const inFooter = (el: Element) => !!el.closest(".site-footer");
   inView(pending.filter((el) => !inFooter(el)), reveal, { margin: "0px 0px -8% 0px" });
