@@ -192,6 +192,31 @@ h2 1.85rem, hero h1 2.55rem. All grids use `minmax(min(Npx, 100%), 1fr)` so noth
 ever wider than the screen; no horizontal scroll at 360px. The full list of phone
 overrides is the `PHONE` media block in `canvas/Main.dc.html`; copy it.
 
+## Scored pass check (out of 100)
+
+After implementing, score the build against the reference with this rubric, at
+1440px, 390px and 360px, in Chromium **and** WebKit (iPhone profile). Take
+screenshots of each section side by side with `redesign-preview/index.html` to judge.
+Report a table: category, score / max, what lost points. Then fix everything that
+lost points and score again. Repeat until it passes.
+
+| # | Category | Max | Full marks when |
+| --- | --- | --- | --- |
+| 1 | Visual match, desktop | 15 | Every section matches the reference: layout, spacing, colours, type sizes, copy. |
+| 2 | Visual match, phone | 15 | Every section matches at 390px and 360px, including the compact rules (3 pricing blocks + tap panel, perk tiles, compact FAQ/contact). |
+| 3 | Copy accuracy | 10 | All wording exactly as in this document and the reference; no leftover old copy. |
+| 4 | Animations, desktop | 10 | Every animation listed in this document runs as described (load sequence, strands, reveals, count-down, timeline, progress line, glide, rail switch, auto-scroll phones, slider demo). |
+| 5 | Animations, iOS Safari | 15 | The same list works in WebKit / real iPhone Safari. Any one missing costs at least 3. |
+| 6 | Interactions | 10 | Nav glide + active pill, dot rail, before/after drag (mouse and finger), pricing tap panel, quote builder, FAQ accordion, service chips, work carousel at 4+ clients. |
+| 7 | Responsiveness | 5 | No horizontal scroll at 360px; nothing clipped or overlapping at any width from 360 to 1440. |
+| 8 | Functionality kept | 10 | Contact form submits via Web3Forms with validation, consent and hCaptcha; quote details reach the form; JSON-LD schemas valid; cookie consent and legal pages work. |
+| 9 | Accessibility + reduced motion | 5 | Keyboard focus visible, slider usable by keyboard, buttons/labels correct, `prefers-reduced-motion` shows everything without movement. |
+| 10 | Quality | 5 | `npm run build` passes, no console errors, Lighthouse performance/accessibility/SEO not lower than the current site. |
+|  | **Total** | **100** | |
+
+**Pass = 95 or more, with full marks in categories 5 (iOS Safari animations) and 8
+(functionality kept).** Anything below that is not done.
+
 ## Acceptance checklist
 
 - [ ] Side-by-side with `redesign-preview/index.html` at 1440, 390 and 360px: identical.
