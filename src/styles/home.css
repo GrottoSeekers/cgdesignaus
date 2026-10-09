@@ -362,12 +362,13 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .snav.on-dark .dot.active .dot-label{color:#ffffff}
 @media (max-width:1100px){.cg .snav{display:none !important}}
 /* Reduce Motion (often switched on to save battery): swap movement for dissolves, as iOS itself does.
-   Fades, line draws, the price count-down and scroll-linked fills stay, and so do two small, contained
-   effects: the work screens scrolling inside their phone frames and the light sweep on the hero button.
-   Drifting glows, floating and tilting mockups, the marquee and slide-ins stop. Everything ends fully visible. */
+   Fades, line draws, the price count-down and scroll-linked fills stay, and so do three small, contained
+   effects: the work screens scrolling inside their phone frames, the light sweep on the hero button and
+   the services strip under the hero. Drifting glows, floating and tilting mockups and slide-ins stop.
+   Everything ends fully visible. */
 @keyframes cg-fade{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion: reduce){
-.cg .blob-a,.cg .blob-b,.cg .blob-c,.cg .hero-dark .bob,.cg .hero-dark .phone,.cg .hero-dark .marquee-track,.cg .nigel-strands,.cg .ba-frame.auto .ba-before,.cg .ba-frame.auto .ba-handle,.cg .ba-arrow,.cg .tier-feature::before,.cg .step-node-final,.cg .founding::after,.cg .hero-dark .scroll-dot{animation:none !important}
+.cg .blob-a,.cg .blob-b,.cg .blob-c,.cg .hero-dark .bob,.cg .hero-dark .phone,.cg .nigel-strands,.cg .ba-frame.auto .ba-before,.cg .ba-frame.auto .ba-handle,.cg .ba-arrow,.cg .tier-feature::before,.cg .step-node-final,.cg .founding::after,.cg .hero-dark .scroll-dot{animation:none !important}
 .cg .site-header,.cg .hero-dark .line > span,.cg .hero-dark .fade,.cg .hero-dark .browser,.cg section.landed .eyebrow,.cg section.landed h2,.cg .tier-panel.show,.cg .form-success{animation-name:cg-fade !important}
 .cg .hero-dark .browser{transform:none !important}
 .cg section.landed .eyebrow::before{animation:none !important}
