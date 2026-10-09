@@ -232,6 +232,133 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg section.landed h2{animation-delay:.08s}
 .cg section.landed .eyebrow::before{animation:cg-land-line .8s .2s cubic-bezier(.16,1,.3,1) both}
 
+/* before & after drag: the frame handles pointer drags; the range input stays for keyboard users */
+.cg .ba-range{pointer-events:none}
+.cg .ba-overlay{touch-action:pan-y;cursor:ew-resize}
+/* pricing detail panel (phones only) */
+.cg .tier-detail{display:none}
+.cg .tier-panel{display:none}
+
+/* ================= PHONE: compact, fits each section without long scrolls ================= */
+@media (max-width:640px){
+.cg .wrap{padding:0 18px !important}
+.cg section{padding-top:46px !important;padding-bottom:44px !important}
+.cg .field{min-width:0}
+.cg .field input{width:100%;min-width:0;box-sizing:border-box}
+.cg #process .perks{margin-bottom:0}
+.cg .step > span[style*="uppercase"]{display:none !important}
+.cg #hero{padding-top:28px !important;padding-bottom:0 !important}
+.cg #hero .wrap{gap:36px !important;padding-bottom:48px !important}
+.cg #hero h1{font-size:2.55rem !important;margin-bottom:18px !important}
+.cg #hero p.fade{font-size:1rem !important;margin-bottom:24px !important}
+.cg #hero .btn{min-height:50px !important;padding:0 22px !important;font-size:.95rem !important}
+.cg #hero .fade[style*="margin-bottom: 44px"]{margin-bottom:28px !important}
+.cg #hero .hero-badge{margin-bottom:18px !important}
+.cg h2{font-size:1.85rem !important;line-height:1.06 !important}
+.cg .eyebrow{font-size:.7rem}
+.cg section .wrap > div:first-child[style*="margin-bottom"]{margin-bottom:24px !important;gap:10px !important}
+.cg section p[style*="max-width: 380px"]{font-size:.92rem !important}
+/* work */
+.cg #client .device{width:220px !important;border-radius:38px !important;padding:8px !important}
+.cg #client .device > span{height:430px !important;border-radius:30px !important}
+.cg #client .work-card > div{margin-top:18px !important}
+.cg #client .work-card h3{font-size:1.25rem !important}
+/* before & after */
+.cg .ba-frame{height:420px !important;border-radius:16px !important}
+.cg .ba-overlay{height:378px !important}
+.cg .ba-grip{width:44px !important;height:44px !important;left:-22px !important;margin-top:-22px !important}
+.cg .ba-facts{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:8px !important;margin-top:20px !important}
+.cg .ba-fact{padding:12px 10px !important;border-radius:14px !important}
+.cg .ba-fact > div{grid-template-columns:1fr !important;row-gap:4px !important;font-size:.8rem !important}
+.cg .ba-fact > div > span{font-size:.72rem !important}
+.cg .ba-fact .ba-arrow{display:none}
+.cg .ba-fact p{display:none}
+/* pricing: three compact blocks side by side, tap one for its details */
+.cg .founding{padding:14px 16px !important;gap:6px 14px !important;margin-bottom:16px !important;border-radius:16px !important}
+.cg .founding > span{font-size:1.6rem !important}
+.cg .founding p{font-size:.82rem !important}
+.cg .tiers{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:8px !important}
+.cg .tier{padding:14px 10px !important;gap:8px !important;border-radius:16px !important;cursor:pointer;text-align:center}
+.cg .tier-feature{padding:2px !important}
+.cg .tier-feature > div{padding:12px 8px !important;gap:8px !important;border-radius:14px !important}
+.cg .tier h3{font-size:1rem !important;margin:0 !important}
+.cg .tier p,.cg .tier .ticks,.cg .tier .btn{display:none !important}
+.cg .tier-feature > div > div:first-child > span{font-size:.55rem !important;margin-bottom:4px !important;letter-spacing:.1em !important}
+.cg .tier > div:nth-child(2),.cg .tier-feature > div > div:nth-child(2){flex-direction:column !important;align-items:center !important;gap:2px !important}
+.cg .price-count{font-size:1.55rem !important}
+.cg .rrp{font-size:.78rem !important}
+.cg .tier.sel{box-shadow:0 0 0 2px #5b2a96,0 18px 30px -20px rgba(47,17,71,.6) !important}
+.cg .tier-feature.sel{box-shadow:0 0 0 2px #b58cf0,0 18px 30px -20px rgba(47,17,71,.6) !important}
+.cg .tier:hover{transform:none !important}
+.cg .tier-detail{display:block;margin-top:12px}
+.cg .tier-panel.show{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:16px;background:#ffffff;border:1px solid rgba(20,17,26,.08);animation:cg-fade-up .45s cubic-bezier(.16,1,.3,1) both}
+.cg .tier-panel-tag{font-size:.88rem;color:rgba(20,17,26,.72)}
+.cg .tier-panel-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 10px;font-size:.8rem;color:rgba(20,17,26,.78)}
+.cg .tier-panel-list .tick{width:16px;height:16px;margin-right:6px;font-size:.6rem}
+.cg .tier-panel .btn{min-height:46px;font-size:.9rem}
+.cg #pricing p[style*="margin-top: 22px"]{margin-top:12px !important;font-size:.76rem !important}
+.cg .quote{margin-top:14px !important;border-radius:16px !important}
+.cg .quote-toggle{padding:14px 16px !important;gap:12px !important}
+.cg .quote-toggle span[style*="1.05rem"]{font-size:.95rem !important}
+.cg .quote-toggle span[style*="0.86rem"]{font-size:.76rem !important}
+.cg .quote-toggle > span:last-child{font-size:1.2rem !important}
+.cg .quote-chev{width:34px !important;height:34px !important}
+.cg .quote-body > div > div{padding:4px 16px 16px !important;gap:16px !important}
+.cg .quote-body .chip{min-height:38px;padding:0 12px;font-size:.8rem}
+.cg .quote-body div[style*="flex: 1 1 260px"]{padding:16px !important;margin-top:4px !important}
+.cg .quote-body div[style*="flex: 1 1 520px"]{padding-top:14px !important;gap:14px !important}
+/* how it works */
+.cg #process .wrap{gap:28px !important}
+.cg #process p[style*="max-width: 30em"]{font-size:.92rem !important;margin-bottom:18px !important}
+.cg .perks{display:grid !important;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px !important}
+.cg .perk{flex-direction:column !important;align-items:center !important;text-align:center;gap:8px !important;padding:12px 8px !important;border-radius:14px !important}
+.cg .perk strong{font-size:.76rem !important;line-height:1.25}
+.cg .perk span[style*="0.88rem"]{display:none !important}
+.cg .perk-icon{width:34px;height:34px;border-radius:10px}
+.cg .timeline{padding-left:48px !important}
+.cg .timeline > div:first-child{left:17px !important;top:18px !important;bottom:18px !important}
+.cg .steps{gap:10px !important}
+.cg .step{padding:14px 16px !important;border-radius:16px !important}
+.cg .step-node{left:-48px !important;top:12px !important;width:36px !important;height:36px !important;font-size:.85rem !important}
+.cg .step h3{font-size:1.05rem !important;margin:2px 0 4px !important}
+.cg .step p{font-size:.84rem !important}
+.cg .step > span[style*="uppercase"]{font-size:.62rem !important}
+/* FAQ */
+.cg #faq .wrap{gap:20px !important}
+.cg .faq-intro{position:static !important;flex-basis:100% !important}
+.cg .faq-intro p{font-size:.92rem !important;margin-bottom:14px !important}
+.cg .ask-card{padding:12px 14px !important;border-radius:14px !important}
+.cg .ask-card > span:first-child{width:36px !important;height:36px !important}
+.cg .faq-list{gap:8px !important;flex-basis:100% !important}
+.cg .faq-item{border-radius:14px}
+.cg .faq-q{min-height:52px;padding:12px 14px;gap:12px}
+.cg .faq-q > span[style*="1.08rem"]{font-size:.92rem !important}
+.cg .faq-num{display:none}
+.cg .faq-plus{width:28px;height:28px}
+.cg .faq-a p{padding:0 14px 14px !important;font-size:.86rem !important}
+/* contact */
+.cg #contact .wrap{gap:24px !important}
+.cg #contact p[style*="margin-bottom: 32px"]{font-size:.92rem !important;margin-bottom:16px !important}
+.cg .contact-ways{flex-direction:row !important;gap:8px !important;margin-bottom:0 !important}
+.cg .way{flex:1 1 0;min-width:0;padding:12px !important;gap:10px !important;border-radius:14px !important}
+.cg .way span[style*="0.86rem"],.cg .way-arrow{display:none !important}
+.cg .way strong{font-size:.8rem !important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+.cg .way > span:nth-child(2){min-width:0}
+.cg .way-icon{width:34px;height:34px;border-radius:10px}
+.cg #contact p[style*="What happens next"],.cg .next-steps,.cg #contact p[style*="uppercase"]{display:none !important}
+.cg .contact-form{padding:20px 16px !important;gap:12px !important;border-radius:20px !important}
+.cg .contact-form h3{font-size:1.2rem !important}
+.cg .contact-form > div:nth-child(2){grid-template-columns:1fr 1fr !important;gap:10px !important}
+.cg .field input{height:44px;border-radius:12px;font-size:16px}
+.cg .field label{font-size:.74rem}
+.cg .svc{min-height:40px;padding:0 14px;font-size:.84rem}
+.cg .send-btn{min-height:50px !important}
+/* footer */
+.cg .site-footer{padding-top:48px !important}
+.cg .site-footer .wrap > div:first-child{grid-template-columns:1fr 1fr !important;gap:24px 16px !important;padding-bottom:28px !important}
+.cg .site-footer .wrap > div:first-child > div:first-child{grid-column:1 / -1}
+.cg .foot-links{font-size:.84rem !important;gap:8px !important}
+}
 /* section nav rail (kept from the live site) */
 .cg .snav .dot{display:flex;align-items:center;gap:10px;text-decoration:none;color:rgba(20,17,26,0.6);position:relative}
 .cg .snav .dot-marker{width:7px;height:7px;border-radius:50%;background:rgba(20,17,26,0.2);transition:background .3s ease,transform .3s ease,box-shadow .3s ease;flex-shrink:0}
@@ -261,6 +388,7 @@ html{scroll-behavior:auto}
 /* scroll reveals (script-driven, works in every browser) */
 .rv{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1) !important}
 .rv.rv-x{transform:translateX(36px)}
+@media (max-width:640px){.rv.rv-x{transform:translateY(26px)}}
 .rv.in{opacity:1;transform:none}
 .cg .tiers.pre .rrp::after{transform:scaleX(0);transition:transform .7s .5s cubic-bezier(.65,0,.35,1)}
 .cg .tiers.pre.go .rrp::after{transform:scaleX(1)}
@@ -458,7 +586,7 @@ html{scroll-behavior:auto}
 </div>
 <div class="ba-scroll" style="position: absolute; inset: 42px 0 0 0; overflow-y: auto">
 <div style="position: sticky; top: 0; z-index: 5; height: 0">
-<div style="position: relative; height: 558px">
+<div class="ba-overlay" style="position: relative; height: 558px">
 <input type="range" class="ba-range" min="0" max="100" step="1" value="46" id="ba-range" aria-label="Compare Nigel's old Wix website with the new one">
 <div class="ba-handle" id="ba-handle" style="position: absolute; top: 0; bottom: 0; left: 46%; width: 0; pointer-events: none">
 <span style="position: absolute; top: 0; bottom: 0; left: -1px; width: 2px; background: #ffffff; box-shadow: 0 0 0 1px rgba(47,17,71,0.15), 0 0 16px rgba(91,42,150,0.45)"></span>
@@ -513,7 +641,7 @@ html{scroll-behavior:auto}
 </div>
 
 <div class="tiers" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(272px, 100%), 1fr)); gap: 24px; align-items: stretch">
-<div class="tier" style="background: #ffffff; border: 1px solid rgba(20,17,26,0.1); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 22px">
+<div class="tier " data-tier="essentials" style="background: #ffffff; border: 1px solid rgba(20,17,26,0.1); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 22px">
 <div><h3 style="font-size: 1.35rem; margin-bottom: 6px">Essentials</h3><p style="font-size: 0.9rem; color: rgba(20,17,26,0.68)">A sharp one-pager that gets you found and called.</p></div>
 <div style="display: flex; align-items: baseline; gap: 12px"><span class="sr">$250</span><span class="price-count p1" aria-hidden="true" style="--p: 250; font-family: 'Fraunces', serif; font-size: 3.2rem; font-weight: 600; line-height: 1; letter-spacing: -0.02em"></span><span class="rrp" style="font-size: 1.05rem; color: rgba(20,17,26,0.45)">$500</span></div>
 <ul class="ticks" style="list-style: none; margin: 0; padding: 22px 0 0; border-top: 1px solid rgba(20,17,26,0.1); display: flex; flex-direction: column; gap: 12px; font-size: 0.92rem; color: rgba(20,17,26,0.78); flex: 1">
@@ -521,7 +649,7 @@ html{scroll-behavior:auto}
 </ul>
 <a href="#contact" class="btn btn-ghost">Start with Essentials</a>
 </div>
-<div class="tier tier-feature" style="position: relative; border-radius: 24px; padding: 2px">
+<div class="tier tier-feature sel" data-tier="growth" style="position: relative; border-radius: 24px; padding: 2px">
 <div style="position: relative; z-index: 1; height: 100%; box-sizing: border-box; background: #2f1147; border-radius: 22px; padding: 32px; display: flex; flex-direction: column; gap: 22px; color: #f3eefa">
 <div><span style="display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #d8bff0; margin-bottom: 8px">Recommended</span><h3 style="font-size: 1.35rem; margin-bottom: 6px; color: #ffffff">Growth</h3><p style="font-size: 0.9rem; color: rgba(243,238,250,0.78)">The full shopfront — services, story and gallery.</p></div>
 <div style="display: flex; align-items: baseline; gap: 12px"><span class="sr">$420</span><span class="price-count p2" aria-hidden="true" style="--p: 420; font-family: 'Fraunces', serif; font-size: 3.2rem; font-weight: 600; line-height: 1; letter-spacing: -0.02em; color: #ffffff"></span><span class="rrp" style="font-size: 1.05rem; color: rgba(243,238,250,0.55)">$840</span></div>
@@ -531,13 +659,30 @@ html{scroll-behavior:auto}
 <a href="#contact" class="btn btn-violet">Start with Growth</a>
 </div>
 </div>
-<div class="tier" style="background: #ffffff; border: 1px solid rgba(20,17,26,0.1); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 22px">
+<div class="tier " data-tier="complete" style="background: #ffffff; border: 1px solid rgba(20,17,26,0.1); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 22px">
 <div><h3 style="font-size: 1.35rem; margin-bottom: 6px">Complete</h3><p style="font-size: 0.9rem; color: rgba(20,17,26,0.68)">Bookings and local search, done properly.</p></div>
 <div style="display: flex; align-items: baseline; gap: 12px"><span class="sr">$825</span><span class="price-count p3" aria-hidden="true" style="--p: 825; font-family: 'Fraunces', serif; font-size: 3.2rem; font-weight: 600; line-height: 1; letter-spacing: -0.02em"></span><span class="rrp" style="font-size: 1.05rem; color: rgba(20,17,26,0.45)">$1,650</span></div>
 <ul class="ticks" style="list-style: none; margin: 0; padding: 22px 0 0; border-top: 1px solid rgba(20,17,26,0.1); display: flex; flex-direction: column; gap: 12px; font-size: 0.92rem; color: rgba(20,17,26,0.78); flex: 1">
 <li><span class="tick">✓</span>Everything in Growth</li><li><span class="tick">✓</span>Online booking system</li><li><span class="tick">✓</span>Local SEO package</li><li><span class="tick">✓</span>Dedicated booking page</li>
 </ul>
 <a href="#contact" class="btn btn-ghost">Start with Complete</a>
+</div>
+</div>
+<div class="tier-detail" aria-live="polite">
+<div class="tier-panel" data-panel="essentials">
+<p class="tier-panel-tag"><strong>Essentials:</strong> A sharp one-pager that gets you found and called.</p>
+<ul class="tier-panel-list"><li><span class="tick">✓</span>Home + Contact pages</li><li><span class="tick">✓</span>Copywriting and images sourced</li><li><span class="tick">✓</span>Mobile-first build</li><li><span class="tick">✓</span>Live in under a week</li></ul>
+<a href="#contact" class="btn btn-primary">Start with Essentials</a>
+</div>
+<div class="tier-panel show" data-panel="growth">
+<p class="tier-panel-tag"><strong>Growth:</strong> The full shopfront — services, story and gallery.</p>
+<ul class="tier-panel-list"><li><span class="tick">✓</span>Everything in Essentials</li><li><span class="tick">✓</span>About, Services / Menu, Gallery</li><li><span class="tick">✓</span>Enquiry form to your inbox</li><li><span class="tick">✓</span>Google Business profile tidy-up</li></ul>
+<a href="#contact" class="btn btn-primary">Start with Growth</a>
+</div>
+<div class="tier-panel" data-panel="complete">
+<p class="tier-panel-tag"><strong>Complete:</strong> Bookings and local search, done properly.</p>
+<ul class="tier-panel-list"><li><span class="tick">✓</span>Everything in Growth</li><li><span class="tick">✓</span>Online booking system</li><li><span class="tick">✓</span>Local SEO package</li><li><span class="tick">✓</span>Dedicated booking page</li></ul>
+<a href="#contact" class="btn btn-primary">Start with Complete</a>
 </div>
 </div>
 <p style="font-size: 0.86rem; color: rgba(20,17,26,0.6); margin-top: 22px; text-align: center">Hosting and maintenance optional at $60/month. Domains registered at cost.</p>
@@ -942,13 +1087,46 @@ html{scroll-behavior:auto}
     glideTo(target);
   });
 
-  // Before & after: demo sweep until the visitor drags
+  // Before & after: demo sweep until the visitor drags (mouse or finger; vertical swipes still scroll)
   var range = document.getElementById('ba-range');
-  if (range) range.addEventListener('input', function () {
-    var v = Number(range.value);
-    document.getElementById('ba-frame').classList.remove('auto');
+  var baFrame = document.getElementById('ba-frame');
+  function setBa(v) {
+    v = Math.max(0, Math.min(100, Math.round(v)));
+    baFrame.classList.remove('auto');
+    range.value = v;
     document.getElementById('ba-handle').style.left = v + '%';
     document.getElementById('ba-before').style.clipPath = 'inset(0 ' + (100 - v) + '% 0 0)';
+  }
+  if (range && baFrame) {
+    range.addEventListener('input', function () { setBa(Number(range.value)); });
+    var drag = null;
+    var posFrom = function (e) { var r = baFrame.getBoundingClientRect(); return ((e.clientX - r.left) / r.width) * 100; };
+    baFrame.addEventListener('pointerdown', function (e) {
+      if (e.target.closest('a')) return;
+      drag = { x: e.clientX, y: e.clientY, live: e.pointerType === 'mouse' };
+      if (drag.live) { setBa(posFrom(e)); e.preventDefault(); }
+    });
+    window.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      if (!drag.live) {
+        var dx = Math.abs(e.clientX - drag.x), dy = Math.abs(e.clientY - drag.y);
+        if (dy > 8 && dy > dx) { drag = null; return; }
+        if (dx > 6) drag.live = true; else return;
+      }
+      setBa(posFrom(e));
+    }, { passive: true });
+    var end = function () { drag = null; };
+    window.addEventListener('pointerup', end);
+    window.addEventListener('pointercancel', end);
+  }
+
+  // Pricing on phones: tap a package block to see what's in it
+  document.querySelectorAll('.tier[data-tier]').forEach(function (t) {
+    t.addEventListener('click', function () {
+      var id = t.getAttribute('data-tier');
+      document.querySelectorAll('.tier[data-tier]').forEach(function (o) { o.classList.toggle('sel', o === t); });
+      document.querySelectorAll('.tier-panel').forEach(function (p) { p.classList.toggle('show', p.getAttribute('data-panel') === id); });
+    });
   });
 
   // Quote builder
