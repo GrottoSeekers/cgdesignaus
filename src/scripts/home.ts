@@ -140,22 +140,6 @@ if (heroVisual && heroText && heroVisual.getBoundingClientRect().top >= heroText
   inView(heroVisual, () => heroVisual.classList.remove("hold"), { amount: 0.25 });
 }
 
-// ---- Ambient loops (glows, marquee, auto-scrolling phones, demo sweep) pause while their
-// section is off screen, which keeps scrolling smooth on phones. ----
-const ambient = Array.from(document.querySelectorAll<HTMLElement>("#hero, #client, #before-after, #pricing, #process, #contact, .site-footer"));
-ambient.forEach((el) => {
-  const r = el.getBoundingClientRect();
-  if (r.top > vh() + 100 || r.bottom < -100) el.classList.add("offscreen");
-});
-inView(
-  ambient,
-  (el) => {
-    el.classList.remove("offscreen");
-    return () => el.classList.add("offscreen");
-  },
-  { margin: "100px 0px 100px 0px" }
-);
-
 // ---- In-page links glide to their section, then the section "lands" ----
 const easeInOutQuint = (t: number) => (t < 0.5 ? 16 * t ** 5 : 1 - Math.pow(-2 * t + 2, 5) / 2);
 let glide: { stop: () => void } | null = null;

@@ -362,11 +362,12 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .snav.on-dark .dot.active .dot-label{color:#ffffff}
 @media (max-width:1100px){.cg .snav{display:none !important}}
 /* Reduce Motion (often switched on to save battery): swap movement for dissolves, as iOS itself does.
-   Fades, line draws, the price count-down and scroll-linked fills stay; drifting, floating, tilting,
-   marquees, auto-scrolling screens, sweeps and slide-ins stop. Everything ends fully visible. */
+   Fades, line draws, the price count-down and scroll-linked fills stay, and so do two small, contained
+   effects: the work screens scrolling inside their phone frames and the light sweep on the hero button.
+   Drifting glows, floating and tilting mockups, the marquee and slide-ins stop. Everything ends fully visible. */
 @keyframes cg-fade{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion: reduce){
-.cg .blob-a,.cg .blob-b,.cg .blob-c,.cg .hero-dark .bob,.cg .hero-dark .phone,.cg .hero-dark .marquee-track,.cg .nigel-strands,.cg .scroll-col,.cg .ba-frame.auto .ba-before,.cg .ba-frame.auto .ba-handle,.cg .ba-arrow,.cg .tier-feature::before,.cg .step-node-final,.cg .hero-dark .btn-glow::after,.cg .founding::after,.cg .hero-dark .scroll-dot{animation:none !important}
+.cg .blob-a,.cg .blob-b,.cg .blob-c,.cg .hero-dark .bob,.cg .hero-dark .phone,.cg .hero-dark .marquee-track,.cg .nigel-strands,.cg .ba-frame.auto .ba-before,.cg .ba-frame.auto .ba-handle,.cg .ba-arrow,.cg .tier-feature::before,.cg .step-node-final,.cg .founding::after,.cg .hero-dark .scroll-dot{animation:none !important}
 .cg .site-header,.cg .hero-dark .line > span,.cg .hero-dark .fade,.cg .hero-dark .browser,.cg section.landed .eyebrow,.cg section.landed h2,.cg .tier-panel.show,.cg .form-success{animation-name:cg-fade !important}
 .cg .hero-dark .browser{transform:none !important}
 .cg section.landed .eyebrow::before{animation:none !important}
@@ -425,7 +426,9 @@ html{scroll-padding-top:78px}
 /* phone screens are 430px tall, so the auto-scroll reaches the true bottom of each site */
 @keyframes cg-autoscroll-sm{0%,8%{transform:translateY(0)}46%,54%{transform:translateY(calc(-100% + 430px))}92%,100%{transform:translateY(0)}}
 @media (max-width:640px){.cg #client .scroll-col{animation-name:cg-autoscroll-sm}}
-/* hero mockups wait until they scroll into view on phones (script adds .hold only when they start below the fold) */
-.cg .hero-visual.hold .browser,.cg .hero-visual.hold .nigel-strands path{animation-play-state:paused !important}
-/* ambient loops pause while their section is off screen, so the one you're looking at stays smooth */
-.cg .offscreen,.cg .offscreen *,.cg .offscreen *::before,.cg .offscreen *::after{animation-play-state:paused !important}
+/* hero mockups wait until they scroll into view on phones (script adds .hold only when they start below the fold).
+   The animations are left off and then start fresh: iOS Safari doesn't reliably resume a paused transform animation. */
+.cg .hero-visual.hold .browser{animation:none;opacity:0}
+.cg .hero-visual.hold .nigel-strands path{animation:none}
+/* each phone screen gets its own layer so iOS Safari clips the auto-scrolling screenshot to the rounded screen */
+.cg #client .device > span{-webkit-transform:translateZ(0);transform:translateZ(0);isolation:isolate}
