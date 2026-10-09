@@ -3,125 +3,39 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const year = new Date().getFullYear();
 ---
 
-<footer class="footer">
-  <div class="wrap footer-inner">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a href={base || "/"} class="logo">
-          <span class="logo-chip">
-            <img src={`${base}/logo-full.png`} alt="CG Design & Co." width="566" height="241" />
-          </span>
-        </a>
-        <p>Websites for local businesses. Randwick, NSW — working with clients worldwide.</p>
-      </div>
+<footer class="hero-dark site-footer" style="position: relative; overflow: hidden; background: #12071c; color: rgba(243,238,250,0.72); padding: 80px 0 0">
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none">
+<div class="blob-a" style="position: absolute; width: 640px; height: 640px; border-radius: 50%; background: #5b2a96; opacity: 0.5; filter: blur(120px); top: -280px; left: -160px"></div>
+<div class="blob-b" style="position: absolute; width: 520px; height: 520px; border-radius: 50%; background: #7c4fc7; opacity: 0.3; filter: blur(120px); bottom: -240px; right: -120px"></div>
+<div style="position: absolute; inset: 0; background-image: linear-gradient(rgba(243,238,250,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(243,238,250,0.05) 1px, transparent 1px); background-size: 64px 64px; -webkit-mask-image: radial-gradient(ellipse at 50% 20%, #000 15%, transparent 70%); mask-image: radial-gradient(ellipse at 50% 20%, #000 15%, transparent 70%)"></div>
+</div>
+<div class="wrap" style="position: relative">
 
-      <nav class="footer-nav" aria-label="Footer">
-        <a href="#client">Work</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#process">Process</a>
-        <a href="#faq">FAQ</a>
-      </nav>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 40px; padding: 0 0 56px">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<span style="display: inline-flex; align-self: flex-start; background: #ffffff; border-radius: 12px; padding: 9px 12px"><img src={`${base}/logo-full.png`} alt="CG Design &amp; Co." width="566" height="241" loading="lazy" style="height: 30px; width: auto; display: block"></span>
+<p style="font-size: 0.92rem; max-width: 24em">Websites for local businesses. Randwick, NSW — working with clients worldwide.</p>
+</div>
+<nav aria-label="Footer" class="foot-links" style="display: flex; flex-direction: column; gap: 12px; font-size: 0.92rem">
+<span class="foot-head">Explore</span>
+<a href="#client">Work</a><a href="#pricing">Pricing</a><a href="#process">Process</a><a href="#faq">FAQ</a>
+</nav>
+<nav aria-label="Legal" class="foot-links" style="display: flex; flex-direction: column; gap: 12px; font-size: 0.92rem">
+<span class="foot-head">Legal</span>
+<a href={`${base}/privacy-policy`}>Privacy Policy</a><a href={`${base}/terms-and-conditions`}>Terms &amp; Conditions</a><a href={`${base}/cookies-policy`}>Cookies Policy</a><a href={`${base}/refund-policy`}>Refund Policy</a>
+</nav>
+<div class="foot-links" style="display: flex; flex-direction: column; gap: 12px; font-size: 0.92rem">
+<span class="foot-head">Contact</span>
+<a href="mailto:info@cgdesignaus.com" style="color: #f3eefa">info@cgdesignaus.com</a>
+<a href="https://wa.me/447306100251" target="_blank" rel="noopener noreferrer" style="color: #f3eefa">WhatsApp +44 7306 100251</a>
+<span style="color: rgba(243,238,250,0.55)">ABN 25 672 082 550</span>
+</div>
+</div>
 
-      <nav class="footer-nav" aria-label="Legal">
-        <a href={`${base}/privacy-policy`}>Privacy Policy</a>
-        <a href={`${base}/terms-and-conditions`}>Terms &amp; Conditions</a>
-        <a href={`${base}/cookies-policy`}>Cookies Policy</a>
-        <a href={`${base}/refund-policy`}>Refund Policy</a>
-      </nav>
-
-      <div class="footer-contact">
-        <a href="mailto:info@cgdesignaus.com">info@cgdesignaus.com</a>
-        <a href="https://wa.me/447306100251" target="_blank" rel="noopener noreferrer">WhatsApp +44 7306 100251</a>
-        <span>ABN 25 672 082 550</span>
-      </div>
-    </div>
-
-    <p class="footer-copy">© {year} CG Design &amp; Co. All rights reserved.</p>
-  </div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding: 24px 0; border-top: 1px solid rgba(243,238,250,0.12); font-size: 0.82rem; color: rgba(243,238,250,0.55)">
+<span>© {year} CG Design &amp; Co. All rights reserved.</span>
+<a href="#hero" class="back-top" style="display: inline-flex; align-items: center; gap: 8px; color: rgba(243,238,250,0.75); text-decoration: none; font-weight: 600">Back to top <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"></path></svg></a>
+</div>
+</div>
+<div aria-hidden="true" class="foot-word" style="position: relative; text-align: center; font-family: 'Fraunces', serif; font-weight: 600; font-style: italic; font-size: clamp(4rem, 15vw, 15rem); line-height: 0.95; letter-spacing: -0.04em; white-space: nowrap; color: transparent; -webkit-text-stroke: 1.2px rgba(216,191,240,0.38); margin: 8px 0 0; padding-bottom: 0.14em; user-select: none">CG Design &amp; Co.</div>
 </footer>
-
-<style>
-  .footer {
-    background: var(--accent-2);
-    color: rgba(243, 238, 250, 0.76);
-    padding: clamp(44px, 5vw, 64px) 0 32px;
-  }
-
-  .footer-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 32px;
-    padding-bottom: 32px;
-    border-bottom: 1px solid rgba(243, 238, 250, 0.16);
-  }
-
-  .footer-brand .logo {
-    display: inline-flex;
-    text-decoration: none;
-    margin-bottom: 12px;
-  }
-
-  .logo-chip {
-    display: inline-flex;
-    background: #fff;
-    border-radius: 10px;
-    padding: 8px 10px;
-    line-height: 0;
-  }
-
-  .logo-chip img {
-    display: block;
-    height: 30px;
-    width: auto;
-  }
-
-  .footer-brand p {
-    margin: 0;
-    font-size: 0.9rem;
-    max-width: 32ch;
-  }
-
-  .footer-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 11px;
-    font-size: 0.9rem;
-  }
-
-  .footer-nav a {
-    color: rgba(243, 238, 250, 0.76);
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  .footer-nav a:hover {
-    color: var(--accent-on-dark);
-  }
-
-  .footer-contact {
-    display: flex;
-    flex-direction: column;
-    gap: 11px;
-    font-size: 0.9rem;
-  }
-
-  .footer-contact a {
-    color: var(--paper-on-dark);
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  .footer-contact a:hover {
-    color: var(--accent-on-dark);
-  }
-
-  .footer-contact span {
-    color: rgba(243, 238, 250, 0.6);
-  }
-
-  .footer-copy {
-    margin: 24px 0 0;
-    font-size: 0.82rem;
-    color: rgba(243, 238, 250, 0.6);
-  }
-</style>

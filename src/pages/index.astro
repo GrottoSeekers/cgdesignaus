@@ -1,5 +1,5 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import HomeLayout from "../layouts/HomeLayout.astro";
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
 import Client from "../components/Client.astro";
@@ -114,7 +114,7 @@ const businessSchema = {
 };
 ---
 
-<BaseLayout
+<HomeLayout
   title="CG Design & Co. | Custom Web Design & Development Australia"
   description="CG Design & Co. designs and builds fast, mobile-friendly websites for local businesses across Australia, with fixed pricing and a clear delivery timeline."
 >
@@ -124,7 +124,7 @@ const businessSchema = {
   </Fragment>
   <Header />
   <SectionNav />
-  <main>
+  <main id="main">
     <Hero />
     <Client />
     <BeforeAfter />
@@ -135,4 +135,4 @@ const businessSchema = {
   </main>
   <Footer />
   <CookieConsent />
-</BaseLayout>
+</HomeLayout>

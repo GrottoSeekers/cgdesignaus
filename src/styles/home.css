@@ -1,0 +1,399 @@
+a{color:#5b2695}a:hover{color:#2f1147}
+.cg h1,.cg h2,.cg h3{font-family:"Fraunces",Georgia,serif;letter-spacing:-0.01em;color:#14111a;margin:0}
+.cg p{margin:0}
+.cg .wrap{max-width:1200px;margin:0 auto;padding:0 24px;box-sizing:border-box}
+.cg .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:0.78rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#2f1147}
+.cg .eyebrow::before{content:"";width:22px;height:1px;background:#2f1147}
+.cg .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 28px;border-radius:999px;font-weight:700;font-size:0.95rem;text-decoration:none;border:1.5px solid transparent;white-space:nowrap;box-sizing:border-box}
+.cg .btn-primary{background:#5b2a96;color:#fff}
+.cg .btn-primary:hover{background:#4a2280;color:#fff}
+.cg .btn-ghost{background:transparent;border-color:rgba(20,17,26,0.22);color:#14111a}
+.cg .btn-ghost:hover{border-color:#2f1147;color:#2f1147}
+.cg .btn-dark{background:#2f1147;color:#f3eefa}
+.cg .btn-violet{background:#7c4fc7;color:#fff}
+.cg details summary{list-style:none;cursor:pointer}
+.cg details summary::-webkit-details-marker{display:none}
+.cg details[open] .faq-icon{transform:rotate(180deg)}
+@media (max-width:800px){.cg .nav-links,.cg .nav-cta{display:none !important}.cg .menu-btn{display:flex !important}}
+/* ---------- Elevated hero + motion ---------- */
+@keyframes cg-rise{from{opacity:0;transform:translateY(110%)}to{opacity:1;transform:none}}
+@keyframes cg-fade-up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes cg-drift-a{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-80px,60px) scale(1.15)}}
+@keyframes cg-drift-b{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(90px,-50px) scale(0.9)}}
+@keyframes cg-drift-c{0%,100%{transform:translate(0,0)}50%{transform:translate(-40px,-70px)}}
+@keyframes cg-shimmer{to{background-position:200% center}}
+@keyframes cg-draw{to{stroke-dashoffset:0}}
+@keyframes cg-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes cg-float-sm{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-10px) rotate(-2deg)}}
+@keyframes cg-tilt-in{from{opacity:0;transform:perspective(1400px) rotateY(-22deg) rotateX(8deg) translateY(40px)}to{opacity:1;transform:perspective(1400px) rotateY(-9deg) rotateX(4deg)}}
+@keyframes cg-pop{0%{opacity:0;transform:scale(.6) translateY(10px)}70%{opacity:1;transform:scale(1.05)}100%{opacity:1;transform:none}}
+@keyframes cg-marquee{to{transform:translateX(-50%)}}
+@keyframes cg-shine{0%,60%{transform:translateX(-120%) skewX(-20deg)}100%{transform:translateX(220%) skewX(-20deg)}}
+@keyframes cg-pulse{0%{box-shadow:0 0 0 0 rgba(124,214,140,.6)}100%{box-shadow:0 0 0 10px rgba(124,214,140,0)}}
+@keyframes cg-scroll-dot{0%{transform:translateY(0);opacity:1}80%{transform:translateY(12px);opacity:0}100%{opacity:0}}
+/* Nigel's hair strands (same paths/timing as the live site): draw in on first load, then sway */
+@keyframes nigel-draw{to{stroke-dashoffset:0}}
+@keyframes nigel-sway{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-2%) rotate(-1.2deg)}}
+.cg .nigel-strands{position:absolute;pointer-events:none;overflow:visible;transform-origin:70% 50%;animation:nigel-sway 9s ease-in-out infinite}
+.cg .nigel-strands path{animation:nigel-draw 3.2s cubic-bezier(.65,0,.35,1) forwards}
+@keyframes cg-badge-sheen{0%{transform:translateX(-120%) skewX(-20deg)}100%{transform:translateX(420%) skewX(-20deg)}}
+@media (max-width:560px){.cg .hero-badge{font-size:.66rem !important;letter-spacing:.1em !important;gap:9px !important;white-space:nowrap;padding:7px 14px 7px 10px !important}.cg .hero-stat{font-size:1.5rem !important;white-space:nowrap}}
+.cg .hero-badge::after{content:"";position:absolute;top:0;left:0;width:25%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);animation:cg-badge-sheen 1.6s .9s cubic-bezier(.65,0,.35,1) both}
+.cg .hero-dark .line{display:block;overflow:hidden;padding-bottom:.06em}
+.cg .hero-dark .line > span{display:inline-block;animation:cg-rise 1s cubic-bezier(.16,1,.3,1) both}
+.cg .hero-dark .fade{animation:cg-fade-up .9s cubic-bezier(.16,1,.3,1) both}
+.cg .hero-dark .shimmer{background:linear-gradient(90deg,#d8bff0 0%,#ffffff 25%,#b58cf0 50%,#ffffff 75%,#d8bff0 100%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:cg-shimmer 6s linear infinite}
+.cg .hero-dark .underline path{stroke-dasharray:420;stroke-dashoffset:420;animation:cg-draw 1.2s 1.1s cubic-bezier(.65,0,.35,1) forwards}
+.cg .hero-dark .blob-a{animation:cg-drift-a 16s ease-in-out infinite}
+.cg .hero-dark .blob-b{animation:cg-drift-b 19s ease-in-out infinite}
+.cg .hero-dark .blob-c{animation:cg-drift-c 13s ease-in-out infinite}
+.cg .hero-dark .browser{animation:cg-tilt-in 1.4s .3s cubic-bezier(.16,1,.3,1) both;transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.cg .hero-dark .browser:hover{transform:perspective(1400px) rotateY(0) rotateX(0) translateY(-6px)}
+.cg .hero-dark .bob{animation:cg-float 7s ease-in-out infinite}
+.cg .hero-dark .phone{animation:cg-float-sm 6s 1s ease-in-out infinite}
+.cg .hero-dark .chip{animation:cg-pop .7s cubic-bezier(.16,1,.3,1) both}
+.cg .hero-dark .marquee-track{animation:cg-marquee 32s linear infinite}
+.cg .hero-dark .btn-glow{position:relative;overflow:hidden;background:#7c4fc7;color:#fff;box-shadow:0 18px 40px -14px rgba(124,79,199,.9)}
+.cg .hero-dark .btn-glow:hover{background:#9061d8;color:#fff;transform:translateY(-2px)}
+.cg .hero-dark .btn-glow::after{content:"";position:absolute;top:0;left:0;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);animation:cg-shine 3.6s 2s ease-in-out infinite}
+.cg .hero-dark .btn-line{border-color:rgba(243,238,250,.3);color:#f3eefa}
+.cg .hero-dark .btn-line:hover{border-color:#f3eefa;color:#fff;background:rgba(255,255,255,.06)}
+.cg .hero-dark .live-dot{animation:cg-pulse 1.8s ease-out infinite}
+.cg .hero-dark .scroll-dot{animation:cg-scroll-dot 1.8s ease-in-out infinite}
+.cg .btn{transition:transform .25s cubic-bezier(.16,1,.3,1),background .25s,border-color .25s,color .2s,box-shadow .25s}
+/* scroll-driven reveals for every section below the hero */
+
+.cg #pricing .tiers > div,.cg #process .steps > div{transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s}
+.cg #pricing .tiers > div:hover,.cg #process .steps > div:hover{transform:translateY(-6px);box-shadow:0 30px 56px -30px rgba(20,17,26,.45)}
+/* work showcase: phones auto-scroll through each live site */
+@keyframes cg-autoscroll{0%,8%{transform:translateY(0)}46%,54%{transform:translateY(calc(-100% + 540px))}92%,100%{transform:translateY(0)}}
+.cg .scroll-col{animation:cg-autoscroll 22s cubic-bezier(.45,0,.55,1) infinite;will-change:transform}
+.cg .device:hover .scroll-col{animation-play-state:paused}
+.cg .device{transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s}
+.cg .device:hover{transform:translateY(-8px);box-shadow:0 60px 90px -40px rgba(47,17,71,.55)}
+.cg .work-card a.visit{display:inline-flex;align-items:center;gap:7px;min-height:44px;font-weight:700;font-size:.9rem;color:#5b2695;text-decoration:none;transition:gap .25s}
+.cg .work-card a.visit:hover{gap:12px;color:#2f1147}
+
+/* 1–3 clients: centred grid. 4+: swipeable track, three per view, arrows + dots */
+.cg .showcase-grid{display:grid}
+.cg .showcase-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;padding:8px 0 16px}
+.cg .showcase-track::-webkit-scrollbar{display:none}
+.cg .showcase-track > .work-card{flex:0 0 calc((100% - 80px) / 3);scroll-snap-align:start}
+.cg .work-nav-btn{width:48px;height:48px;border-radius:50%;border:1px solid rgba(20,17,26,0.2);background:#ffffff;color:#14111a;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,border-color .2s,color .2s,transform .2s}
+.cg .work-nav-btn:hover:not(:disabled){background:#2f1147;border-color:#2f1147;color:#f3eefa;transform:translateY(-2px)}
+.cg .work-nav-btn:disabled{opacity:.35;cursor:default}
+.cg .work-dot{width:9px;height:9px;padding:0;border:0;border-radius:999px;background:rgba(20,17,26,0.2);cursor:pointer;transition:width .35s cubic-bezier(.16,1,.3,1),background .25s}
+.cg .work-dot.active{width:28px;background:#2f1147}
+/* phones: swipeable row instead of a tall stack; auto-scroll keeps running */
+.cg .swipe-hint{display:none}
+@media (max-width:760px){
+.cg #client{padding:72px 0 64px !important}
+.cg #client .showcase{display:flex !important;max-width:none !important;overflow-x:auto;scroll-snap-type:x mandatory;gap:16px !important;margin:0 -24px;padding:8px 24px 20px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.cg #client .showcase::-webkit-scrollbar{display:none}
+.cg #client .work-card{flex:0 0 82% !important;scroll-snap-align:center;margin-top:0 !important}
+.cg #client .device{width:248px !important}
+.cg #client .swipe-hint{display:flex}
+}
+/* before & after: the handle demos the side-to-side drag until the visitor uses it; no auto page scroll */
+@keyframes cg-sweep-clip{0%,18%{-webkit-clip-path:inset(0 54% 0 0);clip-path:inset(0 54% 0 0)}42%{-webkit-clip-path:inset(0 82% 0 0);clip-path:inset(0 82% 0 0)}70%{-webkit-clip-path:inset(0 18% 0 0);clip-path:inset(0 18% 0 0)}88%,100%{-webkit-clip-path:inset(0 54% 0 0);clip-path:inset(0 54% 0 0)}}
+@keyframes cg-sweep-handle{0%,18%{left:46%}42%{left:18%}70%{left:82%}88%,100%{left:46%}}
+.cg .ba-frame.auto .ba-before{animation:cg-sweep-clip 10s cubic-bezier(.65,0,.35,1) infinite}
+.cg .ba-frame.auto .ba-handle{animation:cg-sweep-handle 10s cubic-bezier(.65,0,.35,1) infinite}
+.cg .ba-scroll{scrollbar-width:thin;scrollbar-color:rgba(47,17,71,.35) transparent}
+.cg .ba-range{position:absolute;inset:0;z-index:5;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize}
+.cg .ba-grip{transition:transform .3s cubic-bezier(.16,1,.3,1)}
+.cg .ba-frame:hover .ba-grip{transform:scale(1.12)}
+.cg .ba-range:focus-visible ~ .ba-handle .ba-grip{outline:3px solid #5b2a96;outline-offset:3px}
+.cg .ba-fact{transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .35s,box-shadow .35s}
+.cg .ba-fact:hover{transform:translateY(-6px);border-color:rgba(91,42,150,.35);box-shadow:0 30px 56px -34px rgba(20,17,26,.4)}
+@keyframes cg-nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.cg .ba-arrow{animation:cg-nudge 1.6s ease-in-out infinite}
+
+/* pricing: prices count down to the founding price, RRP gets struck through, ticks pop in, glowing border on Growth */
+@keyframes cg-strike{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes cg-spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes cg-tick{0%{opacity:0;transform:scale(.4)}70%{opacity:1;transform:scale(1.15)}100%{opacity:1;transform:none}}
+@keyframes cg-sheen{from{transform:translateX(-100%) skewX(-20deg)}to{transform:translateX(300%) skewX(-20deg)}}
+.cg .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.cg .price-count{font-variant-numeric:tabular-nums}
+.cg .rrp{position:relative;display:inline-block}
+.cg .rrp::after{content:"";position:absolute;left:-2px;right:-2px;top:52%;height:1.5px;background:currentColor;transform-origin:left;transform:scaleX(1)}
+.cg .tick{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;margin-right:10px;border-radius:50%;background:rgba(91,42,150,.12);color:#5b2695;font-size:.7rem;font-weight:800;vertical-align:1px}
+.cg .tick-dark{background:rgba(124,79,199,.3);color:#e9dcfa}
+.cg .tier{transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s}
+.cg .tier:hover{transform:translateY(-8px);box-shadow:0 40px 70px -40px rgba(47,17,71,.55)}
+.cg .tier-feature{overflow:hidden;background:#2f1147;box-shadow:0 40px 80px -40px rgba(47,17,71,.6)}
+.cg .tier-feature::before{content:"";position:absolute;left:50%;top:50%;width:250%;aspect-ratio:1;background:conic-gradient(#2f1147 0deg,#b58cf0 70deg,#2f1147 140deg,#2f1147 360deg);transform:translate(-50%,-50%);animation:cg-spin 6s linear infinite}
+.cg .founding::after{content:"";position:absolute;top:0;left:0;width:30%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);animation:cg-sheen 5s 1s ease-in-out infinite}
+.cg .quote-chev{transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.cg .quote-chev.open{transform:rotate(180deg)}
+.cg .quote-toggle:hover .quote-chev{background:rgba(47,17,71,.18)}
+.cg .quote-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s cubic-bezier(.16,1,.3,1)}
+.cg .quote-body.open{grid-template-rows:1fr}
+.cg .chip{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(20,17,26,.18);background:#fff;font:inherit;font-size:.9rem;font-weight:600;color:rgba(20,17,26,.78);cursor:pointer;transition:background .2s,border-color .2s,color .2s,transform .15s}
+.cg .chip:hover{border-color:rgba(47,17,71,.45)}
+.cg .chip:active{transform:scale(.96)}
+.cg .chip.on{background:#2f1147;border-color:#2f1147;color:#fff}
+
+/* process: timeline line fills as you scroll, nodes pop, steps slide in */
+@keyframes cg-fill{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes cg-slide-in{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+@keyframes cg-node{0%{transform:scale(.5);opacity:0}70%{transform:scale(1.12);opacity:1}100%{transform:none;opacity:1}}
+@keyframes cg-ring{0%{box-shadow:0 0 0 0 rgba(91,42,150,.45)}100%{box-shadow:0 0 0 14px rgba(91,42,150,0)}}
+.cg .perk-icon{width:42px;height:42px;flex-shrink:0;border-radius:12px;background:rgba(91,42,150,.1);color:#5b2a96;display:flex;align-items:center;justify-content:center;transition:background .3s,color .3s,transform .3s cubic-bezier(.16,1,.3,1)}
+.cg .perk{transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s,border-color .35s}
+.cg .perk:hover{transform:translateX(6px);border-color:rgba(91,42,150,.3);box-shadow:0 24px 44px -30px rgba(47,17,71,.4)}
+.cg .perk:hover .perk-icon{background:#2f1147;color:#fff;transform:rotate(-6deg)}
+.cg .step{transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s}
+.cg .step:hover{transform:translateY(-6px);box-shadow:0 34px 60px -36px rgba(47,17,71,.5)}
+.cg .step-node-final{animation:cg-ring 2s ease-out infinite}
+@media (max-width:560px){.cg .timeline{padding-left:60px !important}.cg .step-node{left:-60px !important;width:46px !important;height:46px !important;font-size:1rem !important}.cg .timeline > div:first-child{left:22px !important}}
+
+/* FAQ: smooth accordion cards */
+.cg .faq-item{background:#ffffff;border:1px solid rgba(20,17,26,0.08);border-radius:20px;transition:border-color .3s,box-shadow .35s,transform .35s cubic-bezier(.16,1,.3,1)}
+.cg .faq-item:hover{border-color:rgba(91,42,150,.3);transform:translateY(-2px)}
+.cg .faq-item.open{border-color:rgba(91,42,150,.35);box-shadow:0 30px 56px -36px rgba(47,17,71,.45)}
+.cg .faq-q{display:flex;align-items:center;gap:18px;width:100%;min-height:68px;padding:18px 24px;border:0;background:transparent;font:inherit;color:#14111a;cursor:pointer}
+.cg .faq-num{width:32px;flex-shrink:0;font-family:"Fraunces",serif;font-size:1.05rem;font-weight:600;color:rgba(91,42,150,.55);transition:color .3s}
+.cg .faq-item.open .faq-num{color:#5b2a96}
+.cg .faq-plus{width:36px;height:36px;flex-shrink:0;border-radius:50%;background:rgba(47,17,71,.08);color:#2f1147;display:flex;align-items:center;justify-content:center;transition:transform .45s cubic-bezier(.16,1,.3,1),background .3s,color .3s}
+.cg .faq-item.open .faq-plus{transform:rotate(135deg);background:#2f1147;color:#fff}
+.cg .faq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.16,1,.3,1)}
+.cg .faq-item.open .faq-a{grid-template-rows:1fr}
+.cg .ask-card{transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s}
+.cg .ask-card:hover{transform:translateY(-4px);box-shadow:0 30px 50px -28px rgba(47,17,71,.7);color:#f3eefa}
+.cg .ask-card .ask-arrow,.cg .way .way-arrow,.cg .send-btn .send-arrow{transition:transform .3s cubic-bezier(.16,1,.3,1)}
+.cg .ask-card:hover .ask-arrow,.cg .way:hover .way-arrow,.cg .send-btn:hover .send-arrow{transform:translateX(5px)}
+@media (max-width:560px){.cg .faq-a p{padding-left:24px !important}.cg .faq-intro{position:static !important}}
+/* Contact: method cards, numbered next steps, polished form */
+.cg .way{transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .35s}
+.cg .way:hover{transform:translateX(6px);border-color:rgba(91,42,150,.3);box-shadow:0 24px 44px -30px rgba(47,17,71,.45);color:#14111a}
+.cg .way-icon{width:44px;height:44px;flex-shrink:0;border-radius:12px;background:rgba(91,42,150,.1);color:#5b2a96;display:flex;align-items:center;justify-content:center;transition:background .3s,color .3s}
+.cg .way:hover .way-icon{background:#2f1147;color:#fff}
+.cg .next-num{width:28px;height:28px;flex-shrink:0;border-radius:50%;background:#2f1147;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800}
+.cg .field{display:flex;flex-direction:column;gap:6px}
+.cg .field label{font-size:.8rem;font-weight:700;color:rgba(20,17,26,.7)}
+.cg .field input{height:50px;padding:0 16px;border-radius:14px;border:1px solid rgba(20,17,26,.16);background:#faf8fd;font:inherit;font-size:.96rem;color:#14111a;transition:border-color .2s,box-shadow .25s,background .2s}
+.cg .field input:hover{border-color:rgba(20,17,26,.3)}
+.cg .field input:focus{outline:none;background:#fff;border-color:#5b2a96;box-shadow:0 0 0 4px rgba(91,42,150,.14)}
+.cg .svc{min-height:44px;padding:0 18px;border-radius:999px;border:1px solid rgba(20,17,26,.18);background:#fff;font:inherit;font-size:.9rem;font-weight:600;color:rgba(20,17,26,.75);cursor:pointer;transition:background .2s,border-color .2s,color .2s,transform .15s}
+.cg .svc:hover{border-color:rgba(47,17,71,.45)}
+.cg .svc:active{transform:scale(.96)}
+.cg .svc.on{background:#2f1147;border-color:#2f1147;color:#fff}
+.cg .send-btn{width:100%}
+.cg .send-btn:hover{box-shadow:0 18px 40px -14px rgba(91,42,150,.85);transform:translateY(-2px)}
+
+/* footer: dark like the hero, big CTA, outlined wordmark that rises in */
+.cg .foot-head{font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#d8bff0;margin-bottom:2px}
+.cg .foot-links a{position:relative;align-self:flex-start;color:rgba(243,238,250,.72);text-decoration:none;transition:color .2s}
+.cg .foot-links a::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1px;background:#b58cf0;transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.cg .foot-links a:hover{color:#ffffff}
+.cg .foot-links a:hover::after{transform:scaleX(1)}
+.cg .back-top svg{transition:transform .3s cubic-bezier(.16,1,.3,1)}
+.cg .back-top:hover{color:#ffffff !important}
+.cg .back-top:hover svg{transform:translateY(-4px)}
+@keyframes cg-word-rise{from{opacity:0;transform:translateY(40%)}to{opacity:1;transform:none}}
+
+/* header: frosted bar, links follow the section you're in, reading-progress line */
+@keyframes cg-progress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes cg-header-in{from{opacity:0;transform:translateY(-100%)}to{opacity:1;transform:none}}
+.cg .site-header{animation:cg-header-in .7s cubic-bezier(.16,1,.3,1) both}
+.cg .nav-link{position:relative;padding:9px 16px;border-radius:999px;font-size:.9rem;font-weight:600;color:rgba(20,17,26,.66);text-decoration:none;white-space:nowrap;transition:color .25s,background .35s cubic-bezier(.16,1,.3,1),box-shadow .35s}
+.cg .nav-link:hover{color:#14111a;background:rgba(47,17,71,.06)}
+.cg .nav-link.active{color:#ffffff;background:#2f1147;box-shadow:0 8px 18px -10px rgba(47,17,71,.8)}
+.cg .nav-cta{transition:transform .25s cubic-bezier(.16,1,.3,1),background .25s,box-shadow .25s}
+.cg .nav-cta:hover{background:#5b2a96 !important;color:#fff !important;transform:translateY(-2px);box-shadow:0 14px 28px -14px rgba(91,42,150,.9)}
+.cg .nav-cta .cta-arrow{transition:transform .3s cubic-bezier(.16,1,.3,1)}
+.cg .nav-cta:hover .cta-arrow{transform:translateX(4px)}
+@media (max-width:1000px){.cg .nav-link{padding:9px 11px}}
+/* pressing a link: squish, ring pulse, then the section you land on lifts into place */
+@keyframes cg-press-ring{0%{box-shadow:0 0 0 0 rgba(91,42,150,.55)}100%{box-shadow:0 0 0 12px rgba(91,42,150,0)}}
+@keyframes cg-land{0%{opacity:.35;transform:translateY(26px)}100%{opacity:1;transform:none}}
+@keyframes cg-land-line{0%{width:0}100%{width:22px}}
+.cg .nav-link:active,.cg .btn:active,.cg .nav-cta:active,.cg .snav .dot:active .dot-marker{transform:scale(.94)}
+.cg .nav-link.clicked{animation:cg-press-ring .7s ease-out}
+.cg section.landed .eyebrow,.cg section.landed h2{animation:cg-land .9s cubic-bezier(.16,1,.3,1) both}
+.cg section.landed h2{animation-delay:.08s}
+.cg section.landed .eyebrow::before{animation:cg-land-line .8s .2s cubic-bezier(.16,1,.3,1) both}
+
+/* before & after drag: the frame handles pointer drags; the range input stays for keyboard users */
+.cg .ba-range{pointer-events:none}
+.cg .ba-overlay{touch-action:pan-y;cursor:ew-resize}
+/* pricing detail panel (phones only) */
+.cg .tier-detail{display:none}
+.cg .tier-panel{display:none}
+
+/* ================= PHONE: compact, fits each section without long scrolls ================= */
+@media (max-width:640px){
+.cg .wrap{padding:0 18px !important}
+.cg section{padding-top:46px !important;padding-bottom:44px !important}
+.cg .field{min-width:0}
+.cg .field input{width:100%;min-width:0;box-sizing:border-box}
+.cg #process .perks{margin-bottom:0}
+.cg .step > span[style*="uppercase"]{display:none !important}
+.cg #hero{padding-top:28px !important;padding-bottom:0 !important}
+.cg #hero .wrap{gap:36px !important;padding-bottom:48px !important}
+.cg #hero h1{font-size:2.55rem !important;margin-bottom:18px !important}
+.cg #hero p.fade{font-size:1rem !important;margin-bottom:24px !important}
+.cg #hero .btn{min-height:50px !important;padding:0 22px !important;font-size:.95rem !important}
+.cg #hero .fade[style*="margin-bottom: 44px"]{margin-bottom:28px !important}
+.cg #hero .hero-badge{margin-bottom:18px !important}
+.cg h2{font-size:1.85rem !important;line-height:1.06 !important}
+.cg .eyebrow{font-size:.7rem}
+.cg section .wrap > div:first-child[style*="margin-bottom"]{margin-bottom:24px !important;gap:10px !important}
+.cg section p[style*="max-width: 380px"]{font-size:.92rem !important}
+/* work */
+.cg #client .device{width:220px !important;border-radius:38px !important;padding:8px !important}
+.cg #client .device > span{height:430px !important;border-radius:30px !important}
+.cg #client .work-card > div{margin-top:18px !important}
+.cg #client .work-card h3{font-size:1.25rem !important}
+/* before & after */
+.cg .ba-frame{height:420px !important;border-radius:16px !important}
+.cg .ba-overlay{height:378px !important}
+.cg .ba-grip{width:44px !important;height:44px !important;left:-22px !important;margin-top:-22px !important}
+.cg .ba-facts{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:8px !important;margin-top:20px !important}
+.cg .ba-fact{padding:12px 10px !important;border-radius:14px !important}
+.cg .ba-fact > div{grid-template-columns:1fr !important;row-gap:4px !important;font-size:.8rem !important}
+.cg .ba-fact > div > span{font-size:.72rem !important}
+.cg .ba-fact .ba-arrow{display:none}
+.cg .ba-fact p{display:none}
+/* pricing: three compact blocks side by side, tap one for its details */
+.cg .founding{padding:14px 16px !important;gap:6px 14px !important;margin-bottom:16px !important;border-radius:16px !important}
+.cg .founding > span{font-size:1.6rem !important}
+.cg .founding p{font-size:.82rem !important}
+.cg .tiers{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:8px !important}
+.cg .tier{padding:14px 10px !important;gap:8px !important;border-radius:16px !important;cursor:pointer;text-align:center}
+.cg .tier-feature{padding:2px !important}
+.cg .tier-feature > div{padding:12px 8px !important;gap:8px !important;border-radius:14px !important}
+.cg .tier h3{font-size:1rem !important;margin:0 !important}
+.cg .tier p,.cg .tier .ticks,.cg .tier .btn{display:none !important}
+.cg .tier-feature > div > div:first-child > span{font-size:.55rem !important;margin-bottom:4px !important;letter-spacing:.1em !important}
+.cg .tier > div:nth-child(2),.cg .tier-feature > div > div:nth-child(2){flex-direction:column !important;align-items:center !important;gap:2px !important}
+.cg .price-count{font-size:1.55rem !important}
+.cg .rrp{font-size:.78rem !important}
+.cg .tier.sel{box-shadow:0 0 0 2px #5b2a96,0 18px 30px -20px rgba(47,17,71,.6) !important}
+.cg .tier-feature.sel{box-shadow:0 0 0 2px #b58cf0,0 18px 30px -20px rgba(47,17,71,.6) !important}
+.cg .tier:hover{transform:none !important}
+.cg .tier-detail{display:block;margin-top:12px}
+.cg .tier-panel.show{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:16px;background:#ffffff;border:1px solid rgba(20,17,26,.08);animation:cg-fade-up .45s cubic-bezier(.16,1,.3,1) both}
+.cg .tier-panel-tag{font-size:.88rem;color:rgba(20,17,26,.72)}
+.cg .tier-panel-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 10px;font-size:.8rem;color:rgba(20,17,26,.78)}
+.cg .tier-panel-list .tick{width:16px;height:16px;margin-right:6px;font-size:.6rem}
+.cg .tier-panel .btn{min-height:46px;font-size:.9rem}
+.cg #pricing p[style*="margin-top: 22px"]{margin-top:12px !important;font-size:.76rem !important}
+.cg .quote{margin-top:14px !important;border-radius:16px !important}
+.cg .quote-toggle{padding:14px 16px !important;gap:12px !important}
+.cg .quote-toggle span[style*="1.05rem"]{font-size:.95rem !important}
+.cg .quote-toggle span[style*="0.86rem"]{font-size:.76rem !important}
+.cg .quote-toggle > span:last-child{font-size:1.2rem !important}
+.cg .quote-chev{width:34px !important;height:34px !important}
+.cg .quote-body > div > div{padding:4px 16px 16px !important;gap:16px !important}
+.cg .quote-body .chip{min-height:38px;padding:0 12px;font-size:.8rem}
+.cg .quote-body div[style*="flex: 1 1 260px"]{padding:16px !important;margin-top:4px !important}
+.cg .quote-body div[style*="flex: 1 1 520px"]{padding-top:14px !important;gap:14px !important}
+/* how it works */
+.cg #process .wrap{gap:28px !important}
+.cg #process p[style*="max-width: 30em"]{font-size:.92rem !important;margin-bottom:18px !important}
+.cg .perks{display:grid !important;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px !important}
+.cg .perk{flex-direction:column !important;align-items:center !important;text-align:center;gap:8px !important;padding:12px 8px !important;border-radius:14px !important}
+.cg .perk strong{font-size:.76rem !important;line-height:1.25}
+.cg .perk span[style*="0.88rem"]{display:none !important}
+.cg .perk-icon{width:34px;height:34px;border-radius:10px}
+.cg .timeline{padding-left:48px !important}
+.cg .timeline > div:first-child{left:17px !important;top:18px !important;bottom:18px !important}
+.cg .steps{gap:10px !important}
+.cg .step{padding:14px 16px !important;border-radius:16px !important}
+.cg .step-node{left:-48px !important;top:12px !important;width:36px !important;height:36px !important;font-size:.85rem !important}
+.cg .step h3{font-size:1.05rem !important;margin:2px 0 4px !important}
+.cg .step p{font-size:.84rem !important}
+.cg .step > span[style*="uppercase"]{font-size:.62rem !important}
+/* FAQ */
+.cg #faq .wrap{gap:20px !important}
+.cg .faq-intro{position:static !important;flex-basis:100% !important}
+.cg .faq-intro p{font-size:.92rem !important;margin-bottom:14px !important}
+.cg .ask-card{padding:12px 14px !important;border-radius:14px !important}
+.cg .ask-card > span:first-child{width:36px !important;height:36px !important}
+.cg .faq-list{gap:8px !important;flex-basis:100% !important}
+.cg .faq-item{border-radius:14px}
+.cg .faq-q{min-height:52px;padding:12px 14px;gap:12px}
+.cg .faq-q > span[style*="1.08rem"]{font-size:.92rem !important}
+.cg .faq-num{display:none}
+.cg .faq-plus{width:28px;height:28px}
+.cg .faq-a p{padding:0 14px 14px !important;font-size:.86rem !important}
+/* contact */
+.cg #contact .wrap{gap:24px !important}
+.cg #contact p[style*="margin-bottom: 32px"]{font-size:.92rem !important;margin-bottom:16px !important}
+.cg .contact-ways{flex-direction:row !important;gap:8px !important;margin-bottom:0 !important}
+.cg .way{flex:1 1 0;min-width:0;padding:12px !important;gap:10px !important;border-radius:14px !important}
+.cg .way span[style*="0.86rem"],.cg .way-arrow{display:none !important}
+.cg .way strong{font-size:.8rem !important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+.cg .way > span:nth-child(2){min-width:0}
+.cg .way-icon{width:34px;height:34px;border-radius:10px}
+.cg #contact p[style*="What happens next"],.cg .next-steps,.cg #contact p[style*="uppercase"]{display:none !important}
+.cg .contact-form{padding:20px 16px !important;gap:12px !important;border-radius:20px !important}
+.cg .contact-form h3{font-size:1.2rem !important}
+.cg .contact-form > div:nth-child(2){grid-template-columns:1fr 1fr !important;gap:10px !important}
+.cg .field input{height:44px;border-radius:12px;font-size:16px}
+.cg .field label{font-size:.74rem}
+.cg .svc{min-height:40px;padding:0 14px;font-size:.84rem}
+.cg .send-btn{min-height:50px !important}
+/* footer */
+.cg .site-footer{padding-top:48px !important}
+.cg .site-footer .wrap > div:first-child{grid-template-columns:1fr 1fr !important;gap:24px 16px !important;padding-bottom:28px !important}
+.cg .site-footer .wrap > div:first-child > div:first-child{grid-column:1 / -1}
+.cg .foot-links{font-size:.84rem !important;gap:8px !important}
+}
+/* section nav rail (kept from the live site) */
+.cg .snav .dot{display:flex;align-items:center;gap:10px;text-decoration:none;color:rgba(20,17,26,0.6);position:relative}
+.cg .snav .dot-marker{width:7px;height:7px;border-radius:50%;background:rgba(20,17,26,0.2);transition:background .3s ease,transform .3s ease,box-shadow .3s ease;flex-shrink:0}
+.cg .snav .dot-label{font-size:.74rem;font-weight:600;letter-spacing:.02em;white-space:nowrap;opacity:0;transform:translateX(-6px);transition:opacity .25s ease,transform .25s ease}
+.cg .snav .dot:hover .dot-label{opacity:1;transform:none}
+.cg .snav .dot:hover .dot-marker{background:#2f1147}
+.cg .snav .dot.active .dot-marker{background:#5b2a96;transform:scale(1.5);box-shadow:0 0 0 4px rgba(91,42,150,0.14)}
+.cg .snav .dot.active .dot-label{color:#14111a}
+/* over the dark hero/footer the rail flips to white so it stays visible */
+.cg .snav .snav-rail{transition:background .4s ease}
+.cg .snav .dot-label{transition:opacity .25s ease,transform .25s ease,color .4s ease}
+.cg .snav.on-dark .snav-rail{background:rgba(243,238,250,0.28) !important}
+.cg .snav.on-dark .dot{color:rgba(243,238,250,0.75)}
+.cg .snav.on-dark .dot-marker{background:rgba(243,238,250,0.5)}
+.cg .snav.on-dark .dot:hover .dot-marker{background:#ffffff}
+.cg .snav.on-dark .dot.active .dot-marker{background:#ffffff;box-shadow:0 0 0 4px rgba(255,255,255,0.22)}
+.cg .snav.on-dark .dot.active .dot-label{color:#ffffff}
+@media (max-width:1100px){.cg .snav{display:none !important}}
+@media (prefers-reduced-motion: reduce){.cg *,.cg *::before,.cg *::after{animation:none !important;transition:none !important}.cg .hero-dark .underline path,.cg .nigel-strands path{stroke-dashoffset:0 !important}}
+
+:root{color-scheme:light}
+html{scroll-behavior:auto}
+.cg .site-header{top:env(safe-area-inset-top,0px) !important}
+.cg .form-note{margin:0;padding:10px 14px;border-radius:12px;background:#f3f0f8;color:#2f1147;font-size:.86rem;font-weight:600}
+@media (max-width:760px){.cg #client .showcase{grid-template-columns:none !important}}
+.cg .foot-word{font-size:clamp(3rem,14vw,15rem) !important}
+/* scroll reveals (script-driven, works in every browser) */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1) !important}
+.rv.rv-x{transform:translateX(36px)}
+@media (max-width:640px){.rv.rv-x{transform:translateY(26px)}}
+.rv.in{opacity:1;transform:none}
+.cg .tiers.pre .rrp::after{transform:scaleX(0);transition:transform .7s .5s cubic-bezier(.65,0,.35,1)}
+.cg .tiers.pre.go .rrp::after{transform:scaleX(1)}
+.cg .ticks.pre .tick{opacity:0;transform:scale(.4);transition:opacity .4s,transform .5s cubic-bezier(.34,1.56,.64,1)}
+.cg .ticks.pre.go .tick{opacity:1;transform:none}
+.cg .scroll-bar{transition:none}
+
+/* ---------- Astro build additions (not in the preview) ---------- */
+:root{
+  --text:#14111a;--bg:#ffffff;--accent:#5b2a96;--accent-2:#2f1147;--on-accent:#ffffff;
+  --error:#c1432f;--error-soft:rgba(193,67,47,0.1);--success:#3f7d1f;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+#cookie-banner,#cookie-banner *,.drawer,.drawer *{box-sizing:border-box}
+body{margin:0;background:#ffffff}
+/* clip (not hidden) so the sticky header still sticks; older browsers clip at the viewport instead */
+.cg{overflow-x:clip}
+@supports not (overflow:clip){html,body{overflow-x:hidden}}
+.cg :focus-visible{outline:2px solid #2f1147;outline-offset:3px;border-radius:4px}
+.cg .hero-dark :focus-visible,.cg .site-footer :focus-visible{outline-color:#d8bff0}
+.cg .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+html{scroll-padding-top:78px}
+/* the FAQ intro only sticks beside the questions; once the columns stack (<920px) it would slide over them */
+@media (max-width:919px){.cg .faq-intro{position:static !important}}

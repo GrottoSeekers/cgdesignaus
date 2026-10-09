@@ -1,6 +1,8 @@
 ---
+// Dot rail on the right edge (desktop only). The active dot and the white
+// "on-dark" state are driven by src/scripts/home.ts.
 const items = [
-  { id: "client", label: "Client" },
+  { id: "client", label: "Work" },
   { id: "before-after", label: "Redesign" },
   { id: "pricing", label: "Pricing" },
   { id: "process", label: "Process" },
@@ -9,111 +11,9 @@ const items = [
 ];
 ---
 
-<nav class="section-nav" aria-label="Page sections">
-  <div class="rail"></div>
-  {items.map((item) => (
-    <a href={`#${item.id}`} class="dot" data-section={item.id}>
-      <span class="dot-marker"></span>
-      <span class="dot-label">{item.label}</span>
-    </a>
-  ))}
+<nav class="snav" id="snav" aria-label="Page sections" style="position: fixed; right: 28px; top: 50%; transform: translateY(-50%); z-index: 40; display: flex; flex-direction: column; align-items: center; gap: 18px">
+<div aria-hidden="true" class="snav-rail" style="position: absolute; top: 6px; bottom: 6px; left: 3px; width: 1px; background: rgba(20,17,26,0.1); z-index: -1"></div>
+{items.map((item, i) => (
+<a href={`#${item.id}`} class:list={["dot", { active: i === 0 }]} data-section={item.id}><span class="dot-marker"></span><span class="dot-label">{item.label}</span></a>
+))}
 </nav>
-
-<style>
-  .section-nav {
-    position: fixed;
-    right: 28px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 40;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 18px;
-  }
-
-  .rail {
-    position: absolute;
-    top: 6px;
-    bottom: 6px;
-    left: 3px;
-    width: 1px;
-    background: var(--line);
-    z-index: -1;
-  }
-
-  .dot {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: var(--text-faint);
-    position: relative;
-  }
-
-  .dot-marker {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--line-strong);
-    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    flex-shrink: 0;
-  }
-
-  .dot-label {
-    font-size: 0.74rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-    opacity: 0;
-    transform: translateX(-6px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
-  }
-
-  .dot:hover .dot-label {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  .dot:hover .dot-marker {
-    background: var(--accent-2);
-  }
-
-  .dot.active .dot-marker {
-    background: var(--accent);
-    transform: scale(1.5);
-    box-shadow: 0 0 0 4px var(--accent-soft);
-  }
-
-  .dot.active .dot-label {
-    color: var(--text);
-  }
-
-  @media (max-width: 1100px) {
-    .section-nav {
-      display: none;
-    }
-  }
-</style>
-
-<script>
-  const dots = document.querySelectorAll<HTMLAnchorElement>(".section-nav .dot");
-  const sections = Array.from(dots)
-    .map((dot) => document.getElementById(dot.dataset.section || ""))
-    .filter((el): el is HTMLElement => Boolean(el));
-
-  const setActive = (id: string) => {
-    dots.forEach((dot) => dot.classList.toggle("active", dot.dataset.section === id));
-  };
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) setActive(entry.target.id);
-      });
-    },
-    { rootMargin: "-45% 0px -45% 0px" }
-  );
-
-  sections.forEach((section) => observer.observe(section));
-</script>

@@ -1,6 +1,5 @@
 ---
-import Icon from "./Icon.astro";
-
+// One list feeds both the accordion and the FAQPage JSON-LD in pages/index.astro.
 export const faqs = [
   {
     q: "How long does it take?",
@@ -24,181 +23,52 @@ export const faqs = [
   },
   {
     q: "Do you only work with Australian businesses?",
-    a: "No. We're based in Sydney and most of our clients are Australian, but the whole process is remote — brief, drafts, feedback and launch all happen over WhatsApp, email and video. We've set up hours that overlap with the UK, US and Europe, and we invoice in your local currency.",
+    a: "Not at all. As you can see from our work, we're worldwide — we've worked with clients in Indonesia and the UK, with more to come. Everything happens over WhatsApp, email and video.",
   },
 ];
 ---
 
-<section class="section section-alt" id="faq">
-  <div class="wrap faq-wrap">
-    <div class="faq-intro reveal">
-      <span class="eyebrow">FAQ</span>
-      <h2>Good questions, honest answers.</h2>
-      <p>Anything else, just ask — we answer WhatsApp faster than email.</p>
-      <a href="#contact" class="arrow-link">
-        Ask a question
-        <Icon name="arrow-right" class="arrow-link-icon" />
-      </a>
-    </div>
-
-    <div class="faq-list reveal">
-      {faqs.map((item, i) => (
-        <details class="faq-item" open={i === 0}>
-          <summary>
-            <span class="faq-q">{item.q}</span>
-            <span class="faq-icon" aria-hidden="true">
-              <Icon name="chevron-down" />
-            </span>
-          </summary>
-          <div class="faq-panel">
-            <p>{item.a}</p>
-          </div>
-        </details>
-      ))}
-    </div>
-  </div>
+<section id="faq" style="padding: 112px 0 104px; background: #f3f0f8; border-top: 1px solid rgba(20,17,26,0.1); border-bottom: 1px solid rgba(20,17,26,0.1)">
+<div class="wrap" style="display: flex; flex-wrap: wrap; gap: 56px 72px; align-items: flex-start">
+<div class="faq-intro" style="flex: 1 1 320px; position: sticky; top: 100px">
+<span class="eyebrow">FAQ</span>
+<h2 style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin: 16px 0 18px">The questions you're <em style="font-style: italic; font-weight: 600; color: #5b2a96">probably asking.</em></h2>
+<p style="color: rgba(20,17,26,0.68); font-size: 1.02rem; margin-bottom: 28px">Anything else, just ask — we answer WhatsApp faster than email.</p>
+<a href="https://wa.me/447306100251" target="_blank" rel="noopener noreferrer" class="ask-card" style="display: flex; align-items: center; gap: 16px; padding: 18px 20px; border-radius: 20px; background: #2f1147; color: #f3eefa; text-decoration: none; max-width: 380px">
+<span style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; background: rgba(255,255,255,0.1); color: #d8bff0; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.6-4.8A8.5 8.5 0 1 1 7.8 19.4z"></path></svg></span>
+<span style="display: flex; flex-direction: column; flex: 1; line-height: 1.35"><strong style="color: #ffffff; font-size: 1rem">Ask a question</strong><span style="font-size: 0.84rem; color: rgba(243,238,250,0.7)">Message us on WhatsApp</span></span>
+<svg class="ask-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+</a>
+</div>
+<div class="faq-list" style="flex: 1.4 1 480px; display: flex; flex-direction: column; gap: 12px">
+{faqs.map((item, i) => (
+<div class:list={["faq-item", { open: i === 0 }]}>
+<button type="button" class="faq-q" aria-expanded={i === 0 ? "true" : "false"} aria-controls={`faq-a-${i}`} id={`faq-q-${i}`}>
+<span class="faq-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+<span style="flex: 1; font-weight: 700; font-size: 1.08rem; text-align: left">{item.q}</span>
+<span class="faq-plus" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></span>
+</button>
+<div class="faq-a" id={`faq-a-${i}`} role="region" aria-labelledby={`faq-q-${i}`}><div style="overflow: hidden"><p style="padding: 0 24px 22px 74px; color: rgba(20,17,26,0.72); font-size: 0.96rem">{item.a}</p></div></div>
+</div>
+))}
+</div>
+</div>
 </section>
 
-<style>
-  .faq-wrap {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: clamp(32px, 5vw, 64px);
-    align-items: start;
-  }
-
-  .faq-intro p {
-    color: var(--text-dim);
-    margin: 0 0 20px;
-  }
-
-  .arrow-link-icon {
-    width: 15px;
-    height: 15px;
-  }
-
-  .faq-list {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .faq-item {
-    border-bottom: 1px solid rgba(20, 17, 26, 0.14);
-  }
-
-  .faq-item summary {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    min-height: 60px;
-    padding: 16px 0;
-    list-style: none;
-  }
-
-  .faq-item summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .faq-q {
-    font-family: "Fraunces", serif;
-    font-weight: 600;
-    font-size: 1.05rem;
-    letter-spacing: -0.01em;
-  }
-
-  .faq-icon {
-    width: 30px;
-    height: 30px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    border: 1.5px solid rgba(20, 17, 26, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent-2);
-    transition: transform 0.3s var(--ease);
-  }
-
-  .faq-icon svg {
-    width: 15px;
-    height: 15px;
-  }
-
-  .faq-item[open] .faq-icon {
-    transform: rotate(180deg);
-  }
-
-  .faq-panel {
-    overflow: hidden;
-  }
-
-  .faq-panel p {
-    margin: 0 0 18px;
-    color: rgba(20, 17, 26, 0.72);
-    font-size: 0.94rem;
-    max-width: 60ch;
-  }
-</style>
-
 <script>
-  import { animate } from "motion";
-  import { prefersReducedMotion } from "../lib/motion-utils.js";
-
-  const EASE = [0.22, 1, 0.36, 1];
-
-  document.querySelectorAll(".faq-item").forEach((details) => {
-    const summary = details.querySelector("summary");
-    const panel = details.querySelector(".faq-panel");
-    if (!(details instanceof HTMLDetailsElement) || !summary || !(panel instanceof HTMLElement)) return;
-
-    let isAnimating = false;
-
-    summary.addEventListener("click", (event) => {
-      event.preventDefault();
-      if (isAnimating) return;
-      details.open ? closePanel() : openPanel();
-    });
-
-    function openPanel() {
-      details.open = true;
-
-      if (prefersReducedMotion()) {
-        panel.style.removeProperty("height");
-        panel.style.removeProperty("opacity");
-        return;
-      }
-
-      isAnimating = true;
-      const targetHeight = panel.scrollHeight;
-      animate(panel, { height: [0, `${targetHeight}px`], opacity: [0, 1] }, { duration: 0.35, ease: EASE })
-        .then(() => {
-          panel.style.removeProperty("height");
-          panel.style.removeProperty("opacity");
-          isAnimating = false;
-        });
-    }
-
-    function closePanel() {
-      if (prefersReducedMotion()) {
-        details.open = false;
-        return;
-      }
-
-      isAnimating = true;
-      const startHeight = panel.scrollHeight;
-      panel.style.height = `${startHeight}px`;
-
-      requestAnimationFrame(() => {
-        animate(panel, { height: [`${startHeight}px`, "0px"], opacity: [1, 0] }, { duration: 0.3, ease: EASE })
-          .then(() => {
-            details.open = false;
-            panel.style.removeProperty("height");
-            panel.style.removeProperty("opacity");
-            isAnimating = false;
-          });
+  // One open at a time; the height animates through grid-template-rows (CSS).
+  const items = Array.from(document.querySelectorAll<HTMLElement>(".faq-item"));
+  items.forEach((item) => {
+    item.querySelector(".faq-q")?.addEventListener("click", () => {
+      const wasOpen = item.classList.contains("open");
+      items.forEach((o) => {
+        o.classList.remove("open");
+        o.querySelector(".faq-q")?.setAttribute("aria-expanded", "false");
       });
-    }
+      if (!wasOpen) {
+        item.classList.add("open");
+        item.querySelector(".faq-q")?.setAttribute("aria-expanded", "true");
+      }
+    });
   });
 </script>
