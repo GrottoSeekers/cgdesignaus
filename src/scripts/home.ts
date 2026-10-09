@@ -29,7 +29,8 @@ inView(
   { margin: "-45% 0px -45% 0px" }
 );
 
-// ---- Fade/slide items up as they arrive. Anything already on screen at load stays put. ----
+// ---- Fade/slide items up as they arrive (a plain fade under Reduce Motion, see home.css).
+// Anything already on screen at load stays put. ----
 const ITEM_SEL =
   ".work-card, .ba-fact, .tier, .step, .perk, .faq-item, .way, .next-steps > li, .contact-form, .foot-word";
 
@@ -38,12 +39,22 @@ const isOnScreen = (el: Element) => {
   return r.top < vh() * 0.92 && r.bottom > 0;
 };
 
-if (!reduce) {
+{
+  // On phones the work cards sit in a sideways swipe row: reveal the row as one, so cards
+  // further along don't rise into place mid-swipe.
+  const swipeRow = (el: Element) => {
+    const row = el.parentElement;
+    return row && el.matches(".work-card") && getComputedStyle(row).overflowX !== "visible" ? row : null;
+  };
   const targets: HTMLElement[] = [];
   document.querySelectorAll<HTMLElement>(".cg section:not(#hero) .wrap > *, .site-footer .wrap > *").forEach((el) => {
-    if (!el.querySelector(ITEM_SEL) && !el.matches(ITEM_SEL)) targets.push(el);
+    const row = el.querySelector(ITEM_SEL) ? swipeRow(el.querySelector(ITEM_SEL)!) : null;
+    if (row === el) targets.push(el);
+    else if (!el.querySelector(ITEM_SEL) && !el.matches(ITEM_SEL)) targets.push(el);
   });
-  document.querySelectorAll<HTMLElement>(ITEM_SEL).forEach((el) => targets.push(el));
+  document.querySelectorAll<HTMLElement>(ITEM_SEL).forEach((el) => {
+    if (!swipeRow(el)) targets.push(el);
+  });
 
   const pending = targets.filter((el) => {
     if (isOnScreen(el)) return false;
@@ -55,18 +66,25 @@ if (!reduce) {
     return true;
   });
 
-  inView(
-    pending,
-    (el) => {
-      const item = el as HTMLElement;
+  // Footer items sit at the very bottom of the page and can never scroll above the 8% line, so they
+  // reveal as soon as any part shows.
+  const reveal = (el: Element) => {
+    // a card in a swipe row brings its whole row in (covers layouts that switch after load)
+    const row = swipeRow(el);
+    const items = row ? [row, ...Array.from(row.children)] : [el];
+    items.forEach((node) => {
+      const item = node as HTMLElement;
+      if (!item.classList.contains("rv")) return;
       item.classList.add("in");
       window.setTimeout(() => {
         item.classList.remove("rv", "rv-x", "in");
         item.style.transitionDelay = "";
       }, 1400);
-    },
-    { margin: "0px 0px -8% 0px" }
-  );
+    });
+  };
+  const inFooter = (el: Element) => !!el.closest(".site-footer");
+  inView(pending.filter((el) => !inFooter(el)), reveal, { margin: "0px 0px -8% 0px" });
+  inView(pending.filter(inFooter), reveal);
 }
 
 // ---- Reading-progress line, "How it works" timeline fill, dot-rail colour ----
@@ -84,7 +102,7 @@ function onScrollFx() {
   if (fill && timeline) {
     const t = timeline.getBoundingClientRect();
     const p = (vh() * 0.7 - t.top) / t.height;
-    fill.style.transform = `scaleY(${reduce ? 1 : Math.max(0, Math.min(1, p))})`;
+    fill.style.transform = `scaleY(${Math.max(0, Math.min(1, p))})`;
   }
 
   // The rail turns white while its vertical middle sits over a dark section (hero, footer).
@@ -111,6 +129,16 @@ window.addEventListener("scroll", requestFx, { passive: true });
 window.addEventListener("resize", requestFx);
 window.addEventListener("load", onScrollFx);
 onScrollFx();
+
+// ---- Hero mockups: on phones they sit below the first screen, so hold the tilt-in and the
+// hair-strand draw until they scroll into view instead of letting them finish unseen. ----
+const heroVisual = document.querySelector<HTMLElement>(".hero-visual");
+const heroText = heroVisual?.previousElementSibling;
+// stacked under the text (phones, small tablets) and mostly below the first screen
+if (heroVisual && heroText && heroVisual.getBoundingClientRect().top >= heroText.getBoundingClientRect().bottom - 1 && heroVisual.getBoundingClientRect().top > vh() * 0.5) {
+  heroVisual.classList.add("hold");
+  inView(heroVisual, () => heroVisual.classList.remove("hold"), { amount: 0.25 });
+}
 
 // ---- In-page links glide to their section, then the section "lands" ----
 const easeInOutQuint = (t: number) => (t < 0.5 ? 16 * t ** 5 : 1 - Math.pow(-2 * t + 2, 5) / 2);

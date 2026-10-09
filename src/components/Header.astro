@@ -33,7 +33,7 @@ const drawerItems = [{ id: "hero", label: "Home" }, ...navItems, { id: "contact"
   </button>
   <nav class="drawer-nav" aria-label="Mobile">
     {drawerItems.map((item) => (
-      <a href={`#${item.id}`} class="drawer-link" data-drawer-link>{item.label}</a>
+      <a href={`#${item.id}`} class="drawer-link" data-drawer-link data-section={item.id === "hero" ? undefined : item.id}>{item.label}</a>
     ))}
   </nav>
   <a href="#contact" class="drawer-cta" data-drawer-link>Free website check</a>
@@ -128,6 +128,12 @@ const drawerItems = [{ id: "hero", label: "Home" }, ...navItems, { id: "contact"
 
   .drawer-link:hover {
     color: #2f1147;
+  }
+
+  /* the section you're reading */
+  .drawer-link.active {
+    color: #5b2a96;
+    font-style: italic;
   }
 
   .drawer-cta {

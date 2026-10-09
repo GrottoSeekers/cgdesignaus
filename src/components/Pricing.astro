@@ -171,9 +171,7 @@ const chip = (o: { label: string; price: number; recurring?: boolean }) => `+${a
 
 <script>
   import { animate, inView } from "motion";
-  import { prefersReducedMotion } from "../lib/motion-utils.js";
 
-  const reduce = prefersReducedMotion();
   const aud = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
 
   // ---- Prices count down from the full price to the founding price, then the
@@ -190,7 +188,7 @@ const chip = (o: { label: string; price: number; recurring?: boolean }) => `+${a
     return r.top < window.innerHeight * 0.92 && r.bottom > 0;
   };
 
-  if (tiersEl && !reduce && !onScreen(tiersEl)) {
+  if (tiersEl && !onScreen(tiersEl)) {
     tiersEl.classList.add("pre");
     tickLists.forEach((t) => t.classList.add("pre"));
     counts.forEach((c) => (c.el.textContent = aud(c.from)));

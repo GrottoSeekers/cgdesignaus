@@ -6,9 +6,9 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .eyebrow::before{content:"";width:22px;height:1px;background:#2f1147}
 .cg .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 28px;border-radius:999px;font-weight:700;font-size:0.95rem;text-decoration:none;border:1.5px solid transparent;white-space:nowrap;box-sizing:border-box}
 .cg .btn-primary{background:#5b2a96;color:#fff}
-.cg .btn-primary:hover{background:#4a2280;color:#fff}
+@media (hover:hover){.cg .btn-primary:hover{background:#4a2280;color:#fff}}
 .cg .btn-ghost{background:transparent;border-color:rgba(20,17,26,0.22);color:#14111a}
-.cg .btn-ghost:hover{border-color:#2f1147;color:#2f1147}
+@media (hover:hover){.cg .btn-ghost:hover{border-color:#2f1147;color:#2f1147}}
 .cg .btn-dark{background:#2f1147;color:#f3eefa}
 .cg .btn-violet{background:#7c4fc7;color:#fff}
 .cg details summary{list-style:none;cursor:pointer}
@@ -48,31 +48,31 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .hero-dark .blob-b{animation:cg-drift-b 19s ease-in-out infinite}
 .cg .hero-dark .blob-c{animation:cg-drift-c 13s ease-in-out infinite}
 .cg .hero-dark .browser{animation:cg-tilt-in 1.4s .3s cubic-bezier(.16,1,.3,1) both;transition:transform .6s cubic-bezier(.16,1,.3,1)}
-.cg .hero-dark .browser:hover{transform:perspective(1400px) rotateY(0) rotateX(0) translateY(-6px)}
+@media (hover:hover){.cg .hero-dark .browser:hover{transform:perspective(1400px) rotateY(0) rotateX(0) translateY(-6px)}}
 .cg .hero-dark .bob{animation:cg-float 7s ease-in-out infinite}
 .cg .hero-dark .phone{animation:cg-float-sm 6s 1s ease-in-out infinite}
 .cg .hero-dark .chip{animation:cg-pop .7s cubic-bezier(.16,1,.3,1) both}
 .cg .hero-dark .marquee-track{animation:cg-marquee 32s linear infinite}
 .cg .hero-dark .btn-glow{position:relative;overflow:hidden;background:#7c4fc7;color:#fff;box-shadow:0 18px 40px -14px rgba(124,79,199,.9)}
-.cg .hero-dark .btn-glow:hover{background:#9061d8;color:#fff;transform:translateY(-2px)}
+@media (hover:hover){.cg .hero-dark .btn-glow:hover{background:#9061d8;color:#fff;transform:translateY(-2px)}}
 .cg .hero-dark .btn-glow::after{content:"";position:absolute;top:0;left:0;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);animation:cg-shine 3.6s 2s ease-in-out infinite}
 .cg .hero-dark .btn-line{border-color:rgba(243,238,250,.3);color:#f3eefa}
-.cg .hero-dark .btn-line:hover{border-color:#f3eefa;color:#fff;background:rgba(255,255,255,.06)}
+@media (hover:hover){.cg .hero-dark .btn-line:hover{border-color:#f3eefa;color:#fff;background:rgba(255,255,255,.06)}}
 .cg .hero-dark .live-dot{animation:cg-pulse 1.8s ease-out infinite}
 .cg .hero-dark .scroll-dot{animation:cg-scroll-dot 1.8s ease-in-out infinite}
 .cg .btn{transition:transform .25s cubic-bezier(.16,1,.3,1),background .25s,border-color .25s,color .2s,box-shadow .25s}
 /* scroll-driven reveals for every section below the hero */
 
 .cg #pricing .tiers > div,.cg #process .steps > div{transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s}
-.cg #pricing .tiers > div:hover,.cg #process .steps > div:hover{transform:translateY(-6px);box-shadow:0 30px 56px -30px rgba(20,17,26,.45)}
+@media (hover:hover){.cg #pricing .tiers > div:hover,.cg #process .steps > div:hover{transform:translateY(-6px);box-shadow:0 30px 56px -30px rgba(20,17,26,.45)}}
 /* work showcase: phones auto-scroll through each live site */
 @keyframes cg-autoscroll{0%,8%{transform:translateY(0)}46%,54%{transform:translateY(calc(-100% + 540px))}92%,100%{transform:translateY(0)}}
 .cg .scroll-col{animation:cg-autoscroll 22s cubic-bezier(.45,0,.55,1) infinite;will-change:transform}
-.cg .device:hover .scroll-col{animation-play-state:paused}
+@media (hover:hover){.cg .device:hover .scroll-col{animation-play-state:paused}}
 .cg .device{transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s}
-.cg .device:hover{transform:translateY(-8px);box-shadow:0 60px 90px -40px rgba(47,17,71,.55)}
+@media (hover:hover){.cg .device:hover{transform:translateY(-8px);box-shadow:0 60px 90px -40px rgba(47,17,71,.55)}}
 .cg .work-card a.visit{display:inline-flex;align-items:center;gap:7px;min-height:44px;font-weight:700;font-size:.9rem;color:#5b2695;text-decoration:none;transition:gap .25s}
-.cg .work-card a.visit:hover{gap:12px;color:#2f1147}
+@media (hover:hover){.cg .work-card a.visit:hover{gap:12px;color:#2f1147}}
 
 /* 1–3 clients: centred grid. 4+: swipeable track, three per view, arrows + dots */
 .cg .showcase-grid{display:grid}
@@ -80,7 +80,7 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .showcase-track::-webkit-scrollbar{display:none}
 .cg .showcase-track > .work-card{flex:0 0 calc((100% - 80px) / 3);scroll-snap-align:start}
 .cg .work-nav-btn{width:48px;height:48px;border-radius:50%;border:1px solid rgba(20,17,26,0.2);background:#ffffff;color:#14111a;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,border-color .2s,color .2s,transform .2s}
-.cg .work-nav-btn:hover:not(:disabled){background:#2f1147;border-color:#2f1147;color:#f3eefa;transform:translateY(-2px)}
+@media (hover:hover){.cg .work-nav-btn:hover:not(:disabled){background:#2f1147;border-color:#2f1147;color:#f3eefa;transform:translateY(-2px)}}
 .cg .work-nav-btn:disabled{opacity:.35;cursor:default}
 .cg .work-dot{width:9px;height:9px;padding:0;border:0;border-radius:999px;background:rgba(20,17,26,0.2);cursor:pointer;transition:width .35s cubic-bezier(.16,1,.3,1),background .25s}
 .cg .work-dot.active{width:28px;background:#2f1147}
@@ -102,10 +102,10 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .ba-scroll{scrollbar-width:thin;scrollbar-color:rgba(47,17,71,.35) transparent}
 .cg .ba-range{position:absolute;inset:0;z-index:5;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize}
 .cg .ba-grip{transition:transform .3s cubic-bezier(.16,1,.3,1)}
-.cg .ba-frame:hover .ba-grip{transform:scale(1.12)}
+@media (hover:hover){.cg .ba-frame:hover .ba-grip{transform:scale(1.12)}}
 .cg .ba-range:focus-visible ~ .ba-handle .ba-grip{outline:3px solid #5b2a96;outline-offset:3px}
 .cg .ba-fact{transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .35s,box-shadow .35s}
-.cg .ba-fact:hover{transform:translateY(-6px);border-color:rgba(91,42,150,.35);box-shadow:0 30px 56px -34px rgba(20,17,26,.4)}
+@media (hover:hover){.cg .ba-fact:hover{transform:translateY(-6px);border-color:rgba(91,42,150,.35);box-shadow:0 30px 56px -34px rgba(20,17,26,.4)}}
 @keyframes cg-nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
 .cg .ba-arrow{animation:cg-nudge 1.6s ease-in-out infinite}
 
@@ -121,17 +121,17 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .tick{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;margin-right:10px;border-radius:50%;background:rgba(91,42,150,.12);color:#5b2695;font-size:.7rem;font-weight:800;vertical-align:1px}
 .cg .tick-dark{background:rgba(124,79,199,.3);color:#e9dcfa}
 .cg .tier{transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s}
-.cg .tier:hover{transform:translateY(-8px);box-shadow:0 40px 70px -40px rgba(47,17,71,.55)}
+@media (hover:hover){.cg .tier:hover{transform:translateY(-8px);box-shadow:0 40px 70px -40px rgba(47,17,71,.55)}}
 .cg .tier-feature{overflow:hidden;background:#2f1147;box-shadow:0 40px 80px -40px rgba(47,17,71,.6)}
 .cg .tier-feature::before{content:"";position:absolute;left:50%;top:50%;width:250%;aspect-ratio:1;background:conic-gradient(#2f1147 0deg,#b58cf0 70deg,#2f1147 140deg,#2f1147 360deg);transform:translate(-50%,-50%);animation:cg-spin 6s linear infinite}
 .cg .founding::after{content:"";position:absolute;top:0;left:0;width:30%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);animation:cg-sheen 5s 1s ease-in-out infinite}
 .cg .quote-chev{transition:transform .4s cubic-bezier(.16,1,.3,1)}
 .cg .quote-chev.open{transform:rotate(180deg)}
-.cg .quote-toggle:hover .quote-chev{background:rgba(47,17,71,.18)}
+@media (hover:hover){.cg .quote-toggle:hover .quote-chev{background:rgba(47,17,71,.18)}}
 .cg .quote-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s cubic-bezier(.16,1,.3,1)}
 .cg .quote-body.open{grid-template-rows:1fr}
 .cg .chip{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(20,17,26,.18);background:#fff;font:inherit;font-size:.9rem;font-weight:600;color:rgba(20,17,26,.78);cursor:pointer;transition:background .2s,border-color .2s,color .2s,transform .15s}
-.cg .chip:hover{border-color:rgba(47,17,71,.45)}
+@media (hover:hover){.cg .chip:hover{border-color:rgba(47,17,71,.45)}}
 .cg .chip:active{transform:scale(.96)}
 .cg .chip.on{background:#2f1147;border-color:#2f1147;color:#fff}
 
@@ -142,16 +142,16 @@ a{color:#5b2695}a:hover{color:#2f1147}
 @keyframes cg-ring{0%{box-shadow:0 0 0 0 rgba(91,42,150,.45)}100%{box-shadow:0 0 0 14px rgba(91,42,150,0)}}
 .cg .perk-icon{width:42px;height:42px;flex-shrink:0;border-radius:12px;background:rgba(91,42,150,.1);color:#5b2a96;display:flex;align-items:center;justify-content:center;transition:background .3s,color .3s,transform .3s cubic-bezier(.16,1,.3,1)}
 .cg .perk{transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s,border-color .35s}
-.cg .perk:hover{transform:translateX(6px);border-color:rgba(91,42,150,.3);box-shadow:0 24px 44px -30px rgba(47,17,71,.4)}
-.cg .perk:hover .perk-icon{background:#2f1147;color:#fff;transform:rotate(-6deg)}
+@media (hover:hover){.cg .perk:hover{transform:translateX(6px);border-color:rgba(91,42,150,.3);box-shadow:0 24px 44px -30px rgba(47,17,71,.4)}}
+@media (hover:hover){.cg .perk:hover .perk-icon{background:#2f1147;color:#fff;transform:rotate(-6deg)}}
 .cg .step{transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s}
-.cg .step:hover{transform:translateY(-6px);box-shadow:0 34px 60px -36px rgba(47,17,71,.5)}
+@media (hover:hover){.cg .step:hover{transform:translateY(-6px);box-shadow:0 34px 60px -36px rgba(47,17,71,.5)}}
 .cg .step-node-final{animation:cg-ring 2s ease-out infinite}
 @media (max-width:560px){.cg .timeline{padding-left:60px !important}.cg .step-node{left:-60px !important;width:46px !important;height:46px !important;font-size:1rem !important}.cg .timeline > div:first-child{left:22px !important}}
 
 /* FAQ: smooth accordion cards */
 .cg .faq-item{background:#ffffff;border:1px solid rgba(20,17,26,0.08);border-radius:20px;transition:border-color .3s,box-shadow .35s,transform .35s cubic-bezier(.16,1,.3,1)}
-.cg .faq-item:hover{border-color:rgba(91,42,150,.3);transform:translateY(-2px)}
+@media (hover:hover){.cg .faq-item:hover{border-color:rgba(91,42,150,.3);transform:translateY(-2px)}}
 .cg .faq-item.open{border-color:rgba(91,42,150,.35);box-shadow:0 30px 56px -36px rgba(47,17,71,.45)}
 .cg .faq-q{display:flex;align-items:center;gap:18px;width:100%;min-height:68px;padding:18px 24px;border:0;background:transparent;font:inherit;color:#14111a;cursor:pointer}
 .cg .faq-num{width:32px;flex-shrink:0;font-family:"Fraunces",serif;font-size:1.05rem;font-weight:600;color:rgba(91,42,150,.55);transition:color .3s}
@@ -161,37 +161,37 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .faq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.16,1,.3,1)}
 .cg .faq-item.open .faq-a{grid-template-rows:1fr}
 .cg .ask-card{transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s}
-.cg .ask-card:hover{transform:translateY(-4px);box-shadow:0 30px 50px -28px rgba(47,17,71,.7);color:#f3eefa}
+@media (hover:hover){.cg .ask-card:hover{transform:translateY(-4px);box-shadow:0 30px 50px -28px rgba(47,17,71,.7);color:#f3eefa}}
 .cg .ask-card .ask-arrow,.cg .way .way-arrow,.cg .send-btn .send-arrow{transition:transform .3s cubic-bezier(.16,1,.3,1)}
-.cg .ask-card:hover .ask-arrow,.cg .way:hover .way-arrow,.cg .send-btn:hover .send-arrow{transform:translateX(5px)}
+@media (hover:hover){.cg .ask-card:hover .ask-arrow,.cg .way:hover .way-arrow,.cg .send-btn:hover .send-arrow{transform:translateX(5px)}}
 @media (max-width:560px){.cg .faq-a p{padding-left:24px !important}.cg .faq-intro{position:static !important}}
 /* Contact: method cards, numbered next steps, polished form */
 .cg .way{transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .35s}
-.cg .way:hover{transform:translateX(6px);border-color:rgba(91,42,150,.3);box-shadow:0 24px 44px -30px rgba(47,17,71,.45);color:#14111a}
+@media (hover:hover){.cg .way:hover{transform:translateX(6px);border-color:rgba(91,42,150,.3);box-shadow:0 24px 44px -30px rgba(47,17,71,.45);color:#14111a}}
 .cg .way-icon{width:44px;height:44px;flex-shrink:0;border-radius:12px;background:rgba(91,42,150,.1);color:#5b2a96;display:flex;align-items:center;justify-content:center;transition:background .3s,color .3s}
-.cg .way:hover .way-icon{background:#2f1147;color:#fff}
+@media (hover:hover){.cg .way:hover .way-icon{background:#2f1147;color:#fff}}
 .cg .next-num{width:28px;height:28px;flex-shrink:0;border-radius:50%;background:#2f1147;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800}
 .cg .field{display:flex;flex-direction:column;gap:6px}
 .cg .field label{font-size:.8rem;font-weight:700;color:rgba(20,17,26,.7)}
 .cg .field input{height:50px;padding:0 16px;border-radius:14px;border:1px solid rgba(20,17,26,.16);background:#faf8fd;font:inherit;font-size:.96rem;color:#14111a;transition:border-color .2s,box-shadow .25s,background .2s}
-.cg .field input:hover{border-color:rgba(20,17,26,.3)}
+@media (hover:hover){.cg .field input:hover{border-color:rgba(20,17,26,.3)}}
 .cg .field input:focus{outline:none;background:#fff;border-color:#5b2a96;box-shadow:0 0 0 4px rgba(91,42,150,.14)}
 .cg .svc{min-height:44px;padding:0 18px;border-radius:999px;border:1px solid rgba(20,17,26,.18);background:#fff;font:inherit;font-size:.9rem;font-weight:600;color:rgba(20,17,26,.75);cursor:pointer;transition:background .2s,border-color .2s,color .2s,transform .15s}
-.cg .svc:hover{border-color:rgba(47,17,71,.45)}
+@media (hover:hover){.cg .svc:hover{border-color:rgba(47,17,71,.45)}}
 .cg .svc:active{transform:scale(.96)}
 .cg .svc.on{background:#2f1147;border-color:#2f1147;color:#fff}
 .cg .send-btn{width:100%}
-.cg .send-btn:hover{box-shadow:0 18px 40px -14px rgba(91,42,150,.85);transform:translateY(-2px)}
+@media (hover:hover){.cg .send-btn:hover{box-shadow:0 18px 40px -14px rgba(91,42,150,.85);transform:translateY(-2px)}}
 
 /* footer: dark like the hero, big CTA, outlined wordmark that rises in */
 .cg .foot-head{font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#d8bff0;margin-bottom:2px}
 .cg .foot-links a{position:relative;align-self:flex-start;color:rgba(243,238,250,.72);text-decoration:none;transition:color .2s}
 .cg .foot-links a::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1px;background:#b58cf0;transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.16,1,.3,1)}
-.cg .foot-links a:hover{color:#ffffff}
-.cg .foot-links a:hover::after{transform:scaleX(1)}
+@media (hover:hover){.cg .foot-links a:hover{color:#ffffff}}
+@media (hover:hover){.cg .foot-links a:hover::after{transform:scaleX(1)}}
 .cg .back-top svg{transition:transform .3s cubic-bezier(.16,1,.3,1)}
-.cg .back-top:hover{color:#ffffff !important}
-.cg .back-top:hover svg{transform:translateY(-4px)}
+@media (hover:hover){.cg .back-top:hover{color:#ffffff !important}}
+@media (hover:hover){.cg .back-top:hover svg{transform:translateY(-4px)}}
 @keyframes cg-word-rise{from{opacity:0;transform:translateY(40%)}to{opacity:1;transform:none}}
 
 /* header: frosted bar, links follow the section you're in, reading-progress line */
@@ -199,12 +199,12 @@ a{color:#5b2695}a:hover{color:#2f1147}
 @keyframes cg-header-in{from{opacity:0;transform:translateY(-100%)}to{opacity:1;transform:none}}
 .cg .site-header{animation:cg-header-in .7s cubic-bezier(.16,1,.3,1) both}
 .cg .nav-link{position:relative;padding:9px 16px;border-radius:999px;font-size:.9rem;font-weight:600;color:rgba(20,17,26,.66);text-decoration:none;white-space:nowrap;transition:color .25s,background .35s cubic-bezier(.16,1,.3,1),box-shadow .35s}
-.cg .nav-link:hover{color:#14111a;background:rgba(47,17,71,.06)}
+@media (hover:hover){.cg .nav-link:hover{color:#14111a;background:rgba(47,17,71,.06)}}
 .cg .nav-link.active{color:#ffffff;background:#2f1147;box-shadow:0 8px 18px -10px rgba(47,17,71,.8)}
 .cg .nav-cta{transition:transform .25s cubic-bezier(.16,1,.3,1),background .25s,box-shadow .25s}
-.cg .nav-cta:hover{background:#5b2a96 !important;color:#fff !important;transform:translateY(-2px);box-shadow:0 14px 28px -14px rgba(91,42,150,.9)}
+@media (hover:hover){.cg .nav-cta:hover{background:#5b2a96 !important;color:#fff !important;transform:translateY(-2px);box-shadow:0 14px 28px -14px rgba(91,42,150,.9)}}
 .cg .nav-cta .cta-arrow{transition:transform .3s cubic-bezier(.16,1,.3,1)}
-.cg .nav-cta:hover .cta-arrow{transform:translateX(4px)}
+@media (hover:hover){.cg .nav-cta:hover .cta-arrow{transform:translateX(4px)}}
 @media (max-width:1000px){.cg .nav-link{padding:9px 11px}}
 /* pressing a link: squish, ring pulse, then the section you land on lifts into place */
 @keyframes cg-press-ring{0%{box-shadow:0 0 0 0 rgba(91,42,150,.55)}100%{box-shadow:0 0 0 12px rgba(91,42,150,0)}}
@@ -347,8 +347,8 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .snav .dot{display:flex;align-items:center;gap:10px;text-decoration:none;color:rgba(20,17,26,0.6);position:relative}
 .cg .snav .dot-marker{width:7px;height:7px;border-radius:50%;background:rgba(20,17,26,0.2);transition:background .3s ease,transform .3s ease,box-shadow .3s ease;flex-shrink:0}
 .cg .snav .dot-label{font-size:.74rem;font-weight:600;letter-spacing:.02em;white-space:nowrap;opacity:0;transform:translateX(-6px);transition:opacity .25s ease,transform .25s ease}
-.cg .snav .dot:hover .dot-label{opacity:1;transform:none}
-.cg .snav .dot:hover .dot-marker{background:#2f1147}
+@media (hover:hover){.cg .snav .dot:hover .dot-label{opacity:1;transform:none}}
+@media (hover:hover){.cg .snav .dot:hover .dot-marker{background:#2f1147}}
 .cg .snav .dot.active .dot-marker{background:#5b2a96;transform:scale(1.5);box-shadow:0 0 0 4px rgba(91,42,150,0.14)}
 .cg .snav .dot.active .dot-label{color:#14111a}
 /* over the dark hero/footer the rail flips to white so it stays visible */
@@ -357,11 +357,27 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .snav.on-dark .snav-rail{background:rgba(243,238,250,0.28) !important}
 .cg .snav.on-dark .dot{color:rgba(243,238,250,0.75)}
 .cg .snav.on-dark .dot-marker{background:rgba(243,238,250,0.5)}
-.cg .snav.on-dark .dot:hover .dot-marker{background:#ffffff}
+@media (hover:hover){.cg .snav.on-dark .dot:hover .dot-marker{background:#ffffff}}
 .cg .snav.on-dark .dot.active .dot-marker{background:#ffffff;box-shadow:0 0 0 4px rgba(255,255,255,0.22)}
 .cg .snav.on-dark .dot.active .dot-label{color:#ffffff}
 @media (max-width:1100px){.cg .snav{display:none !important}}
-@media (prefers-reduced-motion: reduce){.cg *,.cg *::before,.cg *::after{animation:none !important;transition:none !important}.cg .hero-dark .underline path,.cg .nigel-strands path{stroke-dashoffset:0 !important}}
+/* Reduce Motion (often switched on to save battery): swap movement for dissolves, as iOS itself does.
+   Fades, line draws, the price count-down and scroll-linked fills stay, and so do three small, contained
+   effects: the work screens scrolling inside their phone frames, the light sweep on the hero button and
+   the services strip under the hero. Drifting glows, floating and tilting mockups and slide-ins stop.
+   Everything ends fully visible. */
+@keyframes cg-fade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion: reduce){
+.cg .blob-a,.cg .blob-b,.cg .blob-c,.cg .hero-dark .bob,.cg .hero-dark .phone,.cg .nigel-strands,.cg .ba-frame.auto .ba-before,.cg .ba-frame.auto .ba-handle,.cg .ba-arrow,.cg .tier-feature::before,.cg .step-node-final,.cg .founding::after,.cg .hero-dark .scroll-dot{animation:none !important}
+.cg .site-header,.cg .hero-dark .line > span,.cg .hero-dark .fade,.cg .hero-dark .browser,.cg section.landed .eyebrow,.cg section.landed h2,.cg .tier-panel.show,.cg .form-success{animation-name:cg-fade !important}
+.cg .hero-dark .browser{transform:none !important}
+.cg section.landed .eyebrow::before{animation:none !important}
+.cg *,.cg *::before,.cg *::after{transition-property:opacity,color,background-color,border-color,box-shadow,grid-template-rows !important}
+.cg .rv,.cg .rv.rv-x{transform:none !important}
+.cg .ticks.pre .tick{transform:none !important}
+.cg .tiers.pre.go .rrp::after{transition-property:transform !important}
+.cg .timeline-fill{transition:none !important}
+}
 
 :root{color-scheme:light}
 html{scroll-behavior:auto}
@@ -397,3 +413,23 @@ body{margin:0;background:#ffffff}
 html{scroll-padding-top:78px}
 /* the FAQ intro only sticks beside the questions; once the columns stack (<920px) it would slide over them */
 @media (max-width:919px){.cg .faq-intro{position:static !important}}
+
+/* ---------- Phones and touch screens ---------- */
+/* hover effects are desktop-only (above); a tap gets a quick press instead of a stuck hover */
+.cg .btn,.cg .chip,.cg .svc,.cg .faq-q,.cg .quote-toggle,.cg .tier,.cg .device,.cg .way,.cg .ask-card,.cg .nav-cta,.cg .menu-btn,.cg .work-dot,.cg .work-nav-btn,.cg .perk,.cg .ba-fact,.cg .step{-webkit-tap-highlight-color:transparent}
+@media (hover:none){
+.cg .device,.cg .tier,.cg .way,.cg .ask-card,.cg .perk,.cg .ba-fact,.cg .step,.cg .faq-item{transition-duration:.18s}
+.cg .device:active{transform:scale(.97)}
+.cg .tier:active,.cg .way:active,.cg .ask-card:active,.cg .perk:active,.cg .ba-fact:active,.cg .step:active{transform:scale(.97)}
+.cg .faq-item:active{transform:scale(.99)}
+.cg .way:active .way-icon,.cg .perk:active .perk-icon{background:#2f1147;color:#fff}
+}
+/* phone screens are 430px tall, so the auto-scroll reaches the true bottom of each site */
+@keyframes cg-autoscroll-sm{0%,8%{transform:translateY(0)}46%,54%{transform:translateY(calc(-100% + 430px))}92%,100%{transform:translateY(0)}}
+@media (max-width:640px){.cg #client .scroll-col{animation-name:cg-autoscroll-sm}}
+/* hero mockups wait until they scroll into view on phones (script adds .hold only when they start below the fold).
+   The animations are left off and then start fresh: iOS Safari doesn't reliably resume a paused transform animation. */
+.cg .hero-visual.hold .browser{animation:none;opacity:0}
+.cg .hero-visual.hold .nigel-strands path{animation:none}
+/* each phone screen gets its own layer so iOS Safari clips the auto-scrolling screenshot to the rounded screen */
+.cg #client .device > span{-webkit-transform:translateZ(0);transform:translateZ(0);isolation:isolate}
