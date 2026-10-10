@@ -11,6 +11,7 @@ import Contact from "../components/Contact.astro";
 import Footer from "../components/Footer.astro";
 import SectionNav from "../components/SectionNav.astro";
 import CookieConsent from "../components/CookieConsent.astro";
+import { GOOGLE_PROFILE_URL } from "../lib/business";
 
 const faqSchema = {
   "@context": "https://schema.org",
@@ -36,6 +37,8 @@ const businessSchema = {
   logo: "https://cgdesignaus.com/logo-full.png",
   image: "https://cgdesignaus.com/logo-full.png",
   email: "info@cgdesignaus.com",
+  sameAs: [GOOGLE_PROFILE_URL],
+  hasMap: GOOGLE_PROFILE_URL,
   taxID: "25 672 082 550",
   address: {
     "@type": "PostalAddress",
