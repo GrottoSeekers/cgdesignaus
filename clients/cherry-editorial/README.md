@@ -29,16 +29,16 @@ Lilac Pamper Box, Care & Period Pack, plus the cherry-and-bow logo. More photos 
 | --- | --- | --- |
 | Whole page | Lenis momentum scroll synced to GSAP ScrollTrigger; cherry-red progress hairline | `src/scripts/main.ts` |
 | Loader → hero | Counter, curtain wipe, masked headline lines | `main.ts` |
-| Hero | Three.js ambient sequence: noise-displacement dissolve, slow zoom, pointer drift; pinned on scroll while the image settles into an inset frame | `gl.ts` `createHero` |
+| Hero | Three.js ambient sequence: noise-displacement dissolve, slow zoom; pinned on scroll while the image settles into an inset frame | `gl.ts` `createHero` |
 | Statement | Words light up as you read (SplitText, scrubbed) | `main.ts` |
-| Collection | The one product showcase: hairline-ruled grid, category filter, photo tiles as WebGL planes (wipe-up reveal, parallax, hover magnify/ripple, "View" cursor), video tiles that play only on screen, "Order" prefills the form | `main.ts`, `gl.ts` `createGallery` |
+| Collection | The one product showcase: hairline-ruled grid, category filter, plain `<img>` tiles with a clip-path reveal and gentle scroll parallax (no hover effects), video tiles that play only on screen, "Order" prefills the form | `main.ts` |
 | Marquee | Speed and direction follow scroll velocity, with skew | `main.ts` |
 | About / inquiry | Clip-path reveal, parallax depth, magnetic send button | `main.ts` |
 | Testimonials | Masked line crossfade, autoplay while in view | `main.ts` |
 | Footer | Wordmark rises letter by letter | `main.ts` |
 
-Three.js is loaded on demand (separate chunk), so the page never waits for it. WebGL falls back to plain
-images with CSS/GSAP clip reveals when unavailable, on touch devices (gallery) and below 900px.
+Three.js is loaded on demand (separate chunk), so the page never waits for it. WebGL is used only for the hero
+sequence and falls back to a CSS crossfade when unavailable. Images and product cards have no hover effects.
 `prefers-reduced-motion` turns off smooth scroll, the loader, pins and WebGL, and shows everything statically.
 
 Type: Bodoni Moda (display, optical sizes) + Inter Tight, self-hosted via Fontsource.

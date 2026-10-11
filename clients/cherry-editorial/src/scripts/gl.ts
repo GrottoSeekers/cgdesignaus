@@ -92,7 +92,6 @@ export function createHero(canvas: HTMLCanvasElement, slides: HeroSlide[], opts:
     uZoom0: { value: 0 },
     uZoom1: { value: 0 },
     uTime: { value: 0 },
-    uMouse: { value: new Vector2(0, 0) },
   };
 
   const mat = new ShaderMaterial({
@@ -102,7 +101,7 @@ export function createHero(canvas: HTMLCanvasElement, slides: HeroSlide[], opts:
       precision highp float;
       varying vec2 vUv;
       uniform sampler2D uTex0, uTex1;
-      uniform vec2 uSize0, uSize1, uRes, uMouse;
+      uniform vec2 uSize0, uSize1, uRes;
       uniform float uProgress, uZoom0, uZoom1, uTime;
       ${NOISE}
       ${COVER}
@@ -113,9 +112,8 @@ export function createHero(canvas: HTMLCanvasElement, slides: HeroSlide[], opts:
         float edge = uProgress * 1.5 - 0.25;
         float m = smoothstep(edge - 0.22, edge + 0.22, n * 0.6 + (1.0 - uv.x) * 0.25 + uv.y * 0.15);
         vec2 d = vec2(snoise(uv * 3.0 + 7.0), snoise(uv * 3.0 + 13.0)) * 0.035;
-        vec2 par = uMouse * 0.008;
-        vec2 a = zoom(cover(uv, uRes, uSize0), uZoom0) + d * uProgress + par;
-        vec2 b = zoom(cover(uv, uRes, uSize1), uZoom1) - d * (1.0 - uProgress) + par;
+        vec2 a = zoom(cover(uv, uRes, uSize0), uZoom0) + d * uProgress;
+        vec2 b = zoom(cover(uv, uRes, uSize1), uZoom1) - d * (1.0 - uProgress);
         vec3 ca = texture2D(uTex0, a).rgb;
         vec3 cb = texture2D(uTex1, b).rgb;
         vec3 col = mix(cb, ca, m);
@@ -182,9 +180,6 @@ export function createHero(canvas: HTMLCanvasElement, slides: HeroSlide[], opts:
       gsap.ticker.add(render);
       timer = window.setInterval(() => running && next(), (opts.interval ?? 7) * 1000);
     },
-    setMouse(x: number, y: number) {
-      gsapRef?.to(uniforms.uMouse.value, { x, y, duration: 1.4, ease: "power3.out" });
-    },
     setActive(on: boolean) {
       running = on;
       textures.forEach((t) => {
@@ -194,127 +189,6 @@ export function createHero(canvas: HTMLCanvasElement, slides: HeroSlide[], opts:
     },
     destroy() {
       clearInterval(timer);
-      window.removeEventListener("resize", resize);
-      renderer.dispose();
-    },
-  };
-}
-
-/* ------------------------------------------------------------------ */
-/* Gallery: planes synced to DOM frames                                */
-/* ------------------------------------------------------------------ */
-
-export type FrameState = { reveal: number; parallax: number; hover: number; mouse: { x: number; y: number } };
-
-export function createGallery(canvas: HTMLCanvasElement, frames: { el: HTMLElement; src: string; state: FrameState }[]) {
-  const renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
-  renderer.outputColorSpace = SRGBColorSpace;
-  renderer.setClearColor(0x000000, 0);
-  const scene = new Scene();
-  const camera = new OrthographicCamera(0, 1, 0, 1, -10, 10);
-  const geo = new PlaneGeometry(1, 1, 24, 24);
-  const loader = new TextureLoader();
-
-  const vertexShader = /* glsl */ `
-    uniform float uVel;
-    varying vec2 vUv;
-    void main(){
-      vUv = uv;
-      vec3 p = position;
-      p.y += sin(uv.x * 3.14159265) * uVel * 0.045;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
-    }
-  `;
-  const fragmentShader = /* glsl */ `
-    precision highp float;
-    varying vec2 vUv;
-    uniform sampler2D uTex;
-    uniform vec2 uPlane, uImg, uMouse;
-    uniform float uReveal, uParallax, uHover, uVel, uTime;
-    ${COVER}
-    void main(){
-      vec2 uv = cover(vUv, uPlane, uImg);
-      // headroom for parallax + scale-down as it reveals
-      float z = 1.0 / (1.14 + (1.0 - uReveal) * 0.22);
-      uv = (uv - 0.5) * z + 0.5;
-      uv.y += uParallax * 0.055;
-
-      // hover: gentle magnify toward the pointer + a slow liquid ripple
-      vec2 aspect = vec2(uPlane.x / uPlane.y, 1.0);
-      vec2 toM = (vUv - uMouse) * aspect;
-      float dist = length(toM);
-      float lens = smoothstep(0.55, 0.0, dist) * uHover;
-      uv -= (vUv - uMouse) * 0.06 * lens;
-      uv += normalize(toM + 1e-5) / aspect * sin(dist * 26.0 - uTime * 3.2) * 0.0035 * lens;
-
-      float shift = 0.0018 * uHover + abs(uVel) * 0.006;
-      vec3 col = vec3(
-        texture2D(uTex, uv + vec2(shift, 0.0)).r,
-        texture2D(uTex, uv).g,
-        texture2D(uTex, uv - vec2(shift, 0.0)).b
-      );
-
-      // image-mask reveal: wipes up from the bottom edge
-      float a = 1.0 - smoothstep(uReveal - 0.004, uReveal, vUv.y);
-      gl_FragColor = vec4(col * a, a);
-    }
-  `;
-
-  const items = frames.map((f) => {
-    const uniforms = {
-      uTex: { value: null as Texture | null },
-      uPlane: { value: new Vector2(1, 1) },
-      uImg: { value: new Vector2(1, 1) },
-      uMouse: { value: new Vector2(0.5, 0.5) },
-      uReveal: { value: 0 },
-      uParallax: { value: 0 },
-      uHover: { value: 0 },
-      uVel: { value: 0 },
-      uTime: { value: 0 },
-    };
-    const tex = loader.load(f.src, (t) => uniforms.uImg.value.copy(mediaSize(t)));
-    tex.colorSpace = SRGBColorSpace;
-    tex.minFilter = LinearFilter;
-    tex.generateMipmaps = false;
-    uniforms.uTex.value = tex;
-    const mesh = new Mesh(geo, new ShaderMaterial({ uniforms, vertexShader, fragmentShader, transparent: true, premultipliedAlpha: true, side: DoubleSide }));
-    scene.add(mesh);
-    return { ...f, mesh, uniforms };
-  });
-
-  let w = 0, h = 0;
-  const resize = () => {
-    w = window.innerWidth; h = window.innerHeight;
-    renderer.setSize(w, h);
-    camera.left = 0; camera.right = w; camera.top = 0; camera.bottom = h;
-    camera.updateProjectionMatrix();
-  };
-  resize();
-  window.addEventListener("resize", resize);
-
-  return {
-    render(time: number, velocity: number) {
-      for (const it of items) {
-        const r = it.el.getBoundingClientRect();
-        const visible = r.bottom > -50 && r.top < h + 50;
-        it.mesh.visible = visible;
-        if (!visible) continue;
-        // ortho camera with y pointing down: plane centred on the DOM rect
-        it.mesh.position.set(r.left + r.width / 2, r.top + r.height / 2, 0);
-        it.mesh.scale.set(r.width, -r.height, 1);
-        const u = it.uniforms;
-        u.uPlane.value.set(r.width, r.height);
-        u.uReveal.value = it.state.reveal;
-        u.uParallax.value = it.state.parallax;
-        u.uHover.value = it.state.hover;
-        u.uMouse.value.set(it.state.mouse.x, it.state.mouse.y);
-        u.uVel.value = velocity;
-        u.uTime.value = time;
-      }
-      renderer.render(scene, camera);
-    },
-    destroy() {
       window.removeEventListener("resize", resize);
       renderer.dispose();
     },

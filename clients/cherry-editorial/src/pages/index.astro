@@ -55,7 +55,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
       </div>
     </div>
 
-    <div class="cursor" aria-hidden="true"><span class="cursor-label">View</span></div>
+    <div class="cursor" aria-hidden="true"></div>
     <div class="progress" aria-hidden="true"><span></span></div>
 
     <header class="header">
@@ -125,7 +125,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
           {products.map((p) => (
             <li class="product" data-product data-category={p.category}>
               {p.image ? (
-                <div class="product-frame" data-gl-image={p.image} data-cursor="View">
+                <div class="product-frame" data-image>
                   <img src={p.image} alt={p.alt} loading="lazy" decoding="async" />
                 </div>
               ) : (
@@ -244,8 +244,6 @@ const pad = (n: number) => String(n).padStart(2, "0");
         <a class="label" href="https://cgdesignaus.com" target="_blank" rel="noopener">Website by CG Design &amp; Co.</a>
       </div>
     </footer>
-
-    <canvas class="gl-gallery" aria-hidden="true"></canvas>
 
     <script>
       import { boot } from "../scripts/main";

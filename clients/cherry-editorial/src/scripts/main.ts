@@ -2,7 +2,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import Lenis from "lenis";
-import type { FrameState, HeroSlide } from "./gl";
+import type { HeroSlide } from "./gl";
 
 function webglAvailable() {
   try {
@@ -180,9 +180,6 @@ export async function boot() {
   gsap.set(".hero-media", { clipPath: "inset(0% 0% 0% 0%)" });
 
   ScrollTrigger.create({ trigger: heroEl, start: "top top", end: "bottom top", onToggle: (s) => hero?.setActive(s.isActive) });
-  heroEl.addEventListener("pointermove", (e) => {
-    hero?.setMouse((e.clientX / innerWidth - 0.5) * 2, (0.5 - e.clientY / innerHeight) * 2);
-  });
 
   /* ---------------- Statement: words light up as you read ---------------- */
   gsap.fromTo(words.words, { opacity: 0.14 }, {
@@ -201,39 +198,18 @@ export async function boot() {
     gsap.from(el, { y: 36, opacity: 0, duration: 1.4, ease: EASE, scrollTrigger: { trigger: el, start: "top 88%", once: true } }),
   );
 
-  /* ---------------- Collection: one showcase grid, mask reveals + gentle parallax (+ WebGL hover) ---------------- */
-  const useGalleryGL = gl && finePointer && innerWidth > 900;
-  const frames = $$("[data-gl-image]").map((el) => ({
-    el,
-    src: el.dataset.glImage!,
-    state: { reveal: 0, parallax: 0, hover: 0, mouse: { x: 0.5, y: 0.5 } } as FrameState,
-  }));
-
-  // If WebGL can't start, show the plain images (already revealed state carries over).
-  const fallbackGallery = () => {
-    document.documentElement.classList.remove("gl-on");
-    frames.forEach(({ el, state }) => gsap.set(el, { clipPath: `inset(${(1 - state.reveal) * 100}% 0% 0% 0%)` }));
-    frames.forEach(({ el, state }) => gsap.to(el, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.2, ease: EASE, scrollTrigger: { trigger: el, start: "top 88%", once: true } }));
-  };
-
-  frames.forEach(({ el, state }) => {
+  /* ---------------- Collection: one showcase grid, mask reveals + gentle scroll parallax ----------------
+     Product images are plain <img> elements and stay completely still on hover. */
+  $$<HTMLElement>(".product-frame[data-image]").forEach((el) => {
     const img = $("img", el);
     const cap = $$(".product-info > *", el.closest("[data-product]")!);
-    gsap.set(cap, { opacity: 0, y: 14 });
     const trigger = { trigger: el, start: "top 88%", once: true };
-    if (useGalleryGL) {
-      gsap.to(state, { reveal: 1, duration: 1.8, ease: "expo.inOut", scrollTrigger: trigger });
-    } else {
-      gsap.fromTo(el, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: "expo.inOut", scrollTrigger: trigger });
-      gsap.fromTo(img, { scale: 1.25 }, { scale: 1, duration: 2.2, ease: EASE, scrollTrigger: trigger });
-    }
-    gsap.to(cap, { opacity: 1, y: 0, duration: 1.2, stagger: 0.08, ease: EASE, delay: 0.6, scrollTrigger: { ...trigger } });
-    ScrollTrigger.create({
-      trigger: el, start: "top bottom", end: "bottom top", scrub: true,
-      onUpdate: (s) => {
-        state.parallax = (s.progress - 0.5) * 2;
-        if (!useGalleryGL) gsap.set(img, { yPercent: -state.parallax * 4 });
-      },
+    gsap.fromTo(el, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: "expo.inOut", scrollTrigger: trigger });
+    gsap.fromTo(img, { scale: 1.12 }, { scale: 1, duration: 2, ease: EASE, scrollTrigger: trigger });
+    gsap.fromTo(cap, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 1.2, stagger: 0.08, ease: EASE, delay: 0.6, scrollTrigger: { ...trigger } });
+    gsap.fromTo(img, { yPercent: 3 }, {
+      yPercent: -3, ease: "none",
+      scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true },
     });
   });
 
@@ -242,30 +218,6 @@ export async function boot() {
     gsap.fromTo(el, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: "expo.inOut", scrollTrigger: trigger });
     const cap = $$(".product-info > *", el.closest("[data-product]")!);
     gsap.fromTo(cap, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 1.2, stagger: 0.08, ease: EASE, delay: 0.6, scrollTrigger: { ...trigger } });
-  });
-
-  if (useGalleryGL) glModule.then((m) => {
-    if (!m) return fallbackGallery();
-    try {
-      const gallery = m.createGallery($<HTMLCanvasElement>(".gl-gallery"), frames);
-      document.documentElement.classList.add("gl-on");
-      let vel = 0;
-      gsap.ticker.add((t) => {
-        const target = gsap.utils.clamp(-1, 1, (lenis?.velocity ?? 0) / 60);
-        vel += (target - vel) * 0.08;
-        gallery.render(t, vel);
-      });
-      frames.forEach(({ el, state }) => {
-        el.addEventListener("pointerenter", () => gsap.to(state, { hover: 1, duration: 0.9, ease: "power3.out" }));
-        el.addEventListener("pointerleave", () => gsap.to(state, { hover: 0, duration: 1.1, ease: "power3.out" }));
-        el.addEventListener("pointermove", (e) => {
-          const r = el.getBoundingClientRect();
-          gsap.to(state.mouse, { x: (e.clientX - r.left) / r.width, y: 1 - (e.clientY - r.top) / r.height, duration: 0.6, ease: "power3.out" });
-        });
-      });
-    } catch {
-      fallbackGallery();
-    }
   });
 
   /* ---------------- Collection filter ---------------- */
@@ -355,22 +307,10 @@ export async function boot() {
   if (finePointer) {
     document.documentElement.classList.add("has-cursor");
     const cursor = $(".cursor");
-    const label = $(".cursor-label");
     const cx = gsap.quickTo(cursor, "x", { duration: 0.5, ease: "power3.out" });
     const cy = gsap.quickTo(cursor, "y", { duration: 0.5, ease: "power3.out" });
     addEventListener("pointermove", (e) => { cx(e.clientX); cy(e.clientY); });
-    $$("[data-cursor]").forEach((el) => {
-      el.addEventListener("pointerenter", () => {
-        gsap.to(cursor, { width: 84, height: 84, margin: "-42px 0 0 -42px", duration: 0.6, ease: EASE });
-        gsap.to(label, { opacity: 1, duration: 0.4, delay: 0.1 });
-      });
-      el.addEventListener("pointerleave", () => {
-        gsap.to(cursor, { width: 10, height: 10, margin: "-5px 0 0 -5px", duration: 0.6, ease: EASE });
-        gsap.to(label, { opacity: 0, duration: 0.2 });
-      });
-    });
     $$("a, button, input, textarea, label").forEach((el) => {
-      if (el.closest("[data-cursor]")) return;
       el.addEventListener("pointerenter", () => gsap.to(cursor, { scale: 2.6, opacity: 0.35, duration: 0.4 }));
       el.addEventListener("pointerleave", () => gsap.to(cursor, { scale: 1, opacity: 1, duration: 0.4 }));
     });
