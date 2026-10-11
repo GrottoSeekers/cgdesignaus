@@ -93,7 +93,6 @@ export async function boot() {
   const lineSplits = $$("[data-lines]").map((el) => SplitText.create(el, { type: "lines", mask: "lines", linesClass: "split-line" }));
   const statement = $("[data-words]");
   const words = SplitText.create(statement, { type: "words", wordsClass: "word" });
-  const footerWord = SplitText.create(".footer-word", { type: "chars", mask: "chars" });
 
   if (reduce) {
     $(".loader")?.remove();
@@ -321,9 +320,13 @@ export async function boot() {
   ScrollTrigger.create({ trigger: ".words", start: "top 70%", end: "bottom 20%", onToggle: (s) => (s.isActive ? autoplay() : clearInterval(qTimer)) });
   gsap.from(quoteSplits[0].lines, { yPercent: 110, duration: 1.4, stagger: 0.08, ease: EASE, scrollTrigger: { trigger: ".quotes", start: "top 80%", once: true } });
 
-  /* ---------------- Footer wordmark rises letter by letter ---------------- */
-  gsap.from(footerWord.chars, {
-    yPercent: 100, ease: "none", stagger: 0.04,
+  /* ---------------- Footer wordmark rises out of a mask ---------------- */
+  gsap.fromTo(".footer-word", { clipPath: "inset(0% 0% 100% 0%)", yPercent: 35 }, {
+    clipPath: "inset(-10% -5% -10% -5%)", yPercent: 0, ease: "none",
+    scrollTrigger: { trigger: ".footer", start: "top bottom", end: "bottom bottom", scrub: true },
+  });
+  gsap.from(".footer-word img", {
+    rotate: -25, scale: 0.6, ease: "none",
     scrollTrigger: { trigger: ".footer", start: "top bottom", end: "bottom bottom", scrub: true },
   });
 
@@ -365,7 +368,7 @@ export async function boot() {
     });
   }
 
-  /* ---------------- Inquiry form → email ---------------- */
+  /* ---------------- Order form → WhatsApp ---------------- */
   const form = $<HTMLFormElement>("[data-inquiry]");
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -373,12 +376,22 @@ export async function boot() {
     if (!form.reportValidity()) return;
     const d = new FormData(form);
     const v = (k: string) => String(d.get(k) ?? "").trim();
-    const body = [
-      `Occasion: ${v("occasion")}`, `Name: ${v("name")}`, `Email: ${v("email")}`,
-      v("date") && `Date needed: ${v("date")}`, v("budget") && `Budget: ${v("budget")}`, "", v("message"),
-    ].filter((l, i) => l || i === 5).join("\n");
-    location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(`Inquiry — ${v("occasion")} — ${v("name")}`)}&body=${encodeURIComponent(body)}`;
-    note.textContent = "Opening your email app. Thank you, we'll be in touch within a day.";
+    const message = [
+      "Hi Cherry Gift Store! I'd like to place an order 🍒", "",
+      `Occasion: ${v("occasion")}`, `Name: ${v("name")}`, `Phone: ${v("phone")}`,
+      v("date") && `Date needed: ${v("date")}`, v("budget") && `Budget: KSh ${v("budget")}`,
+      v("area") && `Delivery area: ${v("area")}`, v("message") && `Card message / notes: ${v("message")}`,
+    ].filter((l, i) => l || i === 1).join("\n");
+    const number = form.dataset.waNumber;
+    if (number) {
+      window.open(`https://wa.me/${number}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
+      note.textContent = "Opening WhatsApp with your order. We'll reply shortly.";
+      return;
+    }
+    // The shop's short WhatsApp link can't carry text, so copy the order to paste in.
+    navigator.clipboard?.writeText(message).catch(() => {});
+    window.open(form.dataset.waLink, "_blank", "noopener");
+    note.textContent = "Your order is copied. Paste it into the WhatsApp chat and press send.";
   });
 
   addEventListener("load", () => ScrollTrigger.refresh());

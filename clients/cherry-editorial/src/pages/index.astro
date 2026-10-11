@@ -5,25 +5,29 @@ import "@fontsource-variable/inter-tight/wght.css";
 import "../styles/main.css";
 import { brand, hero, intro, pieces, marquee, services, about, testimonials, inquiry, em } from "../data/content";
 
-const title = `${brand.name} — ${brand.descriptor}`;
+const title = "Cherry Gift Store Nairobi | Gift Packages, Flowers & Candy Packs";
 const description =
-  "Insert here is a gift studio composing considered gifts, florals and keepsakes, wrapped by hand for weddings, personal moments and brands.";
-const site = Astro.site ?? new URL("https://www.inserthere.com");
+  "Cherry Candy & Gift Store, Dynamic Mall Nairobi: hand-wrapped gift packages, rose bouquets, candy packs and care packs with a free gift box, free card message and same-day delivery.";
+const site = Astro.site ?? new URL("https://www.cherrygiftstore.co.ke");
 const schema = {
   "@context": "https://schema.org",
-  "@type": "Store",
-  name: brand.name,
+  "@type": ["Store", "Florist"],
+  name: brand.fullName,
   description,
   url: site.href,
-  image: new URL(hero.slides[0].type === "image" ? hero.slides[0].src : hero.slides[0].poster, site).href,
-  email: brand.email,
+  logo: new URL(brand.logo, site).href,
+  image: new URL("/media/og.jpg", site).href,
+  priceRange: "KSh 1,000+",
+  currenciesAccepted: "KES",
+  address: { "@type": "PostalAddress", streetAddress: "Dynamic Mall, 3rd Floor, Shop 142B", addressLocality: "Nairobi", addressCountry: "KE" },
+  areaServed: [{ "@type": "City", name: "Nairobi" }, { "@type": "Country", name: "Kenya" }],
   sameAs: [brand.instagram],
 };
 const pad = (n: number) => String(n).padStart(2, "0");
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en-KE">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -31,11 +35,13 @@ const pad = (n: number) => String(n).padStart(2, "0");
     <meta name="description" content={description} />
     <link rel="canonical" href={site.href} />
     <meta name="theme-color" content="#f6f3ee" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={schema.image} />
+    <meta property="og:locale" content="en_KE" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="preload" as="image" href={hero.slides[0].type === "image" ? hero.slides[0].src : hero.slides[0].poster} />
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
@@ -44,7 +50,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
   <body>
     <div class="loader" aria-hidden="true">
       <div class="loader-inner">
-        <span class="loader-word">{brand.name}</span>
+        <span class="loader-word"><img src={brand.logo} alt="" width="96" height="96" />{brand.name}</span>
         <span class="loader-count"><span class="loader-num">00</span></span>
       </div>
     </div>
@@ -53,13 +59,13 @@ const pad = (n: number) => String(n).padStart(2, "0");
     <div class="progress" aria-hidden="true"><span></span></div>
 
     <header class="header">
-      <a class="wordmark" href="#top" aria-label={`${brand.name}, back to top`}>{brand.name}</a>
+      <a class="wordmark" href="#top" aria-label={`${brand.fullName}, back to top`}>{brand.name}</a>
       <nav class="nav" aria-label="Main">
         <a href="#collection">Collection</a>
         <a href="#services">Services</a>
-        <a href="#studio">Studio</a>
+        <a href="#studio">About</a>
       </nav>
-      <a class="header-cta" href="#inquire"><span>Inquire</span></a>
+      <a class="header-cta" href="#inquire"><span>Order</span></a>
     </header>
 
     <main id="top">
@@ -104,7 +110,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
         <div class="section-top">
           <p class="label section-no">(02)</p>
           <h2 id="collection-title" class="display h2" data-lines>Selected <em>pieces</em></h2>
-          <p class="section-note">A rotating edit of what's in the studio this season. Every piece can be adapted to the person.</p>
+          <p class="section-note">A few favourites from the shop this season. Every package can be changed to suit the person and your budget.</p>
         </div>
         <div class="gallery">
           {pieces.map((p, i) => (
@@ -115,7 +121,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
               <figcaption>
                 <span class="piece-n label">No. {pad(i + 1)}</span>
                 <span class="piece-title">{p.title}</span>
-                <span class="piece-kind label">{p.kind}</span>
+                <span class="piece-kind label">{p.price ?? p.kind}</span>
               </figcaption>
             </figure>
           ))}
@@ -168,11 +174,11 @@ const pad = (n: number) => String(n).padStart(2, "0");
 
       <!-- 05 About -->
       <section id="studio" class="about" aria-labelledby="about-title">
-        <div class="about-media" data-clip>
+        <div class="about-media about-logo" data-clip>
           <img src={about.src} alt={about.alt} loading="lazy" data-parallax="0.18" />
         </div>
         <div class="about-copy">
-          <p class="label section-no">(04) The studio</p>
+          <p class="label section-no">(04) About us</p>
           <h2 id="about-title" class="display h2" data-lines set:html={about.heading.map(em).join("<br />")} />
           {about.body.map((b) => <p class="about-body" data-fade>{b}</p>)}
           <dl class="facts" data-fade>
@@ -188,7 +194,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
           {testimonials.map((t, i) => (
             <figure class:list={["quote", { active: i === 0 }]} aria-hidden={i === 0 ? undefined : "true"}>
               <blockquote class="display">“{t.quote}”</blockquote>
-              <figcaption class="label">{t.name} — {t.role}</figcaption>
+              <figcaption class="label">{t.name} — {t.role}{t.sample && <span class="sample-note">Sample review: replace before launch</span>}</figcaption>
             </figure>
           ))}
         </div>
@@ -207,9 +213,9 @@ const pad = (n: number) => String(n).padStart(2, "0");
             <p class="label section-no">(06)</p>
             <h2 id="inquiry-title" class="display inquiry-title" data-lines set:html={inquiry.heading.map(em).join("<br />")} />
             <p class="inquiry-text" data-fade>{inquiry.text}</p>
-            <a class="inquiry-mail" href={`mailto:${brand.email}`} data-fade>{brand.email}</a>
+            <a class="inquiry-mail" href={brand.whatsapp} target="_blank" rel="noopener" data-fade>Or message us on WhatsApp →</a>
           </div>
-          <form class="inquiry-form" data-inquiry data-email={brand.email} data-fade>
+          <form class="inquiry-form" data-inquiry data-wa-link={brand.whatsapp} data-wa-number={brand.whatsappNumber} data-fade>
             <fieldset class="occasions">
               <legend class="label">The occasion</legend>
               {inquiry.occasions.map((o, i) => (
@@ -218,14 +224,15 @@ const pad = (n: number) => String(n).padStart(2, "0");
             </fieldset>
             <div class="field-row">
               <label class="field"><span class="label">Your name</span><input name="name" autocomplete="name" required /></label>
-              <label class="field"><span class="label">Email</span><input name="email" type="email" autocomplete="email" required /></label>
+              <label class="field"><span class="label">Phone / WhatsApp</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="07XX XXX XXX" required /></label>
             </div>
             <div class="field-row">
               <label class="field"><span class="label">Date needed</span><input name="date" type="date" /></label>
-              <label class="field"><span class="label">Budget</span><input name="budget" placeholder="Approximate" /></label>
+              <label class="field"><span class="label">Budget (KSh)</span><input name="budget" inputmode="numeric" placeholder="e.g. 3,000" /></label>
             </div>
-            <label class="field"><span class="label">Tell us about them</span><textarea name="message" rows="3"></textarea></label>
-            <button class="send" type="submit" data-magnetic><span>Send inquiry</span><i>→</i></button>
+            <label class="field"><span class="label">Delivery area</span><input name="area" placeholder="e.g. Kilimani, Nairobi" /></label>
+            <label class="field"><span class="label">Card message & anything else</span><textarea name="message" rows="3"></textarea></label>
+            <button class="send" type="submit" data-magnetic><span>Send on WhatsApp</span><i>→</i></button>
             <p class="form-note label" role="status"></p>
           </form>
         </div>
@@ -233,12 +240,13 @@ const pad = (n: number) => String(n).padStart(2, "0");
     </main>
 
     <footer class="footer">
-      <p class="footer-word display" aria-hidden="true">{brand.name}</p>
+      <p class="footer-word display" aria-hidden="true">{brand.name}<img src={brand.logo} alt="" width="200" height="200" /></p>
       <div class="footer-row">
-        <span class="label">© {new Date().getFullYear()} {brand.name}</span>
+        <span class="label">© {new Date().getFullYear()} {brand.fullName}</span>
         <span class="label">{brand.address}</span>
         <a class="label" href={brand.instagram} target="_blank" rel="noopener">Instagram {brand.instagramHandle}</a>
-        <a class="label" href={`mailto:${brand.email}`}>{brand.email}</a>
+        <a class="label" href={brand.whatsapp} target="_blank" rel="noopener">WhatsApp</a>
+        <a class="label" href="https://cgdesignaus.com" target="_blank" rel="noopener">Website by CG Design &amp; Co.</a>
       </div>
     </footer>
 

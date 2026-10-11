@@ -1,9 +1,9 @@
 {
-  "name": "insert-here",
+  "name": "cherry-editorial",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Insert here — editorial gift store homepage. Built by CG Design & Co.",
+  "description": "Cherry Candy & Gift Store — editorial homepage. Built by CG Design & Co.",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
