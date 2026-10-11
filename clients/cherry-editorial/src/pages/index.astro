@@ -3,7 +3,7 @@ import "@fontsource-variable/bodoni-moda/opsz.css";
 import "@fontsource-variable/bodoni-moda/opsz-italic.css";
 import "@fontsource-variable/inter-tight/wght.css";
 import "../styles/main.css";
-import { brand, hero, intro, pieces, reels, marquee, services, about, testimonials, inquiry, em } from "../data/content";
+import { brand, hero, intro, products, categories, marquee, about, testimonials, inquiry, em } from "../data/content";
 
 const title = "Cherry Gift Store Nairobi | Gift Packages, Flowers & Candy Packs";
 const description =
@@ -62,8 +62,8 @@ const pad = (n: number) => String(n).padStart(2, "0");
       <a class="wordmark" href="#top" aria-label={`${brand.fullName}, back to top`}>{brand.name}</a>
       <nav class="nav" aria-label="Main">
         <a href="#collection">Collection</a>
-        <a href="#services">Services</a>
         <a href="#studio">About</a>
+        <a href="#words">Reviews</a>
       </nav>
       <a class="header-cta" href="#inquire"><span>Order</span></a>
     </header>
@@ -105,27 +105,46 @@ const pad = (n: number) => String(n).padStart(2, "0");
         <p class="statement-text" data-words>{intro}</p>
       </section>
 
-      <!-- 03 Collection -->
+      <!-- 03 Collection: the one product showcase -->
       <section id="collection" class="collection" aria-labelledby="collection-title">
         <div class="section-top">
           <p class="label section-no">(02)</p>
-          <h2 id="collection-title" class="display h2" data-lines>Selected <em>pieces</em></h2>
-          <p class="section-note">A few favourites from the shop this season. Every package can be changed to suit the person and your budget.</p>
+          <h2 id="collection-title" class="display h2" data-lines>The <em>collection</em></h2>
+          <p class="section-note">Gift packages from KSh 1,000, bouquets, care packs and cards. Every order comes with a free gift box, wrapping and card message, delivered the same day in Nairobi.</p>
         </div>
-        <div class="gallery">
-          {pieces.map((p, i) => (
-            <figure class={`piece piece-${i + 1} ${p.ratio}`} data-piece>
-              <div class="piece-frame" data-gl-image={p.src} data-cursor="View">
-                <img src={p.src} alt={p.alt} loading="lazy" decoding="async" />
+
+        <div class="showcase-bar">
+          <div class="filters" role="group" aria-label="Filter by category">
+            <button type="button" class="filter" aria-pressed="true" data-filter="all">All</button>
+            {categories.map((c) => <button type="button" class="filter" aria-pressed="false" data-filter={c}>{c}</button>)}
+          </div>
+          <p class="label showcase-count"><span data-count>{pad(products.length)}</span> pieces</p>
+        </div>
+
+        <ul class="showcase" role="list">
+          {products.map((p) => (
+            <li class="product" data-product data-category={p.category}>
+              {p.image ? (
+                <div class="product-frame" data-gl-image={p.image} data-cursor="View">
+                  <img src={p.image} alt={p.alt} loading="lazy" decoding="async" />
+                </div>
+              ) : (
+                <div class="product-frame is-video">
+                  <video poster={p.video!.poster} muted loop playsinline preload="none" aria-label={p.alt} data-product-video>
+                    <source src={p.video!.src} type="video/mp4" />
+                    <source src={p.video!.src.replace(/\.mp4$/, ".webm")} type="video/webm" />
+                  </video>
+                </div>
+              )}
+              <div class="product-info">
+                <h3 class="product-title">{p.title}</h3>
+                <p class="product-price">{p.price ?? "Ask for price"}</p>
+                <p class="label product-cat">{p.category}</p>
+                <a class="label product-order" href="#inquire" data-order={p.title}>Order <span aria-hidden="true">→</span></a>
               </div>
-              <figcaption>
-                <span class="piece-n label">No. {pad(i + 1)}</span>
-                <span class="piece-title">{p.title}</span>
-                <span class="piece-kind label">{p.price ?? p.kind}</span>
-              </figcaption>
-            </figure>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
       <!-- Velocity marquee -->
@@ -139,68 +158,13 @@ const pad = (n: number) => String(n).padStart(2, "0");
         </div>
       </div>
 
-      <!-- Reels -->
-      <section class="reels" aria-labelledby="reels-title">
-        <div class="section-top">
-          <p class="label section-no">(03)</p>
-          <h2 id="reels-title" class="display h2" data-lines>Straight from <em>the shop</em></h2>
-          <p class="section-note">Wrapped by hand in our shop at Dynamic Mall. Follow <a href={brand.instagram} target="_blank" rel="noopener">{brand.instagramHandle}</a> for the latest boxes.</p>
-        </div>
-        <div class="reel-row">
-          {reels.map((r, i) => (
-            <figure class={`reel reel-${i + 1}`} data-reel>
-              <div class="reel-frame">
-                <video poster={r.poster} muted loop playsinline preload="none" aria-label={`${r.title} video`}>
-                  <source src={r.src} type="video/mp4" />
-                  <source src={r.src.replace(/\.mp4$/, ".webm")} type="video/webm" />
-                </video>
-              </div>
-              <figcaption><span class="piece-title">{r.title}</span><span class="piece-kind label">{r.kind}</span></figcaption>
-            </figure>
-          ))}
-        </div>
-      </section>
-
-      <!-- 04 Services (pinned) -->
-      <section id="services" class="services" aria-labelledby="services-title">
-        <div class="services-pin">
-          <div class="services-copy">
-            <p class="label section-no">(04)</p>
-            <h2 id="services-title" class="display h2" data-lines>What we <em>compose</em></h2>
-            <ol class="service-list">
-              {services.map((s, i) => (
-                <li class:list={["service", { active: i === 0 }]} data-service>
-                  <span class="service-n label">{s.n}</span>
-                  <div>
-                    <h3 class="service-title">{s.title}</h3>
-                    <div class="service-body">
-                      <p>{s.text}</p>
-                      <ul>{s.items.map((it) => <li>{it}</li>)}</ul>
-                    </div>
-                  </div>
-                  <img class="service-img-inline" src={s.src} alt="" loading="lazy" />
-                </li>
-              ))}
-            </ol>
-          </div>
-          <div class="services-media" aria-hidden="true">
-            {services.map((s, i) => (
-              <div class="service-img" data-service-img style={`z-index:${i + 1}`}>
-                <img src={s.src} alt={s.alt} loading="lazy" />
-              </div>
-            ))}
-            <p class="services-count label"><span class="services-index">01</span> / {pad(services.length)}</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- 05 About -->
+      <!-- 04 About -->
       <section id="studio" class="about" aria-labelledby="about-title">
         <div class="about-media about-logo" data-clip>
           <img src={about.src} alt={about.alt} loading="lazy" data-parallax="0.18" />
         </div>
         <div class="about-copy">
-          <p class="label section-no">(05) About us</p>
+          <p class="label section-no">(03) About us</p>
           <h2 id="about-title" class="display h2" data-lines set:html={about.heading.map(em).join("<br />")} />
           {about.body.map((b) => <p class="about-body" data-fade>{b}</p>)}
           <dl class="facts" data-fade>
@@ -209,9 +173,9 @@ const pad = (n: number) => String(n).padStart(2, "0");
         </div>
       </section>
 
-      <!-- 06 Testimonials -->
-      <section class="words" aria-labelledby="words-title">
-        <p id="words-title" class="label section-no">(06) Kind words</p>
+      <!-- 05 Testimonials -->
+      <section id="words" class="words" aria-labelledby="words-title">
+        <p id="words-title" class="label section-no">(04) Kind words</p>
         <div class="quotes" data-quotes>
           {testimonials.map((t, i) => (
             <figure class:list={["quote", { active: i === 0 }]} aria-hidden={i === 0 ? undefined : "true"}>
@@ -227,12 +191,12 @@ const pad = (n: number) => String(n).padStart(2, "0");
         </div>
       </section>
 
-      <!-- 07 Inquiry -->
+      <!-- 06 Inquiry -->
       <section id="inquire" class="inquiry" aria-labelledby="inquiry-title">
         <div class="inquiry-bg" aria-hidden="true"><img src={inquiry.bg} alt="" loading="lazy" data-parallax="0.25" /></div>
         <div class="inquiry-inner">
           <div class="inquiry-head">
-            <p class="label section-no">(07)</p>
+            <p class="label section-no">(05)</p>
             <h2 id="inquiry-title" class="display inquiry-title" data-lines set:html={inquiry.heading.map(em).join("<br />")} />
             <p class="inquiry-text" data-fade>{inquiry.text}</p>
             <a class="inquiry-mail" href={brand.whatsapp} target="_blank" rel="noopener" data-fade>Or message us on WhatsApp →</a>
@@ -248,6 +212,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
               <label class="field"><span class="label">Your name</span><input name="name" autocomplete="name" required /></label>
               <label class="field"><span class="label">Phone / WhatsApp</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="07XX XXX XXX" required /></label>
             </div>
+            <label class="field"><span class="label">Which gift?</span><input name="gift" placeholder="e.g. The Love Box, or describe your idea" /></label>
             <div class="field-row">
               <label class="field"><span class="label">Date needed</span><input name="date" type="date" /></label>
               <label class="field"><span class="label">Budget (KSh)</span><input name="budget" inputmode="numeric" placeholder="e.g. 3,000" /></label>

@@ -40,52 +40,35 @@ export const hero = {
 export const intro =
   "A gift should feel chosen, never bought. Every package is hand-picked and wrapped in our Nairobi shop, boxed for free and finished with a card written in your words, then delivered the same day.";
 
-export type Piece = { src: string; alt: string; title: string; kind: string; price?: string; ratio: "portrait" | "landscape" | "square" };
+export const categories = ["Gift packages", "Flowers", "Care packs", "Cards"] as const;
+export type Category = (typeof categories)[number];
 
-export const pieces: Piece[] = [
-  { src: "/media/love-box.webp", alt: "Pink 'I love you' gift box with a mini fan, facial brush, lip serum, hair clips and sweets", title: "The Love Box", kind: "Gift packages", price: "KSh 3,800", ratio: "portrait" },
-  { src: "/media/roses-rocher-bouquet.webp", alt: "Red rose bouquet with baby's breath, black wrapping and Ferrero Rocher", title: "Roses & Rocher", kind: "Flowers", ratio: "portrait" },
-  { src: "/media/lilac-pamper-box.webp", alt: "Gift box with a lilac fan, perfume, lip serum, shampoo brush and Alpines chocolate", title: "Lilac Pamper Box", kind: "Gift packages", ratio: "portrait" },
-  { src: "/media/care-period-pack.webp", alt: "Care pack with pads, eye mask, eyebrow razors, loofah, tissues and chocolate", title: "Care & Period Pack", kind: "Care packs", ratio: "portrait" },
-  { src: "/media/mixed-bouquet.webp", alt: "Mixed bouquet of chrysanthemums, roses, berries and baby's breath in white wrapping", title: "Because You Miss Her", kind: "Flowers", ratio: "square" },
-];
+/*
+ * The collection: the one product showcase on the page.
+ * Each product has either `image` or `video` (a short muted loop with a poster).
+ * Leave `price` out to show "Ask for price".
+ */
+export type Product = {
+  title: string;
+  category: Category;
+  price?: string;
+  alt: string;
+  image?: string;
+  video?: { src: string; poster: string };
+};
 
-// Vertical Reels shown in "Straight from the shop". Muted, looping, play while on screen.
-export const reels = [
-  { src: "/media/reel-lilac-box.mp4", poster: "/media/reel-lilac-box.webp", title: "Lilac Pamper Box", kind: "Gift packages" },
-  { src: "/media/reel-blush-box.mp4", poster: "/media/reel-blush-box.webp", title: "Blush Pamper Box", kind: "Gift packages" },
-  { src: "/media/reel-popup-cards.mp4", poster: "/media/reel-popup-cards.webp", title: "Pop-up Cards", kind: "Cards" },
-  { src: "/media/reel-bow-box.mp4", poster: "/media/reel-bow-box.webp", title: "The Bow Box", kind: "Gift packages" },
+export const products: Product[] = [
+  { title: "The Love Box", category: "Gift packages", price: "KSh 3,800", image: "/media/love-box.webp", alt: "Pink 'I love you' gift box with a mini fan, facial brush, lip serum, hair clips and sweets" },
+  { title: "Roses & Rocher", category: "Flowers", image: "/media/roses-rocher-bouquet.webp", alt: "Red rose bouquet with baby's breath, black wrapping and Ferrero Rocher" },
+  { title: "Blush Pamper Box", category: "Gift packages", video: { src: "/media/reel-blush-box.mp4", poster: "/media/reel-blush-box.webp" }, alt: "Pink pamper box with perfume, Vaseline, lip gloss, chocolate and hair clips" },
+  { title: "Care & Period Pack", category: "Care packs", image: "/media/care-period-pack.webp", alt: "Care pack with pads, eye mask, eyebrow razors, loofah, tissues and chocolate" },
+  { title: "Because You Miss Her", category: "Flowers", image: "/media/mixed-bouquet.webp", alt: "Mixed bouquet of chrysanthemums, roses, berries and baby's breath in white wrapping" },
+  { title: "The Bow Box", category: "Gift packages", video: { src: "/media/reel-bow-box.mp4", poster: "/media/reel-bow-box.webp" }, alt: "Gift box with a pink bow headband, plush toy, brush and treats" },
+  { title: "Lilac Pamper Box", category: "Gift packages", image: "/media/lilac-pamper-box.webp", alt: "Gift box with a lilac fan, perfume, lip serum, shampoo brush and Alpines chocolate" },
+  { title: "Pop-up Cards", category: "Cards", video: { src: "/media/reel-popup-cards.mp4", poster: "/media/reel-popup-cards.webp" }, alt: "Pop-up greeting cards with balloons, flowers and a typewriter" },
 ];
 
 export const marquee = ["Gift packages", "Flowers", "Candy packs", "Care packs", "Picnics", "Corporate"];
-
-export const services = [
-  {
-    n: "01",
-    title: "Gift & candy packages",
-    text: "Ready-made and custom boxes for birthdays, anniversaries and just-because, from KSh 1,000. Always with a free gift box and wrapping.",
-    items: ["Gift packages", "Candy packs", "Corporate orders"],
-    src: "/media/lilac-pamper-box.webp",
-    alt: "Lilac pamper gift box",
-  },
-  {
-    n: "02",
-    title: "Flowers & bouquets",
-    text: "Red roses and baby's breath, custom-made around your budget, with chocolates or a gift added in. Same-day delivery in Nairobi.",
-    items: ["Rose bouquets", "Custom arrangements", "Add a gift"],
-    src: "/media/mixed-bouquet.webp",
-    alt: "Mixed bouquet in white wrapping",
-  },
-  {
-    n: "03",
-    title: "Care & period packs",
-    text: "Comfort for that time of the month, packed with her preferred pads, treats and little pampering extras.",
-    items: ["Period packs", "Self-care boxes", "Get-well gifts"],
-    src: "/media/care-period-pack.webp",
-    alt: "Care and period pack",
-  },
-];
 
 export const about = {
   src: "/media/cherry-logo.webp",

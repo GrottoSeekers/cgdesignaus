@@ -15,7 +15,7 @@ npm run build    # static site in dist/
 Everything (images, videos, copy) lives in **`src/data/content.ts`**.
 
 1. Put files in `public/media/` (WebP or JPG, ~2400px wide for the hero, ~1500px for the rest).
-2. Change the `src` values in `content.ts`. Keep each gallery item's `ratio` (`portrait` 4:5, `landscape` 3:2, `square`) matching the photo.
+2. Add or edit entries in `products` in `content.ts` (`image` or `video`, `category`, optional `price`). Tiles are 4:5, so portrait photos work best.
 3. Hero slides can be videos: `{ type: "video", src: "/media/hero.mp4", poster: "/media/hero-1.webp", alt, caption }`.
    Use short, muted, web-encoded MP4s (H.264, ~1920px, under ~8 MB).
 
@@ -31,9 +31,8 @@ Lilac Pamper Box, Care & Period Pack, plus the cherry-and-bow logo. More photos 
 | Loader → hero | Counter, curtain wipe, masked headline lines | `main.ts` |
 | Hero | Three.js ambient sequence: noise-displacement dissolve, slow zoom, pointer drift; pinned on scroll while the image settles into an inset frame | `gl.ts` `createHero` |
 | Statement | Words light up as you read (SplitText, scrubbed) | `main.ts` |
-| Collection | WebGL planes synced to the DOM grid: wipe-up mask reveal, parallax, scroll-velocity bend + chromatic split, hover magnify/ripple, "View" cursor | `gl.ts` `createGallery` |
+| Collection | The one product showcase: hairline-ruled grid, category filter, photo tiles as WebGL planes (wipe-up reveal, parallax, hover magnify/ripple, "View" cursor), video tiles that play only on screen, "Order" prefills the form | `main.ts`, `gl.ts` `createGallery` |
 | Marquee | Speed and direction follow scroll velocity, with skew | `main.ts` |
-| Services | Pinned; each image clip-reveals over the last while the list advances | `main.ts` |
 | About / inquiry | Clip-path reveal, parallax depth, magnetic send button | `main.ts` |
 | Testimonials | Masked line crossfade, autoplay while in view | `main.ts` |
 | Footer | Wordmark rises letter by letter | `main.ts` |

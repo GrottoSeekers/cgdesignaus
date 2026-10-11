@@ -24,15 +24,21 @@ export async function boot() {
   const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
   const gl = !reduce && webglAvailable();
 
-  /* ---------------- Reels play only while on screen (saves data and battery) ---------------- */
+  /* ---------------- Product videos play only while on screen (saves data and battery) ---------------- */
   const io = new IntersectionObserver((entries) => entries.forEach((e) => {
     const v = e.target as HTMLVideoElement;
     if (e.isIntersecting && !reduce) { v.preload = "auto"; v.play().catch(() => {}); } else v.pause();
   }), { threshold: 0.35 });
-  $$<HTMLVideoElement>("[data-reel] video").forEach((v) => {
+  $$<HTMLVideoElement>("[data-product-video]").forEach((v) => {
     io.observe(v);
     v.addEventListener("click", () => (v.paused ? v.play().catch(() => {}) : v.pause()));
   });
+
+  /* ---------------- "Order" on a product fills in the gift field ---------------- */
+  $$<HTMLAnchorElement>("[data-order]").forEach((a) => a.addEventListener("click", () => {
+    const gift = document.querySelector<HTMLInputElement>('[data-inquiry] input[name="gift"]');
+    if (gift) gift.value = a.dataset.order!;
+  }));
 
   /* ---------------- Smooth momentum scroll ---------------- */
   let lenis: Lenis | null = null;
@@ -195,9 +201,7 @@ export async function boot() {
     gsap.from(el, { y: 36, opacity: 0, duration: 1.4, ease: EASE, scrollTrigger: { trigger: el, start: "top 88%", once: true } }),
   );
 
-  const mm = gsap.matchMedia();
-
-  /* ---------------- Collection: image-mask reveals + parallax (+ WebGL) ---------------- */
+  /* ---------------- Collection: one showcase grid, mask reveals + gentle parallax (+ WebGL hover) ---------------- */
   const useGalleryGL = gl && finePointer && innerWidth > 900;
   const frames = $$("[data-gl-image]").map((el) => ({
     el,
@@ -214,7 +218,7 @@ export async function boot() {
 
   frames.forEach(({ el, state }) => {
     const img = $("img", el);
-    const cap = $$("figcaption > *", el.parentElement!);
+    const cap = $$(".product-info > *", el.closest("[data-product]")!);
     gsap.set(cap, { opacity: 0, y: 14 });
     const trigger = { trigger: el, start: "top 88%", once: true };
     if (useGalleryGL) {
@@ -228,9 +232,16 @@ export async function boot() {
       trigger: el, start: "top bottom", end: "bottom top", scrub: true,
       onUpdate: (s) => {
         state.parallax = (s.progress - 0.5) * 2;
-        if (!useGalleryGL) gsap.set(img, { yPercent: -state.parallax * 7 });
+        if (!useGalleryGL) gsap.set(img, { yPercent: -state.parallax * 4 });
       },
     });
+  });
+
+  $$(".product-frame.is-video").forEach((el) => {
+    const trigger = { trigger: el, start: "top 88%", once: true };
+    gsap.fromTo(el, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: "expo.inOut", scrollTrigger: trigger });
+    const cap = $$(".product-info > *", el.closest("[data-product]")!);
+    gsap.fromTo(cap, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 1.2, stagger: 0.08, ease: EASE, delay: 0.6, scrollTrigger: { ...trigger } });
   });
 
   if (useGalleryGL) glModule.then((m) => {
@@ -257,22 +268,21 @@ export async function boot() {
     }
   });
 
-  /* ---------------- Reels: clip reveal, staggered depth, play only on screen ---------------- */
-  const reelEls = $$("[data-reel]");
-  reelEls.forEach((reel, i) => {
-    const frame = $(".reel-frame", reel);
-    gsap.fromTo(frame, { clipPath: "inset(100% 0% 0% 0%)" }, {
-      clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: "expo.inOut", delay: i * 0.08,
-      scrollTrigger: { trigger: ".reel-row", start: "top 85%", once: true },
-    });
-    gsap.from($$("figcaption > *", reel), { opacity: 0, y: 12, duration: 1, stagger: 0.06, delay: 0.7 + i * 0.08, ease: EASE, scrollTrigger: { trigger: ".reel-row", start: "top 85%", once: true } });
-  });
-  mm.add("(min-width: 901px)", () => {
-    reelEls.forEach((reel, i) => gsap.to(reel, {
-      y: [-40, 30, -20, 50][i], ease: "none",
-      scrollTrigger: { trigger: ".reel-row", start: "top bottom", end: "bottom top", scrub: true },
-    }));
-  });
+  /* ---------------- Collection filter ---------------- */
+  const productEls = $$("[data-product]");
+  const filterBtns = $$<HTMLButtonElement>("[data-filter]");
+  const countEl = $("[data-count]");
+  filterBtns.forEach((btn) => btn.addEventListener("click", () => {
+    const f = btn.dataset.filter!;
+    filterBtns.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+    gsap.to(".showcase", { opacity: 0, y: 10, duration: 0.3, ease: "power2.in", onComplete: () => {
+      let n = 0;
+      productEls.forEach((p) => { const show = f === "all" || p.dataset.category === f; p.hidden = !show; if (show) n++; });
+      countEl.textContent = String(n).padStart(2, "0");
+      ScrollTrigger.refresh();
+      gsap.to(".showcase", { opacity: 1, y: 0, duration: 0.6, ease: EASE });
+    } });
+  }));
 
   /* ---------------- Velocity marquee ---------------- */
   const track = $(".marquee-track");
@@ -284,40 +294,6 @@ export async function boot() {
     const boost = 1 + Math.min(Math.abs(velocity) * 0.18, 5);
     gsap.to(loop, { timeScale: dir * boost, duration: 0.4, overwrite: true, onComplete: () => { gsap.to(loop, { timeScale: dir, duration: 1.4, ease: "power2.out" }); } });
     skew(gsap.utils.clamp(-6, 6, -velocity * 0.25));
-  });
-
-  /* ---------------- Services: pinned, images reveal over each other ---------------- */
-  mm.add("(min-width: 901px)", () => {
-    const items = $$("[data-service]");
-    const imgs = $$("[data-service-img]");
-    const counterEl = $(".services-index");
-    let active = 0;
-    const tl = gsap.timeline({
-      defaults: { ease: "none" },
-      scrollTrigger: {
-        trigger: ".services-pin", start: "center center", end: () => `+=${innerHeight * (imgs.length - 0.2)}`,
-        scrub: 0.6, pin: true,
-        onUpdate: (s) => {
-          const i = Math.min(imgs.length - 1, Math.floor(s.progress * imgs.length * 0.999));
-          if (i === active) return;
-          active = i;
-          items.forEach((it, k) => it.classList.toggle("active", k === i));
-          counterEl.textContent = String(i + 1).padStart(2, "0");
-        },
-      },
-    });
-    imgs.forEach((wrap, i) => {
-      const img = $("img", wrap);
-      if (i === 0) {
-        tl.fromTo(img, { scale: 1.15 }, { scale: 1, duration: 1 }, 0);
-        return;
-      }
-      tl.fromTo(wrap, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1 }, i - 0.6)
-        .fromTo(img, { scale: 1.3, yPercent: 8 }, { scale: 1, yPercent: 0, duration: 1 }, "<")
-        .to($("img", imgs[i - 1]), { scale: 0.92, yPercent: -6, duration: 1 }, "<");
-    });
-    tl.to({}, { duration: 0.4 });
-    return () => items.forEach((it, k) => it.classList.toggle("active", k === 0));
   });
 
   /* ---------------- About + inquiry: clip reveal and parallax depth ---------------- */
@@ -420,7 +396,7 @@ export async function boot() {
     const v = (k: string) => String(d.get(k) ?? "").trim();
     const message = [
       "Hi Cherry Gift Store! I'd like to place an order 🍒", "",
-      `Occasion: ${v("occasion")}`, `Name: ${v("name")}`, `Phone: ${v("phone")}`,
+      v("gift") && `Gift: ${v("gift")}`, `Occasion: ${v("occasion")}`, `Name: ${v("name")}`, `Phone: ${v("phone")}`,
       v("date") && `Date needed: ${v("date")}`, v("budget") && `Budget: KSh ${v("budget")}`,
       v("area") && `Delivery area: ${v("area")}`, v("message") && `Card message / notes: ${v("message")}`,
     ].filter((l, i) => l || i === 1).join("\n");
