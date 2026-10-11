@@ -191,37 +191,45 @@ const pad = (n: number) => String(n).padStart(2, "0");
         </div>
       </section>
 
-      <!-- 06 Inquiry -->
+      <!-- 06 Order -->
       <section id="inquire" class="inquiry" aria-labelledby="inquiry-title">
         <div class="inquiry-bg" aria-hidden="true"><img src={inquiry.bg} alt="" loading="lazy" data-parallax="0.25" /></div>
         <div class="inquiry-inner">
           <div class="inquiry-head">
             <p class="label section-no">(05)</p>
-            <h2 id="inquiry-title" class="display inquiry-title" data-lines set:html={inquiry.heading.map(em).join("<br />")} />
+            <h2 id="inquiry-title" class="display inquiry-title" data-lines set:html={inquiry.heading.map(em).join(" ")} />
             <p class="inquiry-text" data-fade>{inquiry.text}</p>
-            <a class="inquiry-mail" href={brand.whatsapp} target="_blank" rel="noopener" data-fade>Or message us on WhatsApp →</a>
           </div>
-          <form class="inquiry-form" data-inquiry data-wa-link={brand.whatsapp} data-wa-number={brand.whatsappNumber} data-fade>
+
+          <form class="order-card" data-inquiry data-wa-link={brand.whatsapp} data-wa-number={brand.whatsappNumber} data-fade>
             <fieldset class="occasions">
-              <legend class="label">The occasion</legend>
-              {inquiry.occasions.map((o, i) => (
-                <label class="chip"><input type="radio" name="occasion" value={o} checked={i === 0} /><span>{o}</span></label>
-              ))}
+              <legend class="label">Occasion</legend>
+              <div class="chips">
+                {inquiry.occasions.map((o, i) => (
+                  <label class="chip"><input type="radio" name="occasion" value={o} checked={i === 0} /><span>{o}</span></label>
+                ))}
+              </div>
             </fieldset>
-            <div class="field-row">
+
+            <div class="field-grid">
               <label class="field"><span class="label">Your name</span><input name="name" autocomplete="name" required /></label>
               <label class="field"><span class="label">Phone / WhatsApp</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="07XX XXX XXX" required /></label>
-            </div>
-            <label class="field"><span class="label">Which gift?</span><input name="gift" placeholder="e.g. The Love Box, or describe your idea" /></label>
-            <div class="field-row">
+              <label class="field span-2"><span class="label">Which gift?</span><input name="gift" placeholder="e.g. The Love Box, or describe your idea" /></label>
               <label class="field"><span class="label">Date needed</span><input name="date" type="date" /></label>
               <label class="field"><span class="label">Budget (KSh)</span><input name="budget" inputmode="numeric" placeholder="e.g. 3,000" /></label>
+              <label class="field span-2"><span class="label">Delivery area</span><input name="area" autocomplete="address-level2" placeholder="e.g. Kilimani, Nairobi" /></label>
+              <label class="field span-2"><span class="label">Card message & notes</span><textarea name="message" rows="2" placeholder="What should the card say?"></textarea></label>
             </div>
-            <label class="field"><span class="label">Delivery area</span><input name="area" placeholder="e.g. Kilimani, Nairobi" /></label>
-            <label class="field"><span class="label">Card message & anything else</span><textarea name="message" rows="3"></textarea></label>
-            <button class="send" type="submit" data-magnetic><span>Send on WhatsApp</span><i>→</i></button>
-            <p class="form-note label" role="status"></p>
+
+            <button class="send" type="submit">
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01Zm-7.01 15.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c.02 4.54-3.68 8.23-8.23 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43s.17-.25.25-.41.04-.31-.02-.43c-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg>
+              <span>Send order on WhatsApp</span>
+            </button>
+            <p class="order-foot">No payment taken here. We'll confirm the total and delivery with you on WhatsApp.</p>
+            <p class="form-note" role="status"></p>
           </form>
+
+          <a class="inquiry-alt" href={brand.whatsapp} target="_blank" rel="noopener" data-fade>Prefer to chat? Message us on WhatsApp →</a>
         </div>
       </section>
     </main>
