@@ -1,0 +1,252 @@
+---
+import "@fontsource-variable/bodoni-moda/opsz.css";
+import "@fontsource-variable/bodoni-moda/opsz-italic.css";
+import "@fontsource-variable/inter-tight/wght.css";
+import "../styles/main.css";
+import { brand, hero, intro, pieces, marquee, services, about, testimonials, inquiry, em } from "../data/content";
+
+const title = `${brand.name} — ${brand.descriptor}`;
+const description =
+  "Insert here is a gift studio composing considered gifts, florals and keepsakes, wrapped by hand for weddings, personal moments and brands.";
+const site = Astro.site ?? new URL("https://www.inserthere.com");
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Store",
+  name: brand.name,
+  description,
+  url: site.href,
+  image: new URL(hero.slides[0].type === "image" ? hero.slides[0].src : hero.slides[0].poster, site).href,
+  email: brand.email,
+  sameAs: [brand.instagram],
+};
+const pad = (n: number) => String(n).padStart(2, "0");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={site.href} />
+    <meta name="theme-color" content="#f6f3ee" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={schema.image} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preload" as="image" href={hero.slides[0].type === "image" ? hero.slides[0].src : hero.slides[0].poster} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    <script is:inline>document.documentElement.classList.add("js");</script>
+  </head>
+  <body>
+    <div class="loader" aria-hidden="true">
+      <div class="loader-inner">
+        <span class="loader-word">{brand.name}</span>
+        <span class="loader-count"><span class="loader-num">00</span></span>
+      </div>
+    </div>
+
+    <div class="cursor" aria-hidden="true"><span class="cursor-label">View</span></div>
+    <div class="progress" aria-hidden="true"><span></span></div>
+
+    <header class="header">
+      <a class="wordmark" href="#top" aria-label={`${brand.name}, back to top`}>{brand.name}</a>
+      <nav class="nav" aria-label="Main">
+        <a href="#collection">Collection</a>
+        <a href="#services">Services</a>
+        <a href="#studio">Studio</a>
+      </nav>
+      <a class="header-cta" href="#inquire"><span>Inquire</span></a>
+    </header>
+
+    <main id="top">
+      <!-- 01 Hero -->
+      <section class="hero" aria-label="Introduction" data-captions={JSON.stringify(hero.slides.map((s) => s.caption))}>
+        <div class="hero-media" data-hero-media>
+          <canvas class="hero-canvas" aria-hidden="true"></canvas>
+          <div class="hero-fallback">
+            {hero.slides.map((s, i) =>
+              s.type === "image" ? (
+                <img src={s.src} alt={i === 0 ? s.alt : ""} class:list={{ active: i === 0 }} fetchpriority={i === 0 ? "high" : "low"} data-hero-slide />
+              ) : (
+                <video src={s.src} poster={s.poster} muted playsinline loop preload="metadata" class:list={{ active: i === 0 }} data-hero-slide aria-label={s.alt} />
+              ),
+            )}
+          </div>
+          <div class="hero-shade" aria-hidden="true"></div>
+        </div>
+
+        <div class="hero-copy">
+          <p class="label hero-eyebrow" data-hero-in>{hero.eyebrow}</p>
+          <h1 class="display hero-title">
+            {hero.headline.map((line) => <span class="line"><span class="line-inner" set:html={em(line)} /></span>)}
+          </h1>
+        </div>
+
+        <div class="hero-meta" data-hero-in>
+          <p class="label"><span class="hero-index">01</span> / {pad(hero.slides.length)}</p>
+          <p class="label hero-caption">{hero.slides[0].caption}</p>
+        </div>
+        <div class="scroll-cue label" data-hero-in><span>Scroll</span><i></i></div>
+      </section>
+
+      <!-- 02 Statement -->
+      <section class="statement" aria-label="About our gifts">
+        <p class="label section-no">(01)</p>
+        <p class="statement-text" data-words>{intro}</p>
+      </section>
+
+      <!-- 03 Collection -->
+      <section id="collection" class="collection" aria-labelledby="collection-title">
+        <div class="section-top">
+          <p class="label section-no">(02)</p>
+          <h2 id="collection-title" class="display h2" data-lines>Selected <em>pieces</em></h2>
+          <p class="section-note">A rotating edit of what's in the studio this season. Every piece can be adapted to the person.</p>
+        </div>
+        <div class="gallery">
+          {pieces.map((p, i) => (
+            <figure class={`piece piece-${i + 1} ${p.ratio}`} data-piece>
+              <div class="piece-frame" data-gl-image={p.src} data-cursor="View">
+                <img src={p.src} alt={p.alt} loading="lazy" decoding="async" />
+              </div>
+              <figcaption>
+                <span class="piece-n label">No. {pad(i + 1)}</span>
+                <span class="piece-title">{p.title}</span>
+                <span class="piece-kind label">{p.kind}</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      <!-- Velocity marquee -->
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+          {[0, 1].map(() => (
+            <div class="marquee-group">
+              {marquee.map((m) => <span>{m}<i>✦</i></span>)}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- 04 Services (pinned) -->
+      <section id="services" class="services" aria-labelledby="services-title">
+        <div class="services-pin">
+          <div class="services-copy">
+            <p class="label section-no">(03)</p>
+            <h2 id="services-title" class="display h2" data-lines>What we <em>compose</em></h2>
+            <ol class="service-list">
+              {services.map((s, i) => (
+                <li class:list={["service", { active: i === 0 }]} data-service>
+                  <span class="service-n label">{s.n}</span>
+                  <div>
+                    <h3 class="service-title">{s.title}</h3>
+                    <div class="service-body">
+                      <p>{s.text}</p>
+                      <ul>{s.items.map((it) => <li>{it}</li>)}</ul>
+                    </div>
+                  </div>
+                  <img class="service-img-inline" src={s.src} alt="" loading="lazy" />
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div class="services-media" aria-hidden="true">
+            {services.map((s, i) => (
+              <div class="service-img" data-service-img style={`z-index:${i + 1}`}>
+                <img src={s.src} alt={s.alt} loading="lazy" />
+              </div>
+            ))}
+            <p class="services-count label"><span class="services-index">01</span> / {pad(services.length)}</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 About -->
+      <section id="studio" class="about" aria-labelledby="about-title">
+        <div class="about-media" data-clip>
+          <img src={about.src} alt={about.alt} loading="lazy" data-parallax="0.18" />
+        </div>
+        <div class="about-copy">
+          <p class="label section-no">(04) The studio</p>
+          <h2 id="about-title" class="display h2" data-lines set:html={about.heading.map(em).join("<br />")} />
+          {about.body.map((b) => <p class="about-body" data-fade>{b}</p>)}
+          <dl class="facts" data-fade>
+            {about.facts.map((f) => <div><dt class="label">{f.k}</dt><dd>{f.v}</dd></div>)}
+          </dl>
+        </div>
+      </section>
+
+      <!-- 06 Testimonials -->
+      <section class="words" aria-labelledby="words-title">
+        <p id="words-title" class="label section-no">(05) Kind words</p>
+        <div class="quotes" data-quotes>
+          {testimonials.map((t, i) => (
+            <figure class:list={["quote", { active: i === 0 }]} aria-hidden={i === 0 ? undefined : "true"}>
+              <blockquote class="display">“{t.quote}”</blockquote>
+              <figcaption class="label">{t.name} — {t.role}</figcaption>
+            </figure>
+          ))}
+        </div>
+        <div class="quote-nav">
+          <button type="button" class="quote-btn" data-quote-prev aria-label="Previous testimonial">←</button>
+          <span class="label"><span class="quote-index">01</span> / {pad(testimonials.length)}</span>
+          <button type="button" class="quote-btn" data-quote-next aria-label="Next testimonial">→</button>
+        </div>
+      </section>
+
+      <!-- 07 Inquiry -->
+      <section id="inquire" class="inquiry" aria-labelledby="inquiry-title">
+        <div class="inquiry-bg" aria-hidden="true"><img src={inquiry.bg} alt="" loading="lazy" data-parallax="0.25" /></div>
+        <div class="inquiry-inner">
+          <div class="inquiry-head">
+            <p class="label section-no">(06)</p>
+            <h2 id="inquiry-title" class="display inquiry-title" data-lines set:html={inquiry.heading.map(em).join("<br />")} />
+            <p class="inquiry-text" data-fade>{inquiry.text}</p>
+            <a class="inquiry-mail" href={`mailto:${brand.email}`} data-fade>{brand.email}</a>
+          </div>
+          <form class="inquiry-form" data-inquiry data-email={brand.email} data-fade>
+            <fieldset class="occasions">
+              <legend class="label">The occasion</legend>
+              {inquiry.occasions.map((o, i) => (
+                <label class="chip"><input type="radio" name="occasion" value={o} checked={i === 0} /><span>{o}</span></label>
+              ))}
+            </fieldset>
+            <div class="field-row">
+              <label class="field"><span class="label">Your name</span><input name="name" autocomplete="name" required /></label>
+              <label class="field"><span class="label">Email</span><input name="email" type="email" autocomplete="email" required /></label>
+            </div>
+            <div class="field-row">
+              <label class="field"><span class="label">Date needed</span><input name="date" type="date" /></label>
+              <label class="field"><span class="label">Budget</span><input name="budget" placeholder="Approximate" /></label>
+            </div>
+            <label class="field"><span class="label">Tell us about them</span><textarea name="message" rows="3"></textarea></label>
+            <button class="send" type="submit" data-magnetic><span>Send inquiry</span><i>→</i></button>
+            <p class="form-note label" role="status"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p class="footer-word display" aria-hidden="true">{brand.name}</p>
+      <div class="footer-row">
+        <span class="label">© {new Date().getFullYear()} {brand.name}</span>
+        <span class="label">{brand.address}</span>
+        <a class="label" href={brand.instagram} target="_blank" rel="noopener">Instagram {brand.instagramHandle}</a>
+        <a class="label" href={`mailto:${brand.email}`}>{brand.email}</a>
+      </div>
+    </footer>
+
+    <canvas class="gl-gallery" aria-hidden="true"></canvas>
+
+    <script>
+      import { boot } from "../scripts/main";
+      boot();
+    </script>
+  </body>
+</html>
