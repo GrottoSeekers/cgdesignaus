@@ -3,7 +3,7 @@ import "@fontsource-variable/bodoni-moda/opsz.css";
 import "@fontsource-variable/bodoni-moda/opsz-italic.css";
 import "@fontsource-variable/inter-tight/wght.css";
 import "../styles/main.css";
-import { brand, hero, intro, pieces, marquee, services, about, testimonials, inquiry, em } from "../data/content";
+import { brand, hero, intro, pieces, reels, marquee, services, about, testimonials, inquiry, em } from "../data/content";
 
 const title = "Cherry Gift Store Nairobi | Gift Packages, Flowers & Candy Packs";
 const description =
@@ -139,11 +139,33 @@ const pad = (n: number) => String(n).padStart(2, "0");
         </div>
       </div>
 
+      <!-- Reels -->
+      <section class="reels" aria-labelledby="reels-title">
+        <div class="section-top">
+          <p class="label section-no">(03)</p>
+          <h2 id="reels-title" class="display h2" data-lines>Straight from <em>the shop</em></h2>
+          <p class="section-note">Wrapped by hand in our shop at Dynamic Mall. Follow <a href={brand.instagram} target="_blank" rel="noopener">{brand.instagramHandle}</a> for the latest boxes.</p>
+        </div>
+        <div class="reel-row">
+          {reels.map((r, i) => (
+            <figure class={`reel reel-${i + 1}`} data-reel>
+              <div class="reel-frame">
+                <video poster={r.poster} muted loop playsinline preload="none" aria-label={`${r.title} video`}>
+                  <source src={r.src} type="video/mp4" />
+                  <source src={r.src.replace(/\.mp4$/, ".webm")} type="video/webm" />
+                </video>
+              </div>
+              <figcaption><span class="piece-title">{r.title}</span><span class="piece-kind label">{r.kind}</span></figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
       <!-- 04 Services (pinned) -->
       <section id="services" class="services" aria-labelledby="services-title">
         <div class="services-pin">
           <div class="services-copy">
-            <p class="label section-no">(03)</p>
+            <p class="label section-no">(04)</p>
             <h2 id="services-title" class="display h2" data-lines>What we <em>compose</em></h2>
             <ol class="service-list">
               {services.map((s, i) => (
@@ -178,7 +200,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
           <img src={about.src} alt={about.alt} loading="lazy" data-parallax="0.18" />
         </div>
         <div class="about-copy">
-          <p class="label section-no">(04) About us</p>
+          <p class="label section-no">(05) About us</p>
           <h2 id="about-title" class="display h2" data-lines set:html={about.heading.map(em).join("<br />")} />
           {about.body.map((b) => <p class="about-body" data-fade>{b}</p>)}
           <dl class="facts" data-fade>
@@ -189,7 +211,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
 
       <!-- 06 Testimonials -->
       <section class="words" aria-labelledby="words-title">
-        <p id="words-title" class="label section-no">(05) Kind words</p>
+        <p id="words-title" class="label section-no">(06) Kind words</p>
         <div class="quotes" data-quotes>
           {testimonials.map((t, i) => (
             <figure class:list={["quote", { active: i === 0 }]} aria-hidden={i === 0 ? undefined : "true"}>
@@ -210,7 +232,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
         <div class="inquiry-bg" aria-hidden="true"><img src={inquiry.bg} alt="" loading="lazy" data-parallax="0.25" /></div>
         <div class="inquiry-inner">
           <div class="inquiry-head">
-            <p class="label section-no">(06)</p>
+            <p class="label section-no">(07)</p>
             <h2 id="inquiry-title" class="display inquiry-title" data-lines set:html={inquiry.heading.map(em).join("<br />")} />
             <p class="inquiry-text" data-fade>{inquiry.text}</p>
             <a class="inquiry-mail" href={brand.whatsapp} target="_blank" rel="noopener" data-fade>Or message us on WhatsApp →</a>

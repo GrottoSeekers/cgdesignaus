@@ -24,6 +24,16 @@ export async function boot() {
   const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
   const gl = !reduce && webglAvailable();
 
+  /* ---------------- Reels play only while on screen (saves data and battery) ---------------- */
+  const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+    const v = e.target as HTMLVideoElement;
+    if (e.isIntersecting && !reduce) { v.preload = "auto"; v.play().catch(() => {}); } else v.pause();
+  }), { threshold: 0.35 });
+  $$<HTMLVideoElement>("[data-reel] video").forEach((v) => {
+    io.observe(v);
+    v.addEventListener("click", () => (v.paused ? v.play().catch(() => {}) : v.pause()));
+  });
+
   /* ---------------- Smooth momentum scroll ---------------- */
   let lenis: Lenis | null = null;
   if (!reduce) {
@@ -171,6 +181,8 @@ export async function boot() {
     gsap.from(el, { y: 36, opacity: 0, duration: 1.4, ease: EASE, scrollTrigger: { trigger: el, start: "top 88%", once: true } }),
   );
 
+  const mm = gsap.matchMedia();
+
   /* ---------------- Collection: image-mask reveals + parallax (+ WebGL) ---------------- */
   const useGalleryGL = gl && finePointer && innerWidth > 900;
   const frames = $$("[data-gl-image]").map((el) => ({
@@ -231,6 +243,23 @@ export async function boot() {
     }
   });
 
+  /* ---------------- Reels: clip reveal, staggered depth, play only on screen ---------------- */
+  const reelEls = $$("[data-reel]");
+  reelEls.forEach((reel, i) => {
+    const frame = $(".reel-frame", reel);
+    gsap.fromTo(frame, { clipPath: "inset(100% 0% 0% 0%)" }, {
+      clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: "expo.inOut", delay: i * 0.08,
+      scrollTrigger: { trigger: ".reel-row", start: "top 85%", once: true },
+    });
+    gsap.from($$("figcaption > *", reel), { opacity: 0, y: 12, duration: 1, stagger: 0.06, delay: 0.7 + i * 0.08, ease: EASE, scrollTrigger: { trigger: ".reel-row", start: "top 85%", once: true } });
+  });
+  mm.add("(min-width: 901px)", () => {
+    reelEls.forEach((reel, i) => gsap.to(reel, {
+      y: [-40, 30, -20, 50][i], ease: "none",
+      scrollTrigger: { trigger: ".reel-row", start: "top bottom", end: "bottom top", scrub: true },
+    }));
+  });
+
   /* ---------------- Velocity marquee ---------------- */
   const track = $(".marquee-track");
   const loop = gsap.to(track, { xPercent: -50, duration: 38, ease: "none", repeat: -1 });
@@ -244,7 +273,6 @@ export async function boot() {
   });
 
   /* ---------------- Services: pinned, images reveal over each other ---------------- */
-  const mm = gsap.matchMedia();
   mm.add("(min-width: 901px)", () => {
     const items = $$("[data-service]");
     const imgs = $$("[data-service-img]");

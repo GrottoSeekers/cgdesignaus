@@ -30,6 +30,7 @@ export const hero = {
   headline: ["Gifts, wrapped", "with *love.*"],
   slides: [
     { type: "image", src: "/media/roses-rocher-bouquet.webp", alt: "Red roses and baby's breath in black wrapping with a box of Ferrero Rocher", caption: "Roses & Rocher" },
+    { type: "image", src: "/media/mixed-bouquet.webp", alt: "Mixed bouquet of pink and plum chrysanthemums, roses, hypericum berries and baby's breath in white wrapping", caption: "Because you miss her" },
     { type: "image", src: "/media/love-box.webp", alt: "Pink 'I love you' gift box with a mini fan, facial brush, lip serum, hair clips and sweets", caption: "The Love Box" },
     { type: "image", src: "/media/lilac-pamper-box.webp", alt: "Gift box with a lilac mini fan, perfume, lip serum, shampoo brush and chocolate sticks", caption: "Lilac Pamper Box" },
     { type: "image", src: "/media/care-period-pack.webp", alt: "Care pack with sanitary pads, eye mask, loofah, tissues and chocolate", caption: "Care & Period Pack" },
@@ -46,6 +47,15 @@ export const pieces: Piece[] = [
   { src: "/media/roses-rocher-bouquet.webp", alt: "Red rose bouquet with baby's breath, black wrapping and Ferrero Rocher", title: "Roses & Rocher", kind: "Flowers", ratio: "portrait" },
   { src: "/media/lilac-pamper-box.webp", alt: "Gift box with a lilac fan, perfume, lip serum, shampoo brush and Alpines chocolate", title: "Lilac Pamper Box", kind: "Gift packages", ratio: "portrait" },
   { src: "/media/care-period-pack.webp", alt: "Care pack with pads, eye mask, eyebrow razors, loofah, tissues and chocolate", title: "Care & Period Pack", kind: "Care packs", ratio: "portrait" },
+  { src: "/media/mixed-bouquet.webp", alt: "Mixed bouquet of chrysanthemums, roses, berries and baby's breath in white wrapping", title: "Because You Miss Her", kind: "Flowers", ratio: "square" },
+];
+
+// Vertical Reels shown in "Straight from the shop". Muted, looping, play while on screen.
+export const reels = [
+  { src: "/media/reel-lilac-box.mp4", poster: "/media/reel-lilac-box.webp", title: "Lilac Pamper Box", kind: "Gift packages" },
+  { src: "/media/reel-blush-box.mp4", poster: "/media/reel-blush-box.webp", title: "Blush Pamper Box", kind: "Gift packages" },
+  { src: "/media/reel-popup-cards.mp4", poster: "/media/reel-popup-cards.webp", title: "Pop-up Cards", kind: "Cards" },
+  { src: "/media/reel-bow-box.mp4", poster: "/media/reel-bow-box.webp", title: "The Bow Box", kind: "Gift packages" },
 ];
 
 export const marquee = ["Gift packages", "Flowers", "Candy packs", "Care packs", "Picnics", "Corporate"];
@@ -64,8 +74,8 @@ export const services = [
     title: "Flowers & bouquets",
     text: "Red roses and baby's breath, custom-made around your budget, with chocolates or a gift added in. Same-day delivery in Nairobi.",
     items: ["Rose bouquets", "Custom arrangements", "Add a gift"],
-    src: "/media/roses-rocher-bouquet.webp",
-    alt: "Rose bouquet with Ferrero Rocher",
+    src: "/media/mixed-bouquet.webp",
+    alt: "Mixed bouquet in white wrapping",
   },
   {
     n: "03",
