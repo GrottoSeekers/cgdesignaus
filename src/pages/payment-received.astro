@@ -1,0 +1,135 @@
+---
+// Where Stripe Payment Links send clients after they pay
+// (Payment link → After payment → "Don't show confirmation page" → this URL).
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/legal/LegalHeader.astro";
+import Footer from "../components/legal/LegalFooter.astro";
+
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout
+  title="Payment received — CG Design & Co."
+  description="Thanks for your payment to CG Design & Co."
+>
+  <meta slot="head" name="robots" content="noindex" />
+  <Header />
+  <main class="paid">
+    <div class="wrap paid-wrap">
+      <span class="paid-check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"></path></svg>
+      </span>
+      <span class="eyebrow">Payment received</span>
+      <h1>Thank you. <em>You're all set.</em></h1>
+      <p class="lede">
+        Your payment has gone through. A receipt from Stripe is on its way to
+        your inbox.
+      </p>
+
+      <ol class="next">
+        <li>
+          <strong>Paid a deposit?</strong>
+          We'll start work on the date we agreed, and keep you posted as the
+          site comes together.
+        </li>
+        <li>
+          <strong>Paid your final balance?</strong>
+          We'll take your site live and hand everything over. It's 100% yours.
+        </li>
+        <li>
+          <strong>Started a monthly plan?</strong>
+          Hosting and maintenance are now active. You can cancel any time.
+        </li>
+      </ol>
+
+      <p class="help">
+        Questions about your payment? Email
+        <a href="mailto:info@cgdesignaus.com">info@cgdesignaus.com</a>
+        or message us on
+        <a href="https://wa.me/447306100251">WhatsApp</a>.
+      </p>
+
+      <a href={base} class="btn btn-primary">Back to home</a>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .paid {
+    padding: 150px 0 100px;
+  }
+
+  .paid-wrap {
+    max-width: 640px;
+  }
+
+  .paid-check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 28px;
+    border-radius: 50%;
+    background: var(--accent-2);
+    color: var(--on-accent);
+  }
+
+  .paid h1 {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin: 16px 0 18px;
+  }
+
+  .paid h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .lede {
+    font-size: 1.08rem;
+    line-height: 1.6;
+    color: var(--text-dim);
+    margin: 0 0 36px;
+  }
+
+  .next {
+    list-style: none;
+    margin: 0 0 32px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .next li {
+    padding: 18px 22px;
+    border-radius: var(--radius);
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    font-size: 0.96rem;
+    line-height: 1.6;
+    color: var(--text-dim);
+  }
+
+  .next strong {
+    display: block;
+    margin-bottom: 2px;
+    color: var(--text);
+  }
+
+  .help {
+    font-size: 0.94rem;
+    line-height: 1.6;
+    color: var(--text-dim);
+    margin: 0 0 32px;
+  }
+
+  .help a {
+    color: var(--accent-text);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>
