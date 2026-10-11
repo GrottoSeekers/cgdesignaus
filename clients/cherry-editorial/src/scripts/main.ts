@@ -104,6 +104,18 @@ export async function boot() {
   const statement = $("[data-words]");
   const words = SplitText.create(statement, { type: "words", wordsClass: "word" });
 
+  /* ---------------- Header: frosted bar after the hero, hides on scroll down ---------------- */
+  const header = $(".header");
+  ScrollTrigger.create({
+    trigger: ".statement", start: "top 64px", end: "max",
+    onToggle: (st) => {
+      header.classList.toggle("is-solid", st.isActive);
+      if (!st.isActive) header.classList.remove("is-hidden");
+    },
+    onUpdate: (st) => !reduce && header.classList.toggle("is-hidden", st.direction === 1 && st.progress > 0.002),
+  });
+  header.addEventListener("focusin", () => header.classList.remove("is-hidden"));
+
   if (reduce) {
     $(".loader")?.remove();
     document.documentElement.classList.remove("js");
@@ -114,6 +126,7 @@ export async function boot() {
   gsap.set(heroLines, { yPercent: 110 });
   gsap.set("[data-hero-in]", { opacity: 0, y: 16 });
   gsap.set(".hero-media", { scale: 1.12 });
+  gsap.set(".header", { opacity: 0 });
 
   const loaderNum = $(".loader-num");
   const counter = { v: 0 };
@@ -140,6 +153,7 @@ export async function boot() {
       .to(".hero-media", { scale: 1, duration: 2.4 }, "<0.1")
       .to(heroLines, { yPercent: 0, duration: 1.6, stagger: 0.12 }, "<0.45")
       .to("[data-hero-in]", { opacity: 1, y: 0, duration: 1.2, stagger: 0.08 }, "<0.4")
+      .to(".header", { opacity: 1, duration: 1.2, clearProps: "opacity" }, "<")
       .add(() => {
         $(".loader")?.remove();
         lenis?.start();
