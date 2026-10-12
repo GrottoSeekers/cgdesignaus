@@ -1,4 +1,6 @@
 ---
+import { GOOGLE_PROFILE_URL } from "../lib/business";
+
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const year = new Date().getFullYear();
 ---
@@ -28,6 +30,7 @@ const year = new Date().getFullYear();
 <span class="foot-head">Contact</span>
 <a href="mailto:info@cgdesignaus.com" style="color: #f3eefa">info@cgdesignaus.com</a>
 <a href="https://wa.me/447306100251" target="_blank" rel="noopener noreferrer" style="color: #f3eefa">WhatsApp +44 7306 100251</a>
+<a href={GOOGLE_PROFILE_URL} target="_blank" rel="noopener noreferrer" style="color: #f3eefa">Google reviews ↗</a>
 <span style="color: rgba(243,238,250,0.55)">ABN 25 672 082 550</span>
 </div>
 </div>

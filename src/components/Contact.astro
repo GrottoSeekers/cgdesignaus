@@ -1,4 +1,6 @@
 ---
+import { GOOGLE_PROFILE_URL } from "../lib/business";
+
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 const serviceOptions = [
@@ -37,7 +39,7 @@ const nextSteps = [
 <ol class="next-steps" style="list-style: none; margin: 0 0 28px; padding: 0; display: flex; flex-direction: column; gap: 12px">
 {nextSteps.map((step, i) => <li style="display: flex; gap: 14px; align-items: center; font-size: 0.95rem"><span class="next-num" aria-hidden="true">{i + 1}</span>{step}</li>)}
 </ol>
-<p style="font-size: 0.84rem; color: rgba(20,17,26,0.66)">ABN 25 672 082 550</p>
+<p style="font-size: 0.84rem; color: rgba(20,17,26,0.66)">ABN 25 672 082 550 · <a href={GOOGLE_PROFILE_URL} target="_blank" rel="noopener noreferrer" style="color: #5b2695; font-weight: 700; text-decoration: none">Read our Google reviews →</a></p>
 </div>
 <div class="contact-form-wrap">
 <form class="contact-form" id="lead-form" action="https://api.web3forms.com/submit" method="POST" novalidate style="position: relative; display: flex; flex-direction: column; gap: 18px; background: #ffffff; border: 1px solid rgba(20,17,26,0.08); border-radius: 28px; padding: 36px; box-shadow: 0 50px 100px -50px rgba(47,17,71,0.45)">
