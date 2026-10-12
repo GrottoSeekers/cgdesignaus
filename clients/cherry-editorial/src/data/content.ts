@@ -104,3 +104,13 @@ export const inquiry = {
   text: "Tell us who it's for, the occasion and your budget. We reply on WhatsApp with ideas, the total and delivery details.",
   occasions: ["Birthday", "Anniversary", "Get well / care", "Corporate", "Something else"],
 };
+
+// Ordering & delivery questions (from the shop's Instagram posts and policies).
+export const faqs = [
+  { q: "How do I order?", a: "Tap Order on any gift, or fill in the order form. It goes straight to our WhatsApp, where we confirm the total, delivery fee and payment details." },
+  { q: "Do you deliver?", a: "Yes. Same-day delivery across Nairobi, and countrywide delivery on request. The delivery fee depends on your location." },
+  { q: "Is wrapping included?", a: "Always. Every package comes wrapped, in a free gift box, with a free card message written for you." },
+  { q: "Can I customise a package?", a: "Of course. Swap items, change colours, add flowers or chocolates, or build something from scratch around your budget." },
+  { q: "How far ahead should I order?", a: "Same-day orders are often possible. For Valentine's, Mother's Day, Father's Day and other busy dates we take pre-orders, and slots fill quickly." },
+  { q: "How do I pay?", a: "A deposit or full payment confirms your order. Custom orders are made fresh for you, so they can't be cancelled once confirmed." },
+];

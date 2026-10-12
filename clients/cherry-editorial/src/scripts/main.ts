@@ -1,85 +1,208 @@
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SplitText } from "gsap/SplitText";
-
-gsap.registerPlugin(ScrollTrigger, SplitText);
+import { animate, inView, scroll, stagger } from "motion";
 
 const $ = <T extends Element = HTMLElement>(s: string, root: ParentNode = document) => root.querySelector<T>(s)!;
 const $$ = <T extends Element = HTMLElement>(s: string, root: ParentNode = document) => [...root.querySelectorAll<T>(s)];
-// Apple's standard easing, as a GSAP-friendly curve.
-const EASE = "power3.out";
 
+// Same soft ease-out curve as the other client builds.
+const EASE_OUT = [0.16, 1, 0.3, 1] as const;
+
+/*
+ * Motion plays for every visitor, including devices with Reduce Motion on.
+ * That matches the other client builds (Nigel's: the motion is gentle and part
+ * of the brand). Nothing here flashes, loops endlessly or moves the whole page.
+ */
 export function boot() {
-  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  heroIntro();
+  carousel();
+  reveals();
+  highlightIcons();
+  statementWords();
+  collection();
+  faq();
+  productVideos();
+  orderForm();
+}
 
-  /* ---------------- Hero carousel: crossfade, dots, caption ---------------- */
+/* ---------------- Hero: copy rises in, stage settles and grows on scroll ---------------- */
+function heroIntro() {
+  const items = $$("[data-in]");
+  items.forEach((el) => (el.style.opacity = "0"));
+  animate(items, { opacity: [0, 1], y: [24, 0] }, { duration: 0.9, delay: stagger(0.08, { startDelay: 0.1 }), ease: EASE_OUT });
+  const stage = $(".stage");
+  stage.style.opacity = "0";
+  animate(stage, { opacity: [0, 1], y: [40, 0] }, { duration: 1.1, delay: 0.4, ease: EASE_OUT });
+
+  // The photo grows to full size as it scrolls up into view.
+  scroll(animate(".stage-media", { scale: [0.93, 1] }, { ease: "linear" }), {
+    target: stage, offset: ["start end", "start 0.2"],
+  });
+}
+
+/* ---------------- Hero carousel: autoplay with progress dots, swipe, pause off-screen ---------------- */
+function carousel() {
+  const SLIDE_MS = 5000;
+  const stage = $(".stage");
+  const media = $(".stage-media");
   const slides = $$<HTMLImageElement | HTMLVideoElement>("[data-slide]");
   const dots = $$<HTMLButtonElement>("[data-dot]");
   const caption = $(".stage-caption");
   const captions = dots.map((d) => (d.getAttribute("aria-label") ?? "").replace(/^Show /, ""));
+  if (slides.length < 2) return;
+  stage.style.setProperty("--slide-ms", `${SLIDE_MS}ms`);
+
   let current = 0;
   let timer: number | undefined;
-  let heroVisible = true;
+  let visible = true;
+
   const show = (i: number) => {
-    if (i === current) return;
+    const next = (i + slides.length) % slides.length;
+    if (next === current) return;
     slides[current].classList.remove("active");
     slides[current].setAttribute("aria-hidden", "true");
     dots[current].setAttribute("aria-pressed", "false");
-    current = (i + slides.length) % slides.length;
+    current = next;
     slides[current].classList.add("active");
     slides[current].removeAttribute("aria-hidden");
     dots[current].setAttribute("aria-pressed", "true");
+    animate(caption, { opacity: [0, 1], y: [6, 0] }, { duration: 0.5, ease: EASE_OUT });
     caption.textContent = captions[current];
   };
-  const autoplay = () => {
-    clearInterval(timer);
-    if (reduce || slides.length < 2) return;
-    timer = window.setInterval(() => heroVisible && !document.hidden && show(current + 1), 5000);
+  const play = () => {
+    clearTimeout(timer);
+    stage.classList.remove("is-playing");
+    if (!visible || document.hidden) return;
+    void stage.offsetWidth; // restart the dot's progress fill
+    stage.classList.add("is-playing");
+    timer = window.setTimeout(() => { show(current + 1); play(); }, SLIDE_MS);
   };
-  dots.forEach((d, i) => d.addEventListener("click", () => { show(i); autoplay(); }));
-  new IntersectionObserver(([e]) => (heroVisible = e.isIntersecting), { threshold: 0.2 }).observe($(".stage"));
-  autoplay();
 
-  /* ---------------- Product videos play only while on screen ---------------- */
-  const io = new IntersectionObserver((entries) => entries.forEach((e) => {
-    const v = e.target as HTMLVideoElement;
-    if (e.isIntersecting && !reduce) { v.preload = "auto"; v.play().catch(() => {}); } else v.pause();
-  }), { threshold: 0.4 });
-  $$<HTMLVideoElement>("[data-product-video]").forEach((v) => {
-    io.observe(v);
-    v.addEventListener("click", () => (v.paused ? v.play().catch(() => {}) : v.pause()));
+  dots.forEach((d, i) => d.addEventListener("click", () => { show(i); play(); }));
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; play(); }, { threshold: 0.25 }).observe(stage);
+  document.addEventListener("visibilitychange", play);
+
+  // Swipe between photos on touch screens (and drag with a mouse).
+  let startX = 0, startY = 0, tracking = false;
+  media.addEventListener("pointerdown", (e) => { tracking = true; startX = e.clientX; startY = e.clientY; });
+  media.addEventListener("pointerup", (e) => {
+    if (!tracking) return;
+    tracking = false;
+    const dx = e.clientX - startX, dy = e.clientY - startY;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { show(current + (dx < 0 ? 1 : -1)); play(); }
+  });
+  media.addEventListener("pointercancel", () => (tracking = false));
+}
+
+/* ---------------- Sections and cards fade up as they arrive ---------------- */
+function reveals() {
+  const groups = new Map<Element, HTMLElement[]>();
+  $$("[data-reveal]").forEach((el) => {
+    const parent = el.parentElement!;
+    groups.set(parent, [...(groups.get(parent) ?? []), el]);
+  });
+  groups.forEach((els) => {
+    els.forEach((el) => (el.style.opacity = "0"));
+    // Siblings (cards in a row, FAQ items) cascade one after another.
+    inView(els[0].parentElement!, () => {
+      animate(els, { opacity: [0, 1], y: [32, 0] }, { duration: 0.9, delay: stagger(0.08), ease: EASE_OUT });
+    }, { margin: "0px 0px -12% 0px" });
   });
 
-  /* ---------------- Collection filter (segmented control) ---------------- */
-  const tiles = $$("[data-product]");
+  const tiles = $$(".tile");
+  tiles.forEach((t) => (t.style.opacity = "0"));
+  inView(".tiles", () => {
+    animate(tiles, { opacity: [0, 1], y: [36, 0] }, { duration: 0.9, delay: stagger(0.07), ease: EASE_OUT });
+  }, { margin: "0px 0px -10% 0px" });
+}
+
+/* ---------------- Highlight icons draw themselves in ---------------- */
+function highlightIcons() {
+  $$(".highlight").forEach((card, i) => {
+    inView(card, () => { setTimeout(() => card.classList.add("drawn"), 250 + i * 120); });
+  });
+}
+
+/* ---------------- Statement: words darken as you read ---------------- */
+function statementWords() {
+  const words = $$(".statement-text .w");
+  scroll((progress: number) => {
+    const lit = Math.round(progress * words.length * 1.15);
+    words.forEach((w, i) => w.classList.toggle("lit", i < lit));
+  }, { target: $(".statement-text"), offset: ["start 0.85", "end 0.5"] });
+}
+
+/* ---------------- Collection: sliding segmented control + filter ---------------- */
+function collection() {
+  const bar = $(".segmented");
+  const indicator = $(".seg-indicator");
   const segments = $$<HTMLButtonElement>("[data-filter]");
+  const tiles = $$("[data-product]");
+  const grid = $(".tiles");
+
+  const moveIndicator = (btn: HTMLElement) => {
+    indicator.style.width = `${btn.offsetWidth}px`;
+    indicator.style.transform = `translateX(${btn.offsetLeft}px)`;
+  };
+  const active = () => segments.find((b) => b.getAttribute("aria-pressed") === "true") ?? segments[0];
+  requestAnimationFrame(() => { moveIndicator(active()); bar.classList.add("has-indicator"); });
+  addEventListener("resize", () => moveIndicator(active()));
+  document.fonts?.ready.then(() => moveIndicator(active()));
+
   const applyFilter = (f: string) => {
-    segments.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.filter === f)));
-    const swap = () => {
+    const btn = segments.find((b) => b.dataset.filter === f)!;
+    segments.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+    moveIndicator(btn);
+    animate(grid, { opacity: 0 }, { duration: 0.18 }).then(() => {
       tiles.forEach((t) => (t.hidden = !(f === "all" || t.dataset.category === f)));
-      ScrollTrigger.refresh();
-    };
-    if (reduce) return swap();
-    gsap.to(".tiles", { opacity: 0, duration: 0.2, ease: "power1.in", onComplete: () => {
-      swap();
-      gsap.fromTo(".tiles", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, ease: EASE });
-    } });
+      grid.scrollLeft = 0;
+      animate(grid, { opacity: 1 }, { duration: 0.3 });
+      const shown = tiles.filter((t) => !t.hidden);
+      animate(shown, { opacity: [0, 1], y: [18, 0] }, { duration: 0.6, delay: stagger(0.05), ease: EASE_OUT });
+    });
   };
   segments.forEach((b) => b.addEventListener("click", () => applyFilter(b.dataset.filter!)));
   $$<HTMLAnchorElement>("[data-footer-filter]").forEach((a) => a.addEventListener("click", () => applyFilter(a.dataset.footerFilter!)));
 
-  /* ---------------- "Order" on a product fills in the gift field ---------------- */
+  // "Order" on a product fills in the gift field and nudges the form into view.
   $$<HTMLAnchorElement>("[data-order]").forEach((a) => a.addEventListener("click", () => {
     const gift = document.querySelector<HTMLInputElement>('[data-inquiry] input[name="gift"]');
-    if (gift) gift.value = a.dataset.order!;
+    if (!gift) return;
+    gift.value = a.dataset.order!;
+    setTimeout(() => animate(gift, { scale: [1, 1.03, 1] }, { duration: 0.5, ease: EASE_OUT }), 700);
   }));
+}
 
-  /* ---------------- Order form → WhatsApp ---------------- */
+/* ---------------- FAQ: one open at a time ---------------- */
+function faq() {
+  const items = $$(".faq-item");
+  items.forEach((item) => {
+    $(".faq-q", item).addEventListener("click", () => {
+      const wasOpen = item.classList.contains("open");
+      items.forEach((o) => { o.classList.remove("open"); $(".faq-q", o).setAttribute("aria-expanded", "false"); });
+      if (!wasOpen) { item.classList.add("open"); $(".faq-q", item).setAttribute("aria-expanded", "true"); }
+    });
+  });
+}
+
+/* ---------------- Product videos play only while on screen ---------------- */
+function productVideos() {
+  const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+    const v = e.target as HTMLVideoElement;
+    if (e.isIntersecting) { v.preload = "auto"; v.play().catch(() => {}); } else v.pause();
+  }), { threshold: 0.4 });
+  $$<HTMLVideoElement>("[data-product-video]").forEach((v) => io.observe(v));
+}
+
+/* ---------------- Order form → WhatsApp ---------------- */
+function orderForm() {
   const form = $<HTMLFormElement>("[data-inquiry]");
+  const send = $(".btn-lg", form);
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const note = $(".form-note", form);
-    if (!form.reportValidity()) return;
+    if (!form.reportValidity()) {
+      animate(send, { x: [0, -8, 8, -5, 5, 0] }, { duration: 0.4 });
+      return;
+    }
     const d = new FormData(form);
     const v = (k: string) => String(d.get(k) ?? "").trim();
     const message = [
@@ -92,45 +215,13 @@ export function boot() {
     if (number) {
       window.open(`https://wa.me/${number}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
       note.textContent = "Opening WhatsApp with your order. We'll reply shortly.";
-      return;
+    } else {
+      // The shop's short WhatsApp link can't carry text, so copy the order to paste in.
+      navigator.clipboard?.writeText(message).catch(() => {});
+      window.open(form.dataset.waLink, "_blank", "noopener");
+      note.textContent = "Your order is copied. Paste it into the WhatsApp chat and press send.";
     }
-    // The shop's short WhatsApp link can't carry text, so copy the order to paste in.
-    navigator.clipboard?.writeText(message).catch(() => {});
-    window.open(form.dataset.waLink, "_blank", "noopener");
-    note.textContent = "Your order is copied. Paste it into the WhatsApp chat and press send.";
+    animate(note, { opacity: [0, 1], y: [8, 0] }, { duration: 0.5, ease: EASE_OUT });
   });
-
-  if (reduce) return;
-
-  /* ================= Motion (restrained, Apple-style) ================= */
-
-  // Hero copy rises in on load.
-  gsap.from("[data-in]", { opacity: 0, y: 24, duration: 1.1, stagger: 0.09, ease: EASE, delay: 0.1 });
-  gsap.from(".stage", { opacity: 0, y: 40, duration: 1.3, ease: EASE, delay: 0.35 });
-
-  // The photo stage grows slightly as you scroll into it.
-  gsap.fromTo(".stage-media", { scale: 0.94 }, {
-    scale: 1, ease: "none",
-    scrollTrigger: { trigger: ".stage", start: "top 85%", end: "top 15%", scrub: true },
-  });
-
-  // Statement: words darken as you read.
-  document.fonts.ready.then(() => {
-    const words = SplitText.create("[data-words]", { type: "words" });
-    gsap.fromTo(words.words, { color: "#d2d2d7" }, {
-      color: "#1d1d1f", stagger: 0.1, ease: "none",
-      scrollTrigger: { trigger: "[data-words]", start: "top 80%", end: "bottom 50%", scrub: true },
-    });
-  });
-
-  // Sections and cards fade up as they arrive.
-  $$("[data-reveal]").forEach((el) =>
-    gsap.from(el, { opacity: 0, y: 32, duration: 1, ease: EASE, scrollTrigger: { trigger: el, start: "top 88%", once: true } }),
-  );
-  ScrollTrigger.batch(".tile", {
-    start: "top 90%", once: true,
-    onEnter: (batch) => gsap.from(batch, { opacity: 0, y: 32, duration: 0.9, stagger: 0.08, ease: EASE }),
-  });
-
-  addEventListener("load", () => ScrollTrigger.refresh());
 }
+

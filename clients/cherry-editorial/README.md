@@ -19,12 +19,17 @@ Follows Apple's design language (apple.com / Human Interface Guidelines):
 - **Colour:** white and `#f5f5f7` sections, `#1d1d1f` text, `#6e6e73` secondary text. Cherry red `#b3122e`
   is the single accent, used only for actions and links.
 - **Shape:** 22–28px rounded tiles and media, pill buttons, frosted-glass sticky nav (52px).
-- **Motion (GSAP, restrained):** hero copy rises in; the photo stage grows slightly as it scrolls in; the statement
-  darkens word by word as you read; sections and tiles fade up once. No hover effects on images or cards.
-  `prefers-reduced-motion` turns all motion off. Native scrolling (no scroll hijacking).
+- **Motion ([Motion](https://motion.dev), restrained, like the other client builds):** hero copy rises in; the photo
+  carousel autoplays with progress dots and swipes on touch; the stage grows slightly as it scrolls in; highlight icons
+  draw in; the statement darkens word by word; sections, cards and tiles cascade up; the segmented control has a sliding
+  indicator; FAQ accordion; floating WhatsApp chat card; buttons lift on hover and press in on tap; highlight and review
+  cards lift on hover. Product photos and tiles stay still. Native scrolling.
+- **Reduce Motion:** like Nigel's, the gentle motion plays for every visitor (client decision); only jump-scrolling is
+  made instant.
 
 Page order: nav · hero (headline, subhead, two CTAs, photo carousel with dots) · highlights · statement ·
-the collection (segmented filter, product tiles, horizontal scroller on phones) · about · reviews · order form · footer.
+the collection (segmented filter, product tiles, horizontal scroller on phones) · about · reviews · FAQ · order form · footer
+· floating chat button.
 
 ## Editing content
 
