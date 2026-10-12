@@ -25,9 +25,9 @@ export type Slide =
   | { type: "video"; src: string; poster: string; alt: string; caption: string };
 
 export const hero = {
-  eyebrow: "Cherry Candy & Gift Store — Nairobi",
-  // Each line is revealed separately; wrap a word in *asterisks* for italic.
-  headline: ["Gifts, wrapped", "with *love.*"],
+  eyebrow: "Cherry Candy & Gift Store",
+  headline: "Gifts, wrapped with love.",
+  subhead: "Hand-picked gift packages, flowers and care packs. Free gift box and card. Same-day delivery in Nairobi.",
   slides: [
     { type: "image", src: "/media/roses-rocher-bouquet.webp", alt: "Red roses and baby's breath in black wrapping with a box of Ferrero Rocher", caption: "Roses & Rocher" },
     { type: "image", src: "/media/mixed-bouquet.webp", alt: "Mixed bouquet of pink and plum chrysanthemums, roses, hypericum berries and baby's breath in white wrapping", caption: "Because you miss her" },
@@ -38,7 +38,15 @@ export const hero = {
 };
 
 export const intro =
-  "A gift should feel chosen, never bought. Every package is hand-picked and wrapped in our Nairobi shop, boxed for free and finished with a card written in your words, then delivered the same day.";
+  "A gift should feel chosen, never bought. So every package is hand-picked, wrapped in our Nairobi shop, boxed for free and finished with a card in your words.";
+
+// The four reasons to order, shown as a row of small cards under the hero.
+export const highlights = [
+  { icon: "box", title: "Free gift box", text: "Every package arrives boxed and wrapped." },
+  { icon: "card", title: "Free card message", text: "Tell us what to say. We write it for you." },
+  { icon: "truck", title: "Same-day delivery", text: "Across Nairobi, and countrywide on request." },
+  { icon: "tag", title: "From KSh 1,000", text: "Ready-made or built around your budget." },
+] as const;
 
 export const categories = ["Gift packages", "Flowers", "Care packs", "Cards"] as const;
 export type Category = (typeof categories)[number];
@@ -68,12 +76,10 @@ export const products: Product[] = [
   { title: "Pop-up Cards", category: "Cards", video: { src: "/media/reel-popup-cards.mp4", poster: "/media/reel-popup-cards.webp" }, alt: "Pop-up greeting cards with balloons, flowers and a typewriter" },
 ];
 
-export const marquee = ["Gift packages", "Flowers", "Candy packs", "Care packs", "Picnics", "Corporate"];
-
 export const about = {
   src: "/media/cherry-logo.webp",
   alt: "Cherry logo: two red cherries tied with a pink bow",
-  heading: ["A little shop", "with a *big heart.*"],
+  heading: "A little shop with a big heart.",
   body: [
     "Cherry Candy & Gift Store is a gift shop at Dynamic Mall in Nairobi. We put together gift packages, candy packs, flowers, care packs, picnics and corporate gifts for every kind of occasion.",
     "Every order is picked and wrapped by hand, comes in a free gift box, and carries a card message we write for you. We deliver the same day across Nairobi and countrywide on request.",
@@ -94,11 +100,7 @@ export const testimonials = [
 ];
 
 export const inquiry = {
-  heading: ["Place an", "*order.*"],
+  heading: "Place an order.",
   text: "Tell us who it's for, the occasion and your budget. We reply on WhatsApp with ideas, the total and delivery details.",
   occasions: ["Birthday", "Anniversary", "Get well / care", "Corporate", "Something else"],
-  bg: "/media/roses-rocher-bouquet.webp",
 };
-
-/** Turn "*word* rest" into HTML with <em>. */
-export const em = (s: string) => s.replace(/\*(.+?)\*/g, "<em>$1</em>");
