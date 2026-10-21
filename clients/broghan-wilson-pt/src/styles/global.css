@@ -18,6 +18,7 @@
   --body: "Inter Variable", "Inter", system-ui, -apple-system, sans-serif;
   --radius: 20px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: dark;
 }
 
 *,
@@ -151,7 +152,7 @@ img {
 /* ---------- Top bar: floating, minimal, its one button stays on the page ---------- */
 .topbar {
   position: sticky;
-  top: 0;
+  top: env(safe-area-inset-top, 0px);
   z-index: 30;
   padding: 14px 16px 0;
 }
