@@ -1,0 +1,237 @@
+---
+import "@fontsource/anton/400.css";
+import "@fontsource-variable/inter";
+import "../styles/global.css";
+
+// ---------------------------------------------------------------------------
+// Everything Broghan will change lives here. Anything still in [BRACKETS] is a
+// placeholder waiting on him (copy, prices and checkout links are not final).
+// The page follows his "Anatomy of a Highly Efficient Sales Page": top bar,
+// promise, uppercut, VSL, guarantee, pricing with direct checkout, footer.
+// No testimonials, no sales calls, no social links.
+// ---------------------------------------------------------------------------
+
+const site = "https://broghanwilsonpt.com/"; // [CONFIRM DOMAIN]
+const title = "Broghan Wilson PT — Coaching that lasts a lifetime, or your money back";
+const description =
+  "A coaching system built around what you enjoy, what you actually eat, and a schedule that works for you. Backed by a money-back guarantee.";
+
+const clientsCoached: number | null = null; // e.g. 150 → counts up to "150+ clients coached"
+
+const headline = {
+  lead: "Helping you build small habits that last a",
+  highlight: "lifetime.",
+  close: "Or your money back.",
+};
+const uppercut =
+  "A coaching system built around what you enjoy, what you actually eat, and a schedule that works for you — from someone who’s been in your exact position before.";
+
+// VSL. Set type to "youtube" | "vimeo" (id) or "mp4" (src). "none" shows the placeholder.
+const vsl: { type: "none" | "youtube" | "vimeo" | "mp4"; id?: string; src?: string; poster?: string; runtime: string } = {
+  type: "none",
+  runtime: "[1–3 MIN]",
+};
+const vslCaption = "Straight from me, no script — what this is, why you need it, and what you get.";
+
+const guarantee = {
+  days: "[XX]",
+  heading: "Do the work. See the results. Or your money back.",
+  terms:
+    "[GUARANTEE TERMS IN ONE OR TWO PLAIN SENTENCES — E.G. FOLLOW THE PLAN FOR XX DAYS. IF YOU DON’T SEE PROGRESS, I’LL REFUND YOU IN FULL. NO HOOPS.]",
+};
+
+const plans = [
+  {
+    name: "[Coaching]",
+    price: "[$XXX]",
+    period: "/ month",
+    forWho: "[WHO THIS LEVEL IS FOR — ONE LINE.]",
+    features: ["[FEATURE 1]", "[FEATURE 2]", "[FEATURE 3]", "[FEATURE 4]"],
+    checkoutUrl: "", // Stripe / payment link
+    featured: false,
+  },
+  {
+    name: "[Transformation]",
+    price: "[$XXX]",
+    period: "/ month",
+    forWho: "[WHO THIS LEVEL IS FOR — ONE LINE.]",
+    features: ["Everything in [Coaching], plus:", "[FEATURE 1]", "[FEATURE 2]", "[FEATURE 3]"],
+    checkoutUrl: "",
+    altLabel: "[OR PAY UPFRONT FOR XX MONTHS — SAVE $XX]",
+    altUrl: "",
+    featured: true,
+  },
+];
+
+const contact = { email: "[EMAIL]", phone: "[PHONE]" };
+
+const year = new Date().getFullYear();
+const checkout = (url?: string) => (url ? url : "#pricing");
+const vslEmbed =
+  vsl.type === "youtube"
+    ? `https://www.youtube-nocookie.com/embed/${vsl.id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`
+    : vsl.type === "vimeo"
+      ? `https://player.vimeo.com/video/${vsl.id}?autoplay=1&title=0&byline=0&portrait=0`
+      : "";
+const check = "M5 12.5l4.2 4.2L19 7";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={site} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#0B0C0E" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={site} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>
+      // Hide the bits that animate in, but only when JS is running and motion is welcome.
+      // If the page script hasn't started within 3s, show everything as-is.
+      (function () {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        var d = document.documentElement;
+        d.classList.add("anim");
+        setTimeout(function () {
+          if (!window.__bwReady) d.classList.remove("anim");
+        }, 3000);
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="topbar" data-reveal>
+      <div class="topbar-inner">
+        <span class="brand">Broghan Wilson <em>PT</em></span>
+        <span class="topbar-note">1:1 &amp; online coaching</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="top">
+        <div class="glow glow-hero" aria-hidden="true"></div>
+        <div class="wrap hero-inner">
+          <p class="proof" data-hero="proof">
+            <span class="faces" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <span><b class="count" data-count={clientsCoached ?? ""}>{clientsCoached ?? "[X]"}</b>+ clients coached</span>
+          </p>
+
+          <h1 class="headline" data-hero="headline">
+            {headline.lead} <span class="hl">{headline.highlight}<i class="hl-bar" aria-hidden="true"></i></span>
+            <br />{headline.close}
+          </h1>
+
+          <p class="uppercut" data-hero="uppercut">{uppercut}</p>
+
+          <div class="vsl" data-hero="vsl">
+            <div
+              class="vsl-frame"
+              data-vsl-type={vsl.type}
+              data-vsl-embed={vslEmbed}
+              data-vsl-src={vsl.src ?? ""}
+            >
+              {vsl.poster && <img class="vsl-poster" src={vsl.poster} alt="" />}
+              <div class="vsl-hatch" aria-hidden="true"></div>
+              <button class="vsl-play" type="button" aria-label="Play Broghan's video">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"></path></svg>
+              </button>
+              {vsl.type === "none" && <span class="vsl-tag">[VSL — BROGHAN’S VIDEO GOES HERE]</span>}
+              <span class="vsl-runtime">{vsl.runtime}</span>
+            </div>
+            <p class="vsl-caption">{vslCaption}</p>
+          </div>
+
+          <a class="btn btn-primary btn-xl" href="#pricing" data-hero="cta" data-magnetic>
+            Choose your plan <span aria-hidden="true">↓</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="guarantee" aria-labelledby="guarantee-h">
+        <div class="wrap">
+          <div class="guarantee-card" data-reveal>
+            <div class="seal" aria-hidden="true">
+              <svg class="seal-ring" viewBox="0 0 150 150">
+                <defs><path id="seal-path" d="M75,75 m-58,0 a58,58 0 1,1 116,0 a58,58 0 1,1 -116,0"></path></defs>
+                <text><textPath href="#seal-path">MONEY-BACK GUARANTEE • MONEY-BACK GUARANTEE • </textPath></text>
+              </svg>
+              <div class="seal-core"><span>{guarantee.days}</span><small>days</small></div>
+            </div>
+            <div class="guarantee-copy">
+              <h2 id="guarantee-h">{guarantee.heading}</h2>
+              <p>{guarantee.terms}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pricing" id="pricing" aria-labelledby="pricing-h">
+        <div class="glow glow-pricing" aria-hidden="true"></div>
+        <div class="wrap">
+          <div class="pricing-head" data-reveal>
+            <p class="eyebrow">Pricing</p>
+            <h2 id="pricing-h">Pick your level. CheckPick your level. Check out.<br />Start this week.nbsp;out. Start this week.</h2>
+          </div>
+
+          <div class="plans">
+            {
+              plans.map((plan) => (
+                <article class:list={["plan", { featured: plan.featured }]} data-plan>
+                  {plan.featured && <p class="plan-flag">Most popular</p>}
+                  <div class="plan-body">
+                    <p class="plan-name">{plan.name}</p>
+                    <p class="plan-price">
+                      <span class="price" data-scramble>{plan.price}</span>
+                      <span class="period">{plan.period}</span>
+                    </p>
+                    <p class="plan-for">{plan.forWho}</p>
+                    <ul class="plan-features">
+                      {plan.features.map((f) => (
+                        <li>
+                          <svg viewBox="0 0 24 24" aria-hidden="true"><path d={check}></path></svg>
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                    <a class:list={["btn", plan.featured ? "btn-primary" : "btn-outline"]} href={checkout(plan.checkoutUrl)}>
+                      Start now — {plan.price}
+                    </a>
+                    {plan.altLabel && (
+                      <a class="btn btn-ghost" href={checkout(plan.altUrl)}>
+                        {plan.altLabel}
+                      </a>
+                    )}
+                    <p class="plan-small">Secure checkout · Cancel anytime · {guarantee.days}-day guarantee</p>
+                  </div>
+                </article>
+              ))
+            }
+          </div>
+
+          <p class="questions" data-reveal>
+            Questions first? Email <a href={`mailto:${contact.email}`}>{contact.email}</a> or text
+            <a href={`sms:${contact.phone}`}>{contact.phone}</a>. Not required — just here if you need it.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <span>© {year} Broghan Wilson PT. All rights reserved.</span>
+        <span class="footer-links"><a href="/privacy/">Privacy Policy</a><a href="/terms/">Terms</a></span>
+      </div>
+    </footer>
+
+    <a class="sticky-cta btn btn-primary" href="#pricing" aria-hidden="true" tabindex="-1">Choose your plan ↓</a>
+
+    <script>
+      import "../scripts/page.ts";
+    </script>
+  </body>
+</html>
