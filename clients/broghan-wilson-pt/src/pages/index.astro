@@ -178,9 +178,20 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
     <meta property="og:description" content={description} />
     <meta name="twitter:card" content="summary_large_image" />
     <script is:inline>
-      // Hide the bits that animate in, but only when JS is running (Reduce Motion gets
-      // gentle fades instead of movement). If the page script hasn't started within
-      // 6s (a slow phone connection), show everything as-is.
+      // Small fallbacks for older iPhones (iOS < 15.4) so the animation libraries run there too.
+      if (!Array.prototype.at)
+        Object.defineProperty(Array.prototype, "at", {
+          configurable: true,
+          writable: true,
+          value: function (n) {
+            n = Math.trunc(n) || 0;
+            if (n < 0) n += this.length;
+            return this[n];
+          },
+        });
+      if (!Object.hasOwn) Object.hasOwn = function (o, k) { return Object.prototype.hasOwnProperty.call(o, k); };
+      // Hide the bits that animate in, but only when JS is running. If the page
+      // script hasn't started within 6s (a slow phone connection), show everything as-is.
       (function () {
         var d = document.documentElement;
         d.classList.add("anim");
