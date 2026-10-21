@@ -1,13 +1,13 @@
 # Broghan Wilson PT
 
-One-page sales funnel for Broghan Wilson PT (1:1 & online coaching). Built by CG Design & Co.
+Long-form, one-page sales funnel for Broghan Wilson PT (1:1 & online coaching). Built by CG Design & Co.
 
-The structure follows Broghan's own brief ("Anatomy of a Highly Efficient Sales Page", in the
-reference recordings): a minimal top bar, a specific promise, a subheading "uppercut", the VSL,
-a money-back guarantee, pricing with direct checkout, and a footer. On purpose there are **no
-testimonials, no sales-call booking and no social links** — the page's only job is to get a
-visitor from the video to checkout. The finish (floating top bar, avatar badge, glows, glowing
-featured plan, instalment button) takes its cues from jamessmith.business, which he likes.
+The layout follows jamessmith.business, the page Broghan called "perfect": hero with VSL, client
+results, credibility stats and story, what's included, outcomes, video testimonials, a scrolling
+review wall, the money-back guarantee, pricing, FAQ and a final CTA, with "Join today" buttons
+repeated down the page. It stays inside the rules of his own sales-page brief (see `reference/`):
+promise and VSL first, transparent pricing, a bold guarantee, **direct checkout with no sales
+calls**, and **no social links**. Every button scrolls to pricing, so nothing leads off the page.
 
 ## Develop
 
@@ -26,14 +26,18 @@ npm run build      # static output in dist/
   - `vsl`: `{ type: "youtube", id }`, `{ type: "vimeo", id }` or `{ type: "mp4", src: "/video/vsl.mp4" }`.
     The video only loads when someone presses play, so the page stays fast.
   - `plans[].checkoutUrl`: Stripe (or similar) payment links. Empty links fall back to `#pricing`.
+  - Photos and videos (`results[].photo`, `portrait`, `included[].media`, `videoTestimonials[].src`):
+    put files in `public/images` / `public/video` and set the paths. Empty paths show a labelled placeholder.
 - **Styles and tokens**: `src/styles/global.css` (accent `--accent: #d4f21c`, Broghan's volt yellow).
 - **Fonts**: Anton (headings) and Inter (body), self-hosted via Fontsource.
 - **Motion**: `src/scripts/page.ts`.
   - Anime.js: hero timeline (headline split into words rising out of clipped lines, highlight bar
-    under "lifetime."), client counter, rotating guarantee seal, price scramble, tick marks drawing in.
-  - Motion: scroll reveals (`inView` + springs), scroll-linked glows, spring hover/press on
-    buttons, magnetic hero button, and the phone sticky "Choose your plan" bar (shows after the
-    hero button scrolls away, hides once pricing is on screen).
+    under "lifetime."), section headings rising word by word, number counters, outcome numbers
+    flipping in, rotating guarantee seal, price scramble, tick marks drawing in.
+  - Motion: scroll reveals (`inView` + springs), scroll-linked glows and story progress line,
+    ticker and review-wall marquees (slow down on hover, pause off screen), spring hover/press on
+    buttons, card tilt, magnetic hero button, FAQ answers easing in, and the phone sticky
+    "Join today" bar (shows after the hero button scrolls away, hides while pricing is on screen).
   - Only transform/opacity animate. Reduce Motion gets a static page. If the script hasn't run
     within 3s, everything shows as-is.
 - **Legal**: `src/pages/privacy.astro`, `src/pages/terms.astro` are placeholders for Broghan's text.
@@ -41,5 +45,5 @@ npm run build      # static output in dist/
 
 ## Still needed from Broghan
 
-Domain, final headline/subheading, VSL file or link, guarantee length and terms, plan names,
+Domain, final headline/subheading, client results, quotes, photos and videos, his story and stats, VSL file or link, guarantee length and terms, plan names,
 prices, features and checkout links, contact email/phone, privacy policy and terms.

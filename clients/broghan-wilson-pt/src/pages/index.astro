@@ -4,11 +4,16 @@ import "@fontsource-variable/inter";
 import "../styles/global.css";
 
 // ---------------------------------------------------------------------------
-// Everything Broghan will change lives here. Anything still in [BRACKETS] is a
-// placeholder waiting on him (copy, prices and checkout links are not final).
-// The page follows his "Anatomy of a Highly Efficient Sales Page": top bar,
-// promise, uppercut, VSL, guarantee, pricing with direct checkout, footer.
-// No testimonials, no sales calls, no social links.
+// Everything Broghan will change lives here. Anything in [BRACKETS] is a
+// placeholder waiting on him (copy, prices, photos and links aren't final).
+//
+// Layout: the long-form structure of jamessmith.business (the page Broghan
+// called "perfect"), kept inside the rules of his own sales-page brief:
+// promise + VSL first, transparent pricing, a bold money-back guarantee,
+// direct checkout (no sales calls) and no social links. Every "Join today"
+// button scrolls to pricing, so nothing leads off the page.
+// Photos and videos: drop files in public/images or public/video and set the
+// paths below. Empty paths show a labelled placeholder.
 // ---------------------------------------------------------------------------
 
 const site = "https://broghanwilsonpt.com/"; // [CONFIRM DOMAIN]
@@ -16,8 +21,10 @@ const title = "Broghan Wilson PT — Coaching that lasts a lifetime, or your mon
 const description =
   "A coaching system built around what you enjoy, what you actually eat, and a schedule that works for you. Backed by a money-back guarantee.";
 
-const clientsCoached: number | null = null; // e.g. 150 → counts up to "150+ clients coached"
+const clientsCoached: number | null = null; // e.g. 150 → the badge counts up to "150+"
 
+// ---- Hero ----
+const eyebrow = "[The step-by-step coaching system]";
 const headline = {
   lead: "Helping you build small habits that last a",
   highlight: "lifetime.",
@@ -26,13 +33,73 @@ const headline = {
 const uppercut =
   "A coaching system built around what you enjoy, what you actually eat, and a schedule that works for you — from someone who’s been in your exact position before.";
 
-// VSL. Set type to "youtube" | "vimeo" (id) or "mp4" (src). "none" shows the placeholder.
+// VSL: { type: "youtube" | "vimeo", id } or { type: "mp4", src: "/video/vsl.mp4" }. "none" = placeholder.
 const vsl: { type: "none" | "youtube" | "vimeo" | "mp4"; id?: string; src?: string; poster?: string; runtime: string } = {
   type: "none",
   runtime: "[1–3 MIN]",
 };
 const vslCaption = "Straight from me, no script — what this is, why you need it, and what you get.";
 
+// ---- Results (quote + big outcome, like the reference) ----
+const resultsTitle = "Real people. Real results.";
+const resultsSub = "[ONE LINE — E.G. EVERY ONE OF THEM STARTED EXACTLY WHERE YOU ARE NOW.]";
+const results = [
+  { quote: "[CLIENT QUOTE — 2–3 SENTENCES IN THEIR OWN WORDS.]", outcome: "[Down XX kg in XX weeks]", name: "[CLIENT NAME]", photo: "" },
+  { quote: "[CLIENT QUOTE — 2–3 SENTENCES IN THEIR OWN WORDS.]", outcome: "[First ever pull-up]", name: "[CLIENT NAME]", photo: "" },
+  { quote: "[CLIENT QUOTE — 2–3 SENTENCES IN THEIR OWN WORDS.]", outcome: "[XX kg → XX kg]", name: "[CLIENT NAME]", photo: "" },
+  { quote: "[CLIENT QUOTE — 2–3 SENTENCES IN THEIR OWN WORDS.]", outcome: "[Fitter at 50 than at 30]", name: "[CLIENT NAME]", photo: "" },
+];
+
+// ---- Credibility + story ----
+const credibility = "[I’m not teaching this from a textbook. Everything I coach, I’ve done myself.]";
+const credibilitySub = "[ONE-LINE PROOF SUMMARY]";
+const stats = [
+  { value: null as number | null, suffix: "+", label: "Clients coached" },
+  { value: null as number | null, suffix: "", label: "Years coaching" },
+  { value: null as number | null, suffix: "kg", label: "Lost by clients" },
+];
+const story = [
+  { title: "[Where I started]", body: "[TWO OR THREE SENTENCES.]" },
+  { title: "[The turning point]", body: "[TWO OR THREE SENTENCES.]" },
+  { title: "[Why I coach now]", body: "[TWO OR THREE SENTENCES.]" },
+];
+const portrait = ""; // e.g. "/images/broghan.jpg" (black & white works best)
+
+// ---- What's included ----
+const includedTitle = "Everything you get";
+const includedSub = "Everything you need. Nothing you don’t.";
+const included = [
+  { title: "1:1 onboarding call", body: "[ONE SENTENCE — E.G. WE MAP OUT YOUR GOAL, YOUR WEEK AND YOUR STARTING POINT.]", media: "" },
+  { title: "Your training plan", body: "[ONE SENTENCE — GYM OR HOME, UPDATED AS YOU PROGRESS.]", media: "" },
+  { title: "Simple nutrition", body: "[ONE SENTENCE — FOOD YOU ACTUALLY LIKE.]", media: "" },
+  { title: "Weekly check-ins", body: "[ONE SENTENCE — DIRECT FEEDBACK FROM ME EVERY WEEK.]", media: "" },
+  { title: "Direct access to me", body: "[ONE SENTENCE — MESSAGE ME ANY TIME.]", media: "" },
+  { title: "Form reviews", body: "[ONE SENTENCE — SEND A VIDEO, GET CORRECTIONS.]", media: "" },
+];
+
+// ---- Outcomes ----
+const outcomesTitle = "[In 12 weeks you’ll…]";
+const outcomes = [
+  { title: "[Outcome one]", body: "[ONE OR TWO SENTENCES.]" },
+  { title: "[Outcome two]", body: "[ONE OR TWO SENTENCES.]" },
+  { title: "[Outcome three]", body: "[ONE OR TWO SENTENCES.]" },
+];
+
+// ---- Video testimonials (portrait 9:16) ----
+const videoTestimonials = [
+  { name: "[CLIENT NAME]", src: "", poster: "" },
+  { name: "[CLIENT NAME]", src: "", poster: "" },
+  { name: "[CLIENT NAME]", src: "", poster: "" },
+  { name: "[CLIENT NAME]", src: "", poster: "" },
+];
+
+// ---- Review wall (two rows that scroll opposite ways) ----
+const reviews = Array.from({ length: 10 }, () => ({
+  name: "[NAME]",
+  text: "[CLIENT MESSAGE OR REVIEW — PASTE THE REAL WORDS, OR SWAP FOR A SCREENSHOT.]",
+}));
+
+// ---- Guarantee ----
 const guarantee = {
   days: "[XX]",
   heading: "Do the work. See the results. Or your money back.",
@@ -40,6 +107,8 @@ const guarantee = {
     "[GUARANTEE TERMS IN ONE OR TWO PLAIN SENTENCES — E.G. FOLLOW THE PLAN FOR XX DAYS. IF YOU DON’T SEE PROGRESS, I’LL REFUND YOU IN FULL. NO HOOPS.]",
 };
 
+// ---- Pricing: direct checkout ----
+const pricingTitle = "Pick your level. Check out. Start this week.";
 const plans = [
   {
     name: "[Coaching]",
@@ -63,8 +132,19 @@ const plans = [
   },
 ];
 
+// ---- FAQ ----
+const faqs = [
+  { q: "Who is this for?", a: "[ANSWER]" },
+  { q: "Do I need a gym?", a: "[ANSWER]" },
+  { q: "I’m a complete beginner. Is that OK?", a: "[ANSWER]" },
+  { q: "How much time does it take each week?", a: "[ANSWER]" },
+  { q: "How does the money-back guarantee work?", a: "[ANSWER]" },
+  { q: "Can I cancel?", a: "[ANSWER]" },
+];
+
 const contact = { email: "[EMAIL]", phone: "[PHONE]" };
 
+// ---------------------------------------------------------------------------
 const year = new Date().getFullYear();
 const checkout = (url?: string) => (url ? url : "#pricing");
 const vslEmbed =
@@ -74,6 +154,12 @@ const vslEmbed =
       ? `https://player.vimeo.com/video/${vsl.id}?autoplay=1&title=0&byline=0&portrait=0`
       : "";
 const check = "M5 12.5l4.2 4.2L19 7";
+const pad = (n: number) => String(n + 1).padStart(2, "0");
+const wallRows = [reviews.slice(0, Math.ceil(reviews.length / 2)), reviews.slice(Math.ceil(reviews.length / 2))];
+// The seal ring's circumference (r = 58): the text is stretched to exactly this, so it never overlaps.
+// Non-breaking spaces round the bullets so the gap where the text meets itself never collapses.
+const sealText = "MONEY-BACK GUARANTEE\u00a0\u00a0•\u00a0\u00a0".repeat(2);
+const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
 ---
 
 <!doctype html>
@@ -105,21 +191,23 @@ const check = "M5 12.5l4.2 4.2L19 7";
     </script>
   </head>
   <body>
-    <header class="topbar" data-reveal>
-      <div class="topbar-inner">
+    <header class="topbar">
+      <div class="topbar-inner" data-topbar>
         <span class="brand">Broghan Wilson <em>PT</em></span>
-        <span class="topbar-note">1:1 &amp; online coaching</span>
+        <a class="btn btn-primary btn-sm topbar-cta" href="#pricing">Join today</a>
       </div>
     </header>
 
     <main>
+      <!-- ================= HERO ================= -->
       <section class="hero" id="top">
         <div class="glow glow-hero" aria-hidden="true"></div>
         <div class="wrap hero-inner">
           <p class="proof" data-hero="proof">
-            <span class="faces" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-            <span><b class="count" data-count={clientsCoached ?? ""}>{clientsCoached ?? "[X]"}</b>+ clients coached</span>
+            <span class="faces" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+            <span>Join <b class="count" data-count={clientsCoached ?? ""}>{clientsCoached ?? "[X]"}</b>+ people coached by Broghan</span>
           </p>
+          <p class="eyebrow" data-hero="eyebrow">{eyebrow}</p>
 
           <h1 class="headline" data-hero="headline">
             {headline.lead} <span class="hl">{headline.highlight}<i class="hl-bar" aria-hidden="true"></i></span>
@@ -127,16 +215,12 @@ const check = "M5 12.5l4.2 4.2L19 7";
           </h1>
 
           <p class="uppercut" data-hero="uppercut">{uppercut}</p>
+          <p class="show-you" data-hero="uppercut">Let me show you how.</p>
 
           <div class="vsl" data-hero="vsl">
-            <div
-              class="vsl-frame"
-              data-vsl-type={vsl.type}
-              data-vsl-embed={vslEmbed}
-              data-vsl-src={vsl.src ?? ""}
-            >
+            <div class="vsl-frame" data-video={vsl.type} data-embed={vslEmbed} data-src={vsl.src ?? ""}>
               {vsl.poster && <img class="vsl-poster" src={vsl.poster} alt="" />}
-              <div class="vsl-hatch" aria-hidden="true"></div>
+              <div class="hatch" aria-hidden="true"></div>
               <button class="vsl-play" type="button" aria-label="Play Broghan's video">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"></path></svg>
               </button>
@@ -146,19 +230,212 @@ const check = "M5 12.5l4.2 4.2L19 7";
             <p class="vsl-caption">{vslCaption}</p>
           </div>
 
-          <a class="btn btn-primary btn-xl" href="#pricing" data-hero="cta" data-magnetic>
-            Choose your plan <span aria-hidden="true">↓</span>
-          </a>
+          <div class="hero-cta" data-hero="cta">
+            <a class="btn btn-primary btn-xl" href="#pricing" data-magnetic>Join today <span aria-hidden="true">→</span></a>
+            <p class="cta-note">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.9-7 9-4-1.1-7-4.5-7-9V6z"></path></svg>
+              {guarantee.days}-day money-back guarantee
+            </p>
+          </div>
         </div>
       </section>
 
+      <!-- ================= TICKER ================= -->
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker-track" data-marquee="-1" data-speed="32">
+          {[0, 1].map(() => (
+            <div class="ticker-set">
+              <span>No fad diets</span><i></i><span>No 2-hour sessions</span><i></i><span>No guesswork</span><i></i><span>A plan built around you</span><i></i>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- ================= RESULTS ================= -->
+      <section class="section" aria-labelledby="results-h">
+        <div class="wrap">
+          <div class="section-head">
+            <h2 id="results-h" class="section-title" data-split>{resultsTitle}</h2>
+            <p data-reveal>{resultsSub}</p>
+          </div>
+          <div class="results">
+            {
+              results.map((r) => (
+                <figure class="result" data-reveal>
+                  {r.photo ? <img class="avatar" src={r.photo} alt="" /> : <span class="avatar" aria-hidden="true"></span>}
+                  <blockquote>“{r.quote}”</blockquote>
+                  <p class="result-outcome">{r.outcome}</p>
+                  <figcaption>{r.name}</figcaption>
+                </figure>
+              ))
+            }
+          </div>
+          <div class="cta-row" data-reveal><a class="btn btn-primary" href="#pricing">Join today →</a></div>
+        </div>
+      </section>
+
+      <!-- ================= CREDIBILITY + STORY ================= -->
+      <section class="section section-alt" aria-labelledby="story-h">
+        <div class="wrap">
+          <div class="section-head">
+            <h2 id="story-h" class="section-title section-title-md" data-split>{credibility}</h2>
+            <p data-reveal>{credibilitySub}</p>
+          </div>
+          <div class="stats" data-reveal>
+            {
+              stats.map((s) => (
+                <div class="stat">
+                  <p class="stat-value">
+                    <span data-count={s.value ?? ""}>{s.value ?? "[X]"}</span>{s.suffix}
+                  </p>
+                  <p class="stat-label">{s.label}</p>
+                </div>
+              ))
+            }
+          </div>
+          <div class="story">
+            <div class="story-steps">
+              <span class="story-line" aria-hidden="true"><i></i></span>
+              <ol>
+              {
+                story.map((s, i) => (
+                  <li data-reveal>
+                    <span class="story-num">{pad(i)}</span>
+                    <h3>{s.title}</h3>
+                    <p>{s.body}</p>
+                  </li>
+                ))
+              }
+              </ol>
+            </div>
+            <div class="story-photo" data-reveal>
+              {portrait ? <img src={portrait} alt="Broghan Wilson" /> : <span class="ph-label">[BLACK &amp; WHITE PORTRAIT OF BROGHAN]</span>}
+              <div class="hatch" aria-hidden="true"></div>
+            </div>
+          </div>
+          <div class="cta-row" data-reveal><a class="btn btn-primary" href="#pricing">Join today →</a></div>
+        </div>
+      </section>
+
+      <!-- ================= WHAT'S INCLUDED ================= -->
+      <section class="section" aria-labelledby="included-h">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="eyebrow" data-reveal>What’s included</p>
+            <h2 id="included-h" class="section-title" data-split>{includedTitle}</h2>
+            <p data-reveal>{includedSub}</p>
+          </div>
+          <div class="included">
+            {
+              included.map((item) => (
+                <article class="inc" data-reveal data-tilt>
+                  <div class="inc-media">
+                    {item.media ? <img src={item.media} alt="" loading="lazy" /> : <span class="ph-label">[SCREENSHOT / GIF]</span>}
+                  </div>
+                  <div class="inc-body">
+                    <h3>{item.title}</h3>
+                    <p>{item.body}</p>
+                  </div>
+                </article>
+              ))
+            }
+          </div>
+          <div class="cta-row" data-reveal><a class="btn btn-primary" href="#pricing">Join today →</a></div>
+        </div>
+      </section>
+
+      <!-- ================= OUTCOMES ================= -->
+      <section class="section section-tight" aria-labelledby="outcomes-h">
+        <div class="wrap wrap-narrow">
+          <div class="section-head">
+            <h2 id="outcomes-h" class="section-title section-title-md" data-split>{outcomesTitle}</h2>
+          </div>
+          <ol class="outcomes">
+            {
+              outcomes.map((o, i) => (
+                <li data-reveal>
+                  <span class="outcome-num" data-num>{pad(i)}</span>
+                  <div>
+                    <h3>{o.title}</h3>
+                    <p>{o.body}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+          <div class="cta-row" data-reveal><a class="btn btn-primary" href="#pricing">Join today →</a></div>
+        </div>
+      </section>
+
+      <!-- ================= VIDEO TESTIMONIALS ================= -->
+      <section class="section section-alt" aria-labelledby="videos-h">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="eyebrow" data-reveal>In their own words</p>
+            <h2 id="videos-h" class="section-title" data-split>Hear it from my clients</h2>
+          </div>
+          <div class="videos">
+            {
+              videoTestimonials.map((v) => (
+                <figure class="vid" data-reveal>
+                  <div class="vid-frame" data-video={v.src ? "mp4" : "none"} data-src={v.src}>
+                    {v.poster && <img class="vsl-poster" src={v.poster} alt="" loading="lazy" />}
+                    <button class="vid-play" type="button" aria-label={`Play video from ${v.name}`}>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"></path></svg>
+                    </button>
+                    {!v.src && <span class="ph-label">[CLIENT VIDEO]</span>}
+                  </div>
+                  <figcaption>{v.name}</figcaption>
+                </figure>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= REVIEW WALL ================= -->
+      <section class="section wall-section" aria-labelledby="wall-h">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="eyebrow" data-reveal>Reviews</p>
+            <h2 id="wall-h" class="section-title" data-split>What my clients are saying</h2>
+          </div>
+        </div>
+        <div class="wall">
+          {
+            wallRows.map((row, r) => (
+              <div class="wall-row">
+                <div class="wall-track" data-marquee={r === 0 ? "-1" : "1"} data-speed="70">
+                  {[0, 1].map((copy) => (
+                    <div class:list={["wall-set", { dup: copy === 1 }]} aria-hidden={copy === 1 ? "true" : undefined}>
+                      {row.map((rev) => (
+                        <figure class="review">
+                          <figcaption>
+                            <span class="avatar avatar-sm" aria-hidden="true"></span>
+                            {rev.name}
+                            <span class="stars" aria-label="5 out of 5 stars">★★★★★</span>
+                          </figcaption>
+                          <blockquote>{rev.text}</blockquote>
+                        </figure>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+        <div class="wrap"><div class="cta-row" data-reveal><a class="btn btn-primary" href="#pricing">Join today →</a></div></div>
+      </section>
+
+      <!-- ================= GUARANTEE ================= -->
       <section class="guarantee" aria-labelledby="guarantee-h">
         <div class="wrap">
           <div class="guarantee-card" data-reveal>
             <div class="seal" aria-hidden="true">
               <svg class="seal-ring" viewBox="0 0 150 150">
                 <defs><path id="seal-path" d="M75,75 m-58,0 a58,58 0 1,1 116,0 a58,58 0 1,1 -116,0"></path></defs>
-                <text><textPath href="#seal-path">MONEY-BACK GUARANTEE • MONEY-BACK GUARANTEE • </textPath></text>
+                <text><textPath href="#seal-path" textLength={sealLength} lengthAdjust="spacing">{sealText}</textPath></text>
               </svg>
               <div class="seal-core"><span>{guarantee.days}</span><small>days</small></div>
             </div>
@@ -170,12 +447,13 @@ const check = "M5 12.5l4.2 4.2L19 7";
         </div>
       </section>
 
+      <!-- ================= PRICING ================= -->
       <section class="pricing" id="pricing" aria-labelledby="pricing-h">
         <div class="glow glow-pricing" aria-hidden="true"></div>
         <div class="wrap">
-          <div class="pricing-head" data-reveal>
-            <p class="eyebrow">Pricing</p>
-            <h2 id="pricing-h">Pick your level. CheckPick your level. Check out.<br />Start this week.nbsp;out. Start this week.</h2>
+          <div class="section-head">
+            <p class="eyebrow" data-reveal>Pricing</p>
+            <h2 id="pricing-h" class="section-title section-title-lg" data-split>{pricingTitle}</h2>
           </div>
 
           <div class="plans">
@@ -219,6 +497,37 @@ const check = "M5 12.5l4.2 4.2L19 7";
           </p>
         </div>
       </section>
+
+      <!-- ================= FAQ ================= -->
+      <section class="section section-tight" aria-labelledby="faq-h">
+        <div class="wrap wrap-narrow">
+          <div class="section-head">
+            <h2 id="faq-h" class="section-title" data-split>Any questions?</h2>
+          </div>
+          <div class="faq" data-reveal>
+            {
+              faqs.map((f) => (
+                <details>
+                  <summary>
+                    <span class="plus" aria-hidden="true"></span>
+                    {f.q}
+                  </summary>
+                  <div class="faq-a"><p>{f.a}</p></div>
+                </details>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= FINAL CTA ================= -->
+      <section class="final">
+        <div class="wrap final-inner" data-reveal>
+          <h2 class="final-title">Ready? Let’s go.</h2>
+          <p>Pick your plan, check out, and start this week. Backed by the {guarantee.days}-day money-back guarantee.</p>
+          <a class="btn btn-dark btn-xl" href="#pricing">Choose your plan ↑</a>
+        </div>
+      </section>
     </main>
 
     <footer class="footer">
@@ -228,7 +537,7 @@ const check = "M5 12.5l4.2 4.2L19 7";
       </div>
     </footer>
 
-    <a class="sticky-cta btn btn-primary" href="#pricing" aria-hidden="true" tabindex="-1">Choose your plan ↓</a>
+    <a class="sticky-cta btn btn-primary" href="#pricing" aria-hidden="true" tabindex="-1">Join today →</a>
 
     <script>
       import "../scripts/page.ts";
