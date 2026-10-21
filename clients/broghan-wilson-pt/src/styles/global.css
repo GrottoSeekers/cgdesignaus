@@ -143,6 +143,9 @@ img {
   text-transform: none;
   padding: 0 16px;
 }
+.nudge {
+  display: inline-block;
+}
 .cta-row {
   display: flex;
   justify-content: center;
@@ -634,6 +637,7 @@ img {
 
 /* ---------- What's included ---------- */
 .included {
+  perspective: 1200px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
@@ -1116,13 +1120,50 @@ details[open] .plus {
 @media (max-width: 720px) {
   .sticky-cta { display: flex; }
   .topbar-cta { display: none; }
-  .topbar-inner { padding: 14px 20px; }
+  .topbar { padding: 10px 12px 0; }
+  .topbar-inner { padding: 12px 18px; border-radius: 12px; }
+  .brand { font-size: 20px; }
 }
 @media (max-width: 600px) {
-  .section { padding: 88px 0; }
+  body { font-size: 17px; }
+  .wrap { padding: 0 20px; }
+  .section { padding: 96px 0; }
+  .hero-inner { gap: 22px; }
+  .proof { font-size: 12px; white-space: nowrap; }
+  .headline { font-size: clamp(42px, 12vw, 60px); line-height: 1; letter-spacing: 0.01em; }
+  .uppercut { font-size: 17px; line-height: 1.6; }
+  .section-title { font-size: clamp(40px, 11.5vw, 56px); line-height: 1; }
+  .section-title-md { font-size: clamp(32px, 9vw, 44px); line-height: 1.05; }
+  .section-head { gap: 16px; }
+  .ticker-set { font-size: 22px; gap: 36px; padding-right: 36px; }
+  .result { gap: 16px; }
+  .result blockquote { font-size: 17px; }
+  .stat { padding: 28px 16px; }
+  .story-steps ol { gap: 44px; }
+  .story-steps h3 { font-size: 26px; }
+  .inc-media { aspect-ratio: 16 / 10; }
+  .inc h3 { font-size: 24px; }
+  .inc-body { padding: 24px 22px 26px; }
+  .outcomes li { padding: 30px 0; }
+  .outcomes h3 { font-size: 24px; }
+  /* client videos: a swipeable row instead of two cramped columns */
+  .videos {
+    display: flex;
+    gap: 14px;
+    margin: 0 -20px;
+    padding: 0 20px 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 20px;
+    scrollbar-width: none;
+  }
+  .videos::-webkit-scrollbar { display: none; }
+  .vid { flex: 0 0 72%; scroll-snap-align: start; }
+  .guarantee-copy h2 { font-size: clamp(34px, 9.5vw, 44px); }
+  .plan-body { gap: 20px; }
   .section-tight { padding: 72px 0; }
   .section-head { margin-bottom: 44px; }
-  .hero { padding-top: 40px; }
+  .hero { padding-top: 36px; }
   .vsl-play { width: 76px; height: 76px; }
   .vsl-play svg { width: 28px; height: 28px; }
   .vsl-tag { display: none; }
@@ -1132,12 +1173,11 @@ details[open] .plus {
   .results { grid-template-columns: minmax(0, 1fr); gap: 44px; }
   .stats { grid-template-columns: minmax(0, 1fr); }
   .stat + .stat { border-left: 0; border-top: 1px solid var(--line-2); }
-  .story-steps { padding: 32px 24px 32px 60px; }
+  .story-steps { padding: 36px 22px 36px 60px; }
   .story-line { left: 32px; top: 40px; bottom: 40px; }
   .included { grid-template-columns: minmax(0, 1fr); }
   .outcomes li { gap: 18px; }
   .outcome-num { width: 64px; font-size: 52px; }
-  .videos { gap: 12px; }
   .review { width: 280px; }
   .guarantee { padding-top: 88px; }
   .guarantee-card { padding: 32px 24px; gap: 24px; justify-content: center; }
@@ -1197,4 +1237,8 @@ details[open] .plus {
 }
 .legal a {
   color: var(--muted);
+}
+
+@media (max-width: 420px) {
+  .proof .by { display: none; }
 }

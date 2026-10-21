@@ -178,15 +178,15 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
     <meta property="og:description" content={description} />
     <meta name="twitter:card" content="summary_large_image" />
     <script is:inline>
-      // Hide the bits that animate in, but only when JS is running and motion is welcome.
-      // If the page script hasn't started within 3s, show everything as-is.
+      // Hide the bits that animate in, but only when JS is running (Reduce Motion gets
+      // gentle fades instead of movement). If the page script hasn't started within
+      // 6s (a slow phone connection), show everything as-is.
       (function () {
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
         var d = document.documentElement;
         d.classList.add("anim");
         setTimeout(function () {
           if (!window.__bwReady) d.classList.remove("anim");
-        }, 3000);
+        }, 6000);
       })();
     </script>
   </head>
@@ -205,7 +205,7 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
         <div class="wrap hero-inner">
           <p class="proof" data-hero="proof">
             <span class="faces" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
-            <span>Join <b class="count" data-count={clientsCoached ?? ""}>{clientsCoached ?? "[X]"}</b>+ people coached by Broghan</span>
+            <span>Join <b class="count" data-count={clientsCoached ?? ""}>{clientsCoached ?? "[X]"}</b>+ people coached<span class="by"> by Broghan</span></span>
           </p>
           <p class="eyebrow" data-hero="eyebrow">{eyebrow}</p>
 
@@ -231,7 +231,7 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
           </div>
 
           <div class="hero-cta" data-hero="cta">
-            <a class="btn btn-primary btn-xl" href="#pricing" data-magnetic>Join today <span aria-hidden="true">→</span></a>
+            <a class="btn btn-primary btn-xl" href="#pricing" data-magnetic>Join today <span class="nudge" aria-hidden="true">→</span></a>
             <p class="cta-note">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.9-7 9-4-1.1-7-4.5-7-9V6z"></path></svg>
               {guarantee.days}-day money-back guarantee
@@ -270,7 +270,7 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
               ))
             }
           </div>
-          <div class="cta-row" data-reveal><a class="btn btn-primary" href="#pricing">Join today →</a></div>
+          <div class="cta-row" data-reveal><a class="btn btn-primary" href="#pricing">Join today <span class="nudge" aria-hidden="true">→</span></a></div>
         </div>
       </section>
 
@@ -313,7 +313,7 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
               <div class="hatch" aria-hidden="true"></div>
             </div>
           </div>
-          <div class="cta-row" data-reveal><a class="btn btn-primary" href="#pricing">Join today →</a></div>
+          <div class="cta-row" data-reveal><a class="btn btn-primary" href="#pricing">Join today <span class="nudge" aria-hidden="true">→</span></a></div>
         </div>
       </section>
 
@@ -340,7 +340,7 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
               ))
             }
           </div>
-          <div class="cta-row" data-reveal><a class="btn btn-primary" href="#pricing">Join today →</a></div>
+          <div class="cta-row" data-reveal><a class="btn btn-primary" href="#pricing">Join today <span class="nudge" aria-hidden="true">→</span></a></div>
         </div>
       </section>
 
@@ -363,7 +363,7 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
               ))
             }
           </ol>
-          <div class="cta-row" data-reveal><a class="btn btn-primary" href="#pricing">Join today →</a></div>
+          <div class="cta-row" data-reveal><a class="btn btn-primary" href="#pricing">Join today <span class="nudge" aria-hidden="true">→</span></a></div>
         </div>
       </section>
 
@@ -425,7 +425,7 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
             ))
           }
         </div>
-        <div class="wrap"><div class="cta-row" data-reveal><a class="btn btn-primary" href="#pricing">Join today →</a></div></div>
+        <div class="wrap"><div class="cta-row" data-reveal><a class="btn btn-primary" href="#pricing">Join today <span class="nudge" aria-hidden="true">→</span></a></div></div>
       </section>
 
       <!-- ================= GUARANTEE ================= -->
