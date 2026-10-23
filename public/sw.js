@@ -1,6 +1,6 @@
 // Service worker for CG Design & Co. — makes the site installable and keeps
 // it usable offline. Bump VERSION to drop old caches after a big release.
-const VERSION = "v1";
+const VERSION = "v2";
 const STATIC_CACHE = `cgd-static-${VERSION}`;
 const RUNTIME_CACHE = `cgd-runtime-${VERSION}`;
 
