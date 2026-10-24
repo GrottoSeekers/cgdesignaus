@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Job Agreement Email</title>
+<!--
+  "Agree the job in writing" email for a new client.
+  Highlighted [square-bracket] text is what changes per client — see emails/README.md.
+  Everything inside #email is what gets copied; the toolbar above it is not.
+-->
+<style>
+  body { margin: 0; background: #ece8f2; font-family: Arial, Helvetica, sans-serif; }
+  .toolbar { position: sticky; top: 0; z-index: 1; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 14px 16px; background: #2f1147; color: #f3eefa; font-size: 14px; }
+  .toolbar strong { color: #ffffff; }
+  .toolbar .subject { flex: 1 1 320px; min-width: 0; overflow-wrap: anywhere; }
+  .toolbar button { border: 0; border-radius: 999px; padding: 10px 18px; font: 700 14px Arial, Helvetica, sans-serif; cursor: pointer; background: #7c4fc7; color: #ffffff; }
+  .toolbar button.secondary { background: rgba(243,238,250,0.16); }
+  .toolbar .status { font-size: 13px; color: #d8bff0; }
+  .stage { padding: 24px 16px 48px; }
+  .fill { background: #fff3a3; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span class="subject"><strong>Subject:</strong> <span id="subject">Your new website: [Package] package confirmed</span></span>
+  <button type="button" class="secondary" id="copy-subject">Copy subject</button>
+  <button type="button" id="copy-email">Copy email</button>
+  <span class="status" id="status" aria-live="polite"></span>
+</div>
+
+<div class="stage">
+<div id="email">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background: #ffffff; max-width: 600px; margin: 0 auto;">
+  <tr>
+    <td style="padding: 32px 32px 8px 32px;">
+      <img src="https://cgdesignaus.com/logo-full.png?v=2" alt="CG Design &amp; Co." width="140" height="60" style="display: block; width: 140px; height: auto; border: 0;">
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 16px 32px 0 32px; font-family: Arial, Helvetica, sans-serif; font-size: 15px; line-height: 1.6; color: #14111a;">
+      <p style="margin: 0 0 16px 0;">Hi <span class="fill">[First name]</span>,</p>
+      <p style="margin: 0 0 16px 0;">Thanks for choosing CG Design &amp; Co. I'm really looking forward to building the new website for <span class="fill">[Business name]</span>. As promised, here's everything we've agreed, in writing, so we're both on the same page.</p>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 8px 32px 0 32px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background: #f3f0f8; border-radius: 12px;">
+        <tr>
+          <td style="padding: 22px 24px 6px 24px; font-family: Georgia, 'Times New Roman', serif; font-size: 20px; font-weight: bold; color: #2f1147;">Your project at a glance</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 24px 20px 24px; font-family: Arial, Helvetica, sans-serif; font-size: 15px; line-height: 1.6; color: #14111a;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+              <tr>
+                <td valign="top" style="padding: 8px 12px 8px 0; width: 120px; font-weight: bold; color: #5b2695; border-bottom: 1px solid #ddd5ea;">Package</td>
+                <td valign="top" style="padding: 8px 0; border-bottom: 1px solid #ddd5ea;"><strong><span class="fill">[Package]</span></strong><br>
+                  <span class="fill">[Include 1]</span><br>
+                  <span class="fill">[Include 2]</span><br>
+                  <span class="fill">[Include 3]</span><br>
+                  <span class="fill">[Include 4]</span>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top" style="padding: 8px 12px 8px 0; width: 120px; font-weight: bold; color: #5b2695; border-bottom: 1px solid #ddd5ea;">Price</td>
+                <td valign="top" style="padding: 8px 0; border-bottom: 1px solid #ddd5ea;"><strong><span class="fill">[$590]</span> AUD</strong>, fixed<br>
+                  <span style="color: #5c5566;">Founding client price (usually <span style="text-decoration: line-through;"><span class="fill">[$1,180]</span></span>)</span>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top" style="padding: 8px 12px 8px 0; width: 120px; font-weight: bold; color: #5b2695; border-bottom: 1px solid #ddd5ea;">Payment</td>
+                <td valign="top" style="padding: 8px 0; border-bottom: 1px solid #ddd5ea;"><span class="fill">[$295]</span> deposit (50%) before work begins<br>
+                  <span class="fill">[$295]</span> balance (50%) on completion, before the site goes live
+                </td>
+              </tr>
+              <tr>
+                <td valign="top" style="padding: 8px 12px 8px 0; width: 120px; font-weight: bold; color: #5b2695;">Launch date</td>
+                <td valign="top" style="padding: 8px 0;"><strong><span class="fill">[Friday 7 November 2026]</span></strong></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 24px 32px 0 32px; font-family: Arial, Helvetica, sans-serif; font-size: 15px; line-height: 1.6; color: #14111a;">
+      <p style="margin: 0 0 8px 0; font-family: Georgia, 'Times New Roman', serif; font-size: 18px; font-weight: bold; color: #2f1147;">Next steps</p>
+      <p style="margin: 0 0 8px 0;"><strong style="color: #5b2695;">1.</strong> Reply to this email to confirm you're happy with the above.</p>
+      <p style="margin: 0 0 8px 0;"><strong style="color: #5b2695;">2.</strong> Pay the 50% deposit. <span class="fill">[I'll send you a secure payment link next.]</span></p>
+      <p style="margin: 0 0 16px 0;"><strong style="color: #5b2695;">3.</strong> Send over your content: your logo, any photos you'd like used, and anything you'd like said about the business. Don't worry if you don't have much, I can write the copy and source images for you.</p>
+      <p style="margin: 0 0 16px 0;">The launch date assumes I have your content and feedback when I ask for it. If anything holds things up on either side, I'll let you know straight away.</p>
+      <p style="margin: 0 0 16px 0;">This project is covered by our Terms &amp; Conditions, which you can read here: <a href="https://cgdesignaus.com/terms-and-conditions" style="color: #5b2695; font-weight: bold;">cgdesignaus.com/terms-and-conditions</a>. By replying to confirm, you're agreeing to the package, price, launch date and those terms.</p>
+      <p style="margin: 0 0 24px 0;">If you have any questions at all, just reply here or message me on WhatsApp.</p>
+      <p style="margin: 0 0 4px 0;">Thanks again,</p>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 8px 32px 32px 32px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+        <tr>
+          <td style="padding: 0 0 12px 0; font-family: Georgia, 'Times New Roman', serif; font-size: 20px; font-weight: bold; color: #2f1147;">Callum Disley</td>
+        </tr>
+        <tr>
+          <td style="padding: 14px 0 0 0; border-top: 2px solid #5b2a96;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+              <tr>
+                <td valign="middle" style="padding: 0 18px 0 0;">
+                  <a href="https://cgdesignaus.com"><img src="https://cgdesignaus.com/logo-full.png?v=2" alt="CG Design &amp; Co." width="110" height="47" style="display: block; width: 110px; height: auto; border: 0;"></a>
+                </td>
+                <td valign="middle" style="padding: 0 0 0 18px; border-left: 1px solid #ddd5ea; font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 1.6; color: #14111a;">
+                  <strong>Founder, CG Design &amp; Co.</strong><br>
+                  <span style="color: #5c5566;">Websites for local businesses</span><br>
+                  <a href="mailto:info@cgdesignaus.com" style="color: #5b2695; text-decoration: none;">info@cgdesignaus.com</a><br>
+                  <a href="https://wa.me/447306100251" style="color: #5b2695; text-decoration: none;">WhatsApp +44 7306 100251</a><br>
+                  <a href="https://cgdesignaus.com" style="color: #5b2695; text-decoration: none; font-weight: bold;">cgdesignaus.com</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 14px 0 0 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; line-height: 1.5; color: #8a8494;">CG Design &amp; Co. · ABN 25 672 082 550 · Randwick NSW 2031, Australia</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</div>
+</div>
+
+<script>
+  const status = document.getElementById("status");
+  const say = (msg) => { status.textContent = msg; setTimeout(() => (status.textContent = ""), 3000); };
+
+  // Copies with formatting (logo, colours, links) so it pastes into Outlook/Gmail as-is.
+  async function copyRich(el) {
+    const html = el.innerHTML.replace(/ class="fill"/g, "");
+    try {
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          "text/html": new Blob([html], { type: "text/html" }),
+          "text/plain": new Blob([el.innerText], { type: "text/plain" }),
+        }),
+      ]);
+    } catch {
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      document.execCommand("copy");
+      sel.removeAllRanges();
+    }
+  }
+
+  document.getElementById("copy-email").addEventListener("click", async () => {
+    if (document.querySelector("#email .fill") && /\[[^\]]+\]/.test(document.getElementById("email").innerText)) {
+      if (!confirm("This email still has [placeholders] in it. Copy anyway?")) return;
+    }
+    await copyRich(document.getElementById("email"));
+    say("Email copied. Paste it into a new message.");
+  });
+
+  document.getElementById("copy-subject").addEventListener("click", async () => {
+    const text = document.getElementById("subject").innerText;
+    try { await navigator.clipboard.writeText(text); } catch {
+      const t = Object.assign(document.createElement("textarea"), { value: text });
+      document.body.append(t); t.select(); document.execCommand("copy"); t.remove();
+    }
+    say("Subject copied.");
+  });
+</script>
+</body>
+</html>
