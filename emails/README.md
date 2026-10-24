@@ -24,6 +24,7 @@ remove the span itself so nothing is highlighted. Also update the subject in
 the toolbar. Leave the template untouched.
 
 - **First name / business name** as given.
+- **Signature**: none in the template; the user's email client adds it.
 - **Package**: name plus its four "includes" lines, from the table below.
 - **Price / RRP**: from the table below (or a custom figure if quoted).
 - **Deposit / balance**: half of the price each, rounded to the dollar.
