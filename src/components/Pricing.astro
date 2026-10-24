@@ -1,20 +1,20 @@
 ---
 // Prices come from one place: the quote builder's base price and options.
 // Each package's RRP is the sum of what it includes; the founding price halves it.
-const BASE_PRICE = 500;
+const BASE_PRICE = 580;
 const FOUNDING_DISCOUNT_RATE = 0.5;
 
 const pageOptions = [
-  { id: "about", label: "About", price: 90 },
-  { id: "services", label: "Services / Menu", price: 140 },
-  { id: "gallery", label: "Gallery", price: 110 },
+  { id: "about", label: "About", price: 160 },
+  { id: "services", label: "Services / Menu", price: 250 },
+  { id: "gallery", label: "Gallery", price: 190 },
   { id: "blog", label: "Blog", price: 200 },
-  { id: "booking-page", label: "Booking page", price: 130 },
+  { id: "booking-page", label: "Booking page", price: 100 },
 ];
 
 const featureOptions = [
-  { id: "seo", label: "Local SEO", desc: "Google Business optimisation and local keyword targeting", price: 280, recurring: false },
-  { id: "booking", label: "Online bookings", desc: "Real-time appointment, table, or callout booking", price: 400, recurring: false },
+  { id: "seo", label: "Local SEO", desc: "Google Business optimisation and local keyword targeting", price: 200, recurring: false },
+  { id: "booking", label: "Online bookings", desc: "Real-time appointment, table, or callout booking", price: 300, recurring: false },
   { id: "store", label: "Online store", desc: "Product catalogue and checkout", price: 800, recurring: false },
   { id: "maintenance", label: "Maintenance", desc: "Hosting, security updates, and small content changes", price: 60, recurring: true },
 ];
@@ -235,7 +235,7 @@ const chip = (o: { label: string; price: number; recurring?: boolean }) => `+${a
   const quote = document.getElementById("quote");
   const toggle = document.getElementById("quote-toggle");
   const body = document.getElementById("quote-body");
-  const BASE_PRICE = Number(quote?.dataset.basePrice ?? 500);
+  const BASE_PRICE = Number(quote?.dataset.basePrice ?? 580);
   const FOUNDING_RATE = Number(quote?.dataset.foundingRate ?? 0.5);
   const chips = Array.from(document.querySelectorAll<HTMLButtonElement>(".quote .chip"));
 
