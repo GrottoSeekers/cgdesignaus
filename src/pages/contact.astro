@@ -1,0 +1,19 @@
+---
+import HomeLayout from "../layouts/HomeLayout.astro";
+import Header from "../components/Header.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+import CookieConsent from "../components/CookieConsent.astro";
+---
+
+<HomeLayout
+  title="Free Website Check | CG Design & Co."
+  description="Tell us about your business and get an honest, free website check. We reply within one business day."
+>
+  <Header />
+  <main id="main">
+    <Contact heading="h1" />
+  </main>
+  <Footer />
+  <CookieConsent />
+</HomeLayout>

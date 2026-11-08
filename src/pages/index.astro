@@ -3,28 +3,11 @@ import HomeLayout from "../layouts/HomeLayout.astro";
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
 import Client from "../components/Client.astro";
-import BeforeAfter from "../components/BeforeAfter.astro";
-import Pricing from "../components/Pricing.astro";
-import Process from "../components/Process.astro";
-import FAQ, { faqs } from "../components/FAQ.astro";
-import Contact from "../components/Contact.astro";
+import Explore from "../components/Explore.astro";
+import CtaBand from "../components/CtaBand.astro";
 import Footer from "../components/Footer.astro";
-import SectionNav from "../components/SectionNav.astro";
 import CookieConsent from "../components/CookieConsent.astro";
 import { GOOGLE_PROFILE_URL } from "../lib/business";
-
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((item) => ({
-    "@type": "Question",
-    name: item.q,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: item.a,
-    },
-  })),
-};
 
 const businessSchema = {
   "@context": "https://schema.org",
@@ -108,6 +91,14 @@ const businessSchema = {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
+          name: "Business Setup Quick Jobs",
+          description: "Fixed-price setup of Google Business Profiles, social media, business email, online bookings and review links.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
           name: "Website Maintenance & Hosting",
           description: "Ongoing updates, security, and small content changes.",
         },
@@ -123,19 +114,29 @@ const businessSchema = {
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(businessSchema)} />
-    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   </Fragment>
   <Header />
-  <SectionNav />
   <main id="main">
     <Hero />
     <Client />
-    <BeforeAfter />
-    <Pricing />
-    <Process />
-    <FAQ />
-    <Contact />
+    <Explore />
+    <CtaBand />
   </main>
   <Footer />
   <CookieConsent />
+  <script is:inline>
+    // Sections that used to live on this page now have their own pages: forward old links
+    // (ads, bookmarks, the Google profile) such as /#pricing to the right one.
+    (function () {
+      var moved = {
+        "#before-after": "/work#before-after",
+        "#pricing": "/pricing",
+        "#process": "/how-it-works",
+        "#faq": "/how-it-works#faq",
+        "#contact": "/contact",
+      };
+      var to = moved[location.hash];
+      if (to) location.replace(to);
+    })();
+  </script>
 </HomeLayout>

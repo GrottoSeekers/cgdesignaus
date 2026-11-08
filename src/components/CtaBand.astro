@@ -1,0 +1,133 @@
+---
+// Closing call to action at the bottom of every main page, pointing to the contact page.
+interface Props {
+  title?: string;
+  text?: string;
+  /** Drop the top padding when the section above is also white, so the gap doesn't double up. */
+  flush?: boolean;
+}
+
+const {
+  flush = false,
+  title = "Not sure where to start?",
+  text = "Get a free, honest website check. Tell us about your business and we'll reply within one business day.",
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<section class:list={["cta-band-wrap", { flush }]} style="padding: 96px 0; background: #ffffff">
+<div class="wrap">
+<div class="cta-band">
+<div aria-hidden="true" class="cta-glow"></div>
+<div class="cta-copy">
+<h2 class="cta-title">{title}</h2>
+<p class="cta-text">{text}</p>
+</div>
+<div class="cta-actions">
+<a href={`${base}/contact`} class="btn btn-violet" style="min-height: 56px; padding: 0 32px">Get your free website check <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<a href="https://wa.me/447306100251" target="_blank" rel="noopener noreferrer" class="cta-wa">Or message us on WhatsApp</a>
+</div>
+</div>
+</div>
+</section>
+
+<style>
+  .cta-band {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px 48px;
+    padding: 48px;
+    border-radius: 28px;
+    background: #2f1147;
+    color: #f3eefa;
+  }
+
+  .cta-glow {
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    top: -220px;
+    right: -120px;
+    border-radius: 50%;
+    background: #7c4fc7;
+    opacity: 0.45;
+    filter: blur(100px);
+    pointer-events: none;
+  }
+
+  .cta-copy {
+    position: relative;
+    flex: 1 1 380px;
+  }
+
+  .cta-title {
+    font-weight: 500;
+    font-size: clamp(1.9rem, 3.4vw, 2.7rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+  }
+
+  .cta-text {
+    margin-top: 12px;
+    max-width: 34em;
+    font-size: 1rem;
+    color: rgba(243, 238, 250, 0.78);
+  }
+
+  .cta-actions {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cta-wa {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #d8bff0;
+  }
+
+  @media (hover: hover) {
+    .cta-wa:hover {
+      color: #ffffff;
+    }
+  }
+
+  .cta-band-wrap.flush {
+    padding-top: 0 !important;
+  }
+
+  @media (max-width: 560px) {
+    .cta-band-wrap {
+      padding: 64px 0 !important;
+    }
+
+    .cta-band-wrap.flush {
+      padding-top: 0 !important;
+    }
+
+    .cta-band {
+      padding: 32px 24px;
+    }
+
+    .cta-actions,
+    .cta-actions .btn {
+      width: 100%;
+    }
+
+    .cta-actions .btn {
+      white-space: normal;
+      text-align: center;
+    }
+  }
+</style>

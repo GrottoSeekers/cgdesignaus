@@ -1,0 +1,39 @@
+---
+import HomeLayout from "../layouts/HomeLayout.astro";
+import Header from "../components/Header.astro";
+import Process from "../components/Process.astro";
+import FAQ, { faqs } from "../components/FAQ.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Footer from "../components/Footer.astro";
+import CookieConsent from "../components/CookieConsent.astro";
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.a,
+    },
+  })),
+};
+---
+
+<HomeLayout
+  title="How It Works & FAQ | CG Design & Co."
+  description="How we take a local business from a free website check to a live site in under a week, plus answers to common questions."
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </Fragment>
+  <Header />
+  <main id="main">
+    <Process heading="h1" />
+    <FAQ />
+    <CtaBand />
+  </main>
+  <Footer />
+  <CookieConsent />
+</HomeLayout>

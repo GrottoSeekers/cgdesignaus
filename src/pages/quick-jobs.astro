@@ -1,0 +1,21 @@
+---
+import HomeLayout from "../layouts/HomeLayout.astro";
+import Header from "../components/Header.astro";
+import QuickJobs from "../components/QuickJobs.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Footer from "../components/Footer.astro";
+import CookieConsent from "../components/CookieConsent.astro";
+---
+
+<HomeLayout
+  title="Quick Jobs | CG Design & Co."
+  description="Fixed-price setup jobs for local businesses: Google Business Profile, social media, business email, online bookings and more."
+>
+  <Header />
+  <main id="main">
+    <QuickJobs heading="h1" />
+    <CtaBand flush title="Thinking about a full website?" text="Get a free, honest website check, or see our packages from the pricing page." />
+  </main>
+  <Footer />
+  <CookieConsent />
+</HomeLayout>

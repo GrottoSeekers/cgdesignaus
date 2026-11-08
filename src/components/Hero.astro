@@ -1,7 +1,8 @@
 ---
 import NigelStrands from "./NigelStrands.astro";
 
-const img = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/previews`;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const img = `${base}/previews`;
 
 // Services only, no client names. Rendered twice so the marquee loops seamlessly.
 const services = [
@@ -38,7 +39,7 @@ const services = [
 </h1>
 <p class="fade" style="font-size: 1.22rem; color: rgba(243,238,250,0.76); max-width: 30em; margin-bottom: 36px; animation-delay: 0.6s">Fast, mobile-first websites for local businesses — with a fixed price and a launch date agreed in writing before any work begins.</p>
 <div class="fade" style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 44px; animation-delay: 0.72s">
-<a href="#contact" class="btn btn-glow" style="min-height: 56px; padding: 0 32px; font-size: 1rem">Get your free website check <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<a href={`${base}/contact`} class="btn btn-glow" style="min-height: 56px; padding: 0 32px; font-size: 1rem">Get your free website check <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
 <a href="#client" class="btn btn-line" style="min-height: 56px; padding: 0 30px; font-size: 1rem">See our work</a>
 </div>
 <div class="fade" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; max-width: 520px; padding-top: 28px; border-top: 1px solid rgba(243,238,250,0.12); animation-delay: 0.84s">

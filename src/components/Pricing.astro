@@ -1,64 +1,27 @@
 ---
-// Prices come from one place: the quote builder's base price and options.
-// Each package's RRP is the sum of what it includes; the founding price halves it.
-const BASE_PRICE = 580;
-const FOUNDING_DISCOUNT_RATE = 0.5;
+// Prices live in src/lib/pricing.ts so the packages, quote builder and quick jobs always agree.
+import {
+  BASE_PRICE, FOUNDING_DISCOUNT_RATE, pageOptions, featureOptions, tiers, maintenancePrice,
+  lowestQuickJobPrice, aud, founding,
+} from "../lib/pricing";
+import { contactHref } from "../lib/prefill";
 
-const pageOptions = [
-  { id: "about", label: "About", price: 160 },
-  { id: "services", label: "Services / Menu", price: 250 },
-  { id: "gallery", label: "Gallery", price: 190 },
-  { id: "blog", label: "Blog", price: 200 },
-  { id: "booking-page", label: "Booking page", price: 100 },
-];
+interface Props {
+  /** "h1" when this section opens its own page. */
+  heading?: "h1" | "h2";
+}
+const { heading: Heading = "h2" } = Astro.props;
 
-const featureOptions = [
-  { id: "seo", label: "Local SEO", desc: "Google Business optimisation and local keyword targeting", price: 200, recurring: false },
-  { id: "booking", label: "Online bookings", desc: "Real-time appointment, table, or callout booking", price: 300, recurring: false },
-  { id: "store", label: "Online store", desc: "Product catalogue and checkout", price: 800, recurring: false },
-  { id: "maintenance", label: "Maintenance", desc: "Hosting, security updates, and small content changes", price: 60, recurring: true },
-];
-
-const priceById: Record<string, number> = Object.fromEntries(
-  [...pageOptions, ...featureOptions].map((o) => [o.id, o.price])
-);
-
-const aud = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
-const founding = (n: number) => Math.round(n * FOUNDING_DISCOUNT_RATE);
-
-const tier1Full = BASE_PRICE;
-const tier2Full = tier1Full + priceById.about + priceById.services + priceById.gallery;
-const tier3Full = tier2Full + priceById.booking + priceById.seo + priceById["booking-page"];
-
-const tiers = [
-  {
-    id: "essentials",
-    name: "Essentials",
-    tagline: "A sharp one-pager that gets you found and called.",
-    full: tier1Full,
-    includes: ["Home + Contact pages", "Copywriting and images sourced", "Mobile-first build", "Live in under a week"],
-    feature: false,
-  },
-  {
-    id: "growth",
-    name: "Growth",
-    tagline: "The full shopfront — services, story and gallery.",
-    full: tier2Full,
-    includes: ["Everything in Essentials", "About, Services / Menu, Gallery", "Enquiry form to your inbox", "Google Business profile tidy-up"],
-    feature: true,
-  },
-  {
-    id: "complete",
-    name: "Complete",
-    tagline: "Bookings and local search, done properly.",
-    full: tier3Full,
-    includes: ["Everything in Growth", "Online booking system", "Local SEO package", "Dedicated booking page"],
-    feature: false,
-  },
-];
-
-const maintenance = priceById.maintenance;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const maintenance = maintenancePrice;
 const chip = (o: { label: string; price: number; recurring?: boolean }) => `+${aud(o.price)}${o.recurring ? "/mo" : ""}`;
+const startHref = (t: (typeof tiers)[number]) =>
+  contactHref(base, {
+    service: "New Site",
+    pick: `${t.name} package`,
+    price: aud(founding(t.full)),
+    details: `${t.name} package — ${aud(founding(t.full))} (founding client price, full price ${aud(t.full)})`,
+  });
 ---
 
 <section id="pricing" style="position: relative; overflow: hidden; padding: 112px 0 104px; background: #f3f0f8; border-top: 1px solid rgba(20,17,26,0.1); border-bottom: 1px solid rgba(20,17,26,0.1)">
@@ -66,7 +29,7 @@ const chip = (o: { label: string; price: number; recurring?: boolean }) => `+${a
 <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 48px; margin-bottom: 40px">
 <div style="max-width: 640px">
 <span class="eyebrow">Pricing</span>
-<h2 style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin-top: 16px">Three packages. <em style="font-style: italic; font-weight: 600; color: #5b2a96">One fixed price.</em></h2>
+<Heading style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin-top: 16px">Three packages. <em style="font-style: italic; font-weight: 600; color: #5b2a96">One fixed price.</em></Heading>
 </div>
 <p style="max-width: 380px; color: rgba(20,17,26,0.68); font-size: 1rem">The price you see is the price you pay.</p>
 </div>
@@ -88,7 +51,7 @@ const chip = (o: { label: string; price: number; recurring?: boolean }) => `+${a
 <ul class="ticks" style="list-style: none; margin: 0; padding: 22px 0 0; border-top: 1px solid rgba(243,238,250,0.18); display: flex; flex-direction: column; gap: 12px; font-size: 0.92rem; color: rgba(243,238,250,0.9); flex: 1">
 {t.includes.map((line) => <li><span class="tick tick-dark" aria-hidden="true">✓</span>{line}</li>)}
 </ul>
-<a href="#contact" class="btn btn-violet">Start with {t.name}</a>
+<a href={startHref(t)} class="btn btn-violet">Start with {t.name}</a>
 </div>
 <button type="button" class="tier-pick sr-only" data-tier-pick={t.id} aria-pressed="true" aria-controls="tier-detail">Show what's in {t.name}</button>
 </div>
@@ -99,7 +62,7 @@ const chip = (o: { label: string; price: number; recurring?: boolean }) => `+${a
 <ul class="ticks" style="list-style: none; margin: 0; padding: 22px 0 0; border-top: 1px solid rgba(20,17,26,0.1); display: flex; flex-direction: column; gap: 12px; font-size: 0.92rem; color: rgba(20,17,26,0.78); flex: 1">
 {t.includes.map((line) => <li><span class="tick" aria-hidden="true">✓</span>{line}</li>)}
 </ul>
-<a href="#contact" class="btn btn-ghost">Start with {t.name}</a>
+<a href={startHref(t)} class="btn btn-ghost">Start with {t.name}</a>
 <button type="button" class="tier-pick sr-only" data-tier-pick={t.id} aria-pressed="false" aria-controls="tier-detail">Show what's in {t.name}</button>
 </div>
 ))}
@@ -109,11 +72,12 @@ const chip = (o: { label: string; price: number; recurring?: boolean }) => `+${a
 <div class:list={["tier-panel", { show: t.feature }]} data-panel={t.id}>
 <p class="tier-panel-tag"><strong>{t.name}:</strong> {t.tagline}</p>
 <ul class="tier-panel-list">{t.includes.map((line) => <li><span class="tick" aria-hidden="true">✓</span>{line}</li>)}</ul>
-<a href="#contact" class="btn btn-primary">Start with {t.name}</a>
+<a href={startHref(t)} class="btn btn-primary">Start with {t.name}</a>
 </div>
 ))}
 </div>
 <p style="font-size: 0.86rem; color: rgba(20,17,26,0.6); margin-top: 22px; text-align: center">Hosting and maintenance optional at {aud(maintenance)}/month. Domains registered at cost.</p>
+<a href={`${base}/quick-jobs`} class="quick-link">Not after a full website? <strong>See quick jobs from {aud(lowestQuickJobPrice)}</strong> <span aria-hidden="true">→</span></a>
 
 <div class="quote" id="quote" data-base-price={BASE_PRICE} data-founding-rate={FOUNDING_DISCOUNT_RATE} style="margin-top: 28px; border-radius: 22px; border: 1px solid rgba(20,17,26,0.12); background: #ffffff; overflow: hidden">
 <button type="button" class="quote-toggle" id="quote-toggle" aria-expanded="false" aria-controls="quote-body" style="display: flex; align-items: center; gap: 16px; width: 100%; padding: 20px 24px; border: 0; background: transparent; text-align: left; font-family: inherit; color: #14111a; cursor: pointer">
@@ -142,7 +106,7 @@ const chip = (o: { label: string; price: number; recurring?: boolean }) => `+${a
 <span style="font-size: 0.74rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #d8bff0">Your estimate</span>
 <span style="display: flex; align-items: baseline; gap: 10px"><span style="font-family: 'Fraunces', serif; font-size: 2.6rem; font-weight: 600; line-height: 1.05; color: #ffffff"><span data-quote-total aria-live="polite">{aud(founding(BASE_PRICE))}</span></span><span style="font-size: 1rem; text-decoration: line-through; color: rgba(243,238,250,0.5)"><span data-quote-rrp>{aud(BASE_PRICE)}</span></span></span>
 <span style="font-size: 0.86rem; color: rgba(243,238,250,0.72)"><span data-quote-monthly>One-off, no lock-in</span></span>
-<a href="#contact" class="btn btn-violet" id="quote-send" style="margin-top: 14px">Send me this quote</a>
+<a href={`${base}/contact`} class="btn btn-violet" id="quote-send" style="margin-top: 14px">Send me this quote</a>
 <span style="font-size: 0.78rem; color: rgba(243,238,250,0.6); text-align: center">No payment, no obligation.</span>
 </div>
 </div>
@@ -153,6 +117,19 @@ const chip = (o: { label: string; price: number; recurring?: boolean }) => `+${a
 </section>
 
 <style>
+  .quick-link {
+    display: table;
+    margin: 10px auto 0;
+    font-size: 0.92rem;
+    color: #5b2695;
+    text-decoration: none;
+  }
+
+  .quick-link strong {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
   /* The tap-to-select button only exists for keyboard/screen-reader users on phones. */
   .tier-pick {
     display: none;
@@ -171,6 +148,7 @@ const chip = (o: { label: string; price: number; recurring?: boolean }) => `+${a
 
 <script>
   import { animate, inView } from "motion";
+  import { contactHref } from "../lib/prefill";
 
   const aud = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
 
@@ -276,8 +254,9 @@ const chip = (o: { label: string; price: number; recurring?: boolean }) => `+${a
     })
   );
 
-  // "Send me this quote": pass the estimate to the contact form (the link itself glides to it).
-  document.getElementById("quote-send")?.addEventListener("click", () => {
+  // "Send me this quote": open the contact page with the estimate filled in.
+  const quoteSend = document.getElementById("quote-send") as HTMLAnchorElement | null;
+  quoteSend?.addEventListener("click", () => {
     const { picked, oneOff, monthly } = calculate();
     const pages = picked.filter((c) => c.dataset.kind === "page").map((c) => c.dataset.label);
     const extras = picked.filter((c) => c.dataset.kind === "extra").map((c) => c.dataset.label);
@@ -286,26 +265,12 @@ const chip = (o: { label: string; price: number; recurring?: boolean }) => `+${a
       pages.length ? `+ ${pages.join(", ")}` : "",
       extras.length ? `with ${extras.join(", ")}` : "",
     ].filter(Boolean);
-    const price = `$${Math.round(oneOff)}${monthly ? ` + $${monthly}/mo` : ""}`;
-
-    const estimateInput = document.getElementById("estimate_details") as HTMLInputElement | null;
-    if (estimateInput) estimateInput.value = `${summary.join(" ")} — estimated ${price} (founding client discount applied)`;
-
-    const notice = document.getElementById("prefill-notice");
-    if (notice) {
-      const strong = document.createElement("strong");
-      strong.textContent = price;
-      notice.replaceChildren("Your estimate: ", strong, " — tell us a bit more below.");
-      notice.hidden = false;
-    }
-
-    const serviceInput = document.getElementById("service") as HTMLInputElement | null;
-    if (serviceInput) {
-      serviceInput.value = "New Site";
-      serviceInput.dispatchEvent(new Event("change"));
-    }
-
-    const business = document.getElementById("business_name") as HTMLInputElement | null;
-    if (business && !business.value) window.setTimeout(() => business.focus({ preventScroll: true }), 1400);
+    const price = `${aud(oneOff)}${monthly ? ` + ${aud(monthly)}/mo` : ""}`;
+    quoteSend.href = contactHref(quoteSend.pathname.replace(/\/contact\/?$/, ""), {
+      service: "New Site",
+      pick: "Your estimate",
+      price,
+      details: `${summary.join(" ")} — estimated ${price} (founding client discount applied)`,
+    });
   });
 </script>

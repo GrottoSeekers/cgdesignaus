@@ -1,38 +1,20 @@
-// Page-wide motion for the homepage: active section, scroll reveals, reading
-// progress, timeline fill, dot-rail colour and the eased in-page link glide.
+// Page-wide motion for the main pages: scroll reveals, reading progress,
+// timeline fill and the eased in-page link glide.
 // Everything runs on IntersectionObserver (Motion's inView) and plain scroll
 // listeners, so it works in iOS Safari; no CSS scroll-driven animations.
 import { animate, inView } from "motion";
 import { prefersReducedMotion } from "../lib/motion-utils.js";
 
 const reduce = prefersReducedMotion();
-const SECTION_IDS = ["client", "before-after", "pricing", "process", "faq", "contact"];
 const HEADER_OFFSET = 78;
 
 const root = () => document.scrollingElement || document.documentElement;
 const vh = () => window.innerHeight || document.documentElement.clientHeight;
 
-// ---- Header pill + dot rail follow the section in view ----
-function setActive(id: string) {
-  document.querySelectorAll<HTMLElement>("[data-section]").forEach((el) => {
-    el.classList.toggle("active", el.dataset.section === id);
-  });
-}
-
-const sections = SECTION_IDS.map((id) => document.getElementById(id)).filter((el): el is HTMLElement => !!el);
-inView(
-  sections,
-  (el) => {
-    setActive(el.id);
-    return () => {};
-  },
-  { margin: "-45% 0px -45% 0px" }
-);
-
 // ---- Fade/slide items up as they arrive (a plain fade under Reduce Motion, see home.css).
 // Anything already on screen at load stays put. ----
 const ITEM_SEL =
-  ".work-card, .ba-fact, .tier, .step, .perk, .faq-item, .way, .next-steps > li, .contact-form, .foot-word";
+  ".work-card, .ba-fact, .tier, .step, .perk, .faq-item, .way, .next-steps > li, .contact-form, .foot-word, .explore-card, .job-card";
 
 const isOnScreen = (el: Element) => {
   const r = el.getBoundingClientRect();
@@ -87,12 +69,10 @@ const isOnScreen = (el: Element) => {
   inView(pending.filter(inFooter), reveal);
 }
 
-// ---- Reading-progress line, "How it works" timeline fill, dot-rail colour ----
+// ---- Reading-progress line, "How it works" timeline fill ----
 const bar = document.querySelector<HTMLElement>(".scroll-bar");
 const fill = document.querySelector<HTMLElement>(".timeline-fill");
 const timeline = document.querySelector<HTMLElement>(".timeline");
-const snav = document.getElementById("snav");
-const darkZones = Array.from(document.querySelectorAll<HTMLElement>("#hero, .site-footer"));
 
 function onScrollFx() {
   const r = root();
@@ -103,16 +83,6 @@ function onScrollFx() {
     const t = timeline.getBoundingClientRect();
     const p = (vh() * 0.7 - t.top) / t.height;
     fill.style.transform = `scaleY(${Math.max(0, Math.min(1, p))})`;
-  }
-
-  // The rail turns white while its vertical middle sits over a dark section (hero, footer).
-  if (snav) {
-    const mid = window.innerHeight / 2;
-    const dark = darkZones.some((el) => {
-      const z = el.getBoundingClientRect();
-      return z.top <= mid && z.bottom >= mid;
-    });
-    snav.classList.toggle("on-dark", dark);
   }
 }
 
@@ -194,15 +164,6 @@ document.addEventListener("click", (e) => {
   const target = id ? document.getElementById(id) : null;
   if (!target) return;
   e.preventDefault();
-  if (SECTION_IDS.includes(id)) {
-    setActive(id);
-    document.querySelectorAll(".nav-link").forEach((n) => n.classList.remove("clicked"));
-    const link = document.querySelector<HTMLElement>(`.nav-link[data-section="${id}"]`);
-    if (link) {
-      void link.offsetWidth;
-      link.classList.add("clicked");
-    }
-  }
   if (history.replaceState) history.replaceState(null, "", `#${id}`);
   glideTo(target);
 });

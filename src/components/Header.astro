@@ -1,28 +1,30 @@
 ---
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
-// Links follow the page's section order (Contact is the button).
+// Each link opens its own page; the free website check is the button.
 const navItems = [
-  { id: "client", label: "Work" },
-  { id: "before-after", label: "Redesign" },
-  { id: "pricing", label: "Pricing" },
-  { id: "process", label: "Process" },
-  { id: "faq", label: "FAQ" },
+  { href: `${base}/work`, label: "Work" },
+  { href: `${base}/pricing`, label: "Pricing" },
+  { href: `${base}/quick-jobs`, label: "Quick jobs" },
+  { href: `${base}/how-it-works`, label: "How it works" },
 ];
 
-const drawerItems = [{ id: "hero", label: "Home" }, ...navItems, { id: "contact", label: "Contact" }];
+const drawerItems = [{ href: `${base}/`, label: "Home" }, ...navItems, { href: `${base}/contact`, label: "Contact" }];
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isCurrent = (href: string) => (href.replace(/\/$/, "") || "/") === path;
 ---
 
 <header class="site-header" style="position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,0.86); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); border-bottom: 1px solid rgba(20,17,26,0.08)">
 <div class="scroll-bar" aria-hidden="true" style="position: absolute; left: 0; bottom: -1px; height: 2px; width: 100%; background: linear-gradient(90deg, #5b2a96, #b58cf0); transform-origin: left; transform: scaleX(0)"></div>
 <div style="display: flex; align-items: center; gap: 28px; height: 70px; padding: 0 32px; max-width: 1440px; margin: 0 auto; box-sizing: border-box">
-<a href="#hero" aria-label="CG Design &amp; Co. home" style="display: inline-flex; flex-shrink: 0"><img src={`${base}/logo-full.png?v=2`} alt="CG Design &amp; Co." width="566" height="241" style="height: 34px; width: auto; display: block"></a>
+<a href={`${base}/`} aria-label="CG Design &amp; Co. home" style="display: inline-flex; flex-shrink: 0"><img src={`${base}/logo-full.png?v=2`} alt="CG Design &amp; Co." width="566" height="241" style="height: 34px; width: auto; display: block"></a>
 <nav class="nav-links" aria-label="Primary" style="display: flex; gap: 2px; margin-left: auto; padding: 4px; border-radius: 999px; background: rgba(47,17,71,0.04); border: 1px solid rgba(20,17,26,0.06)">
-{navItems.map((item, i) => (
-<a href={`#${item.id}`} class:list={["nav-link", { active: i === 0 }]} data-section={item.id}>{item.label}</a>
+{navItems.map((item) => (
+<a href={item.href} class:list={["nav-link", { active: isCurrent(item.href) }]} aria-current={isCurrent(item.href) ? "page" : undefined}>{item.label}</a>
 ))}
 </nav>
-<a href="#contact" class="nav-cta" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 22px; border-radius: 9999px; background: #2f1147; color: #ffffff; font-weight: 700; font-size: 0.9rem; text-decoration: none; white-space: nowrap">Free website check <svg class="cta-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<a href={`${base}/contact`} class="nav-cta" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 22px; border-radius: 9999px; background: #2f1147; color: #ffffff; font-weight: 700; font-size: 0.9rem; text-decoration: none; white-space: nowrap">Free website check <svg class="cta-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
 <button type="button" class="menu-btn" id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer" style="display: none; margin-left: auto; flex-direction: column; justify-content: center; gap: 5px; width: 44px; height: 44px; border-radius: 12px; border: 1px solid rgba(20,17,26,0.16); background: transparent; padding: 0 12px; box-sizing: border-box"><span style="display: block; height: 2px; background: #14111a"></span><span style="display: block; height: 2px; background: #14111a"></span><span style="display: block; height: 2px; background: #14111a"></span></button>
 </div>
 </header>
@@ -33,10 +35,10 @@ const drawerItems = [{ id: "hero", label: "Home" }, ...navItems, { id: "contact"
   </button>
   <nav class="drawer-nav" aria-label="Mobile">
     {drawerItems.map((item) => (
-      <a href={`#${item.id}`} class="drawer-link" data-drawer-link data-section={item.id === "hero" ? undefined : item.id}>{item.label}</a>
+      <a href={item.href} class:list={["drawer-link", { active: isCurrent(item.href) }]} aria-current={isCurrent(item.href) ? "page" : undefined} data-drawer-link>{item.label}</a>
     ))}
   </nav>
-  <a href="#contact" class="drawer-cta" data-drawer-link>Free website check</a>
+  <a href={`${base}/contact`} class="drawer-cta" data-drawer-link>Free website check</a>
 </div>
 
 <style>
@@ -130,7 +132,7 @@ const drawerItems = [{ id: "hero", label: "Home" }, ...navItems, { id: "contact"
     color: #2f1147;
   }
 
-  /* the section you're reading */
+  /* the page you're on */
   .drawer-link.active {
     color: #5b2a96;
     font-style: italic;

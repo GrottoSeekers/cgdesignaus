@@ -1,0 +1,21 @@
+---
+import HomeLayout from "../layouts/HomeLayout.astro";
+import Header from "../components/Header.astro";
+import Pricing from "../components/Pricing.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Footer from "../components/Footer.astro";
+import CookieConsent from "../components/CookieConsent.astro";
+---
+
+<HomeLayout
+  title="Pricing | CG Design & Co."
+  description="Three fixed-price website packages for local businesses, or build your own quote. The price you see is the price you pay."
+>
+  <Header />
+  <main id="main">
+    <Pricing heading="h1" />
+    <CtaBand title="Not sure which package fits?" text="Tell us about your business and we'll recommend one, with a fixed price and a launch date in writing." />
+  </main>
+  <Footer />
+  <CookieConsent />
+</HomeLayout>

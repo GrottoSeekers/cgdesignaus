@@ -1,5 +1,6 @@
 ---
-const img = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/previews`;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const img = `${base}/previews`;
 
 // Add a client = add one entry here. Layout follows the count:
 // 1 → single centred, 2 → two centred, 3 → row with the middle one raised,
@@ -60,6 +61,12 @@ const pageCount = Math.ceil(n / 3);
 const gridCols = track ? "none" : `repeat(${n}, minmax(0, 1fr))`;
 const gridMax = n === 1 ? "380px" : n === 2 ? "760px" : "none";
 const offset = (i: number) => (n === 3 && i !== 1 ? "56px" : "0px");
+
+interface Props {
+  /** "h1" when this section opens its own page. */
+  heading?: "h1" | "h2";
+}
+const { heading: Heading = "h2" } = Astro.props;
 ---
 
 <section id="client" style="position: relative; padding: 112px 0 96px; background: #ffffff; overflow: hidden">
@@ -68,11 +75,11 @@ const offset = (i: number) => (n === 3 && i !== 1 ? "56px" : "0px");
 <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 48px; margin-bottom: 64px">
 <div style="max-width: 640px">
 <span class="eyebrow" style="margin-bottom: 18px">Our work</span>
-<h2 style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin-top: 14px">A few of the businesses we've helped <em style="font-style: italic; font-weight: 600; color: #5b2a96">get online.</em></h2>
+<Heading style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin-top: 14px">A few of the businesses we've helped <em style="font-style: italic; font-weight: 600; color: #5b2a96">get online.</em></Heading>
 </div>
 <div style="max-width: 360px">
 <p style="color: rgba(20,17,26,0.68); font-size: 1rem; margin-bottom: 10px">We designed, wrote and launched every one of these ourselves. Tap any phone to see the live site.</p>
-<a href="#contact" style="display: inline-flex; align-items: center; gap: 7px; min-height: 44px; font-weight: 700; font-size: 0.9rem; color: #5b2695; text-decoration: none">Start your project →</a>
+<a href={`${base}/contact`} style="display: inline-flex; align-items: center; gap: 7px; min-height: 44px; font-weight: 700; font-size: 0.9rem; color: #5b2695; text-decoration: none">Start your project →</a>
 </div>
 </div>
 <div class:list={["showcase", track ? "showcase-track" : "showcase-grid"]} id="showcase" style={`gap: 40px; align-items: start; grid-template-columns: ${gridCols}; max-width: ${gridMax}; margin: 0 auto`}>

@@ -3,19 +3,19 @@ const base = import.meta.env.BASE_URL;
 const home = base.replace(/\/$/, "") + "/";
 
 const navItems = [
-  { href: `${home}#client`, label: "Work" },
-  { href: `${home}#pricing`, label: "Pricing" },
-  { href: `${home}#process`, label: "Process" },
-  { href: `${home}#faq`, label: "FAQ" },
+  { href: `${home}work`, label: "Work" },
+  { href: `${home}pricing`, label: "Pricing" },
+  { href: `${home}quick-jobs`, label: "Quick jobs" },
+  { href: `${home}how-it-works`, label: "How it works" },
 ];
 
 const drawerItems = [
   { href: base, label: "Home" },
-  { href: `${home}#client`, label: "Work" },
-  { href: `${home}#pricing`, label: "Pricing" },
-  { href: `${home}#process`, label: "Process" },
-  { href: `${home}#faq`, label: "FAQ" },
-  { href: `${home}#contact`, label: "Contact" },
+  { href: `${home}work`, label: "Work" },
+  { href: `${home}pricing`, label: "Pricing" },
+  { href: `${home}quick-jobs`, label: "Quick jobs" },
+  { href: `${home}how-it-works`, label: "How it works" },
+  { href: `${home}contact`, label: "Contact" },
 ];
 ---
 
@@ -33,12 +33,12 @@ const drawerItems = [
 
     <nav class="nav" aria-label="Primary" id="primary-nav">
       <span class="nav-indicator" id="nav-indicator" aria-hidden="true"></span>
-      {navItems.map((item, i) => (
-        <a href={item.href} data-nav-link class={i === 0 ? "active" : ""}>{item.label}</a>
+      {navItems.map((item) => (
+        <a href={item.href} data-nav-link>{item.label}</a>
       ))}
     </nav>
 
-    <a href={`${home}#contact`} class="btn-cta">Free website check</a>
+    <a href={`${home}contact`} class="btn-cta">Free website check</a>
 
     <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" id="menu-toggle">
       <span></span><span></span><span></span>
@@ -55,7 +55,7 @@ const drawerItems = [
         <a href={item.href} class="drawer-link" data-drawer-link>{item.label}</a>
       ))}
     </nav>
-    <a href={`${home}#contact`} class="btn-cta drawer-cta" data-drawer-link>Free website check</a>
+    <a href={`${home}contact`} class="btn-cta drawer-cta" data-drawer-link>Free website check</a>
   </div>
 </header>
 
@@ -375,7 +375,8 @@ const drawerItems = [
   };
 
   const initIndicator = () => {
-    const current = links.find((l) => l.classList.contains("active")) ?? links[0];
+    // Legal pages aren't in the menu, so nothing is highlighted unless a link is active.
+    const current = links.find((l) => l.classList.contains("active"));
     if (current) moveIndicator(current);
   };
 
