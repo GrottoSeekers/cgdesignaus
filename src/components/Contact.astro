@@ -1,11 +1,18 @@
 ---
 import { GOOGLE_PROFILE_URL } from "../lib/business";
 
+interface Props {
+  /** "h1" when this section opens its own page. */
+  heading?: "h1" | "h2";
+}
+const { heading: Heading = "h2" } = Astro.props;
+
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 const serviceOptions = [
   { value: "New Site", label: "New site" },
   { value: "Redesign", label: "Redesign" },
+  { value: "Quick Job", label: "A quick job" },
   { value: "Not Sure", label: "Not sure yet" },
 ];
 
@@ -21,7 +28,7 @@ const nextSteps = [
 <div class="wrap" style="position: relative; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 64px; align-items: start">
 <div>
 <span class="eyebrow">Get in touch</span>
-<h2 style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin: 16px 0 18px">Get your free <em style="font-style: italic; font-weight: 600; color: #5b2a96">website check.</em></h2>
+<Heading style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin: 16px 0 18px">Get your free <em style="font-style: italic; font-weight: 600; color: #5b2a96">website check.</em></Heading>
 <p style="color: rgba(20,17,26,0.68); font-size: 1.02rem; margin-bottom: 32px">Tell us about the business. If you already have a site, add the link — we'll tell you honestly what we'd change, whether or not you hire us.</p>
 <div class="contact-ways" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px">
 <a href="https://wa.me/447306100251" target="_blank" rel="noopener noreferrer" class="way whatsapp-link" style="display: flex; align-items: center; gap: 16px; padding: 18px 20px; border-radius: 20px; background: #ffffff; border: 1px solid rgba(20,17,26,0.08); text-decoration: none; color: #14111a">
@@ -270,6 +277,8 @@ const nextSteps = [
 </style>
 
 <script>
+  import { readPrefill } from "../lib/prefill";
+
   const form = document.getElementById("lead-form") as HTMLFormElement | null;
   const submitBtn = document.getElementById("submit-btn") as HTMLButtonElement | null;
   const submitError = document.getElementById("submit-error");
@@ -380,7 +389,7 @@ const nextSteps = [
     form.classList.remove("is-hidden");
   });
 
-  // Service chips write to the hidden #service input (Pricing's quote builder sets it too).
+  // Service chips write to the hidden #service input (links from other pages prefill it too).
   const serviceInput = document.getElementById("service") as HTMLInputElement | null;
   const serviceChips = Array.from(document.querySelectorAll<HTMLButtonElement>(".svc"));
 
@@ -401,6 +410,24 @@ const nextSteps = [
     });
   });
   serviceInput?.addEventListener("change", syncServiceChips);
+
+  // Arriving from "Start with Growth", "Send me this quote" or a quick job's "Ask for this":
+  // fill in what they picked, then tidy the address bar.
+  const prefill = readPrefill(window.location.search);
+  if (prefill) {
+    if (serviceInput) serviceInput.value = prefill.service;
+    syncServiceChips();
+    const estimateInput = document.getElementById("estimate_details") as HTMLInputElement | null;
+    if (estimateInput) estimateInput.value = prefill.details;
+    const notice = document.getElementById("prefill-notice");
+    if (notice) {
+      const strong = document.createElement("strong");
+      strong.textContent = prefill.price ? `${prefill.pick} · ${prefill.price}` : prefill.pick;
+      notice.replaceChildren("You picked: ", strong, ". Tell us a bit more below.");
+      notice.hidden = false;
+    }
+    history.replaceState(null, "", window.location.pathname + window.location.hash);
+  }
 
   // WhatsApp: draft a message from whatever the visitor has filled in so far.
   const whatsappLink = document.querySelector<HTMLAnchorElement>(".whatsapp-link");

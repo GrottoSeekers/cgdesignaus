@@ -1,0 +1,249 @@
+---
+// Fixed-price setup jobs for businesses that don't need a whole website.
+// Prices live in src/lib/pricing.ts.
+import { quickJobs, starterBundle, aud } from "../lib/pricing";
+import { contactHref } from "../lib/prefill";
+
+interface Props {
+  /** "h1" when this section opens its own page. */
+  heading?: "h1" | "h2";
+}
+const { heading: Heading = "h2" } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const priceLabel = (j: { price: number; per?: string }) => `${aud(j.price)}${j.per ? ` ${j.per}` : ""}`;
+const askHref = (name: string, price: string) =>
+  contactHref(base, { service: "Quick Job", pick: name, price, details: `Quick job: ${name} — ${price}` });
+const saving = starterBundle.separately - starterBundle.price;
+---
+
+<section id="quick-jobs" style="position: relative; padding: 112px 0 104px; background: #ffffff">
+<div class="wrap" style="position: relative">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 48px; margin-bottom: 40px">
+<div style="max-width: 660px">
+<span class="eyebrow">Quick jobs</span>
+<Heading style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin-top: 16px">Just need a hand with <em style="font-style: italic; font-weight: 600; color: #5b2a96">something smaller?</em></Heading>
+</div>
+<p style="max-width: 380px; color: rgba(20,17,26,0.68); font-size: 1rem">Fixed prices, paid upfront, usually done within a few days. Everything is set up in your name, so it's 100% yours.</p>
+</div>
+
+<div class="jobs">
+{quickJobs.map((j) => (
+<div class="job-card">
+<h3 class="job-name">{j.name}</h3>
+<p class="job-price">{aud(j.price)}{j.per && <span class="job-per"> {j.per}</span>}</p>
+<p class="job-desc">{j.desc}</p>
+<a href={askHref(j.name, priceLabel(j))} class="job-ask">Ask for this <span aria-hidden="true">→</span></a>
+</div>
+))}
+</div>
+
+<div class="bundle">
+<div class="bundle-copy">
+<span class="bundle-tag">Best value</span>
+<h3 class="bundle-name">{starterBundle.name}</h3>
+<p class="bundle-sub">Everything a new business needs to be found and look the part.</p>
+<ul class="bundle-list">
+{starterBundle.includes.map((line) => <li><span class="bundle-tick" aria-hidden="true">✓</span>{line}</li>)}
+</ul>
+</div>
+<div class="bundle-buy">
+<p class="bundle-price">{aud(starterBundle.price)}</p>
+<p class="bundle-save">Save {aud(saving)} on doing them one by one. Domain cost extra.</p>
+<a href={askHref(starterBundle.name, aud(starterBundle.price))} class="btn btn-violet">Get the starter bundle</a>
+</div>
+</div>
+
+<p class="jobs-more">Need something else? <a href="https://wa.me/447306100251" target="_blank" rel="noopener noreferrer">Just ask on WhatsApp</a> and we'll give you a fixed price.</p>
+</div>
+</section>
+
+<style>
+  .jobs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: 20px;
+  }
+
+  .job-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 28px;
+    border-radius: 22px;
+    background: #f3f0f8;
+    border: 1px solid rgba(20, 17, 26, 0.08);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s, border-color 0.35s;
+  }
+
+  @media (hover: hover) {
+    .job-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(91, 42, 150, 0.3);
+      box-shadow: 0 30px 56px -34px rgba(47, 17, 71, 0.45);
+    }
+  }
+
+  .job-name {
+    font-size: 1.2rem;
+  }
+
+  .job-price {
+    font-family: "Fraunces", serif;
+    font-size: 2.2rem;
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: #2f1147;
+  }
+
+  .job-per {
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: rgba(20, 17, 26, 0.6);
+  }
+
+  .job-desc {
+    flex: 1;
+    font-size: 0.94rem;
+    color: rgba(20, 17, 26, 0.68);
+  }
+
+  .job-ask {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    align-self: flex-start;
+    min-height: 44px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: #5b2695;
+    text-decoration: none;
+    transition: gap 0.25s ease, color 0.25s ease;
+  }
+
+  @media (hover: hover) {
+    .job-ask:hover {
+      gap: 12px;
+      color: #2f1147;
+    }
+  }
+
+  .bundle {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px 48px;
+    margin-top: 24px;
+    padding: 36px;
+    border-radius: 24px;
+    background: #2f1147;
+    color: #f3eefa;
+  }
+
+  .bundle-copy {
+    flex: 1 1 460px;
+  }
+
+  .bundle-tag {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #d8bff0;
+  }
+
+  .bundle-name {
+    font-size: 1.6rem;
+    color: #ffffff;
+  }
+
+  .bundle-sub {
+    margin-top: 6px;
+    font-size: 0.95rem;
+    color: rgba(243, 238, 250, 0.78);
+  }
+
+  .bundle-list {
+    list-style: none;
+    margin: 18px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 24px;
+    font-size: 0.92rem;
+    color: rgba(243, 238, 250, 0.9);
+  }
+
+  .bundle-list li {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .bundle-tick {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: rgba(124, 79, 199, 0.45);
+    color: #ffffff;
+    font-size: 0.7rem;
+  }
+
+  .bundle-buy {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 0 1 280px;
+  }
+
+  .bundle-price {
+    font-family: "Fraunces", serif;
+    font-size: 3.2rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+  }
+
+  .bundle-save {
+    margin-bottom: 8px;
+    font-size: 0.86rem;
+    color: rgba(243, 238, 250, 0.7);
+  }
+
+  .jobs-more {
+    margin-top: 28px;
+    text-align: center;
+    font-size: 0.95rem;
+    color: rgba(20, 17, 26, 0.68);
+  }
+
+  .jobs-more a {
+    font-weight: 700;
+    color: #5b2695;
+  }
+
+  @media (max-width: 560px) {
+    .job-card {
+      padding: 24px;
+    }
+
+    .bundle {
+      padding: 28px 24px;
+    }
+
+    .bundle-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

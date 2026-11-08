@@ -1,8 +1,16 @@
+---
+interface Props {
+  /** "h1" when this section opens its own page. */
+  heading?: "h1" | "h2";
+}
+const { heading: Heading = "h2" } = Astro.props;
+---
+
 <section id="process" style="padding: 112px 0 104px; background: #ffffff">
 <div class="wrap" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 72px; align-items: start">
 <div class="process-intro">
 <span class="eyebrow">How it works</span>
-<h2 style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin: 16px 0 20px">You deal with the designer. <em style="font-style: italic; font-weight: 600; color: #5b2a96">Start to finish.</em></h2>
+<Heading style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin: 16px 0 20px">You deal with the designer. <em style="font-style: italic; font-weight: 600; color: #5b2a96">Start to finish.</em></Heading>
 <p style="color: rgba(20,17,26,0.68); font-size: 1.05rem; margin-bottom: 36px; max-width: 30em">I'm Callum Disley, founder of CG Design &amp; Co. I'll design your site myself, and I'm the one you'll talk to the whole way through.</p>
 <div class="perks" style="display: flex; flex-direction: column; gap: 14px">
 <div class="perk" style="display: flex; gap: 16px; align-items: flex-start; padding: 18px 20px; border-radius: 18px; border: 1px solid rgba(20,17,26,0.08); background: #ffffff">
