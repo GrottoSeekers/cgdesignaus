@@ -14,11 +14,20 @@ export const pageOptions = [
   { id: "booking-page", label: "Booking page", price: 100 },
 ];
 
+// ---- Branding: one price, on its own or with any package (no founding discount) ----
+export const brandIdentity = {
+  name: "Logo & brand identity",
+  price: 349,
+  includes: ["Two logo concepts", "Colours and fonts", "One-page brand guide", "Files for print and web"],
+};
+
+// `fixed` extras keep their price in the quote builder: the founding discount doesn't apply.
 export const featureOptions = [
-  { id: "seo", label: "Local SEO", desc: "Google Business optimisation and local keyword targeting", price: 200, recurring: false },
-  { id: "booking", label: "Online bookings", desc: "Real-time appointment, table, or callout booking", price: 300, recurring: false },
-  { id: "store", label: "Online store", desc: "Product catalogue and checkout", price: 800, recurring: false },
-  { id: "maintenance", label: "Maintenance", desc: "Hosting, security updates, and small content changes", price: 60, recurring: true },
+  { id: "seo", label: "Local SEO", desc: "Google Business optimisation and local keyword targeting", price: 200, recurring: false, fixed: false },
+  { id: "booking", label: "Online bookings", desc: "Real-time appointment, table, or callout booking", price: 300, recurring: false, fixed: false },
+  { id: "store", label: "Online store", desc: "Product catalogue and checkout", price: 800, recurring: false, fixed: false },
+  { id: "brand", label: "Logo & branding", desc: "Two logo concepts, colours, fonts and a brand guide", price: brandIdentity.price, recurring: false, fixed: true },
+  { id: "maintenance", label: "Maintenance", desc: "Hosting, security updates, and small content changes", price: 60, recurring: true, fixed: false },
 ];
 
 const priceById: Record<string, number> = Object.fromEntries(

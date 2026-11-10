@@ -2,3 +2,6 @@
 // Used for the "Google reviews" links and in the LocalBusiness schema (sameAs / hasMap),
 // which helps Google tie this website to the profile.
 export const GOOGLE_PROFILE_URL = "https://share.google/plIp2EwA8egT1QJr2";
+
+// Average star rating on the Google profile, shown in the homepage hero. Update it if it changes.
+export const GOOGLE_RATING = 5.0;

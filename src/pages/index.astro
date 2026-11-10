@@ -92,6 +92,14 @@ const businessSchema = {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
+          name: "Logo & Brand Identity",
+          description: "Logo design, colour palette, fonts and a one-page brand guide for small businesses.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
           name: "Business Setup Quick Jobs",
           description: "Fixed-price setup of Google Business Profiles, social media, business email, online bookings and review links.",
         },
@@ -110,8 +118,8 @@ const businessSchema = {
 ---
 
 <HomeLayout
-  title="CG Design & Co. | Custom Web Design & Development Australia"
-  description="CG Design & Co. designs and builds fast, mobile-friendly websites for local businesses across Australia, with fixed pricing and a clear delivery timeline."
+  title="CG Design & Co. | Websites & Branding for Local Businesses"
+  description="CG Design & Co. designs fast, mobile-friendly websites, logos and branding for local businesses across Australia, with fixed pricing and a clear delivery timeline."
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(businessSchema)} />

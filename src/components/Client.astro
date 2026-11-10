@@ -6,7 +6,8 @@ const img = `${base}/previews`;
 // 1 → single centred, 2 → two centred, 3 → row with the middle one raised,
 // 4+ → swipeable track, three per view, with arrows and dots.
 // `dur`/`delay` set the phone screenshot's auto-scroll speed and offset.
-// `palette` is the client's brand colours, shown as swatches under the blurb.
+// `palette` and `fonts` are the client's brand, shown under the blurb; `made` is what we
+// designed for them, shown as a badge on the phone.
 const clients = [
   {
     name: "MYAH",
@@ -17,6 +18,8 @@ const clients = [
     dur: "22s",
     delay: "-4s",
     palette: ["#2C1A0E", "#FAF6EE", "#2F5D45", "#C4AB8A"],
+    fonts: "Marcellus + Montserrat",
+    made: ["Logo", "Brand", "Website"],
     shots: [{ src: "myah-callumandniamh.webp", alt: "Callum & Niamh's house and pet sitting page on MYAH", width: 390, height: 2802 }],
   },
   {
@@ -27,7 +30,9 @@ const clients = [
     linkLabel: "Visit nir-ma-ta.com",
     dur: "20s",
     delay: "0s",
-    palette: ["#D83630", "#111111", "#FFFFFF", "#F0F0F0"],
+    palette: ["#EE1C25", "#121212", "#FFFFFF", "#F0F0F0"],
+    fonts: "Archivo Black + Work Sans",
+    made: ["Brand", "Website"],
     shots: [
       { src: "nirmata-hero.webp", alt: "NIR-MA-TA homepage", width: 760, height: 1652 },
       { src: "nirmata-menu.webp", alt: "NIR-MA-TA menu with prices", width: 620, height: 1348 },
@@ -42,6 +47,8 @@ const clients = [
     dur: "34s",
     delay: "0s",
     palette: ["#2A1A14", "#F7F0E6", "#EFC3B0", "#C98B5A"],
+    fonts: "Gloock + Hanken Grotesk",
+    made: ["Logo", "Brand", "Website"],
     shots: [{ src: "nigels-after-mobile.webp", alt: "Nigel's Hairdressing full mobile homepage", width: 390, height: 6874 }],
   },
   {
@@ -52,7 +59,9 @@ const clients = [
     linkLabel: "Preview rochses.com",
     dur: "18s",
     delay: "-6s",
-    palette: ["#F0EAE4", "#E9E0D2", "#8A7F75", "#1C1A17"],
+    palette: ["#F3EFE7", "#CBC2B2", "#8B7765", "#46403A"],
+    fonts: "Cormorant Garamond + Inter",
+    made: ["Logo", "Brand", "Website"],
     shots: [
       { src: "rochses-hero.webp", alt: "Rochses coming-soon homepage", width: 760, height: 1644 },
       { src: "rochses-signup.webp", alt: "Rochses priority access signup", width: 620, height: 1341 },
@@ -83,7 +92,7 @@ const { heading: Heading = "h2" } = Astro.props;
 <Heading style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin-top: 14px">A few of the businesses we've helped <em style="font-style: italic; font-weight: 600; color: #5b2a96">get online.</em></Heading>
 </div>
 <div style="max-width: 360px">
-<p style="color: rgba(20,17,26,0.68); font-size: 1rem; margin-bottom: 10px">We designed, wrote and launched every one of these ourselves. Tap any phone to see the live site.</p>
+<p style="color: rgba(20,17,26,0.68); font-size: 1rem; margin-bottom: 10px">We branded, designed, wrote and launched every one of these ourselves. Tap any phone to see the live site.</p>
 <a href={`${base}/contact`} style="display: inline-flex; align-items: center; gap: 7px; min-height: 44px; font-weight: 700; font-size: 0.9rem; color: #5b2695; text-decoration: none">Start your project →</a>
 </div>
 </div>
@@ -96,13 +105,17 @@ const { heading: Heading = "h2" } = Astro.props;
 <span class="scroll-col" style={`display: block; animation-duration: ${c.dur}; animation-delay: ${c.delay}`}>{c.shots.map((shot) => <img src={`${img}/${shot.src}`} alt={shot.alt} width={shot.width} height={shot.height} loading="lazy" decoding="async" style="display: block; width: 100%; height: auto" />)}</span>
 </span>
 </a>
-<div style="width: 100%; max-width: 320px; margin-top: 32px; text-align: center">
+<span class="made"><span class="sr-only">We designed: </span>{c.made.join(" · ")}</span>
+<div style="width: 100%; max-width: 320px; margin-top: 18px; text-align: center">
 <span style="font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(20,17,26,0.55)">{c.kicker}</span>
 <h3 style="font-size: 1.5rem; margin: 6px 0 8px">{c.name}</h3>
 <p style="font-size: 0.92rem; color: rgba(20,17,26,0.68); margin-bottom: 6px">{c.blurb}</p>
+<div class="brand-row">
 <ul class="swatches" aria-label={`${c.name} brand colours`}>
 {c.palette.map((hex) => <li class="swatch" style={`background: ${hex}`} title={hex}><span class="sr-only">{hex}</span></li>)}
 </ul>
+<span class="fonts"><span aria-hidden="true" class="fonts-aa">Aa</span><span class="sr-only">Fonts: </span>{c.fonts}</span>
+</div>
 <a href={c.href} target="_blank" rel="noopener" class="visit">{c.linkLabel} <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
 </div>
 </div>
@@ -124,13 +137,51 @@ const { heading: Heading = "h2" } = Astro.props;
 </section>
 
 <style>
+  .made {
+    position: relative;
+    z-index: 3;
+    margin-top: -16px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: #2f1147;
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    box-shadow: 0 10px 24px -10px rgba(47, 17, 71, 0.8);
+  }
+
+  .brand-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin: 12px 0 10px;
+  }
+
   .swatches {
     display: flex;
     justify-content: center;
     gap: 6px;
-    margin: 12px 0 10px;
+    margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  .fonts {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: rgba(20, 17, 26, 0.6);
+  }
+
+  .fonts-aa {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 0.9rem;
+    color: #5b2a96;
   }
 
   .swatch {
