@@ -283,24 +283,19 @@ const startHref = (t: (typeof tiers)[number]) =>
   const tickLists = Array.from(document.querySelectorAll<HTMLElement>(".tiers .ticks"));
   const onScreen = (el: Element) => {
     const r = el.getBoundingClientRect();
-    return r.top < window.innerHeight * 0.92 && r.bottom > 0;
+    return r.top < window.innerHeight && r.bottom > 0;
   };
 
-  // Runs whether the packages start on screen (the top of /pricing) or further down.
-  // When they're visible straight away, it waits for the page fade-in to finish first.
+  // If any of the packages show when the page opens (the top of /pricing, even on a small
+  // phone where they peek in at the bottom), count down right after the page fade-in.
+  // Otherwise start as soon as they scroll into view. Never leave the full prices showing.
   if (tiersEl) {
-    const lead = onScreen(tiersEl) ? 450 : 0;
     tiersEl.classList.add("pre");
     tickLists.forEach((t) => t.classList.add("pre"));
     counts.forEach((c) => (c.el.textContent = aud(c.from)));
 
-    inView(
-      tiersEl,
-      () => {
-        window.setTimeout(() => countDown(tiersEl), lead);
-      },
-      { margin: "0px 0px -20% 0px" }
-    );
+    if (onScreen(tiersEl)) window.setTimeout(() => countDown(tiersEl), 450);
+    else inView(tiersEl, () => countDown(tiersEl), { amount: 0.15 });
   }
 
   function countDown(tiersEl: HTMLElement) {
