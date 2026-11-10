@@ -416,3 +416,12 @@ img {
   z-index: 0;
   opacity: 0.35;
 }
+
+/* Page-to-page fade, matching the main pages (see home.css). */
+@view-transition { navigation: auto; }
+.site-header { view-transition-name: site-header; }
+::view-transition-old(root) { animation: cg-vt-out 0.22s cubic-bezier(0.4, 0, 1, 1) both; }
+::view-transition-new(root) { animation: cg-vt-in 0.42s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes cg-vt-out { to { opacity: 0; } }
+@keyframes cg-vt-in { from { opacity: 0; transform: translateY(14px); } }
+@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }

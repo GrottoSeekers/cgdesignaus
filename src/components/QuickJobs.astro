@@ -48,7 +48,7 @@ const saving = starterBundle.separately - starterBundle.price;
 </ul>
 </div>
 <div class="bundle-buy">
-<p class="bundle-price">{aud(starterBundle.price)}</p>
+<p class="bundle-price"><span class="sr-only">{aud(starterBundle.price)}, instead of {aud(starterBundle.separately)}</span><span aria-hidden="true" class="bundle-count" data-from={starterBundle.separately} data-to={starterBundle.price}>{aud(starterBundle.price)}</span> <span aria-hidden="true" class="bundle-was">{aud(starterBundle.separately)}</span></p>
 <p class="bundle-save">Save {aud(saving)} on doing them one by one. Domain cost extra.</p>
 <a href={askHref(starterBundle.name, aud(starterBundle.price))} class="btn btn-violet">Get the starter bundle</a>
 </div>
@@ -215,6 +215,33 @@ const saving = starterBundle.separately - starterBundle.price;
     color: #ffffff;
   }
 
+  .bundle-was {
+    position: relative;
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: rgba(243, 238, 250, 0.55);
+    vertical-align: middle;
+  }
+
+  /* The strike draws across once the count-down lands (see the script below). */
+  .bundle-was::after {
+    content: "";
+    position: absolute;
+    left: -2px;
+    right: -2px;
+    top: 52%;
+    height: 2px;
+    background: currentColor;
+    transform-origin: left center;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .bundle.pre .bundle-was::after {
+    transform: scaleX(0);
+  }
+
   .bundle-save {
     margin-bottom: 8px;
     font-size: 0.86rem;
@@ -247,3 +274,31 @@ const saving = starterBundle.separately - starterBundle.price;
     }
   }
 </style>
+
+<script>
+  // The bundle counts down from the one-by-one price to the bundle price as it scrolls in,
+  // then the old price is struck through (the same idea as the packages on Pricing).
+  import { animate, inView } from "motion";
+  import { prefersReducedMotion } from "../lib/motion-utils.js";
+
+  const bundle = document.querySelector<HTMLElement>(".bundle");
+  const count = bundle?.querySelector<HTMLElement>(".bundle-count");
+  if (bundle && count && !prefersReducedMotion() && bundle.getBoundingClientRect().top > window.innerHeight * 0.85) {
+    const from = Number(count.dataset.from);
+    const to = Number(count.dataset.to);
+    const aud = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
+    bundle.classList.add("pre");
+    count.textContent = aud(from);
+    inView(bundle, () => {
+      animate(from, to, {
+        duration: 1.2,
+        ease: [0.33, 1, 0.68, 1],
+        onUpdate: (v) => (count.textContent = aud(v)),
+        onComplete: () => {
+          count.textContent = aud(to);
+          bundle.classList.remove("pre");
+        },
+      });
+    }, { amount: 0.6 });
+  }
+</script>

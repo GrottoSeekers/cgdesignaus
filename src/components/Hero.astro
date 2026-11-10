@@ -42,7 +42,7 @@ const services = [
 </h1>
 <p class="fade" style="font-size: 1.22rem; color: rgba(243,238,250,0.76); max-width: 30em; margin-bottom: 36px; animation-delay: 0.6s">Fast, mobile-first websites and branding for local businesses, <strong style="color: #ffffff; font-weight: 700; white-space: nowrap">from {aud(lowestPackagePrice)}.</strong></p>
 <div class="fade" style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 44px; animation-delay: 0.72s">
-<a href={`${base}/contact`} class="btn btn-glow" style="min-height: 56px; padding: 0 32px; font-size: 1rem">Get your free business check <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<a href={`${base}/contact`} class="btn btn-glow" data-magnetic style="min-height: 56px; padding: 0 32px; font-size: 1rem">Get your free business check <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
 <a href="#client" class="btn btn-line" style="min-height: 56px; padding: 0 30px; font-size: 1rem">See our work</a>
 </div>
 <div class="fade" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; max-width: 520px; padding-top: 28px; border-top: 1px solid rgba(243,238,250,0.12); animation-delay: 0.84s">
@@ -78,3 +78,39 @@ const services = [
 </div>
 </div>
 </section>
+
+<script>
+  // Desktop: the main call-to-action leans gently towards the cursor while it's nearby,
+  // then springs back. Mouse only; skipped under reduced motion.
+  import { animate } from "motion";
+  import { prefersReducedMotion, SPRING_GENTLE } from "../lib/motion-utils.js";
+
+  const btn = document.querySelector<HTMLElement>("[data-magnetic]");
+  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (btn && finePointer && !prefersReducedMotion()) {
+    const REACH = 90; // px around the button where the pull starts
+    const PULL = 0.22; // share of the distance it follows
+    const MAX = 10; // px it may travel
+    let near = false;
+
+    window.addEventListener(
+      "pointermove",
+      (e) => {
+        if (e.pointerType !== "mouse") return;
+        const r = btn.getBoundingClientRect();
+        const dx = e.clientX - (r.left + r.width / 2);
+        const dy = e.clientY - (r.top + r.height / 2);
+        const inside = Math.abs(dx) < r.width / 2 + REACH && Math.abs(dy) < r.height / 2 + REACH;
+        if (inside) {
+          near = true;
+          const clamp = (v: number) => Math.max(-MAX, Math.min(MAX, v * PULL));
+          animate(btn, { x: clamp(dx), y: clamp(dy) }, SPRING_GENTLE);
+        } else if (near) {
+          near = false;
+          animate(btn, { x: 0, y: 0 }, SPRING_GENTLE);
+        }
+      },
+      { passive: true }
+    );
+  }
+</script>

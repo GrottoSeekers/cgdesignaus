@@ -200,7 +200,7 @@ const rows = [
 <script>
   // Mouse-only hover motion (Motion's hover() ignores touch). Reduced motion keeps the
   // row highlight and skips the movement.
-  import { animate, hover, stagger } from "motion";
+  import { animate, hover, inView, stagger } from "motion";
   import { prefersReducedMotion, SPRING_GENTLE, SPRING_SNAPPY, SPRING_BOUNCY } from "../lib/motion-utils.js";
 
   const reduce = prefersReducedMotion();
@@ -234,6 +234,24 @@ const rows = [
         return () => animate(card, { y: 0 }, SPRING_GENTLE);
       });
     });
+
+    // Phones and tablets have no hover, so tell the same story once as each card scrolls in:
+    // the agency's answers step back one by one, then our ticks pop in.
+    const noHover = window.matchMedia("(hover: none)").matches;
+    const below = (el: Element | null) => !!el && el.getBoundingClientRect().top > window.innerHeight * 0.8;
+    const agencyCard = section.querySelector<HTMLElement>(".compare-agency");
+    const ourCard = section.querySelector<HTMLElement>(".compare-us");
+    if (noHover && !reduce && agencyCard && ourCard && below(agencyCard)) {
+      const answers = agencyCard.querySelectorAll<HTMLElement>("dd");
+      const ticks = ourCard.querySelectorAll<HTMLElement>(".compare-tick");
+      ticks.forEach((t) => (t.style.transform = "scale(0)"));
+      inView(agencyCard, () => {
+        animate(answers, { opacity: [1, 0.55] }, { duration: 0.5, delay: stagger(0.14, { startDelay: 0.5 }) });
+      }, { amount: 0.6 });
+      inView(ourCard, () => {
+        animate(ticks, { scale: [0, 1], rotate: [-90, 0] }, { ...SPRING_BOUNCY, delay: stagger(0.12, { startDelay: 0.3 }) });
+      }, { amount: 0.6 });
+    }
 
     // Rows: hovering one lights up the same row in both cards; the agency's answer
     // steps back and ours steps forward.
