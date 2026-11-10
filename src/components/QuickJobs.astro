@@ -283,22 +283,27 @@ const saving = starterBundle.separately - starterBundle.price;
 
   const bundle = document.querySelector<HTMLElement>(".bundle");
   const count = bundle?.querySelector<HTMLElement>(".bundle-count");
-  if (bundle && count && !prefersReducedMotion() && bundle.getBoundingClientRect().top > window.innerHeight * 0.85) {
+  // Runs whether the bundle starts on screen (big screens) or further down; when it's
+  // visible straight away, it waits for the page fade-in to finish first.
+  if (bundle && count && !prefersReducedMotion()) {
     const from = Number(count.dataset.from);
     const to = Number(count.dataset.to);
     const aud = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
+    const lead = bundle.getBoundingClientRect().top < window.innerHeight ? 450 : 0;
     bundle.classList.add("pre");
     count.textContent = aud(from);
-    inView(bundle, () => {
+    const countDown = (box: HTMLElement, el: HTMLElement) =>
       animate(from, to, {
         duration: 1.2,
         ease: [0.33, 1, 0.68, 1],
-        onUpdate: (v) => (count.textContent = aud(v)),
+        onUpdate: (v) => (el.textContent = aud(v)),
         onComplete: () => {
-          count.textContent = aud(to);
-          bundle.classList.remove("pre");
+          el.textContent = aud(to);
+          box.classList.remove("pre");
         },
       });
+    inView(bundle, () => {
+      window.setTimeout(() => countDown(bundle, count), lead);
     }, { amount: 0.6 });
   }
 </script>

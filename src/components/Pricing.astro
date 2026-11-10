@@ -286,7 +286,10 @@ const startHref = (t: (typeof tiers)[number]) =>
     return r.top < window.innerHeight * 0.92 && r.bottom > 0;
   };
 
-  if (tiersEl && !onScreen(tiersEl)) {
+  // Runs whether the packages start on screen (the top of /pricing) or further down.
+  // When they're visible straight away, it waits for the page fade-in to finish first.
+  if (tiersEl) {
+    const lead = onScreen(tiersEl) ? 450 : 0;
     tiersEl.classList.add("pre");
     tickLists.forEach((t) => t.classList.add("pre"));
     counts.forEach((c) => (c.el.textContent = aud(c.from)));
@@ -294,22 +297,26 @@ const startHref = (t: (typeof tiers)[number]) =>
     inView(
       tiersEl,
       () => {
-        animate(0, 1, {
-          duration: 1.4,
-          ease: [0.33, 1, 0.68, 1],
-          onUpdate: (k) => counts.forEach((c) => (c.el.textContent = aud(c.from - (c.from - c.to) * k))),
-          onComplete: () => counts.forEach((c) => (c.el.textContent = aud(c.to))),
-        });
-        tiersEl.classList.add("go");
-        tickLists.forEach((t) => {
-          t.querySelectorAll<HTMLElement>(".tick").forEach((tick, j) => {
-            tick.style.transitionDelay = `${0.5 + j * 0.12}s`;
-          });
-          t.classList.add("go");
-        });
+        window.setTimeout(() => countDown(tiersEl), lead);
       },
       { margin: "0px 0px -20% 0px" }
     );
+  }
+
+  function countDown(tiersEl: HTMLElement) {
+    animate(0, 1, {
+      duration: 1.4,
+      ease: [0.33, 1, 0.68, 1],
+      onUpdate: (k) => counts.forEach((c) => (c.el.textContent = aud(c.from - (c.from - c.to) * k))),
+      onComplete: () => counts.forEach((c) => (c.el.textContent = aud(c.to))),
+    });
+    tiersEl.classList.add("go");
+    tickLists.forEach((t) => {
+      t.querySelectorAll<HTMLElement>(".tick").forEach((tick, j) => {
+        tick.style.transitionDelay = `${0.5 + j * 0.12}s`;
+      });
+      t.classList.add("go");
+    });
   }
 
   // ---- Phones: tap a package block to see what's in it ----
