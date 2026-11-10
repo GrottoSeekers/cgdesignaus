@@ -16,10 +16,10 @@ const rows = [
 <section id="compare" style="position: relative; padding: 104px 0 96px; background: #ffffff">
 <div class="wrap">
 <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 48px; margin-bottom: 40px">
-<div style="max-width: 640px">
+<div class="compare-intro" style="max-width: 640px">
 <span class="eyebrow">Why CG Design</span>
-<h2 style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin-top: 16px">Why not just go to <em style="font-style: italic; font-weight: 600; color: #5b2a96; white-space: nowrap">an agency?</em></h2>
-<p style="margin-top: 16px; color: rgba(20,17,26,0.68); font-size: 1.05rem">You could. Here's how it usually compares.</p>
+<h2 style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin-top: 16px">Why not just go to <em class="compare-target" style="font-style: italic; font-weight: 600; color: #5b2a96; white-space: nowrap">an agency?<span class="compare-strike" aria-hidden="true"></span></em></h2>
+<p class="compare-sub" style="margin-top: 16px; color: rgba(20,17,26,0.68); font-size: 1.05rem">You could. Here's how it usually compares.</p>
 </div>
 </div>
 
@@ -27,16 +27,16 @@ const rows = [
 <div class="compare-card compare-agency">
 <p class="compare-head">A typical agency</p>
 <dl>
-{rows.map((r) => (
-<div class="compare-row"><dt>{r.label}</dt><dd>{r.agency}</dd></div>
+{rows.map((r, i) => (
+<div class="compare-row" data-row={i}><dt>{r.label}</dt><dd>{r.agency}</dd></div>
 ))}
 </dl>
 </div>
 <div class="compare-card compare-us">
 <p class="compare-head"><img src={`${base}/logo-full.png?v=2`} alt="CG Design &amp; Co." width="566" height="241" loading="lazy" class="compare-logo"></p>
 <dl>
-{rows.map((r) => (
-<div class="compare-row"><dt>{r.label}</dt><dd><span class="compare-tick" aria-hidden="true">✓</span>{r.us}</dd></div>
+{rows.map((r, i) => (
+<div class="compare-row" data-row={i}><dt>{r.label}</dt><dd><span class="compare-tick" aria-hidden="true">✓</span>{r.us}</dd></div>
 ))}
 </dl>
 </div>
@@ -93,6 +93,8 @@ const rows = [
   }
 
   .compare-row {
+    position: relative;
+    isolation: isolate;
     display: flex;
     justify-content: space-between;
     align-items: baseline;
@@ -123,6 +125,7 @@ const rows = [
   }
 
   .compare-us dd {
+    transform-origin: right center;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -143,9 +146,118 @@ const rows = [
     font-size: 0.68rem;
   }
 
+  /* Hover: the same row lights up in both cards (driven by the script below). */
+  .compare-row::before {
+    content: "";
+    position: absolute;
+    inset: 3px -14px;
+    z-index: -1;
+    border-radius: 12px;
+    background: rgba(91, 42, 150, 0.08);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .compare-us .compare-row::before {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .compare-row.is-hot::before {
+    opacity: 1;
+  }
+
+  .compare-target {
+    position: relative;
+  }
+
+  .compare-strike {
+    position: absolute;
+    left: -2%;
+    right: -2%;
+    top: 55%;
+    height: 0.07em;
+    border-radius: 999px;
+    background: #7c4fc7;
+    transform: scaleX(0);
+    transform-origin: left center;
+    pointer-events: none;
+  }
+
+  .compare-card,
+  .compare dd,
+  .compare-tick,
+  .compare-sub {
+    will-change: transform;
+  }
+
   @media (max-width: 560px) {
     .compare-card {
       padding: 24px 22px;
     }
   }
 </style>
+
+<script>
+  // Mouse-only hover motion (Motion's hover() ignores touch). Reduced motion keeps the
+  // row highlight and skips the movement.
+  import { animate, hover, stagger } from "motion";
+  import { prefersReducedMotion, SPRING_GENTLE, SPRING_SNAPPY, SPRING_BOUNCY } from "../lib/motion-utils.js";
+
+  const reduce = prefersReducedMotion();
+  const section = document.getElementById("compare");
+
+  if (section) {
+    // Heading: a line strikes through "an agency?" and the answer nudges in.
+    const intro = section.querySelector<HTMLElement>(".compare-intro");
+    const strike = section.querySelector<HTMLElement>(".compare-strike");
+    const sub = section.querySelector<HTMLElement>(".compare-sub");
+    if (intro && strike && !reduce) {
+      hover(intro, () => {
+        animate(strike, { scaleX: 1 }, { duration: 0.45, ease: [0.22, 1, 0.36, 1] });
+        if (sub) animate(sub, { x: 8 }, SPRING_GENTLE);
+        return () => {
+          animate(strike, { scaleX: 0 }, { duration: 0.3, ease: [0.22, 1, 0.36, 1] });
+          if (sub) animate(sub, { x: 0 }, SPRING_GENTLE);
+        };
+      });
+    }
+
+    // Cards lift; ours lifts higher and its ticks pop in one after another.
+    section.querySelectorAll<HTMLElement>(".compare-card").forEach((card) => {
+      const ours = card.classList.contains("compare-us");
+      hover(card, () => {
+        if (reduce) return;
+        animate(card, { y: ours ? -10 : -4 }, SPRING_GENTLE);
+        if (ours) {
+          animate(card.querySelectorAll(".compare-tick"), { scale: [0.4, 1], rotate: [-90, 0] }, { ...SPRING_BOUNCY, delay: stagger(0.06) });
+        }
+        return () => animate(card, { y: 0 }, SPRING_GENTLE);
+      });
+    });
+
+    // Rows: hovering one lights up the same row in both cards; the agency's answer
+    // steps back and ours steps forward.
+    const rows = Array.from(section.querySelectorAll<HTMLElement>(".compare-row"));
+    rows.forEach((row) => {
+      hover(row, () => {
+        const pair = rows.filter((r) => r.dataset.row === row.dataset.row);
+        pair.forEach((r) => r.classList.add("is-hot"));
+        const theirs = pair.find((r) => r.closest(".compare-agency"))?.querySelector("dd");
+        const ours = pair.find((r) => r.closest(".compare-us"))?.querySelector("dd");
+        const tick = ours?.querySelector(".compare-tick");
+        if (!reduce) {
+          if (theirs) animate(theirs, { opacity: 0.45, x: 4 }, SPRING_SNAPPY);
+          if (ours) animate(ours, { x: -6, scale: 1.04 }, SPRING_SNAPPY);
+          if (tick) animate(tick, { scale: [1, 1.35, 1] }, { duration: 0.4 });
+        }
+        return () => {
+          pair.forEach((r) => r.classList.remove("is-hot"));
+          if (!reduce) {
+            if (theirs) animate(theirs, { opacity: 1, x: 0 }, SPRING_SNAPPY);
+            if (ours) animate(ours, { x: 0, scale: 1 }, SPRING_SNAPPY);
+          }
+        };
+      });
+    });
+  }
+</script>
