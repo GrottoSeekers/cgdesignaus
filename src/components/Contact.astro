@@ -19,7 +19,7 @@ const serviceOptions = [
 
 const nextSteps = [
   "We reply within one business day",
-  "You get an honest written read on your site",
+  "You get honest, written ideas to win more customers",
   "If you'd like to go ahead, a fixed quote and a date",
 ];
 ---
@@ -29,8 +29,8 @@ const nextSteps = [
 <div class="wrap" style="position: relative; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 64px; align-items: start">
 <div>
 <span class="eyebrow">Get in touch</span>
-<Heading style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin: 16px 0 18px">Get your free <em style="font-style: italic; font-weight: 600; color: #5b2a96">website check.</em></Heading>
-<p style="color: rgba(20,17,26,0.68); font-size: 1.02rem; margin-bottom: 32px">Tell us about the business. If you already have a site, add the link — we'll tell you honestly what we'd change, whether or not you hire us.</p>
+<Heading style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin: 16px 0 18px">Get your free <em style="font-style: italic; font-weight: 600; color: #5b2a96">business check.</em></Heading>
+<p style="color: rgba(20,17,26,0.68); font-size: 1.02rem; margin-bottom: 32px">Tell us about your business. We'll look at your website, Google listing, socials and branding, and tell you honestly what we'd improve, whether or not you hire us.</p>
 <div class="contact-ways" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px">
 <a href="https://wa.me/447306100251" target="_blank" rel="noopener noreferrer" class="way whatsapp-link" style="display: flex; align-items: center; gap: 16px; padding: 18px 20px; border-radius: 20px; background: #ffffff; border: 1px solid rgba(20,17,26,0.08); text-decoration: none; color: #14111a">
 <span class="way-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.6-4.8A8.5 8.5 0 1 1 7.8 19.4z"></path></svg></span>
@@ -61,7 +61,7 @@ const nextSteps = [
 <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" placeholder="jane@business.com.au" required><span class="field-error" id="err-email" role="alert"></span></div>
 </div>
 <div class="field"><label for="business_name">Business name</label><input id="business_name" name="business_name" type="text" autocomplete="organization" placeholder="Apex Heating &amp; Electrical" required><span class="field-error" id="err-business_name" role="alert"></span></div>
-<div class="field"><label for="website">Existing website <span style="font-weight: 500; color: rgba(20,17,26,0.5)">(optional)</span></label><input id="website" name="website" type="text" inputmode="url" autocomplete="url" placeholder="yourbusiness.com.au"><span class="field-error" id="err-website" role="alert"></span></div>
+<div class="field"><label for="website">Website or social link <span style="font-weight: 500; color: rgba(20,17,26,0.5)">(optional)</span></label><input id="website" name="website" type="text" inputmode="url" autocomplete="url" placeholder="yourbusiness.com.au or @yourbusiness"><span class="field-error" id="err-website" role="alert"></span></div>
 <div class="field-service" style="display: flex; flex-direction: column; gap: 8px"><span id="service-label" style="font-size: 0.8rem; font-weight: 700; color: rgba(20,17,26,0.7)">What do you need?</span>
 <div class="svc-group" role="group" aria-labelledby="service-label" style="display: flex; flex-wrap: wrap; gap: 8px">
 {serviceOptions.map((opt) => <button type="button" class="svc" aria-pressed="false" data-value={opt.value}>{opt.label}</button>)}
@@ -288,6 +288,7 @@ const nextSteps = [
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const urlPattern = /^(https?:\/\/)?[a-z0-9-]+(\.[a-z0-9-]+)+([/?#].*)?$/i;
+  const handlePattern = /^@[a-z0-9._]{1,30}$/i; // e.g. an Instagram handle
 
   function setError(id: string, message: string) {
     const input = document.getElementById(id);
@@ -327,7 +328,7 @@ const nextSteps = [
     if (!value("business_name")) fail("business_name", "What's the business called?");
 
     const website = value("website");
-    if (website && !urlPattern.test(website)) fail("website", "That doesn't look like a valid website address.");
+    if (website && !urlPattern.test(website) && !handlePattern.test(website)) fail("website", "Add a web address or an @handle.");
 
     if (!value("service")) fail("service", "Let us know what you're after.", document.querySelector<HTMLElement>(".svc"));
 
@@ -441,12 +442,12 @@ const nextSteps = [
     const website = value("website");
     const service = value("service");
     const estimate = value("estimate_details");
-    if (!name && !email && !business && !service) return "Hi! I'd like to chat about getting a website.";
+    if (!name && !email && !business && !service) return "Hi! I'd like a free business check.";
 
     const intro = `Hi, I'm${name ? ` ${name}` : ""}${business ? ` from ${business}` : ""}.`;
     const details: string[] = [];
     if (service) details.push(`I'm after: ${service}.`);
-    if (website) details.push(`Existing site: ${website}.`);
+    if (website) details.push(`My website or socials: ${website}.`);
     if (estimate) details.push(`Estimate: ${estimate}.`);
     if (email) details.push(`My email is ${email}.`);
     return [intro, ...details].join(" ");

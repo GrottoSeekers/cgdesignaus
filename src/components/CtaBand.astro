@@ -10,7 +10,7 @@ interface Props {
 const {
   flush = false,
   title = "Not sure where to start?",
-  text = "Get a free, honest website check. Tell us about your business and we'll reply within one business day.",
+  text = "Get a free, honest look at your business online. Tell us about it and we'll reply within one business day.",
 } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -25,7 +25,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 <p class="cta-text">{text}</p>
 </div>
 <div class="cta-actions">
-<a href={`${base}/contact`} class="btn btn-violet" style="min-height: 56px; padding: 0 32px">Get your free website check <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<a href={`${base}/contact`} class="btn btn-violet" style="min-height: 56px; padding: 0 32px">Get your free business check <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
 <a href="https://wa.me/447306100251" target="_blank" rel="noopener noreferrer" class="cta-wa">Or message us on WhatsApp</a>
 </div>
 </div>
