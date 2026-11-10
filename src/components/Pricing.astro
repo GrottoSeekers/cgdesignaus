@@ -2,7 +2,7 @@
 // Prices live in src/lib/pricing.ts so the packages, quote builder and quick jobs always agree.
 import {
   BASE_PRICE, FOUNDING_DISCOUNT_RATE, pageOptions, featureOptions, tiers, maintenancePrice,
-  lowestQuickJobPrice, aud, founding,
+  lowestQuickJobPrice, brandIdentity, aud, founding,
 } from "../lib/pricing";
 import { contactHref } from "../lib/prefill";
 
@@ -15,6 +15,12 @@ const { heading: Heading = "h2" } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const maintenance = maintenancePrice;
 const chip = (o: { label: string; price: number; recurring?: boolean }) => `+${aud(o.price)}${o.recurring ? "/mo" : ""}`;
+const brandHref = contactHref(base, {
+  service: "Branding",
+  pick: brandIdentity.name,
+  price: aud(brandIdentity.price),
+  details: `${brandIdentity.name} — ${aud(brandIdentity.price)}`,
+});
 const startHref = (t: (typeof tiers)[number]) =>
   contactHref(base, {
     service: "New Site",
@@ -76,6 +82,18 @@ const startHref = (t: (typeof tiers)[number]) =>
 </div>
 ))}
 </div>
+<div class="brand-offer">
+<div class="brand-offer-copy">
+<p class="brand-offer-tag">Branding</p>
+<h3 class="brand-offer-title">Need a logo or a rebrand?</h3>
+<ul class="brand-offer-list">{brandIdentity.includes.map((line) => <li><span class="tick" aria-hidden="true">✓</span>{line}</li>)}</ul>
+</div>
+<div class="brand-offer-buy">
+<p class="brand-offer-price">{aud(brandIdentity.price)}</p>
+<p class="brand-offer-note">On its own, or added to any package.</p>
+<a href={brandHref} class="btn btn-primary">Ask about branding</a>
+</div>
+</div>
 <p style="font-size: 0.86rem; color: rgba(20,17,26,0.6); margin-top: 22px; text-align: center">Hosting and maintenance optional at {aud(maintenance)}/month. Domains registered at cost.</p>
 <a href={`${base}/quick-jobs`} class="quick-link">Not after a full website? <strong>See quick jobs from {aud(lowestQuickJobPrice)}</strong> <span aria-hidden="true">→</span></a>
 
@@ -98,7 +116,7 @@ const startHref = (t: (typeof tiers)[number]) =>
 <div>
 <p style="font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(20,17,26,0.6); margin-bottom: 10px">Extras</p>
 <div style="display: flex; flex-wrap: wrap; gap: 8px">
-{featureOptions.map((o) => <button type="button" class="chip" aria-pressed="false" data-kind="extra" data-label={o.label} data-price={o.price} data-recurring={o.recurring ? "1" : undefined} title={o.desc}>{o.label} <span style="opacity: 0.7">{chip(o)}</span></button>)}
+{featureOptions.map((o) => <button type="button" class="chip" aria-pressed="false" data-kind="extra" data-label={o.label} data-price={o.price} data-recurring={o.recurring ? "1" : undefined} data-fixed={o.fixed ? "1" : undefined} title={o.desc}>{o.label} <span style="opacity: 0.7">{chip(o)}</span></button>)}
 </div>
 </div>
 </div>
@@ -117,6 +135,108 @@ const startHref = (t: (typeof tiers)[number]) =>
 </section>
 
 <style>
+  .brand-offer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px 40px;
+    margin-top: 24px;
+    padding: 28px 32px;
+    border-radius: 24px;
+    background: #ffffff;
+    border: 1px solid rgba(20, 17, 26, 0.1);
+  }
+
+  .brand-offer-copy {
+    flex: 1 1 420px;
+  }
+
+  .brand-offer-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #5b2695;
+  }
+
+  .brand-offer-title {
+    margin-top: 6px;
+    font-size: 1.45rem;
+  }
+
+  .brand-offer-list {
+    list-style: none;
+    margin: 14px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 20px;
+    font-size: 0.9rem;
+    color: rgba(20, 17, 26, 0.75);
+  }
+
+  .brand-offer-list li {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .brand-offer-buy {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 0 1 240px;
+  }
+
+  .brand-offer-price {
+    font-family: "Fraunces", serif;
+    font-size: 2.6rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: #2f1147;
+  }
+
+  .brand-offer-note {
+    margin-bottom: 8px;
+    font-size: 0.86rem;
+    color: rgba(20, 17, 26, 0.6);
+  }
+
+  /* Phones: two short tick columns, then price and button on one row. */
+  @media (max-width: 560px) {
+    .brand-offer {
+      gap: 18px;
+      padding: 22px 20px;
+    }
+
+    .brand-offer-list {
+      gap: 8px 12px;
+      font-size: 0.84rem;
+    }
+
+    .brand-offer-buy {
+      flex: 1 1 100%;
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-offer-price {
+      font-size: 2.2rem;
+    }
+
+    .brand-offer-note {
+      display: none;
+    }
+
+    .brand-offer-buy .btn {
+      flex: 1;
+      padding: 0 16px;
+    }
+  }
+
   .quick-link {
     display: table;
     margin: 10px auto 0;
@@ -227,13 +347,15 @@ const startHref = (t: (typeof tiers)[number]) =>
   function calculate() {
     const picked = chips.filter((c) => c.classList.contains("on"));
     let full = BASE_PRICE;
+    let fixed = 0; // extras the founding discount doesn't apply to (branding)
     let monthly = 0;
     picked.forEach((c) => {
       const price = Number(c.dataset.price);
       if (c.hasAttribute("data-recurring")) monthly += price;
+      else if (c.hasAttribute("data-fixed")) fixed += price;
       else full += price;
     });
-    return { picked, full, oneOff: full * FOUNDING_RATE, monthly };
+    return { picked, full: full + fixed, oneOff: full * FOUNDING_RATE + fixed, monthly };
   }
 
   function updateQuote() {

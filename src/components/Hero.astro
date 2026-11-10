@@ -1,5 +1,7 @@
 ---
 import NigelStrands from "./NigelStrands.astro";
+import { aud, lowestPackagePrice } from "../lib/pricing";
+import { GOOGLE_PROFILE_URL, GOOGLE_RATING } from "../lib/business";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const img = `${base}/previews`;
@@ -7,6 +9,7 @@ const img = `${base}/previews`;
 // Services only, no client names. Rendered twice so the marquee loops seamlessly.
 const services = [
   "Custom website builds",
+  "Logos & branding",
   "Website redesigns",
   "Local SEO",
   "Online booking systems",
@@ -37,13 +40,13 @@ const services = [
 <span class="line" style="position: relative; padding-bottom: 0.18em"><span style="animation-delay: 0.41s"><em class="shimmer" style="font-style: italic; font-weight: 600">under a week.</em></span>
 <svg class="underline" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true" style="position: absolute; left: 0; bottom: 0; width: min(100%, 9.2em); height: 0.22em; overflow: visible"><path d="M4 16 C 90 4, 200 4, 396 12" fill="none" stroke="#b58cf0" stroke-width="5" stroke-linecap="round"></path></svg></span>
 </h1>
-<p class="fade" style="font-size: 1.22rem; color: rgba(243,238,250,0.76); max-width: 30em; margin-bottom: 36px; animation-delay: 0.6s">Fast, mobile-first websites for local businesses — with a fixed price and a launch date agreed in writing before any work begins.</p>
+<p class="fade" style="font-size: 1.22rem; color: rgba(243,238,250,0.76); max-width: 30em; margin-bottom: 36px; animation-delay: 0.6s">Fast, mobile-first websites and branding for local businesses, <strong style="color: #ffffff; font-weight: 700; white-space: nowrap">from {aud(lowestPackagePrice)}.</strong></p>
 <div class="fade" style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 44px; animation-delay: 0.72s">
 <a href={`${base}/contact`} class="btn btn-glow" style="min-height: 56px; padding: 0 32px; font-size: 1rem">Get your free website check <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
 <a href="#client" class="btn btn-line" style="min-height: 56px; padding: 0 30px; font-size: 1rem">See our work</a>
 </div>
 <div class="fade" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; max-width: 520px; padding-top: 28px; border-top: 1px solid rgba(243,238,250,0.12); animation-delay: 0.84s">
-<div style="display: flex; flex-direction: column; gap: 2px"><span class="hero-stat" style="font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 600; color: #ffffff; line-height: 1.1">&lt;7 days</span><span style="font-size: 0.82rem; color: rgba(243,238,250,0.62)">From go-ahead to live</span></div>
+<a href={GOOGLE_PROFILE_URL} target="_blank" rel="noopener noreferrer" class="hero-rating" style="display: flex; flex-direction: column; gap: 2px; text-decoration: none"><span class="hero-stat" style="font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 600; color: #ffffff; line-height: 1.1">{GOOGLE_RATING.toFixed(1)}<span aria-hidden="true" style="color: #f5c451; font-size: 0.8em"> ★</span></span><span style="font-size: 0.82rem; color: rgba(243,238,250,0.62)">Google reviews</span></a>
 <div style="display: flex; flex-direction: column; gap: 2px"><span class="hero-stat" style="font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 600; color: #ffffff; line-height: 1.1">Fixed</span><span style="font-size: 0.82rem; color: rgba(243,238,250,0.62)">Price agreed up front</span></div>
 <div style="display: flex; flex-direction: column; gap: 2px"><span class="hero-stat" style="font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 600; color: #ffffff; line-height: 1.1">100%</span><span style="font-size: 0.82rem; color: rgba(243,238,250,0.62)">Yours to own</span></div>
 </div>
