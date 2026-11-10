@@ -1,7 +1,7 @@
 ---
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
-// Each link opens its own page; the free website check is the button.
+// Each link opens its own page; the free business check is the button.
 const navItems = [
   { href: `${base}/work`, label: "Work" },
   { href: `${base}/pricing`, label: "Pricing" },
@@ -24,7 +24,7 @@ const isCurrent = (href: string) => (href.replace(/\/$/, "") || "/") === path;
 <a href={item.href} class:list={["nav-link", { active: isCurrent(item.href) }]} aria-current={isCurrent(item.href) ? "page" : undefined}>{item.label}</a>
 ))}
 </nav>
-<a href={`${base}/contact`} class="nav-cta" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 22px; border-radius: 9999px; background: #2f1147; color: #ffffff; font-weight: 700; font-size: 0.9rem; text-decoration: none; white-space: nowrap">Free website check <svg class="cta-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<a href={`${base}/contact`} class="nav-cta" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 22px; border-radius: 9999px; background: #2f1147; color: #ffffff; font-weight: 700; font-size: 0.9rem; text-decoration: none; white-space: nowrap">Free business check <svg class="cta-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
 <button type="button" class="menu-btn" id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer" style="display: none; margin-left: auto; flex-direction: column; justify-content: center; gap: 5px; width: 44px; height: 44px; border-radius: 12px; border: 1px solid rgba(20,17,26,0.16); background: transparent; padding: 0 12px; box-sizing: border-box"><span style="display: block; height: 2px; background: #14111a"></span><span style="display: block; height: 2px; background: #14111a"></span><span style="display: block; height: 2px; background: #14111a"></span></button>
 </div>
 </header>
@@ -38,7 +38,7 @@ const isCurrent = (href: string) => (href.replace(/\/$/, "") || "/") === path;
       <a href={item.href} class:list={["drawer-link", { active: isCurrent(item.href) }]} aria-current={isCurrent(item.href) ? "page" : undefined} data-drawer-link>{item.label}</a>
     ))}
   </nav>
-  <a href={`${base}/contact`} class="drawer-cta" data-drawer-link>Free website check</a>
+  <a href={`${base}/contact`} class="drawer-cta" data-drawer-link>Free business check</a>
 </div>
 
 <style>
