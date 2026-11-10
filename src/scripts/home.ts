@@ -14,7 +14,7 @@ const vh = () => window.innerHeight || document.documentElement.clientHeight;
 // ---- Fade/slide items up as they arrive (a plain fade under Reduce Motion, see home.css).
 // Anything already on screen at load stays put. ----
 const ITEM_SEL =
-  ".work-card, .ba-fact, .tier, .step, .perk, .faq-item, .way, .next-steps > li, .contact-form, .foot-word, .explore-card, .job-card";
+  ".work-card, .ba-fact, .tier, .step, .perk, .faq-item, .way, .next-steps > li, .contact-form, .foot-word, .explore-card, .job-card, .compare-card";
 
 const isOnScreen = (el: Element) => {
   const r = el.getBoundingClientRect();
