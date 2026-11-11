@@ -142,11 +142,13 @@ function workouts() {
     (entries) => {
       entries.forEach((e) => {
         const v = e.target as HTMLVideoElement;
+        // isIntersecting stays true for any sliver on screen, so judge by how much shows.
+        const onScreen = e.isIntersecting && e.intersectionRatio >= 0.45;
         if (v.hasAttribute("data-full-on")) {
-          if (!e.isIntersecting) v.pause(); // full reel: pause when scrolled away, never auto-start
+          if (!onScreen) v.pause(); // full reel: pause when scrolled away, never auto-start
           return;
         }
-        if (e.isIntersecting) {
+        if (onScreen) {
           if (v.preload !== "auto") v.preload = "auto";
           v.play().catch(() => {});
         } else {
@@ -154,7 +156,7 @@ function workouts() {
         }
       });
     },
-    { threshold: 0.45 }
+    { threshold: [0, 0.45] }
   );
   $$<HTMLVideoElement>("video[data-autoplay]").forEach((v) => io.observe(v));
 }
@@ -182,6 +184,18 @@ function players() {
       video.play().catch(() => box.classList.remove("is-playing"));
     });
   });
+
+  // Sound off as soon as you scroll out of the workouts section (either way)
+  // or leave the tab/app.
+  const stopAll = () => $$<HTMLVideoElement>("video[data-full-on]").forEach((v) => v.pause());
+  ScrollTrigger.create({
+    trigger: "#workouts",
+    start: "top 60%",
+    end: "bottom 40%",
+    onLeave: stopAll,
+    onLeaveBack: stopAll,
+  });
+  document.addEventListener("visibilitychange", () => document.hidden && stopAll());
 }
 
 /* ---------- How it works ---------- */
