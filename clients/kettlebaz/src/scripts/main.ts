@@ -173,10 +173,13 @@ function players() {
         video.src = video.dataset.full || video.currentSrc;
         video.loop = false;
         video.muted = false;
-        video.controls = true;
+        // No controls: just the video. Tap it to pause; the play button comes back.
+        video.addEventListener("click", () => video.pause());
+        video.addEventListener("pause", () => box.classList.remove("is-playing"));
+        video.addEventListener("play", () => box.classList.add("is-playing"));
       }
       box.classList.add("is-playing");
-      video.play().catch(() => {});
+      video.play().catch(() => box.classList.remove("is-playing"));
     });
   });
 }
