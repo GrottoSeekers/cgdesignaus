@@ -1,4 +1,4 @@
-// A cast-iron kettlebell lit by the pink and violet of Ryan's gym.
+// A cast-iron kettlebell under red and white studio light.
 // Built from two primitives (a lathe for the bell, a tube for the handle),
 // so there's no model file to download. Spins slowly, turns with the page
 // as you scroll, and can be flicked round with a finger or mouse.
@@ -82,16 +82,16 @@ export function createKettlebell(canvas: HTMLCanvasElement, { reduce }: Options)
   pivot.rotation.x = 0.12;
   scene.add(pivot);
 
-  // ----- Light: the gym's pink and violet neon, plus a soft key -----
-  const pink = new PointLight(0xff3fbf, 95, 0, 2);
-  pink.position.set(-3.2, 1.2, 2.6);
-  const violet = new PointLight(0x8a4bff, 110, 0, 2);
-  violet.position.set(3.4, 0.4, 1.2);
-  const rim = new PointLight(0xff7ad6, 70, 0, 2);
+  // ----- Light: red on one side, cool white on the other, plus a key -----
+  const red = new PointLight(0xff2a2a, 110, 0, 2);
+  red.position.set(-3.2, 1.2, 2.6);
+  const cool = new PointLight(0xdfe6ff, 70, 0, 2);
+  cool.position.set(3.4, 0.4, 1.2);
+  const rim = new PointLight(0xff3b30, 70, 0, 2);
   rim.position.set(0.5, 2.6, -3);
   const key = new DirectionalLight(0xffffff, 1.1);
   key.position.set(1, 4, 5);
-  scene.add(pink, violet, rim, key);
+  scene.add(red, cool, rim, key);
 
   // ----- Size -----
   const resize = () => {
