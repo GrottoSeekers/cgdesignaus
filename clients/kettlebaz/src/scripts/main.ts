@@ -142,6 +142,10 @@ function workouts() {
     (entries) => {
       entries.forEach((e) => {
         const v = e.target as HTMLVideoElement;
+        if (v.hasAttribute("data-full-on")) {
+          if (!e.isIntersecting) v.pause(); // full reel: pause when scrolled away, never auto-start
+          return;
+        }
         if (e.isIntersecting) {
           if (v.preload !== "auto") v.preload = "auto";
           v.play().catch(() => {});
@@ -153,6 +157,28 @@ function workouts() {
     { threshold: 0.45 }
   );
   $$<HTMLVideoElement>("video[data-autoplay]").forEach((v) => io.observe(v));
+}
+
+/* ---------- Tap play: swap the silent loop for the full reel with sound ---------- */
+function players() {
+  $$("[data-player]").forEach((box) => {
+    const video = $<HTMLVideoElement>("video", box);
+    const btn = $("[data-play]", box);
+    if (!video || !btn) return;
+    btn.addEventListener("click", () => {
+      // Only one reel plays with sound at a time.
+      $$<HTMLVideoElement>("video[data-full-on]").forEach((v) => v !== video && v.pause());
+      if (!video.hasAttribute("data-full-on")) {
+        video.setAttribute("data-full-on", "");
+        video.src = video.dataset.full || video.currentSrc;
+        video.loop = false;
+        video.muted = false;
+        video.controls = true;
+      }
+      box.classList.add("is-playing");
+      video.play().catch(() => {});
+    });
+  });
 }
 
 /* ---------- How it works ---------- */
@@ -282,6 +308,7 @@ story();
 revealsIn();
 bento();
 workouts();
+players();
 steps();
 price();
 footWord();
