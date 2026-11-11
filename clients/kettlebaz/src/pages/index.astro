@@ -40,7 +40,7 @@ const plan = [
   {
     key: "training",
     title: "Training plan",
-    body: "Gym and home workouts, set out week by week.",
+    body: "Tailored to you. Gym and home workouts, set out week by week.",
     img: "/media/gym-thursday.webp",
     alt: "Ryan mid-session at a kettlebell class",
   },
@@ -64,12 +64,12 @@ const workouts = [
 const steps = [
   { verb: "Message", body: "Send me a WhatsApp. I reply myself." },
   { verb: "Tell me", body: "Your goal, your week, and the food you like." },
-  { verb: "Train", body: "Your workouts and meals for the next 4 weeks, written for you." },
+  { verb: "Train", body: "Workouts and meals for the next 4 weeks, tailored to you." },
   { verb: "Check in", body: "Message whenever. Every 4 weeks, we go again." },
 ];
 
 const includes = [
-  "4-week training plan, gym and home",
+  "4-week training plan, tailored to you",
   "Full nutrition plan, three meals a day",
   "24/7 messages with Ryan",
   "New plan every month",
@@ -204,12 +204,12 @@ const jsonLd = {
       <section class="story dark" aria-label="Ryan's story">
         <div class="wrap story-inner">
           <p class="story-text" data-scrub-words>
-            I used to be overweight and stuck in my own head. I thought you could be fit or enjoy life, never both. I love nights out, takeaways and holidays. I still got in shape.
+            I used to be overweight and stuck in my own head. I thought you couldn't be fit and enjoy your life. I love nights out, takeaways and holidays. I still stay in shape and lean all year round.
             <span class="red">Now I'll show you how.</span>
           </p>
           <div class="story-sign" data-reveal>
             <img src="/media/ryan-portrait.webp" width="577" height="577" alt="" loading="lazy" decoding="async" />
-            <p><strong>Ryan Horne</strong><br />Coach, kettlebells and running. Time spent around professional sport.</p>
+            <p><strong>Ryan Horne</strong><br />Coach, kettlebells and running. Ex St Helens RLFC, reserves and under-19s.</p>
           </div>
         </div>
       </section>
@@ -241,7 +241,7 @@ const jsonLd = {
       <section class="workouts dark" id="workouts" aria-labelledby="wk-title">
         <div class="wrap">
           <h2 id="wk-title" class="h2" data-reveal>Try one <span class="red">tonight.</span></h2>
-          <p class="lede" data-reveal>Three of my kettlebell sessions. Press play, set a timer and go.</p>
+          <p class="lede" data-reveal>Three of my kettlebell sessions. On the plan, every session is tailored to you.</p>
         </div>
         <div class="wk-track" data-wk-track>
           {workouts.map((w) => (
