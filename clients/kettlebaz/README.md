@@ -17,12 +17,12 @@ npm run build      # static output in dist/
 - Motion: `src/scripts/main.ts` (GSAP + ScrollTrigger + SplitText)
 - 3D kettlebell: `src/scripts/kettlebell.ts` (Three.js, lazy-loaded near the price section)
 - Fonts: Bodoni Moda (headlines) and Archivo (text), self-hosted via Fontsource
-- Media: `public/media/`. Photos and reels come from Ryan's Instagram; originals are in `assets/originals/`.
+- Media: `public/media/`. Photos and reels come from Ryan's Instagram, graded black and white; originals (in colour) are in `assets/originals/`.
 
 ## Buttons
 
-Every "Start for £30" button opens a DM to @kettlebaz (`https://ig.me/m/kettlebaz`).
-When Ryan has a payment or sign-up link, change `start` at the top of `index.astro`.
+Every "Start for £30" button opens WhatsApp (07780 479139) with a message ready to send.
+Phones get an app-style tab bar (Home, Plan, Start, Workouts, More); "More" opens a sheet with his Instagram, TikTok and YouTube. Change links at the top of `index.astro`.
 
 ## Motion
 

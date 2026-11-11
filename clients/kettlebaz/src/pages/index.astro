@@ -1,6 +1,4 @@
 ---
-import "@fontsource-variable/bodoni-moda/opsz.css";
-import "@fontsource-variable/bodoni-moda/opsz-italic.css";
 import "@fontsource-variable/archivo/wdth.css";
 import "../styles/global.css";
 
@@ -9,11 +7,34 @@ const title = "Kettlebaz | Ryan Horne, 4-week training and nutrition plan, £30 
 const description =
   "A 4-week training and nutrition plan written for you by Ryan Horne. Gym and home workouts, three meals a day and 24/7 support. £30 a month.";
 
-const instagram = "https://www.instagram.com/kettlebaz/";
-// Opens a DM to @kettlebaz in the Instagram app (or web on desktop).
-// Swap for a payment link when Ryan has one.
-const start = "https://ig.me/m/kettlebaz";
+const phoneDisplay = "07780 479139";
+const whatsapp = "https://wa.me/447780479139";
+// Every "Start" button opens WhatsApp with this message ready to send.
+const start = `${whatsapp}?text=${encodeURIComponent("Hi Ryan, I'd like to start the £30 a month plan. (via kettlebaz website)")}`;
 const cta = "Start for £30";
+
+const instagram = "https://www.instagram.com/kettlebaz/";
+const tiktok = "https://www.tiktok.com/@ryanhorne07";
+const youtube = "https://youtube.com/@bazhorne";
+
+// Tabler icons (MIT), outline set, stroke 2.
+const icon = {
+  whatsapp: '<path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"/><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1"/>',
+  instagram: '<path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4l0 -10"/><path d="M8.5 12a3.5 3.5 0 1 0 7 0a3.5 3.5 0 0 0 -7 0"/><path d="M17 7v.01"/>',
+  tiktok: '<path d="M21 7.917v4.034a9.948 9.948 0 0 1 -5 -1.951v4.5a6.5 6.5 0 1 1 -8 -6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917"/>',
+  youtube: '<path d="M2 8a4 4 0 0 1 4 -4h12a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-12a4 4 0 0 1 -4 -4v-8"/><path d="M10 9l5 3l-5 3l0 -6"/>',
+  home: '<path d="M5 12l-2 0l9 -9l9 9l-2 0"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"/><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"/>',
+  barbell: '<path d="M2 12h1"/><path d="M6 8h-2a1 1 0 0 0 -1 1v6a1 1 0 0 0 1 1h2"/><path d="M6 7v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1v-10a1 1 0 0 0 -1 -1h-1a1 1 0 0 0 -1 1"/><path d="M9 12h6"/><path d="M15 7v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1v-10a1 1 0 0 0 -1 -1h-1a1 1 0 0 0 -1 1"/><path d="M18 8h2a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-2"/><path d="M22 12h-1"/>',
+  flame: '<path d="M12 10.941c2.333 -3.308 .167 -7.823 -1 -8.941c0 3.395 -2.235 5.299 -3.667 6.706c-1.43 1.408 -2.333 3.294 -2.333 5.588c0 3.704 3.134 6.706 7 6.706c3.866 0 7 -3.002 7 -6.706c0 -1.712 -1.232 -4.403 -2.333 -5.588c-2.084 3.353 -3.257 3.353 -4.667 2.235"/>',
+  menu: '<path d="M4 6l16 0"/><path d="M4 12l16 0"/><path d="M4 18l16 0"/>',
+  x: '<path d="M18 6l-12 12"/><path d="M6 6l12 12"/>',
+};
+
+const socials = [
+  { label: "Instagram", handle: "@kettlebaz", href: instagram, icon: icon.instagram },
+  { label: "TikTok", handle: "@ryanhorne07", href: tiktok, icon: icon.tiktok },
+  { label: "YouTube", handle: "@bazhorne", href: youtube, icon: icon.youtube },
+];
 
 const plan = [
   {
@@ -21,13 +42,9 @@ const plan = [
     title: "Training plan",
     body: "Gym and home workouts, set out week by week.",
     img: "/media/gym-thursday.webp",
-    alt: "Ryan mid-session at a kettlebell class under pink gym lights",
+    alt: "Ryan mid-session at a kettlebell class",
   },
-  {
-    key: "food",
-    title: "Nutrition plan",
-    body: "Three meals a day, built around food you like.",
-  },
+  { key: "food", title: "Nutrition plan", body: "Three meals a day, built around food you like." },
   {
     key: "ryan",
     title: "Ryan, 24/7",
@@ -35,39 +52,17 @@ const plan = [
     img: "/media/ryan-portrait.webp",
     alt: "Ryan Horne smiling in the gym",
   },
-  {
-    key: "rolling",
-    title: "Rolling monthly",
-    body: "A new 4-week block each month, built on the last. Stop whenever you like.",
-  },
+  { key: "rolling", title: "Rolling monthly", body: "A new 4-week block each month, built on the last. Stop whenever you like." },
 ];
 
 const workouts = [
-  {
-    video: "/media/reel-thrusters.mp4",
-    poster: "/media/reel-thrusters.webp",
-    name: "AMRAP 10",
-    note: "10 minutes",
-    moves: ["5 thrusters", "5 high pulls", "5 press-ups"],
-  },
-  {
-    video: "/media/reel-clean-press.mp4",
-    poster: "/media/reel-clean-press.webp",
-    name: "Clean & press",
-    note: "As many rounds as you can",
-    moves: ["4 cleans", "4 presses", "4 squats", "4 rows"],
-  },
-  {
-    video: "/media/reel-deadlift.mp4",
-    poster: "/media/reel-deadlift.webp",
-    name: "Full body",
-    note: "As many rounds as you can",
-    moves: ["4 deadlifts", "4 cleans", "4 presses", "4 press-ups", "4 switch lunges each leg"],
-  },
+  { video: "/media/reel-thrusters.mp4", poster: "/media/reel-thrusters.webp", name: "AMRAP 10", note: "10 minutes", moves: ["5 thrusters", "5 high pulls", "5 press-ups"] },
+  { video: "/media/reel-clean-press.mp4", poster: "/media/reel-clean-press.webp", name: "Clean & press", note: "As many rounds as you can", moves: ["4 cleans", "4 presses", "4 squats", "4 rows"] },
+  { video: "/media/reel-deadlift.mp4", poster: "/media/reel-deadlift.webp", name: "Full body", note: "As many rounds as you can", moves: ["4 deadlifts", "4 cleans", "4 presses", "4 press-ups", "4 switch lunges each leg"] },
 ];
 
 const steps = [
-  { verb: "Message", body: "Send me a DM on Instagram." },
+  { verb: "Message", body: "Send me a WhatsApp. I reply myself." },
   { verb: "Tell me", body: "Your goal, your week, and the food you like." },
   { verb: "Train", body: "Your workouts and meals for the next 4 weeks, written for you." },
   { verb: "Check in", body: "Message whenever. Every 4 weeks, we go again." },
@@ -83,40 +78,19 @@ const includes = [
 const faqs = [
   { q: "Do I need a gym?", a: "No. You get gym and home workouts. Tell me what kit you have and I'll work with it." },
   { q: "Do I have to give up takeaways?", a: "No. The plan is built around a normal life. Pints and the odd pizza included." },
-  { q: "How do I pay?", a: "Message me on Instagram and I'll send you a payment link. £30 a month, that's it." },
+  { q: "How do I pay?", a: "Message me on WhatsApp and I'll send you a payment link. £30 a month, that's it." },
   { q: "Can I stop?", a: "Yes. It's rolling monthly, so you can stop whenever you like." },
 ];
 
 // CG Design & Co. credit strip (same links as the Nigel's and NIR-MA-TA footers).
 const cgLinks = [
-  {
-    label: "cgdesignaus.com",
-    href: "https://cgdesignaus.com",
-    external: true,
-    icon: '<path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/><path d="M3.6 9h16.8"/><path d="M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18"/><path d="M12.5 3a17 17 0 0 1 0 18"/>',
-  },
-  {
-    label: "cgdesignaus@outlook.com",
-    href: "mailto:cgdesignaus@outlook.com",
-    external: false,
-    icon: '<path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"/><path d="M3 7l9 6l9 -6"/>',
-  },
-  {
-    label: "WhatsApp",
-    href: "https://wa.me/447306100251",
-    external: true,
-    icon: '<path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"/><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1"/>',
-  },
-  {
-    label: "@cgdesignaus",
-    href: "https://www.instagram.com/cgdesignaus",
-    external: true,
-    icon: '<rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z"/><path d="M17.5 6.5h.01"/>',
-  },
+  { label: "cgdesignaus.com", href: "https://cgdesignaus.com", external: true, icon: '<path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/><path d="M3.6 9h16.8"/><path d="M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18"/><path d="M12.5 3a17 17 0 0 1 0 18"/>' },
+  { label: "cgdesignaus@outlook.com", href: "mailto:cgdesignaus@outlook.com", external: false, icon: '<path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"/><path d="M3 7l9 6l9 -6"/>' },
+  { label: "WhatsApp", href: "https://wa.me/447306100251", external: true, icon: icon.whatsapp },
+  { label: "@cgdesignaus", href: "https://www.instagram.com/cgdesignaus", external: true, icon: '<rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z"/><path d="M17.5 6.5h.01"/>' },
 ];
 
-const igIcon =
-  '<rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z"/><path d="M17.5 6.5h.01"/>';
+const ext = { target: "_blank", rel: "noopener noreferrer" };
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -126,18 +100,13 @@ const jsonLd = {
   url: site,
   image: new URL("/media/ryan-hero-1200.webp", site).href,
   serviceType: "Online personal training and nutrition coaching",
-  provider: { "@type": "Person", name: "Ryan Horne", sameAs: [instagram] },
+  provider: { "@type": "Person", name: "Ryan Horne", telephone: "+447780479139", sameAs: [instagram, tiktok, youtube] },
   areaServed: "GB",
   offers: {
     "@type": "Offer",
     price: "30.00",
     priceCurrency: "GBP",
-    priceSpecification: {
-      "@type": "UnitPriceSpecification",
-      price: "30.00",
-      priceCurrency: "GBP",
-      billingDuration: "P1M",
-    },
+    priceSpecification: { "@type": "UnitPriceSpecification", price: "30.00", priceCurrency: "GBP", billingDuration: "P1M" },
   },
 };
 ---
@@ -150,8 +119,7 @@ const jsonLd = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={site} />
-    <meta name="theme-color" content="#0b0810" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#111114" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Kettlebaz | Get fit. Keep the pints." />
     <meta property="og:description" content={description} />
@@ -159,11 +127,10 @@ const jsonLd = {
     <meta property="og:image" content={new URL("/media/og.jpg", site).href} />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="preload" as="image" href="/media/ryan-hero-720.webp" imagesrcset="/media/ryan-hero-720.webp 720w, /media/ryan-hero-1200.webp 1200w" imagesizes="(min-width: 900px) 42vw, 100vw" fetchpriority="high" />
+    <link rel="preload" as="image" href="/media/ryan-hero-720.webp" imagesrcset="/media/ryan-hero-720.webp 720w, /media/ryan-hero-1200.webp 1200w" imagesizes="(min-width: 900px) 44vw, 100vw" />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <script is:inline>
-      // Hide animated elements only when JS runs. If the bundle never loads,
-      // the failsafe shows everything after 2.5s.
+      // Hide animated elements only when JS runs; the failsafe shows them after 2.5s.
       document.documentElement.classList.add("js");
       setTimeout(function () { document.documentElement.classList.add("motion-ready"); }, 2500);
     </script>
@@ -173,50 +140,71 @@ const jsonLd = {
 
     <header class="nav" data-nav>
       <div class="wrap nav-inner">
-        <a class="nav-mark" href="#top" aria-label="Kettlebaz, back to top">Kettlebaz</a>
-        <a class="btn btn-sm nav-cta" href={start} target="_blank" rel="noopener noreferrer">{cta}</a>
+        <a class="brand" href="#top" aria-label="Kettlebaz, back to top">
+          <span class="brand-badge" aria-hidden="true">KB</span>
+          <span class="brand-name">Kettlebaz</span>
+        </a>
+        <nav class="nav-links" aria-label="Sections">
+          <a href="#plan">The plan</a>
+          <a href="#workouts">Workouts</a>
+          <a href="#price">Price</a>
+          <a href="#faq">Questions</a>
+        </nav>
+        <div class="nav-end">
+          <div class="nav-social">
+            {socials.map((s) => (
+              <a href={s.href} {...ext} aria-label={`${s.label} ${s.handle}`}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={s.icon} />
+              </a>
+            ))}
+          </div>
+          <a class="btn btn-sm nav-cta" href={start} {...ext}>{cta}</a>
+        </div>
       </div>
     </header>
 
     <main id="main">
-      <!-- Cover -->
+      <!-- Hero -->
       <section class="hero" id="top" aria-labelledby="hero-title">
-        <div class="hero-photo" data-hero-photo>
-          <img
-            src="/media/ryan-hero-720.webp"
-            srcset="/media/ryan-hero-720.webp 720w, /media/ryan-hero-1200.webp 1200w"
-            sizes="(min-width: 900px) 42vw, 100vw"
-            width="1200"
-            height="1600"
-            alt="Ryan Horne standing in the gym under pink and violet lights"
-            fetchpriority="high"
-            decoding="async"
-          />
-        </div>
         <div class="wrap hero-grid">
-          <p class="masthead" aria-hidden="true" data-masthead>Kettlebaz</p>
           <div class="hero-copy">
-            <h1 id="hero-title" class="hero-title" data-hero-line>
+            <p class="eyebrow" data-hero-fade>4-week training + nutrition plan</p>
+            <h1 id="hero-title" class="hero-title">
               <span class="line"><span>Get fit.</span></span>
-              <span class="line"><span><em>Keep</em> the pints.</span></span>
+              <span class="line"><span class="red">Keep the pints.</span></span>
             </h1>
             <p class="hero-sub" data-hero-fade>
-              A 4-week training and nutrition plan, written for you by Ryan Horne. £30 a month.
+              A plan written for you by Ryan Horne. Workouts, meals and Ryan on WhatsApp. £30 a month.
             </p>
             <div class="hero-actions" data-hero-fade>
-              <a class="btn" href={start} target="_blank" rel="noopener noreferrer" data-magnetic>{cta}</a>
-              <a class="link-arrow" href="#plan">What you get</a>
+              <a class="btn btn-lg" href={start} {...ext} data-magnetic>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.whatsapp} />
+                {cta}
+              </a>
+              <a class="btn btn-lg btn-ghost" href="#plan">What's included</a>
             </div>
+          </div>
+          <div class="hero-photo" data-hero-photo>
+            <img
+              src="/media/ryan-hero-720.webp"
+              srcset="/media/ryan-hero-720.webp 720w, /media/ryan-hero-1200.webp 1200w"
+              sizes="(min-width: 900px) 44vw, 100vw"
+              width="1200"
+              height="1600"
+              alt="Ryan Horne standing in the gym"
+              fetchpriority="high"
+              decoding="async"
+            />
           </div>
         </div>
       </section>
 
       <!-- Ryan's story, in his words -->
-      <section class="story" aria-label="Ryan's story">
+      <section class="story dark" aria-label="Ryan's story">
         <div class="wrap story-inner">
           <p class="story-text" data-scrub-words>
             I used to be overweight and stuck in my own head. I thought you could be fit or enjoy life, never both. I love pints, takeaways and holidays. I still got in shape.
-            <em>Now I'll show you how.</em>
+            <span class="red">Now I'll show you how.</span>
           </p>
           <div class="story-sign" data-reveal>
             <img src="/media/ryan-portrait.webp" width="577" height="577" alt="" loading="lazy" decoding="async" />
@@ -228,7 +216,7 @@ const jsonLd = {
       <!-- What £30 gets you -->
       <section class="plan" id="plan" aria-labelledby="plan-title">
         <div class="wrap">
-          <h2 id="plan-title" class="h2" data-reveal>One plan. <em>Everything</em> in it.</h2>
+          <h2 id="plan-title" class="h2" data-reveal>One plan. <span class="red">Everything in it.</span></h2>
           <div class="bento">
             {plan.map((p) => (
               <article class={`cell cell-${p.key}`} data-cell>
@@ -237,7 +225,7 @@ const jsonLd = {
                     <img src={p.img} alt={p.alt} loading="lazy" decoding="async" data-parallax />
                   </div>
                 )}
-                {p.key === "rolling" && <span class="cell-big" aria-hidden="true">4<small>wk</small></span>}
+                {p.key === "rolling" && <span class="cell-big" aria-hidden="true">4<small>weeks</small></span>}
                 <div class="cell-copy">
                   <h3>{p.title}</h3>
                   <p>{p.body}</p>
@@ -249,10 +237,9 @@ const jsonLd = {
       </section>
 
       <!-- Free workouts from his feed -->
-      <section class="workouts" aria-labelledby="wk-title">
+      <section class="workouts dark" id="workouts" aria-labelledby="wk-title">
         <div class="wrap">
-          <p class="eyebrow" data-reveal>Save &amp; try</p>
-          <h2 id="wk-title" class="h2" data-reveal>Try one <em>tonight.</em></h2>
+          <h2 id="wk-title" class="h2" data-reveal>Try one <span class="red">tonight.</span></h2>
           <p class="lede" data-reveal>Three of my kettlebell sessions. Set a timer and go.</p>
         </div>
         <div class="wk-track" data-wk-track>
@@ -265,21 +252,22 @@ const jsonLd = {
               </div>
               <h3>{w.name}</h3>
               <p class="wk-note">{w.note}</p>
-              <ul>
-                {w.moves.map((m) => <li>{m}</li>)}
-              </ul>
+              <ul>{w.moves.map((m) => <li>{m}</li>)}</ul>
             </article>
           ))}
         </div>
         <div class="wrap">
-          <p class="wk-foot" data-reveal>AMRAP means as many rounds as possible. More every week on <a href={instagram} target="_blank" rel="noopener noreferrer">@kettlebaz</a>.</p>
+          <p class="wk-foot" data-reveal>
+            AMRAP means as many rounds as possible. New sessions every week on
+            <a href={instagram} {...ext}>Instagram</a>, <a href={tiktok} {...ext}>TikTok</a> and <a href={youtube} {...ext}>YouTube</a>.
+          </p>
         </div>
       </section>
 
       <!-- How it works -->
       <section class="how" aria-labelledby="how-title">
         <div class="wrap how-grid">
-          <h2 id="how-title" class="h2 how-title" data-reveal>How it <em>works.</em></h2>
+          <h2 id="how-title" class="h2 how-title" data-reveal>How it <span class="red">works.</span></h2>
           <div class="steps" data-steps>
             <span class="steps-rail" aria-hidden="true"><span data-rail></span></span>
             <ol>
@@ -292,14 +280,14 @@ const jsonLd = {
             </ol>
           </div>
           <blockquote class="beth" data-reveal>
-            <p>Take Beth. She loves the gym and never lacks motivation. Food was the struggle. Now she has a 4-week toning and nutrition plan, and me on hand.</p>
+            <p>“Take Beth. She loves the gym and never lacks motivation. Food was the struggle. Now she has a 4-week toning and nutrition plan, and me on hand.”</p>
             <cite>Ryan, on client Beth</cite>
           </blockquote>
         </div>
       </section>
 
       <!-- Price -->
-      <section class="price" id="price" aria-labelledby="price-title">
+      <section class="price dark" id="price" aria-labelledby="price-title">
         <div class="wrap price-grid">
           <div class="bell" data-bell>
             <canvas aria-hidden="true" data-bell-canvas></canvas>
@@ -310,19 +298,20 @@ const jsonLd = {
               <span class="cur">£</span><span data-count="30">30</span><span class="per">a month</span>
             </h2>
             <p class="price-week" data-reveal>That's £7.50 a week.</p>
-            <ul class="ticks">
-              {includes.map((i) => <li data-tick>{i}</li>)}
-            </ul>
-            <a class="btn btn-block" href={start} target="_blank" rel="noopener noreferrer" data-reveal data-magnetic>{cta}</a>
+            <ul class="ticks">{includes.map((i) => <li data-tick>{i}</li>)}</ul>
+            <a class="btn btn-lg btn-block" href={start} {...ext} data-reveal data-magnetic>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.whatsapp} />
+              {cta}
+            </a>
             <p class="price-note" data-reveal>Rolling monthly. Stop any time.</p>
           </div>
         </div>
       </section>
 
       <!-- Questions -->
-      <section class="faq" aria-labelledby="faq-title">
+      <section class="faq" id="faq" aria-labelledby="faq-title">
         <div class="wrap faq-grid">
-          <h2 id="faq-title" class="h2" data-reveal>Questions.</h2>
+          <h2 id="faq-title" class="h2" data-reveal>Good to <span class="red">know.</span></h2>
           <div class="faq-list">
             {faqs.map((f) => (
               <details data-reveal>
@@ -336,22 +325,39 @@ const jsonLd = {
 
       <!-- Close -->
       <section class="close" aria-labelledby="close-title">
-        <div class="close-glow" aria-hidden="true" data-glow></div>
         <div class="wrap close-inner">
-          <h2 id="close-title" class="close-title" data-reveal>Your first 4 weeks start with <em>a message.</em></h2>
-          <a class="btn" href={start} target="_blank" rel="noopener noreferrer" data-reveal data-magnetic>{cta}</a>
+          <h2 id="close-title" class="close-title" data-reveal>Your first 4 weeks start with a message.</h2>
+          <a class="btn btn-lg btn-ink" href={start} {...ext} data-reveal data-magnetic>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.whatsapp} />
+            {cta}
+          </a>
+          <p class="close-phone" data-reveal>Or WhatsApp <a href={whatsapp} {...ext}>{phoneDisplay}</a></p>
         </div>
       </section>
     </main>
 
-    <footer class="foot">
-      <div class="wrap foot-inner">
-        <span class="nav-mark">Kettlebaz</span>
-        <a class="foot-ig" href={instagram} target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={igIcon} />
-          @kettlebaz
-        </a>
-        <span class="foot-small">&copy; {new Date().getFullYear()} Ryan Horne</span>
+    <footer class="foot dark">
+      <div class="wrap">
+        <p class="foot-word" aria-hidden="true" data-foot-word>Kettlebaz</p>
+        <div class="foot-grid">
+          <ul class="foot-social">
+            <li>
+              <a href={whatsapp} {...ext}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.whatsapp} />
+                <span><strong>WhatsApp</strong> {phoneDisplay}</span>
+              </a>
+            </li>
+            {socials.map((s) => (
+              <li>
+                <a href={s.href} {...ext}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={s.icon} />
+                  <span><strong>{s.label}</strong> {s.handle}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p class="foot-small">&copy; {new Date().getFullYear()} Ryan Horne. Kettlebells &amp; running.</p>
+        </div>
       </div>
     </footer>
 
@@ -363,7 +369,7 @@ const jsonLd = {
         </div>
         <div class="cg-credit-links">
           {cgLinks.map((l) => (
-            <a href={l.href} {...(l.external && { target: "_blank", rel: "noopener noreferrer" })}>
+            <a href={l.href} {...(l.external && ext)}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={l.icon} />
               {l.label}
             </a>
@@ -372,10 +378,57 @@ const jsonLd = {
       </div>
     </aside>
 
-    <!-- Phones: price + start, pinned to the bottom once the cover has scrolled away -->
-    <div class="dock" data-dock aria-hidden="true">
-      <span class="dock-price"><strong>£30</strong> a month</span>
-      <a class="btn btn-sm" href={start} target="_blank" rel="noopener noreferrer" tabindex="-1">{cta}</a>
+    <!-- Phones: app-style tab bar, always on screen -->
+    <nav class="tabbar" aria-label="Quick links">
+      <a href="#top" data-tab="top">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.home} />
+        Home
+      </a>
+      <a href="#plan" data-tab="plan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.barbell} />
+        Plan
+      </a>
+      <a class="tab-main" href={start} {...ext} aria-label="Start for £30 on WhatsApp">
+        <span class="tab-main-dot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.whatsapp} />
+        </span>
+        Start
+      </a>
+      <a href="#workouts" data-tab="workouts">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.flame} />
+        Workouts
+      </a>
+      <button type="button" popovertarget="more" data-tab="more">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.menu} />
+        More
+      </button>
+    </nav>
+
+    <div id="more" class="sheet" popover aria-labelledby="more-title">
+      <div class="sheet-head">
+        <p id="more-title" class="sheet-title">Kettlebaz</p>
+        <button type="button" class="sheet-close" popovertarget="more" popovertargetaction="hide" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.x} />
+        </button>
+      </div>
+      <ul class="sheet-links">
+        <li><a href="#price" data-sheet-link>Price, £30 a month</a></li>
+        <li><a href="#faq" data-sheet-link>Questions</a></li>
+        <li>
+          <a href={whatsapp} {...ext}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.whatsapp} />
+            WhatsApp {phoneDisplay}
+          </a>
+        </li>
+        {socials.map((s) => (
+          <li>
+            <a href={s.href} {...ext}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={s.icon} />
+              {s.label} {s.handle}
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
 
     <script>
