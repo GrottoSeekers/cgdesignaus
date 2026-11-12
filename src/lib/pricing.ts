@@ -23,13 +23,13 @@ export const pageOptions = [
 export const brandTidyUp = {
   name: "Logo tidy-up & brand kit",
   price: 149,
-  desc: "Already have a logo? Clean, sharp files for print and screen, plus your colours and fonts in one place.",
+  desc: "Already have a logo? We tidy it up and pull your colours and fonts together.",
 };
 
 export const brandIdentity = {
   name: "Logo & brand identity",
   price: 349,
-  desc: "Two logo concepts, your colours and fonts, a one-page brand guide, and files for print and web.",
+  desc: "A new logo, colours, fonts and a simple brand guide.",
   includes: ["Two logo concepts", "Colours and fonts", "One-page brand guide", "Files for print and web"],
 };
 
@@ -53,6 +53,7 @@ export const carePlan = {
   changeHours: 1, // hours of changes included each month
   includes: "hosting, security, backups and up to 1 hour of changes a month",
   firstMonthFree: "First month free with any package",
+  perks: ["Hosting, security and backups", "Up to 1 hour of changes a month", "First month free with any package"],
 };
 
 // `fixed` extras keep their price in the quote builder: the founding discount doesn't apply.
