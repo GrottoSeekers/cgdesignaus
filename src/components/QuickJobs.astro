@@ -1,7 +1,7 @@
 ---
 // Fixed-price setup jobs for businesses that don't need a whole website.
 // Prices live in src/lib/pricing.ts.
-import { quickJobs, starterBundle, selfEdit, maintenancePrice, aud } from "../lib/pricing";
+import { quickJobs, starterBundle, selfEdit, aud } from "../lib/pricing";
 import { contactHref } from "../lib/prefill";
 
 interface Props {
@@ -15,7 +15,7 @@ const priceLabel = (j: { price: number; per?: string }) => `${aud(j.price)}${j.p
 const askHref = (name: string, price: string) =>
   contactHref(base, { service: "Quick Job", pick: name, price, details: `Quick job: ${name} — ${price}` });
 const saving = starterBundle.separately - starterBundle.price;
-const selfEditPrice = `${aud(selfEdit.price)} one-off, or free on the ${aud(maintenancePrice)}/mo plan`;
+const selfEditPrice = `${aud(selfEdit.price)} one-off`;
 ---
 
 <section id="quick-jobs" style="position: relative; padding: 112px 0 104px; background: #ffffff">
@@ -49,7 +49,6 @@ const selfEditPrice = `${aud(selfEdit.price)} one-off, or free on the ${aud(main
 </ul>
 <div class="self-edit-buy">
 <p class="self-edit-price">{aud(selfEdit.price)} <span>one-off</span></p>
-<p class="self-edit-note">Or <strong>free</strong> with the {aud(maintenancePrice)}/month hosting &amp; maintenance plan.</p>
 <a href={askHref(selfEdit.name, selfEditPrice)} class="job-ask">Ask for this <span aria-hidden="true">→</span></a>
 </div>
 </div>
