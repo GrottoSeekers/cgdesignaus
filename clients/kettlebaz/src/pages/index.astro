@@ -193,6 +193,7 @@ const jsonLd = {
               width="1200"
               height="1600"
               alt="Ryan Horne standing in the gym"
+              data-slot="hero"
               fetchpriority="high"
               decoding="async"
             />
@@ -208,7 +209,7 @@ const jsonLd = {
             <span class="accent">Now I'll show you how.</span>
           </p>
           <div class="story-sign" data-reveal>
-            <img src="/media/ryan-portrait.webp" width="577" height="577" alt="" loading="lazy" decoding="async" />
+            <img src="/media/ryan-portrait.webp" width="577" height="577" alt="" loading="lazy" decoding="async" data-slot="portrait" />
             <p><strong>Ryan Horne</strong><br />Coach, kettlebells and running. Ex St Helens RLFC, reserves and under-19s.</p>
           </div>
         </div>
@@ -223,7 +224,7 @@ const jsonLd = {
               <article class={`cell cell-${p.key}`} data-cell>
                 {p.img && (
                   <div class="cell-media">
-                    <img src={p.img} alt={p.alt} loading="lazy" decoding="async" data-parallax />
+                    <img src={p.img} alt={p.alt} loading="lazy" decoding="async" data-parallax data-slot={p.key === "ryan" ? "portrait" : p.key} />
                   </div>
                 )}
                 {p.key === "rolling" && <span class="cell-big" aria-hidden="true">4<small>weeks</small></span>}
@@ -241,7 +242,7 @@ const jsonLd = {
       <section class="workouts dark" id="workouts" aria-labelledby="wk-title">
         <div class="wrap">
           <h2 id="wk-title" class="h2" data-reveal>Try one <span class="accent">tonight.</span></h2>
-          <p class="lede" data-reveal>Three of my kettlebell sessions. On the plan, every session is tailored to you.</p>
+          <p class="lede" data-reveal>Some of my kettlebell sessions. On the plan, every session is tailored to you.</p>
         </div>
         <div class="wk-track" data-wk-track>
           {workouts.map((w) => (

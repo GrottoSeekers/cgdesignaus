@@ -584,3 +584,7 @@ body { padding-bottom: calc(var(--tab-h) + env(safe-area-inset-bottom)); }
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+/* Photos and videos Ryan uploads from /admin get the same black-and-white
+   look as the built-in ones (those were graded before upload). */
+img.is-upload, video.is-upload { filter: grayscale(1) contrast(1.12) brightness(1.06); }
