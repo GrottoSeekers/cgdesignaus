@@ -2,7 +2,7 @@
 // Fixed-price jobs to get found online without a website (website extras and branding live
 // on the Pricing page).
 // Prices live in src/lib/pricing.ts.
-import { quickJobs, starterBundle, quickJobCreditMonths, aud } from "../lib/pricing";
+import { quickJobs, starterBundle, aud } from "../lib/pricing";
 import { contactHref } from "../lib/prefill";
 
 interface Props {
@@ -27,8 +27,6 @@ const saving = starterBundle.separately - starterBundle.price;
 </div>
 <p style="max-width: 380px; color: rgba(20,17,26,0.68); font-size: 1rem">No website yet? Get found online with fixed-price jobs, usually done within a few days. Everything is set up in your name, so it's 100% yours.</p>
 </div>
-
-<p class="credit"><span class="credit-icon" aria-hidden="true">↗</span><span><strong>Want a website later?</strong> Whatever you spend here comes off a website package within {quickJobCreditMonths} months.</span></p>
 
 <div class="jobs">
 {quickJobs.map((j) => (
@@ -132,36 +130,6 @@ const saving = starterBundle.separately - starterBundle.price;
       gap: 12px;
       color: #2f1147;
     }
-  }
-
-  .credit {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: -12px 0 28px;
-    padding: 14px 18px;
-    border-radius: 16px;
-    background: #f3f0f8;
-    border: 1px solid rgba(91, 42, 150, 0.2);
-    font-size: 0.92rem;
-    color: rgba(20, 17, 26, 0.75);
-  }
-
-  .credit strong {
-    color: #14111a;
-  }
-
-  .credit-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    background: #5b2a96;
-    color: #ffffff;
-    font-weight: 700;
   }
 
   .bundle {

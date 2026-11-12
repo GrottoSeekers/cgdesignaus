@@ -146,9 +146,6 @@ export const quickJobs = [
 
 const jobPrice = (id: string) => quickJobs.find((j) => j.id === id)?.price ?? 0;
 
-// Whatever a client spends on quick jobs comes off a website package within this many months.
-export const quickJobCreditMonths = 3;
-
 export const starterBundle = {
   id: "starter-bundle",
   name: "Starter bundle",
