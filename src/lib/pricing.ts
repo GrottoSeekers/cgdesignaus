@@ -92,7 +92,7 @@ export const tiers = [
     name: "Growth",
     tagline: "The full shopfront — services, story and gallery.",
     full: tier2Full,
-    includes: ["Everything in Essentials", "About, Services / Menu, Gallery", "Enquiry form to your inbox", "Google Business Profile set up or tidied", "Business email on your domain"],
+    includes: ["Everything in Essentials", "About, Services / Menu, Gallery", "Enquiry form to your inbox", "Google Business Profile set up or tidied"],
     feature: true,
   },
   {
@@ -125,12 +125,6 @@ export const quickJobs = [
     desc: "Facebook, Instagram and more: branded profile and cover images, a bio, your contact details and links.",
   },
   {
-    id: "email",
-    name: "Business email",
-    price: 79,
-    desc: "you@yourbusiness.com.au, set up on your own domain and working on your phone and computer.",
-  },
-  {
     id: "booking",
     name: "Online booking setup",
     price: 149,
@@ -146,7 +140,7 @@ export const quickJobs = [
     id: "domain",
     name: "Domain setup",
     price: 49,
-    desc: "Your web address registered in your name and connected to your email and socials. Domain cost extra.",
+    desc: "Your web address registered in your name, so it's yours and ready for a website. Domain cost extra.",
   },
 ];
 
@@ -159,9 +153,9 @@ export const starterBundle = {
   id: "starter-bundle",
   name: "Starter bundle",
   price: STARTER_BUNDLE_PRICE,
-  includes: ["Google Business Profile setup", "Facebook + Instagram setup", "Business email", "Domain registered in your name"],
+  includes: ["Google Business Profile setup", "Facebook + Instagram setup", "Review booster QR card", "Domain registered in your name"],
   // What the same jobs cost one by one (social is per platform, so twice).
-  separately: jobPrice("google-profile") + jobPrice("social") * 2 + jobPrice("email") + jobPrice("domain"),
+  separately: jobPrice("google-profile") + jobPrice("social") * 2 + jobPrice("reviews") + jobPrice("domain"),
 };
 
 export const lowestQuickJobPrice = Math.min(...quickJobs.map((j) => j.price));
