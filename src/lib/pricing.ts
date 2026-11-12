@@ -112,6 +112,21 @@ export const quickJobs = [
   },
 ];
 
+// Your own admin login: the client signs in at their-site/admin with an email and password and
+// updates their content themselves (see clients/kettlebaz for a working example).
+// Either a one-off price, or free for clients on the monthly hosting & maintenance plan.
+export const selfEdit = {
+  id: "admin-login",
+  name: "Your own admin login",
+  price: 199,
+  includes: [
+    "Sign in with your email and password",
+    "Change text, photos, prices and opening hours",
+    "Updates show on your site straight away",
+    "Works on your phone or computer",
+  ],
+};
+
 export const starterBundle = {
   id: "starter-bundle",
   name: "Starter bundle",
