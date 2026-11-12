@@ -1,4 +1,4 @@
-// A cast-iron kettlebell under red and white studio light.
+// A cast-iron kettlebell under orange and white studio light.
 // Built from two primitives (a lathe for the bell, a tube for the handle),
 // so there's no model file to download. Spins slowly, turns with the page
 // as you scroll, and can be flicked round with a finger or mouse.
@@ -47,7 +47,7 @@ export function createKettlebell(canvas: HTMLCanvasElement, { reduce }: Options)
 
   // ----- Model -----
   const iron = new MeshPhysicalMaterial({
-    color: 0x221a2a,
+    color: 0x1e1e22,
     metalness: 0.6,
     roughness: 0.34,
     clearcoat: 0.7,
@@ -82,16 +82,16 @@ export function createKettlebell(canvas: HTMLCanvasElement, { reduce }: Options)
   pivot.rotation.x = 0.12;
   scene.add(pivot);
 
-  // ----- Light: red on one side, cool white on the other, plus a key -----
-  const red = new PointLight(0xff2a2a, 110, 0, 2);
-  red.position.set(-3.2, 1.2, 2.6);
+  // ----- Light: orange on one side, cool white on the other, plus a key -----
+  const warm = new PointLight(0xff6b1a, 120, 0, 2);
+  warm.position.set(-3.2, 1.2, 2.6);
   const cool = new PointLight(0xdfe6ff, 70, 0, 2);
   cool.position.set(3.4, 0.4, 1.2);
-  const rim = new PointLight(0xff3b30, 70, 0, 2);
+  const rim = new PointLight(0xff8a3d, 75, 0, 2);
   rim.position.set(0.5, 2.6, -3);
   const key = new DirectionalLight(0xffffff, 1.1);
   key.position.set(1, 4, 5);
-  scene.add(red, cool, rim, key);
+  scene.add(warm, cool, rim, key);
 
   // ----- Size -----
   const resize = () => {
