@@ -325,7 +325,9 @@ button { font: inherit; color: inherit; }
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
   transition: transform 0.25s var(--ease), opacity 0.25s var(--ease);
 }
-.wk-play svg { width: 28px; height: 28px; margin-left: 4px; }
+/* The icon's triangle already sits a touch right of its box, which is the
+   optical centre for a play symbol; no extra nudge. */
+.wk-play svg { width: 28px; height: 28px; }
 .wk-play:hover { transform: scale(1.06); }
 .wk-video.is-playing .wk-play { opacity: 0; pointer-events: none; }
 .wk-ig { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 6px; color: var(--text); font-weight: 700; font-size: 15px; text-underline-offset: 3px; }
@@ -499,10 +501,10 @@ button { font: inherit; color: inherit; }
   align-items: end;
   height: calc(var(--tab-h) + env(safe-area-inset-bottom));
   padding-bottom: env(safe-area-inset-bottom);
-  background: rgba(11, 11, 12, 0.94);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  border-top: 1px solid rgba(245, 243, 239, 0.1);
+  /* Solid, not frosted: iPhones can render icons inside a blurred
+     (backdrop-filter) bar slightly soft. */
+  background: var(--paper);
+  border-top: 1px solid rgba(245, 243, 239, 0.14);
 }
 .tabbar > a, .tabbar > button {
   display: flex;
@@ -515,14 +517,15 @@ button { font: inherit; color: inherit; }
   background: none;
   cursor: pointer;
   text-decoration: none;
-  color: rgba(245, 243, 239, 0.6);
+  color: rgba(245, 243, 239, 0.82);
   font-variation-settings: "wdth" 85;
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.02em;
   transition: color 0.2s var(--ease);
 }
-.tabbar svg { width: 24px; height: 24px; }
+/* Full white icons with slightly heavier lines read crisply at this size. */
+.tabbar svg { width: 26px; height: 26px; color: var(--text); stroke-width: 2.2; shape-rendering: geometricPrecision; }
 .tabbar .is-current { color: var(--text); }
 .tabbar .is-current svg { color: var(--accent); }
 .tabbar .tab-main { color: var(--text); justify-content: flex-end; padding-bottom: 8px; }
@@ -538,7 +541,7 @@ button { font: inherit; color: inherit; }
   border: 4px solid var(--paper);
   box-shadow: 0 6px 18px rgba(255, 107, 26, 0.35);
 }
-.tab-main-dot svg { width: 26px; height: 26px; }
+.tab-main-dot svg { width: 28px; height: 28px; color: var(--on-accent); }
 body { padding-bottom: calc(var(--tab-h) + env(safe-area-inset-bottom)); }
 
 @media (min-width: 900px) {
