@@ -1,7 +1,8 @@
 ---
-// Fixed-price setup jobs for businesses that don't need a whole website.
+// Fixed-price jobs to get found online without a website (website extras and branding live
+// on the Pricing page).
 // Prices live in src/lib/pricing.ts.
-import { quickJobs, starterBundle, selfEdit, maintenancePrice, aud } from "../lib/pricing";
+import { quickJobs, starterBundle, quickJobCreditMonths, aud } from "../lib/pricing";
 import { contactHref } from "../lib/prefill";
 
 interface Props {
@@ -15,7 +16,6 @@ const priceLabel = (j: { price: number; per?: string }) => `${aud(j.price)}${j.p
 const askHref = (name: string, price: string) =>
   contactHref(base, { service: "Quick Job", pick: name, price, details: `Quick job: ${name} — ${price}` });
 const saving = starterBundle.separately - starterBundle.price;
-const selfEditPrice = `${aud(selfEdit.price)} one-off, or free on the ${aud(maintenancePrice)}/mo plan`;
 ---
 
 <section id="quick-jobs" style="position: relative; padding: 112px 0 104px; background: #ffffff">
@@ -25,8 +25,10 @@ const selfEditPrice = `${aud(selfEdit.price)} one-off, or free on the ${aud(main
 <span class="eyebrow">Quick jobs</span>
 <Heading style="font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.03em; margin-top: 16px">Just need a hand with <em style="font-style: italic; font-weight: 600; color: #5b2a96">something smaller?</em></Heading>
 </div>
-<p style="max-width: 380px; color: rgba(20,17,26,0.68); font-size: 1rem">Fixed prices, paid upfront, usually done within a few days. Everything is set up in your name, so it's 100% yours.</p>
+<p style="max-width: 380px; color: rgba(20,17,26,0.68); font-size: 1rem">No website yet? Get found online with fixed-price jobs, usually done within a few days. Everything is set up in your name, so it's 100% yours.</p>
 </div>
+
+<p class="credit"><span class="credit-icon" aria-hidden="true">↗</span><span><strong>Want a website later?</strong> Whatever you spend here comes off a website package within {quickJobCreditMonths} months.</span></p>
 
 <div class="jobs">
 {quickJobs.map((j) => (
@@ -39,38 +41,11 @@ const selfEditPrice = `${aud(selfEdit.price)} one-off, or free on the ${aud(main
 ))}
 </div>
 
-<div class="self-edit">
-<div class="self-edit-copy">
-<span class="self-edit-tag">New · Edit it yourself</span>
-<h3 class="self-edit-name">{selfEdit.name}</h3>
-<p class="self-edit-sub">Update your own website whenever you like, without waiting on us.</p>
-<ul class="self-edit-list">
-{selfEdit.includes.map((line) => <li><span class="tick" aria-hidden="true">✓</span>{line}</li>)}
-</ul>
-<div class="self-edit-buy">
-<p class="self-edit-price">{aud(selfEdit.price)} <span>one-off</span></p>
-<p class="self-edit-note">Or <strong>free</strong> with the {aud(maintenancePrice)}/month hosting &amp; maintenance plan.</p>
-<a href={askHref(selfEdit.name, selfEditPrice)} class="job-ask">Ask for this <span aria-hidden="true">→</span></a>
-</div>
-</div>
-<div class="self-edit-mock" aria-hidden="true">
-<div class="mock-window">
-<p class="mock-url">yourbusiness.com.au/admin</p>
-<p class="mock-title">Sign in</p>
-<span class="mock-label">Email</span>
-<span class="mock-input">you@yourbusiness.com.au</span>
-<span class="mock-label">Password</span>
-<span class="mock-input">••••••••••</span>
-<span class="mock-btn">Sign in</span>
-</div>
-</div>
-</div>
-
 <div class="bundle">
 <div class="bundle-copy">
 <span class="bundle-tag">Best value</span>
 <h3 class="bundle-name">{starterBundle.name}</h3>
-<p class="bundle-sub">Everything a new business needs to be found and look the part.</p>
+<p class="bundle-sub">Everything a new business needs to be found and look the part. Already included in our Complete website package.</p>
 <ul class="bundle-list">
 {starterBundle.includes.map((line) => <li><span class="bundle-tick" aria-hidden="true">✓</span>{line}</li>)}
 </ul>
@@ -159,166 +134,34 @@ const selfEditPrice = `${aud(selfEdit.price)} one-off, or free on the ${aud(main
     }
   }
 
-  .self-edit {
+  .credit {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-    gap: 28px 48px;
-    margin-top: 24px;
-    padding: 36px;
-    border-radius: 24px;
+    gap: 12px;
+    margin: -12px 0 28px;
+    padding: 14px 18px;
+    border-radius: 16px;
     background: #f3f0f8;
-    border: 1px solid rgba(91, 42, 150, 0.22);
-  }
-
-  .self-edit-copy {
-    flex: 1 1 420px;
-  }
-
-  .self-edit-tag {
-    display: inline-block;
-    margin-bottom: 10px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #5b2695;
-  }
-
-  .self-edit-name {
-    font-size: 1.6rem;
-  }
-
-  .self-edit-sub {
-    margin-top: 6px;
-    font-size: 0.95rem;
-    color: rgba(20, 17, 26, 0.68);
-  }
-
-  .self-edit-list {
-    list-style: none;
-    margin: 16px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px 24px;
+    border: 1px solid rgba(91, 42, 150, 0.2);
     font-size: 0.92rem;
-    color: rgba(20, 17, 26, 0.78);
+    color: rgba(20, 17, 26, 0.75);
   }
 
-  .self-edit-list li {
+  .credit strong {
+    color: #14111a;
+  }
+
+  .credit-icon {
     display: flex;
-    gap: 10px;
-    align-items: flex-start;
-  }
-
-  .self-edit-buy {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 4px 16px;
-    margin-top: 20px;
-  }
-
-  .self-edit-price {
-    font-family: "Fraunces", serif;
-    font-size: 2.2rem;
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: -0.02em;
-    color: #2f1147;
-  }
-
-  .self-edit-price span {
-    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0;
-    color: rgba(20, 17, 26, 0.6);
-  }
-
-  .self-edit-note {
-    flex-basis: 100%;
-    order: 3;
-    font-size: 0.86rem;
-    color: rgba(20, 17, 26, 0.6);
-  }
-
-  /* A small, non-interactive picture of the sign-in screen. */
-  .self-edit-mock {
-    flex: 0 1 300px;
-  }
-
-  .mock-window {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 22px;
-    border-radius: 18px;
-    background: #ffffff;
-    border: 1px solid rgba(20, 17, 26, 0.1);
-    box-shadow: 0 40px 70px -40px rgba(47, 17, 71, 0.55);
-    transform: rotate(1.5deg);
-  }
-
-  .mock-url {
-    margin-bottom: 8px;
-    padding: 5px 10px;
-    border-radius: 8px;
-    background: #f3f0f8;
-    font-size: 0.68rem;
-    font-weight: 600;
-    color: rgba(20, 17, 26, 0.55);
-    text-align: center;
-  }
-
-  .mock-title {
-    margin-bottom: 4px;
-    font-family: "Fraunces", serif;
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
-
-  .mock-label {
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: rgba(20, 17, 26, 0.6);
-  }
-
-  .mock-input {
-    padding: 9px 12px;
-    border-radius: 10px;
-    border: 1px solid rgba(20, 17, 26, 0.14);
-    font-size: 0.8rem;
-    color: rgba(20, 17, 26, 0.7);
-  }
-
-  .mock-btn {
-    margin-top: 8px;
-    padding: 10px;
-    border-radius: 999px;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    border-radius: 50%;
     background: #5b2a96;
     color: #ffffff;
-    font-size: 0.82rem;
     font-weight: 700;
-    text-align: center;
-  }
-
-  @media (max-width: 760px) {
-    .self-edit-mock {
-      display: none;
-    }
-  }
-
-  @media (max-width: 560px) {
-    .self-edit {
-      padding: 26px 22px;
-    }
-
-    .self-edit-list {
-      grid-template-columns: 1fr;
-    }
   }
 
   .bundle {
