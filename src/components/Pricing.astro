@@ -13,12 +13,21 @@ interface Props {
 const { heading: Heading = "h2" } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-const chip = (o: { label: string; price: number; recurring?: boolean }) => `+${aud(o.price)}${o.recurring ? "/mo" : ""}`;
+// Chips show what you actually pay, so the estimate visibly adds up: the founding price for
+// most extras, the full price for fixed ones (branding, admin login) and monthly ones.
+const chip = (o: { label: string; price: number; recurring?: boolean; fixed?: boolean }) =>
+  `+${aud(o.recurring || o.fixed ? o.price : founding(o.price))}${o.recurring ? "/mo" : ""}`;
 const brandHref = contactHref(base, {
   service: "Branding",
   pick: "Branding",
   price: `from ${aud(brandTidyUp.price)}`,
   details: `Branding: ${brandTidyUp.name} (${aud(brandTidyUp.price)}) or ${brandIdentity.name} (${aud(brandIdentity.price)})`,
+});
+const careHref = contactHref(base, {
+  service: "Not Sure",
+  pick: "Hosting & care plan",
+  price: `${aud(carePlan.price)}/month`,
+  details: `Hosting & care plan — ${aud(carePlan.price)}/month (${carePlan.firstMonthFree.toLowerCase()})`,
 });
 const adminHref = contactHref(base, {
   service: "Quick Job",
@@ -90,23 +99,29 @@ const startHref = (t: (typeof tiers)[number]) =>
 </div>
 ))}
 </div>
+<p class="pay-line">Pay 50% to start and 50% when you're live. Domains at cost, nothing hidden.</p>
+
 <div class="extras">
 <div class="extra-card">
 <p class="extra-tag">Branding</p>
-<h3 class="extra-title">Need a logo or a rebrand?</h3>
+<h3 class="extra-title">Need a logo?</h3>
 <div class="extra-option"><div><strong>{brandTidyUp.name}</strong><span>{brandTidyUp.desc}</span></div><span class="extra-price">{aud(brandTidyUp.price)}</span></div>
 <div class="extra-option"><div><strong>{brandIdentity.name}</strong><span>{brandIdentity.desc}</span></div><span class="extra-price">{aud(brandIdentity.price)}</span></div>
-<p class="extra-foot">On their own, or added to any package. <a href={brandHref} class="extra-ask">Ask about branding <span aria-hidden="true">→</span></a></p>
+<p class="extra-foot"><a href={brandHref} class="extra-ask">Ask about branding <span aria-hidden="true">→</span></a></p>
 </div>
 <div class="extra-card">
 <p class="extra-tag">Website extra</p>
 <h3 class="extra-title">{selfEdit.name}</h3>
-<p class="extra-desc">Update your own website whenever you like, without waiting on us.</p>
 <ul class="extra-list">{selfEdit.includes.map((line) => <li><span class="tick" aria-hidden="true">✓</span>{line}</li>)}</ul>
 <p class="extra-foot"><span class="extra-price">{aud(selfEdit.price)}</span> <span class="extra-per">one-off</span> <a href={adminHref} class="extra-ask">Ask for this <span aria-hidden="true">→</span></a></p>
 </div>
+<div class="extra-card extra-care">
+<p class="extra-tag">Monthly</p>
+<h3 class="extra-title">Hosting &amp; care</h3>
+<ul class="extra-list">{carePlan.perks.map((line) => <li><span class="tick tick-dark" aria-hidden="true">✓</span>{line}</li>)}</ul>
+<p class="extra-foot"><span class="extra-price">{aud(carePlan.price)}</span> <span class="extra-per">/month</span> <a href={careHref} class="extra-ask">Add it <span aria-hidden="true">→</span></a></p>
 </div>
-<p style="font-size: 0.86rem; color: rgba(20,17,26,0.6); margin-top: 22px; text-align: center"><strong style="color: #14111a">Hosting &amp; care plan, {aud(carePlan.price)}/month:</strong> {carePlan.includes}. {carePlan.firstMonthFree}. Domains registered at cost.</p>
+</div>
 <a href={`${base}/quick-jobs`} class="quick-link">Not after a full website? <strong>See quick jobs from {aud(lowestQuickJobPrice)}</strong> <span aria-hidden="true">→</span></a>
 
 <div class="quote" id="quote" data-base-price={BASE_PRICE} data-founding-rate={FOUNDING_DISCOUNT_RATE} style="margin-top: 28px; border-radius: 22px; border: 1px solid rgba(20,17,26,0.12); background: #ffffff; overflow: hidden">
@@ -162,9 +177,17 @@ const startHref = (t: (typeof tiers)[number]) =>
     margin: 0 0 12px;
   }
 
+  .pay-line {
+    margin-top: 22px;
+    text-align: center;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: rgba(20, 17, 26, 0.72);
+  }
+
   .extras {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
     gap: 20px;
     margin-top: 24px;
   }
@@ -177,6 +200,31 @@ const startHref = (t: (typeof tiers)[number]) =>
     border-radius: 24px;
     background: #ffffff;
     border: 1px solid rgba(20, 17, 26, 0.1);
+  }
+
+  .extra-care {
+    background: #2f1147;
+    border-color: #2f1147;
+    color: #f3eefa;
+    box-shadow: 0 40px 70px -40px rgba(47, 17, 71, 0.7);
+  }
+
+  .extra-care .extra-tag {
+    color: #d8bff0;
+  }
+
+  .extra-care .extra-title,
+  .extra-care .extra-price {
+    color: #ffffff;
+  }
+
+  .extra-care .extra-list,
+  .extra-care .extra-per {
+    color: rgba(243, 238, 250, 0.85);
+  }
+
+  .extra-care .extra-ask {
+    color: #d8bff0;
   }
 
   .extra-tag {
