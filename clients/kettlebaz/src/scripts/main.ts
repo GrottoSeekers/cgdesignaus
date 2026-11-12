@@ -4,6 +4,7 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import { isSiteFile, loadPublicContent, mediaUrl, movesList } from "../lib/content";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -126,6 +127,8 @@ function bento() {
 }
 
 /* ---------- Workouts: cards rise in, videos play only while on screen ---------- */
+let videoIO: IntersectionObserver | null = null;
+
 function workouts() {
   if (!reduce) {
     gsap.from("[data-wk]", {
@@ -138,7 +141,7 @@ function workouts() {
     });
   }
   if (reduce || !("IntersectionObserver" in window)) return; // posters only
-  const io = new IntersectionObserver(
+  videoIO = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {
         const v = e.target as HTMLVideoElement;
@@ -158,32 +161,34 @@ function workouts() {
     },
     { threshold: [0, 0.45] }
   );
-  $$<HTMLVideoElement>("video[data-autoplay]").forEach((v) => io.observe(v));
+  $$<HTMLVideoElement>("video[data-autoplay]").forEach((v) => videoIO!.observe(v));
 }
 
 /* ---------- Tap play: swap the silent loop for the full reel with sound ---------- */
-function players() {
-  $$("[data-player]").forEach((box) => {
-    const video = $<HTMLVideoElement>("video", box);
-    const btn = $("[data-play]", box);
-    if (!video || !btn) return;
-    btn.addEventListener("click", () => {
-      // Only one reel plays with sound at a time.
-      $$<HTMLVideoElement>("video[data-full-on]").forEach((v) => v !== video && v.pause());
-      if (!video.hasAttribute("data-full-on")) {
-        video.setAttribute("data-full-on", "");
-        video.src = video.dataset.full || video.currentSrc;
-        video.loop = false;
-        video.muted = false;
-        // No controls: just the video. Tap it to pause; the play button comes back.
-        video.addEventListener("click", () => video.pause());
-        video.addEventListener("pause", () => box.classList.remove("is-playing"));
-        video.addEventListener("play", () => box.classList.add("is-playing"));
-      }
-      box.classList.add("is-playing");
-      video.play().catch(() => box.classList.remove("is-playing"));
-    });
+function wirePlayer(box: HTMLElement) {
+  const video = $<HTMLVideoElement>("video", box);
+  const btn = $("[data-play]", box);
+  if (!video || !btn) return;
+  btn.addEventListener("click", () => {
+    // Only one reel plays with sound at a time.
+    $$<HTMLVideoElement>("video[data-full-on]").forEach((v) => v !== video && v.pause());
+    if (!video.hasAttribute("data-full-on")) {
+      video.setAttribute("data-full-on", "");
+      video.src = video.dataset.full || video.currentSrc;
+      video.loop = false;
+      video.muted = false;
+      // No controls: just the video. Tap it to pause; the play button comes back.
+      video.addEventListener("click", () => video.pause());
+      video.addEventListener("pause", () => box.classList.remove("is-playing"));
+      video.addEventListener("play", () => box.classList.add("is-playing"));
+    }
+    box.classList.add("is-playing");
+    video.play().catch(() => box.classList.remove("is-playing"));
   });
+}
+
+function players() {
+  $$("[data-player]").forEach(wirePlayer);
 
   // Sound off as soon as you scroll out of the workouts section (either way)
   // or leave the tab/app.
@@ -319,6 +324,77 @@ function kettlebell() {
   io.observe(box);
 }
 
+/* ---------- Ryan's content from /admin (Supabase) ----------
+   The page ships with built-in workouts and photos. If Ryan has added his
+   own, they replace those once loaded. Any failure leaves the page as is. */
+async function liveContent() {
+  const data = await loadPublicContent();
+  if (!data) return;
+
+  // Photos: one per slot.
+  data.photos.forEach((p) => {
+    const url = `${mediaUrl(p.path)}?v=${encodeURIComponent(p.updated_at)}`;
+    $$<HTMLImageElement>(`img[data-slot="${p.slot}"]`).forEach((img) => {
+      img.removeAttribute("srcset");
+      img.src = isSiteFile(p.path) ? p.path : url;
+      img.classList.toggle("is-upload", !isSiteFile(p.path));
+    });
+  });
+
+  // Workouts: rebuild the track from the first card as a template.
+  const track = $("[data-wk-track]");
+  const template = track ? $("[data-wk]", track) : null;
+  if (!track || !template || !data.workouts.length) return;
+
+  const cards = data.workouts.map((w) => {
+    const card = template.cloneNode(true) as HTMLElement;
+    card.removeAttribute("style"); // drop any GSAP inline state from the template
+    const video = $<HTMLVideoElement>("video", card)!;
+    const src = mediaUrl(w.video_path);
+    video.innerHTML = "";
+    video.src = src;
+    video.dataset.full = src;
+    video.classList.toggle("is-upload", !isSiteFile(w.video_path));
+    if (w.poster_path) video.poster = mediaUrl(w.poster_path);
+    else {
+      video.removeAttribute("poster");
+      video.preload = "metadata";
+    }
+    $("[data-play]", card)!.setAttribute("aria-label", `Play ${w.name} video with sound`);
+    $("h3", card)!.textContent = w.name;
+    const note = $(".wk-note", card)!;
+    note.textContent = w.note;
+    note.hidden = !w.note;
+    const ul = $("ul", card)!;
+    ul.replaceChildren(
+      ...movesList(w.moves).map((m) => {
+        const li = document.createElement("li");
+        li.textContent = m;
+        return li;
+      })
+    );
+    const ig = $<HTMLAnchorElement>(".wk-ig", card);
+    if (ig) {
+      if (w.instagram_url && /^https:\/\/(www\.)?instagram\.com\//.test(w.instagram_url)) ig.href = w.instagram_url;
+      else ig.remove();
+    }
+    return card;
+  });
+
+  // Stop and forget the built-in videos before swapping.
+  $$<HTMLVideoElement>("video", track).forEach((v) => {
+    videoIO?.unobserve(v);
+    v.pause();
+  });
+  track.replaceChildren(...cards);
+  cards.forEach((card) => {
+    wirePlayer($("[data-player]", card)!);
+    const v = $<HTMLVideoElement>("video", card)!;
+    if (videoIO) videoIO.observe(v);
+  });
+  ScrollTrigger.refresh();
+}
+
 intro();
 chrome();
 story();
@@ -331,6 +407,7 @@ price();
 footWord();
 magnetic();
 kettlebell();
+liveContent();
 
 // Fonts change line lengths; measure again once they've landed.
 document.fonts?.ready.then(() => ScrollTrigger.refresh());
