@@ -1,8 +1,8 @@
 ---
 // Prices live in src/lib/pricing.ts so the packages, quote builder and quick jobs always agree.
 import {
-  BASE_PRICE, FOUNDING_DISCOUNT_RATE, pageOptions, featureOptions, tiers, maintenancePrice,
-  lowestQuickJobPrice, brandIdentity, aud, founding,
+  BASE_PRICE, FOUNDING_DISCOUNT_RATE, pageOptions, featureOptions, tiers, carePlan,
+  lowestQuickJobPrice, brandTidyUp, brandIdentity, selfEdit, aud, founding,
 } from "../lib/pricing";
 import { contactHref } from "../lib/prefill";
 
@@ -13,13 +13,18 @@ interface Props {
 const { heading: Heading = "h2" } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-const maintenance = maintenancePrice;
 const chip = (o: { label: string; price: number; recurring?: boolean }) => `+${aud(o.price)}${o.recurring ? "/mo" : ""}`;
 const brandHref = contactHref(base, {
   service: "Branding",
-  pick: brandIdentity.name,
-  price: aud(brandIdentity.price),
-  details: `${brandIdentity.name} — ${aud(brandIdentity.price)}`,
+  pick: "Branding",
+  price: `from ${aud(brandTidyUp.price)}`,
+  details: `Branding: ${brandTidyUp.name} (${aud(brandTidyUp.price)}) or ${brandIdentity.name} (${aud(brandIdentity.price)})`,
+});
+const adminHref = contactHref(base, {
+  service: "Quick Job",
+  pick: selfEdit.name,
+  price: `${aud(selfEdit.price)} one-off`,
+  details: `Website extra: ${selfEdit.name} — ${aud(selfEdit.price)} one-off`,
 });
 const startHref = (t: (typeof tiers)[number]) =>
   contactHref(base, {
@@ -54,6 +59,7 @@ const startHref = (t: (typeof tiers)[number]) =>
 <div style="position: relative; z-index: 1; height: 100%; box-sizing: border-box; background: #2f1147; border-radius: 22px; padding: 32px; display: flex; flex-direction: column; gap: 22px; color: #f3eefa">
 <div><span style="display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #d8bff0; margin-bottom: 8px">Recommended</span><h3 style="font-size: 1.35rem; margin-bottom: 6px; color: #ffffff">{t.name}</h3><p style="font-size: 0.9rem; color: rgba(243,238,250,0.78)">{t.tagline}</p></div>
 <div style="display: flex; align-items: baseline; gap: 12px"><span class="sr">{aud(founding(t.full))}</span><span class="price-count" aria-hidden="true" data-to={founding(t.full)} data-from={t.full} style="font-family: 'Fraunces', serif; font-size: 3.2rem; font-weight: 600; line-height: 1; letter-spacing: -0.02em; color: #ffffff">{aud(founding(t.full))}</span><span class="rrp" style="font-size: 1.05rem; color: rgba(243,238,250,0.55)">{aud(t.full)}</span></div>
+{t.note && <p class="tier-note tier-note-dark">{t.note}</p>}
 <ul class="ticks" style="list-style: none; margin: 0; padding: 22px 0 0; border-top: 1px solid rgba(243,238,250,0.18); display: flex; flex-direction: column; gap: 12px; font-size: 0.92rem; color: rgba(243,238,250,0.9); flex: 1">
 {t.includes.map((line) => <li><span class="tick tick-dark" aria-hidden="true">✓</span>{line}</li>)}
 </ul>
@@ -65,6 +71,7 @@ const startHref = (t: (typeof tiers)[number]) =>
 <div class="tier" data-tier={t.id} style="background: #ffffff; border: 1px solid rgba(20,17,26,0.1); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 22px">
 <div><h3 style="font-size: 1.35rem; margin-bottom: 6px">{t.name}</h3><p style="font-size: 0.9rem; color: rgba(20,17,26,0.68)">{t.tagline}</p></div>
 <div style="display: flex; align-items: baseline; gap: 12px"><span class="sr">{aud(founding(t.full))}</span><span class="price-count" aria-hidden="true" data-to={founding(t.full)} data-from={t.full} style="font-family: 'Fraunces', serif; font-size: 3.2rem; font-weight: 600; line-height: 1; letter-spacing: -0.02em">{aud(founding(t.full))}</span><span class="rrp" style="font-size: 1.05rem; color: rgba(20,17,26,0.45)">{aud(t.full)}</span></div>
+{t.note && <p class="tier-note">{t.note}</p>}
 <ul class="ticks" style="list-style: none; margin: 0; padding: 22px 0 0; border-top: 1px solid rgba(20,17,26,0.1); display: flex; flex-direction: column; gap: 12px; font-size: 0.92rem; color: rgba(20,17,26,0.78); flex: 1">
 {t.includes.map((line) => <li><span class="tick" aria-hidden="true">✓</span>{line}</li>)}
 </ul>
@@ -77,24 +84,29 @@ const startHref = (t: (typeof tiers)[number]) =>
 {tiers.map((t) => (
 <div class:list={["tier-panel", { show: t.feature }]} data-panel={t.id}>
 <p class="tier-panel-tag"><strong>{t.name}:</strong> {t.tagline}</p>
+{t.note && <p class="tier-note">{t.note}</p>}
 <ul class="tier-panel-list">{t.includes.map((line) => <li><span class="tick" aria-hidden="true">✓</span>{line}</li>)}</ul>
 <a href={startHref(t)} class="btn btn-primary">Start with {t.name}</a>
 </div>
 ))}
 </div>
-<div class="brand-offer">
-<div class="brand-offer-copy">
-<p class="brand-offer-tag">Branding</p>
-<h3 class="brand-offer-title">Need a logo or a rebrand?</h3>
-<ul class="brand-offer-list">{brandIdentity.includes.map((line) => <li><span class="tick" aria-hidden="true">✓</span>{line}</li>)}</ul>
+<div class="extras">
+<div class="extra-card">
+<p class="extra-tag">Branding</p>
+<h3 class="extra-title">Need a logo or a rebrand?</h3>
+<div class="extra-option"><div><strong>{brandTidyUp.name}</strong><span>{brandTidyUp.desc}</span></div><span class="extra-price">{aud(brandTidyUp.price)}</span></div>
+<div class="extra-option"><div><strong>{brandIdentity.name}</strong><span>{brandIdentity.desc}</span></div><span class="extra-price">{aud(brandIdentity.price)}</span></div>
+<p class="extra-foot">On their own, or added to any package. <a href={brandHref} class="extra-ask">Ask about branding <span aria-hidden="true">→</span></a></p>
 </div>
-<div class="brand-offer-buy">
-<p class="brand-offer-price">{aud(brandIdentity.price)}</p>
-<p class="brand-offer-note">On its own, or added to any package.</p>
-<a href={brandHref} class="btn btn-primary">Ask about branding</a>
+<div class="extra-card">
+<p class="extra-tag">Website extra</p>
+<h3 class="extra-title">{selfEdit.name}</h3>
+<p class="extra-desc">Update your own website whenever you like, without waiting on us.</p>
+<ul class="extra-list">{selfEdit.includes.map((line) => <li><span class="tick" aria-hidden="true">✓</span>{line}</li>)}</ul>
+<p class="extra-foot"><span class="extra-price">{aud(selfEdit.price)}</span> <span class="extra-per">one-off</span> <a href={adminHref} class="extra-ask">Ask for this <span aria-hidden="true">→</span></a></p>
 </div>
 </div>
-<p style="font-size: 0.86rem; color: rgba(20,17,26,0.6); margin-top: 22px; text-align: center">Hosting and maintenance optional at {aud(maintenance)}/month. Domains registered at cost.</p>
+<p style="font-size: 0.86rem; color: rgba(20,17,26,0.6); margin-top: 22px; text-align: center"><strong style="color: #14111a">Hosting &amp; care plan, {aud(carePlan.price)}/month:</strong> {carePlan.includes}. {carePlan.firstMonthFree}. Domains registered at cost.</p>
 <a href={`${base}/quick-jobs`} class="quick-link">Not after a full website? <strong>See quick jobs from {aud(lowestQuickJobPrice)}</strong> <span aria-hidden="true">→</span></a>
 
 <div class="quote" id="quote" data-base-price={BASE_PRICE} data-founding-rate={FOUNDING_DISCOUNT_RATE} style="margin-top: 28px; border-radius: 22px; border: 1px solid rgba(20,17,26,0.12); background: #ffffff; overflow: hidden">
@@ -135,24 +147,39 @@ const startHref = (t: (typeof tiers)[number]) =>
 </section>
 
 <style>
-  .brand-offer {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px 40px;
+  .tier-note {
+    margin-top: -8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #5b2695;
+  }
+
+  .tier-note-dark {
+    color: #d8bff0;
+  }
+
+  .tier-panel .tier-note {
+    margin: 0 0 12px;
+  }
+
+  .extras {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
+    gap: 20px;
     margin-top: 24px;
-    padding: 28px 32px;
+  }
+
+  .extra-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 28px;
     border-radius: 24px;
     background: #ffffff;
     border: 1px solid rgba(20, 17, 26, 0.1);
   }
 
-  .brand-offer-copy {
-    flex: 1 1 420px;
-  }
-
-  .brand-offer-tag {
+  .extra-tag {
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.14em;
@@ -160,80 +187,96 @@ const startHref = (t: (typeof tiers)[number]) =>
     color: #5b2695;
   }
 
-  .brand-offer-title {
-    margin-top: 6px;
-    font-size: 1.45rem;
+  .extra-title {
+    font-size: 1.4rem;
   }
 
-  .brand-offer-list {
+  .extra-desc {
+    font-size: 0.92rem;
+    color: rgba(20, 17, 26, 0.68);
+  }
+
+  .extra-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 12px 0;
+    border-top: 1px solid rgba(20, 17, 26, 0.1);
+  }
+
+  .extra-option div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 0.86rem;
+    color: rgba(20, 17, 26, 0.64);
+  }
+
+  .extra-option strong {
+    font-size: 0.96rem;
+    color: #14111a;
+  }
+
+  .extra-price {
+    font-family: "Fraunces", serif;
+    font-size: 1.7rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: #2f1147;
+    white-space: nowrap;
+  }
+
+  .extra-per {
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: rgba(20, 17, 26, 0.6);
+  }
+
+  .extra-list {
     list-style: none;
-    margin: 14px 0 0;
+    margin: 0;
     padding: 0;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     font-size: 0.9rem;
-    color: rgba(20, 17, 26, 0.75);
+    color: rgba(20, 17, 26, 0.78);
   }
 
-  .brand-offer-list li {
+  .extra-list li {
     display: flex;
     gap: 8px;
     align-items: center;
   }
 
-  .brand-offer-buy {
+  .extra-foot {
+    margin-top: auto;
+    padding-top: 8px;
     display: flex;
-    flex-direction: column;
-    gap: 6px;
-    flex: 0 1 240px;
-  }
-
-  .brand-offer-price {
-    font-family: "Fraunces", serif;
-    font-size: 2.6rem;
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: -0.02em;
-    color: #2f1147;
-  }
-
-  .brand-offer-note {
-    margin-bottom: 8px;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 10px;
     font-size: 0.86rem;
     color: rgba(20, 17, 26, 0.6);
   }
 
-  /* Phones: two short tick columns, then price and button on one row. */
+  .extra-ask {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    margin-left: auto;
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: #5b2695;
+    text-decoration: none;
+  }
+
   @media (max-width: 560px) {
-    .brand-offer {
-      gap: 18px;
+    .extra-card {
       padding: 22px 20px;
-    }
-
-    .brand-offer-list {
-      gap: 8px 12px;
-      font-size: 0.84rem;
-    }
-
-    .brand-offer-buy {
-      flex: 1 1 100%;
-      flex-direction: row;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .brand-offer-price {
-      font-size: 2.2rem;
-    }
-
-    .brand-offer-note {
-      display: none;
-    }
-
-    .brand-offer-buy .btn {
-      flex: 1;
-      padding: 0 16px;
     }
   }
 
@@ -365,7 +408,7 @@ const startHref = (t: (typeof tiers)[number]) =>
     document.querySelectorAll("[data-quote-total]").forEach((el) => (el.textContent = aud(oneOff)));
     document.querySelectorAll("[data-quote-rrp]").forEach((el) => (el.textContent = aud(full)));
     document.querySelectorAll("[data-quote-monthly]").forEach((el) => {
-      el.textContent = monthly ? `One-off, plus ${aud(monthly)}/month maintenance` : "One-off, no lock-in";
+      el.textContent = monthly ? `One-off, plus ${aud(monthly)}/month hosting & care` : "One-off, no lock-in";
     });
   }
 
