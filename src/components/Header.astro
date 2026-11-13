@@ -221,7 +221,7 @@ const isCurrent = (href: string) => (href.replace(/\/$/, "") || "/") === path;
 
   // ---- Phones: bottom call-to-action bar ----
   // Shows after the first screen; steps aside while the page's own call to action, the
-  // footer or the cookie notice is on screen, and never shows on the contact page.
+  // quote builder, the footer or the cookie notice is on screen, and never shows on the contact page.
   const bar = document.getElementById("mobile-cta");
   if (bar && bar.dataset.path !== "/contact" && window.matchMedia("(max-width: 760px)").matches) {
     const blockers = new Set<Element>();
@@ -229,7 +229,7 @@ const isCurrent = (href: string) => (href.replace(/\/$/, "") || "/") === path;
       entries.forEach((e) => (e.isIntersecting ? blockers.add(e.target) : blockers.delete(e.target)));
       update();
     });
-    document.querySelectorAll(".cta-band-wrap, .site-footer, #contact").forEach((el) => watch.observe(el));
+    document.querySelectorAll(".cta-band-wrap, .site-footer, #contact, #quote").forEach((el) => watch.observe(el));
     const cookie = document.getElementById("cookie-banner");
 
     let shown = false;

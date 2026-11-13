@@ -77,11 +77,14 @@ const tier1Full = BASE_PRICE;
 const tier2Full = tier1Full + priceById.about + priceById.services + priceById.gallery;
 const tier3Full = tier2Full + priceById.booking + priceById.seo + priceById["booking-page"];
 
+// `parts` lists the quote-builder options a package already includes (they show as
+// "Included" in the builder and can't be added twice).
 // Growth and Complete also include some quick jobs, so the bigger packages are the clear best
 // value: Complete covers everything in the Starter bundle.
 export const tiers = [
   {
     id: "essentials",
+    parts: [] as string[],
     name: "Essentials",
     tagline: "A sharp one-pager that gets you found and called.",
     full: tier1Full,
@@ -90,6 +93,7 @@ export const tiers = [
   },
   {
     id: "growth",
+    parts: ["about", "services", "gallery"],
     name: "Growth",
     tagline: "The full shopfront — services, story and gallery.",
     full: tier2Full,
@@ -98,6 +102,7 @@ export const tiers = [
   },
   {
     id: "complete",
+    parts: ["about", "services", "gallery", "booking", "seo", "booking-page"],
     name: "Complete",
     tagline: "Bookings and local search, done properly.",
     full: tier3Full,
