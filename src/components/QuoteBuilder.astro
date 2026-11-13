@@ -1,0 +1,438 @@
+---
+// One quote builder, used in two places:
+// - mode "pricing": pick a package, add extras, "Send me this quote" (Pricing page)
+// - mode "form": the same picks inside the contact form, plus "Something smaller" (quick
+//   jobs, branding and other extras on their own) and "Not sure yet" (a free business check).
+//   It writes a plain summary into the form, so the email and WhatsApp say exactly what's wanted.
+import {
+  tiers, pageOptions, featureOptions, quickJobs, starterBundle, brandTidyUp, brandIdentity,
+  selfEdit, carePlan, FOUNDING_DISCOUNT_RATE, aud, founding,
+} from "../lib/pricing";
+
+interface Props {
+  mode: "pricing" | "form";
+}
+const { mode } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const startTier = tiers.find((t) => t.feature) ?? tiers[0];
+// The Pricing builder starts on the recommended package; the form starts on "Not sure yet".
+const startPkg = mode === "pricing" ? startTier.id : "check";
+const startParts: string[] = mode === "pricing" ? startTier.parts : [];
+
+// Chips show what you actually pay: the founding price for most website extras, the full
+// price for fixed ones (branding, admin login) and monthly ones.
+type SiteOption = { id: string; label: string; price: number; recurring?: boolean; fixed?: boolean; desc?: string };
+const sitePrice = (o: SiteOption) => (o.recurring || o.fixed ? o.price : founding(o.price));
+const siteChip = (o: SiteOption) => `+${aud(sitePrice(o))}${o.recurring ? "/mo" : ""}`;
+
+// Things that can be bought without a website package.
+const smallOptions = [
+  ...quickJobs.map((j) => ({ id: `job-${j.id}`, label: j.name, price: j.price, suffix: j.per ? ` ${j.per}` : "", recurring: false })),
+  { id: "job-starter-bundle", label: starterBundle.name, price: starterBundle.price, suffix: "", recurring: false },
+  { id: "brand-tidy", label: brandTidyUp.name, price: brandTidyUp.price, suffix: "", recurring: false },
+  { id: "brand", label: brandIdentity.name, price: brandIdentity.price, suffix: "", recurring: false },
+  { id: "admin", label: selfEdit.name, price: selfEdit.price, suffix: "", recurring: false },
+  { id: "maintenance", label: "Hosting & care", price: carePlan.price, suffix: "/mo", recurring: true },
+];
+
+const included = (id: string) => startParts.includes(id);
+const isTier = tiers.some((t) => t.id === startPkg);
+---
+
+<div class:list={["qb", `qb-${mode}`]} data-qb={mode} data-rate={FOUNDING_DISCOUNT_RATE} data-base={base}>
+<div class="qb-picks">
+<div>
+<p class="quote-step">{mode === "pricing" ? "1. Pick a package" : "What would you like?"}</p>
+<div class="pkgs" role="group" aria-label={mode === "pricing" ? "Package" : "What would you like?"}>
+{tiers.map((t) => (
+<button type="button" class:list={["pkg", { on: t.id === startPkg }]} aria-pressed={t.id === startPkg ? "true" : "false"} data-pkg={t.id} data-name={`${t.name} package`} data-full={t.full} data-parts={t.parts.join(",")}><span class="pkg-name">{t.name}</span><span class="pkg-price">{aud(founding(t.full))}</span></button>
+))}
+{mode === "form" && (
+<>
+<button type="button" class="pkg pkg-wide" aria-pressed="false" data-pkg="small" data-name="Something smaller"><span class="pkg-name">Something smaller</span><span class="pkg-sub">Quick jobs, logos &amp; extras</span></button>
+<button type="button" class:list={["pkg", "pkg-wide", { on: startPkg === "check" }]} aria-pressed={startPkg === "check" ? "true" : "false"} data-pkg="check" data-name="Not sure yet"><span class="pkg-name">Not sure yet</span><span class="pkg-sub">Free business check</span></button>
+</>
+)}
+</div>
+</div>
+
+<div class="qb-site" hidden={!isTier}>
+<div>
+<p class="quote-step">{mode === "pricing" ? "2. " : ""}Add extra pages <span>· Home &amp; Contact always included</span></p>
+<div class="chips">
+{pageOptions.map((o) => <button type="button" class:list={["chip", { inc: included(o.id) }]} aria-pressed="false" disabled={included(o.id)} data-id={o.id} data-label={o.label} data-price={o.price}>{o.label} <span class="chip-price" data-text={siteChip(o)}>{included(o.id) ? "✓ Included" : siteChip(o)}</span></button>)}
+</div>
+</div>
+<div>
+<p class="quote-step">{mode === "pricing" ? "3. " : ""}Add extras</p>
+<div class="chips">
+{featureOptions.map((o) => <button type="button" class:list={["chip", { inc: included(o.id) }]} aria-pressed="false" disabled={included(o.id)} data-id={o.id} data-label={o.label} data-price={o.price} data-recurring={o.recurring ? "1" : undefined} data-fixed={o.fixed ? "1" : undefined} title={o.desc}>{o.label} <span class="chip-price" data-text={siteChip(o)}>{included(o.id) ? "✓ Included" : siteChip(o)}</span></button>)}
+</div>
+</div>
+</div>
+
+{mode === "form" && (
+<div class="qb-small" hidden>
+<p class="quote-step">Pick what you need</p>
+<div class="chips">
+{smallOptions.map((o) => <button type="button" class="chip" aria-pressed="false" data-id={o.id} data-label={o.label} data-price={o.price} data-recurring={o.recurring ? "1" : undefined}>{o.label} <span class="chip-price">+{aud(o.price)}{o.suffix}</span></button>)}
+</div>
+</div>
+)}
+</div>
+
+{mode === "pricing" ? (
+<div class="qb-estimate">
+<span class="qb-estimate-tag">Your estimate</span>
+<span class="qb-estimate-row"><span class="qb-estimate-total"><span data-quote-total aria-live="polite">{aud(founding(startTier.full))}</span></span><span class="qb-estimate-rrp"><span data-quote-rrp>{aud(startTier.full)}</span></span></span>
+<span class="qb-estimate-note"><span data-quote-monthly>One-off, no lock-in</span></span>
+<a href={`${base}/contact`} class="btn btn-violet" data-qb-send style="margin-top: 14px">Send me this quote</a>
+<span class="qb-estimate-small">No payment, no obligation.</span>
+</div>
+) : (
+<p class="qb-total" hidden>Your estimate: <strong data-quote-total aria-live="polite"></strong> <span data-quote-monthly></span></p>
+)}
+</div>
+
+<style>
+  .qb [hidden] {
+    display: none !important;
+  }
+
+  .qb-pricing {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    padding: 4px 24px 26px;
+    border-top: 1px solid rgba(20, 17, 26, 0.08);
+  }
+
+  .qb-pricing .qb-picks {
+    flex: 1 1 520px;
+    padding-top: 22px;
+  }
+
+  .qb-picks,
+  .qb-site {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .qb-form,
+  .qb-form .qb-picks,
+  .qb-form .qb-site {
+    gap: 16px;
+  }
+
+  .qb-form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .quote-step {
+    margin-bottom: 10px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(20, 17, 26, 0.6);
+  }
+
+  .qb-form .quote-step {
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+    letter-spacing: 0;
+    text-transform: none;
+    color: rgba(20, 17, 26, 0.7);
+  }
+
+  .quote-step span {
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 600;
+  }
+
+  .pkgs {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .pkg {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-height: 62px;
+    padding: 10px 8px;
+    border-radius: 16px;
+    border: 1.5px solid rgba(20, 17, 26, 0.16);
+    background: #ffffff;
+    color: #14111a;
+    font-family: inherit;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+  }
+
+  .pkg-wide {
+    grid-column: span 3;
+  }
+
+  .pkg-name {
+    font-size: 0.86rem;
+    font-weight: 700;
+  }
+
+  .pkg-price {
+    font-family: "Fraunces", serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .pkg-sub {
+    font-size: 0.76rem;
+    color: rgba(20, 17, 26, 0.6);
+  }
+
+  .pkg.on {
+    border-color: #2f1147;
+    background: #2f1147;
+    color: #ffffff;
+  }
+
+  .pkg.on .pkg-sub {
+    color: rgba(243, 238, 250, 0.75);
+  }
+
+  @media (hover: hover) {
+    .pkg:not(.on):hover {
+      border-color: rgba(47, 17, 71, 0.45);
+    }
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .chip-price {
+    opacity: 0.7;
+  }
+
+  .qb :global(.chip.inc) {
+    cursor: default;
+    border-color: rgba(91, 42, 150, 0.25);
+    background: rgba(91, 42, 150, 0.07);
+    color: rgba(20, 17, 26, 0.55);
+  }
+
+  .qb :global(.chip.inc .chip-price) {
+    opacity: 1;
+    color: #5b2695;
+    font-weight: 700;
+  }
+
+  .qb-total {
+    margin-top: 14px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: #f3f0f8;
+    font-size: 0.92rem;
+    color: rgba(20, 17, 26, 0.72);
+  }
+
+  .qb-total strong {
+    font-family: "Fraunces", serif;
+    font-size: 1.2rem;
+    color: #2f1147;
+  }
+
+  .qb-estimate {
+    flex: 1 1 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 22px;
+    margin-top: 22px;
+    border-radius: 18px;
+    background: #2f1147;
+    color: #f3eefa;
+    align-self: flex-start;
+  }
+
+  .qb-estimate-tag {
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #d8bff0;
+  }
+
+  .qb-estimate-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .qb-estimate-total {
+    font-family: "Fraunces", serif;
+    font-size: 2.6rem;
+    font-weight: 600;
+    line-height: 1.05;
+    color: #ffffff;
+  }
+
+  .qb-estimate-rrp {
+    font-size: 1rem;
+    text-decoration: line-through;
+    color: rgba(243, 238, 250, 0.5);
+  }
+
+  .qb-estimate-note {
+    font-size: 0.86rem;
+    color: rgba(243, 238, 250, 0.72);
+  }
+
+  .qb-estimate-small {
+    font-size: 0.78rem;
+    color: rgba(243, 238, 250, 0.6);
+    text-align: center;
+  }
+</style>
+
+<script>
+  import { contactHref, readPrefill } from "../lib/prefill";
+
+  const root = document.querySelector<HTMLElement>("[data-qb]");
+  if (root) {
+    const mode = root.dataset.qb;
+    const rate = Number(root.dataset.rate ?? 0.5);
+    const base = root.dataset.base ?? "";
+    const aud = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
+
+    const pkgs = Array.from(root.querySelectorAll<HTMLButtonElement>(".pkg"));
+    const siteBox = root.querySelector<HTMLElement>(".qb-site");
+    const smallBox = root.querySelector<HTMLElement>(".qb-small");
+    const siteChips = Array.from(siteBox?.querySelectorAll<HTMLButtonElement>(".chip") ?? []);
+    const smallChips = Array.from(smallBox?.querySelectorAll<HTMLButtonElement>(".chip") ?? []);
+    let pkg = pkgs.find((p) => p.classList.contains("on")) ?? pkgs[0];
+
+    const kindOf = (p: HTMLButtonElement) => (p.dataset.pkg === "small" || p.dataset.pkg === "check" ? p.dataset.pkg : "site");
+    const tick = (c: HTMLButtonElement, on: boolean) => {
+      c.classList.toggle("on", on);
+      c.setAttribute("aria-pressed", String(on));
+    };
+
+    // Choosing a package shows its extras and locks what it already includes ("✓ Included").
+    function select(next: HTMLButtonElement) {
+      pkg = next;
+      pkgs.forEach((p) => {
+        p.classList.toggle("on", p === next);
+        p.setAttribute("aria-pressed", String(p === next));
+      });
+      const kind = kindOf(next);
+      if (siteBox) siteBox.hidden = kind !== "site";
+      if (smallBox) smallBox.hidden = kind !== "small";
+      const parts = kind === "site" ? (next.dataset.parts ?? "").split(",").filter(Boolean) : [];
+      siteChips.forEach((c) => {
+        const inc = parts.includes(c.dataset.id ?? "");
+        c.classList.toggle("inc", inc);
+        c.disabled = inc;
+        if (inc) tick(c, false);
+        const price = c.querySelector<HTMLElement>(".chip-price");
+        if (price) price.textContent = inc ? "✓ Included" : price.dataset.text ?? "";
+      });
+      update();
+    }
+
+    // What's been picked, in plain words, with the price.
+    function state() {
+      const kind = kindOf(pkg);
+      if (kind === "check") return { kind, ids: [] as string[], total: 0, full: 0, monthly: 0, list: "", price: "", empty: true };
+      const picked = (kind === "small" ? smallChips : siteChips).filter((c) => c.classList.contains("on") && !c.disabled);
+      let full = kind === "small" ? 0 : Number(pkg.dataset.full ?? 0);
+      let fixed = 0;
+      let monthly = 0;
+      picked.forEach((c) => {
+        const price = Number(c.dataset.price);
+        if (c.hasAttribute("data-recurring")) monthly += price;
+        else if (kind === "small" || c.hasAttribute("data-fixed")) fixed += price;
+        else full += price;
+      });
+      const total = kind === "small" ? fixed : full * rate + fixed;
+      const list = [kind === "site" ? pkg.dataset.name : "", ...picked.map((c) => c.dataset.label)].filter(Boolean).join(" + ");
+      const price = [total ? aud(total) : "", monthly ? `${aud(monthly)}/month` : ""].filter(Boolean).join(" + ");
+      return { kind, ids: picked.map((c) => c.dataset.id ?? ""), total, full: full + fixed, monthly, list, price, empty: !list };
+    }
+
+    function update() {
+      const s = state();
+      const headline = s.total || !s.monthly ? aud(s.total) : `${aud(s.monthly)}/mo`;
+      document.querySelectorAll("[data-quote-total]").forEach((el) => (el.textContent = headline));
+      document.querySelectorAll("[data-quote-rrp]").forEach((el) => (el.textContent = aud(s.full)));
+      document.querySelectorAll("[data-quote-monthly]").forEach((el) => {
+        if (mode === "form") el.textContent = s.monthly && s.total ? `+ ${aud(s.monthly)}/month` : "";
+        else el.textContent = s.monthly && s.total ? `One-off, plus ${aud(s.monthly)}/month hosting & care` : s.monthly ? "Hosting & care" : "One-off, no lock-in";
+      });
+
+      if (mode !== "form") return;
+      const totalLine = root?.querySelector<HTMLElement>(".qb-total");
+      if (totalLine) totalLine.hidden = s.empty;
+      // Hidden form fields: these are what arrive by email (and feed the WhatsApp message).
+      const wants = s.kind === "check" ? "A free business check" : s.empty ? "Something smaller (not ticked yet)" : `${s.list} — ${s.price}`;
+      const set = (id: string, v: string) => {
+        const el = document.getElementById(id) as HTMLInputElement | null;
+        if (el) el.value = v;
+      };
+      set("service", s.kind === "site" ? "Website" : s.kind === "small" ? "Quick jobs & extras" : "Free business check");
+      set("project", wants);
+      set("form-subject", `New enquiry — ${s.kind === "check" || s.empty ? wants : `${s.list} (${s.price})`}`);
+    }
+
+    pkgs.forEach((p) => p.addEventListener("click", () => select(p)));
+    [...siteChips, ...smallChips].forEach((c) =>
+      c.addEventListener("click", () => {
+        if (c.disabled) return;
+        tick(c, !c.classList.contains("on"));
+        update();
+      })
+    );
+
+    if (mode === "pricing") {
+      // "Send me this quote": open the contact form with the same picks.
+      const send = root.querySelector<HTMLAnchorElement>("[data-qb-send]");
+      send?.addEventListener("click", () => {
+        send.href = contactHref(base, { pkg: pkg.dataset.pkg ?? "growth", items: state().ids });
+      });
+    } else {
+      // Arriving from a button elsewhere: set the picks, then tidy the address bar.
+      const pre = readPrefill(window.location.search);
+      const target = pre && pkgs.find((p) => p.dataset.pkg === pre.pkg);
+      if (pre && target) {
+        select(target);
+        const pool = pre.pkg === "small" ? smallChips : siteChips;
+        pre.items?.forEach((id) => {
+          const c = pool.find((x) => x.dataset.id === id);
+          if (c && !c.disabled) tick(c, true);
+        });
+        history.replaceState(null, "", window.location.pathname + window.location.hash);
+      }
+      // "Send another enquiry" resets the form: start again from "Not sure yet".
+      root.closest("form")?.addEventListener("reset", () => {
+        window.setTimeout(() => {
+          [...siteChips, ...smallChips].forEach((c) => tick(c, false));
+          const check = pkgs.find((p) => p.dataset.pkg === "check");
+          if (check) select(check);
+        });
+      });
+    }
+
+    update();
+  }
+</script>

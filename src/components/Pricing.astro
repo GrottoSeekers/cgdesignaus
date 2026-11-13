@@ -1,10 +1,10 @@
 ---
 // Prices live in src/lib/pricing.ts so the packages, quote builder and quick jobs always agree.
 import {
-  BASE_PRICE, FOUNDING_DISCOUNT_RATE, pageOptions, featureOptions, tiers, carePlan,
-  lowestQuickJobPrice, brandTidyUp, brandIdentity, selfEdit, aud, founding,
+  FOUNDING_DISCOUNT_RATE, tiers, carePlan, lowestQuickJobPrice, brandTidyUp, brandIdentity, selfEdit, aud, founding,
 } from "../lib/pricing";
 import { contactHref } from "../lib/prefill";
+import QuoteBuilder from "./QuoteBuilder.astro";
 
 interface Props {
   /** "h1" when this section opens its own page. */
@@ -13,35 +13,12 @@ interface Props {
 const { heading: Heading = "h2" } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-// Chips show what you actually pay, so the estimate visibly adds up: the founding price for
-// most extras, the full price for fixed ones (branding, admin login) and monthly ones.
-const chip = (o: { label: string; price: number; recurring?: boolean; fixed?: boolean }) =>
-  `+${aud(o.recurring || o.fixed ? o.price : founding(o.price))}${o.recurring ? "/mo" : ""}`;
-const brandHref = contactHref(base, {
-  service: "Branding",
-  pick: "Branding",
-  price: `from ${aud(brandTidyUp.price)}`,
-  details: `Branding: ${brandTidyUp.name} (${aud(brandTidyUp.price)}) or ${brandIdentity.name} (${aud(brandIdentity.price)})`,
-});
-const careHref = contactHref(base, {
-  service: "Not Sure",
-  pick: "Hosting & care plan",
-  price: `${aud(carePlan.price)}/month`,
-  details: `Hosting & care plan — ${aud(carePlan.price)}/month (${carePlan.firstMonthFree.toLowerCase()})`,
-});
-const adminHref = contactHref(base, {
-  service: "Quick Job",
-  pick: selfEdit.name,
-  price: `${aud(selfEdit.price)} one-off`,
-  details: `Website extra: ${selfEdit.name} — ${aud(selfEdit.price)} one-off`,
-});
-const startHref = (t: (typeof tiers)[number]) =>
-  contactHref(base, {
-    service: "New Site",
-    pick: `${t.name} package`,
-    price: aud(founding(t.full)),
-    details: `${t.name} package — ${aud(founding(t.full))} (founding client price, full price ${aud(t.full)})`,
-  });
+// Buttons open the contact form with the quote builder already set.
+const startTier = tiers.find((t) => t.feature) ?? tiers[0];
+const startHref = (t: (typeof tiers)[number]) => contactHref(base, { pkg: t.id });
+const brandHref = contactHref(base, { pkg: "small" });
+const adminHref = contactHref(base, { pkg: "small", items: ["admin"] });
+const careHref = contactHref(base, { pkg: "small", items: ["maintenance"] });
 ---
 
 <section id="pricing" style="position: relative; overflow: hidden; padding: 112px 0 104px; background: #f3f0f8; border-top: 1px solid rgba(20,17,26,0.1); border-bottom: 1px solid rgba(20,17,26,0.1)">
@@ -124,37 +101,15 @@ const startHref = (t: (typeof tiers)[number]) =>
 </div>
 <a href={`${base}/quick-jobs`} class="quick-link">Not after a full website? <strong>See quick jobs from {aud(lowestQuickJobPrice)}</strong> <span aria-hidden="true">→</span></a>
 
-<div class="quote" id="quote" data-base-price={BASE_PRICE} data-founding-rate={FOUNDING_DISCOUNT_RATE} style="margin-top: 28px; border-radius: 22px; border: 1px solid rgba(20,17,26,0.12); background: #ffffff; overflow: hidden">
+<div class="quote" id="quote" style="margin-top: 28px; border-radius: 22px; border: 1px solid rgba(20,17,26,0.12); background: #ffffff; overflow: hidden">
 <button type="button" class="quote-toggle" id="quote-toggle" aria-expanded="false" aria-controls="quote-body" style="display: flex; align-items: center; gap: 16px; width: 100%; padding: 20px 24px; border: 0; background: transparent; text-align: left; font-family: inherit; color: #14111a; cursor: pointer">
 <span class="quote-chev" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(47,17,71,0.1); color: #2f1147; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-<span style="display: flex; flex-direction: column; flex: 1"><span style="font-weight: 700; font-size: 1.05rem">Or build your own quote</span><span style="font-size: 0.86rem; color: rgba(20,17,26,0.6)">Pick pages and extras, and watch the price update</span></span>
-<span style="font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 600; color: #2f1147"><span data-quote-total>{aud(founding(BASE_PRICE))}</span></span>
+<span style="display: flex; flex-direction: column; flex: 1"><span style="font-weight: 700; font-size: 1.05rem">Add extras to a package</span><span style="font-size: 0.86rem; color: rgba(20,17,26,0.6)">Pick a package, add what you need, see your price</span></span>
+<span style="font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 600; color: #2f1147"><span data-quote-total>{aud(founding(startTier.full))}</span></span>
 </button>
 <div class="quote-body" id="quote-body">
 <div style="overflow: hidden">
-<div class="quote-inner" style="display: flex; flex-wrap: wrap; gap: 32px; padding: 4px 24px 26px; border-top: 1px solid rgba(20,17,26,0.08)">
-<div style="flex: 1 1 520px; display: flex; flex-direction: column; gap: 22px; padding-top: 22px">
-<div>
-<p style="font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(20,17,26,0.6); margin-bottom: 10px">Pages <span style="text-transform: none; letter-spacing: 0; font-weight: 600">· Home &amp; Contact included</span></p>
-<div style="display: flex; flex-wrap: wrap; gap: 8px">
-{pageOptions.map((o) => <button type="button" class="chip" aria-pressed="false" data-kind="page" data-label={o.label} data-price={o.price}>{o.label} <span style="opacity: 0.7">{chip(o)}</span></button>)}
-</div>
-</div>
-<div>
-<p style="font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(20,17,26,0.6); margin-bottom: 10px">Extras</p>
-<div style="display: flex; flex-wrap: wrap; gap: 8px">
-{featureOptions.map((o) => <button type="button" class="chip" aria-pressed="false" data-kind="extra" data-label={o.label} data-price={o.price} data-recurring={o.recurring ? "1" : undefined} data-fixed={o.fixed ? "1" : undefined} title={o.desc}>{o.label} <span style="opacity: 0.7">{chip(o)}</span></button>)}
-</div>
-</div>
-</div>
-<div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 6px; padding: 22px; margin-top: 22px; border-radius: 18px; background: #2f1147; color: #f3eefa">
-<span style="font-size: 0.74rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #d8bff0">Your estimate</span>
-<span style="display: flex; align-items: baseline; gap: 10px"><span style="font-family: 'Fraunces', serif; font-size: 2.6rem; font-weight: 600; line-height: 1.05; color: #ffffff"><span data-quote-total aria-live="polite">{aud(founding(BASE_PRICE))}</span></span><span style="font-size: 1rem; text-decoration: line-through; color: rgba(243,238,250,0.5)"><span data-quote-rrp>{aud(BASE_PRICE)}</span></span></span>
-<span style="font-size: 0.86rem; color: rgba(243,238,250,0.72)"><span data-quote-monthly>One-off, no lock-in</span></span>
-<a href={`${base}/contact`} class="btn btn-violet" id="quote-send" style="margin-top: 14px">Send me this quote</a>
-<span style="font-size: 0.78rem; color: rgba(243,238,250,0.6); text-align: center">No payment, no obligation.</span>
-</div>
-</div>
+<QuoteBuilder mode="pricing" />
 </div>
 </div>
 </div>
@@ -359,7 +314,6 @@ const startHref = (t: (typeof tiers)[number]) =>
 
 <script>
   import { animate, inView } from "motion";
-  import { contactHref } from "../lib/prefill";
 
   const aud = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
 
@@ -422,70 +376,13 @@ const startHref = (t: (typeof tiers)[number]) =>
     })
   );
 
-  // ---- Quote builder ----
-  const quote = document.getElementById("quote");
+  // ---- Quote builder: open and close (the builder itself is QuoteBuilder.astro) ----
   const toggle = document.getElementById("quote-toggle");
   const body = document.getElementById("quote-body");
-  const BASE_PRICE = Number(quote?.dataset.basePrice ?? 580);
-  const FOUNDING_RATE = Number(quote?.dataset.foundingRate ?? 0.5);
-  const chips = Array.from(document.querySelectorAll<HTMLButtonElement>(".quote .chip"));
-
   toggle?.addEventListener("click", () => {
     const open = !body?.classList.contains("open");
     body?.classList.toggle("open", open);
     toggle.querySelector(".quote-chev")?.classList.toggle("open", open);
     toggle.setAttribute("aria-expanded", String(open));
-  });
-
-  function calculate() {
-    const picked = chips.filter((c) => c.classList.contains("on"));
-    let full = BASE_PRICE;
-    let fixed = 0; // extras the founding discount doesn't apply to (branding)
-    let monthly = 0;
-    picked.forEach((c) => {
-      const price = Number(c.dataset.price);
-      if (c.hasAttribute("data-recurring")) monthly += price;
-      else if (c.hasAttribute("data-fixed")) fixed += price;
-      else full += price;
-    });
-    return { picked, full: full + fixed, oneOff: full * FOUNDING_RATE + fixed, monthly };
-  }
-
-  function updateQuote() {
-    const { full, oneOff, monthly } = calculate();
-    document.querySelectorAll("[data-quote-total]").forEach((el) => (el.textContent = aud(oneOff)));
-    document.querySelectorAll("[data-quote-rrp]").forEach((el) => (el.textContent = aud(full)));
-    document.querySelectorAll("[data-quote-monthly]").forEach((el) => {
-      el.textContent = monthly ? `One-off, plus ${aud(monthly)}/month hosting & care` : "One-off, no lock-in";
-    });
-  }
-
-  chips.forEach((c) =>
-    c.addEventListener("click", () => {
-      const on = !c.classList.contains("on");
-      c.classList.toggle("on", on);
-      c.setAttribute("aria-pressed", String(on));
-      updateQuote();
-    })
-  );
-
-  // "Send me this quote": open the contact page with the estimate filled in.
-  const quoteSend = document.getElementById("quote-send") as HTMLAnchorElement | null;
-  quoteSend?.addEventListener("click", () => {
-    const { picked, oneOff, monthly } = calculate();
-    const pages = picked.filter((c) => c.dataset.kind === "page").map((c) => c.dataset.label);
-    const extras = picked.filter((c) => c.dataset.kind === "extra").map((c) => c.dataset.label);
-    const summary = [
-      "Website build",
-      pages.length ? `+ ${pages.join(", ")}` : "",
-      extras.length ? `with ${extras.join(", ")}` : "",
-    ].filter(Boolean);
-    const price = `${aud(oneOff)}${monthly ? ` + ${aud(monthly)}/mo` : ""}`;
-    quoteSend.href = contactHref(quoteSend.pathname.replace(/\/contact\/?$/, ""), {
-      service: "New Site",
-      pick: "Your estimate",
-      price,
-      details: `${summary.join(" ")} — estimated ${price} (founding client discount applied)`,
-    });
   });
 </script>
