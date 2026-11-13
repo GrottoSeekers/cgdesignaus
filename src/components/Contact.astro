@@ -73,7 +73,7 @@ const nextSteps = [
 <input type="checkbox" name="botcheck" style="display: none;" tabindex="-1" autocomplete="off">
 <input type="hidden" id="project" name="what_they_want" value="A free business check">
 </form>
-<div class="form-success" id="form-success" hidden>
+<div class="form-success" id="form-success" tabindex="-1" role="status" hidden>
 <svg class="success-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle class="success-icon-circle" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle><path class="success-icon-check" d="m8 12.5 2.5 2.5L16 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 <h3>Got it — thanks!</h3>
 <p>We'll take a look and get back to you within one business day.</p>
@@ -357,7 +357,16 @@ const nextSteps = [
       });
       if (res.ok) {
         form.classList.add("is-hidden");
-        if (successPanel) successPanel.hidden = false;
+        if (successPanel) {
+          successPanel.hidden = false;
+          // The form disappears, so the page gets shorter; bring the thank-you message
+          // into view instead of leaving the visitor looking at the footer.
+          requestAnimationFrame(() => {
+            const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            successPanel.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+            successPanel.focus({ preventScroll: true });
+          });
+        }
       } else if (submitError) {
         submitError.hidden = false;
       }
@@ -375,6 +384,7 @@ const nextSteps = [
     if (submitError) submitError.hidden = true;
     successPanel.hidden = true;
     form.classList.remove("is-hidden");
+    form.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
   // WhatsApp: draft a message from whatever the visitor has filled in so far.

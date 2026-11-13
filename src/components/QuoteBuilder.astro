@@ -25,6 +25,7 @@ const startParts: string[] = mode === "pricing" ? startTier.parts : [];
 type SiteOption = { id: string; label: string; price: number; recurring?: boolean; fixed?: boolean; desc?: string };
 const sitePrice = (o: SiteOption) => (o.recurring || o.fixed ? o.price : founding(o.price));
 const siteChip = (o: SiteOption) => `+${aud(sitePrice(o))}${o.recurring ? "/mo" : ""}`;
+const discounted = (o: SiteOption) => !o.recurring && !o.fixed;
 
 // Things that can be bought without a website package.
 const smallOptions = [
@@ -46,7 +47,7 @@ const isTier = tiers.some((t) => t.id === startPkg);
 <p class="quote-step">{mode === "pricing" ? "1. Pick a package" : "What would you like?"}</p>
 <div class="pkgs" role="group" aria-label={mode === "pricing" ? "Package" : "What would you like?"}>
 {tiers.map((t) => (
-<button type="button" class:list={["pkg", { on: t.id === startPkg }]} aria-pressed={t.id === startPkg ? "true" : "false"} data-pkg={t.id} data-name={`${t.name} package`} data-full={t.full} data-parts={t.parts.join(",")}><span class="pkg-name">{t.name}</span><span class="pkg-price">{aud(founding(t.full))}</span></button>
+<button type="button" class:list={["pkg", { on: t.id === startPkg }]} aria-pressed={t.id === startPkg ? "true" : "false"} data-pkg={t.id} data-name={`${t.name} package`} data-full={t.full} data-parts={t.parts.join(",")}><span class="pkg-name">{t.name}</span><span class="pkg-prices"><span class="pkg-price">{aud(founding(t.full))}</span><s class="pkg-was">{aud(t.full)}</s></span></button>
 ))}
 {mode === "form" && (
 <>
@@ -61,13 +62,13 @@ const isTier = tiers.some((t) => t.id === startPkg);
 <div>
 <p class="quote-step">{mode === "pricing" ? "2. " : ""}Add extra pages <span>· Home &amp; Contact always included</span></p>
 <div class="chips">
-{pageOptions.map((o) => <button type="button" class:list={["chip", { inc: included(o.id) }]} aria-pressed="false" disabled={included(o.id)} data-id={o.id} data-label={o.label} data-price={o.price}>{o.label} <span class="chip-price" data-text={siteChip(o)}>{included(o.id) ? "✓ Included" : siteChip(o)}</span></button>)}
+{pageOptions.map((o) => <button type="button" class:list={["chip", { inc: included(o.id) }]} aria-pressed="false" disabled={included(o.id)} data-id={o.id} data-label={o.label} data-price={o.price}>{o.label} {discounted(o) && <s class="chip-was">{aud(o.price)}</s>} <span class="chip-price" data-text={siteChip(o)}>{included(o.id) ? "✓ Included" : siteChip(o)}</span></button>)}
 </div>
 </div>
 <div>
 <p class="quote-step">{mode === "pricing" ? "3. " : ""}Add extras</p>
 <div class="chips">
-{featureOptions.map((o) => <button type="button" class:list={["chip", { inc: included(o.id) }]} aria-pressed="false" disabled={included(o.id)} data-id={o.id} data-label={o.label} data-price={o.price} data-recurring={o.recurring ? "1" : undefined} data-fixed={o.fixed ? "1" : undefined} title={o.desc}>{o.label} <span class="chip-price" data-text={siteChip(o)}>{included(o.id) ? "✓ Included" : siteChip(o)}</span></button>)}
+{featureOptions.map((o) => <button type="button" class:list={["chip", { inc: included(o.id) }]} aria-pressed="false" disabled={included(o.id)} data-id={o.id} data-label={o.label} data-price={o.price} data-recurring={o.recurring ? "1" : undefined} data-fixed={o.fixed ? "1" : undefined} title={o.desc}>{o.label} {discounted(o) && <s class="chip-was">{aud(o.price)}</s>} <span class="chip-price" data-text={siteChip(o)}>{included(o.id) ? "✓ Included" : siteChip(o)}</span></button>)}
 </div>
 </div>
 </div>
@@ -91,7 +92,7 @@ const isTier = tiers.some((t) => t.id === startPkg);
 <span class="qb-estimate-small">No payment, no obligation.</span>
 </div>
 ) : (
-<p class="qb-total" hidden>Your estimate: <strong data-quote-total aria-live="polite"></strong> <span data-quote-monthly></span></p>
+<p class="qb-total" hidden>Your estimate: <strong data-quote-total aria-live="polite"></strong> <s class="qb-total-was" data-quote-rrp></s> <span data-quote-monthly></span></p>
 )}
 </div>
 
@@ -192,6 +193,38 @@ const isTier = tiers.some((t) => t.id === startPkg);
     font-family: "Fraunces", serif;
     font-size: 1.25rem;
     font-weight: 600;
+  }
+
+  .pkg-prices {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0 6px;
+  }
+
+  .pkg-was {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: rgba(20, 17, 26, 0.45);
+  }
+
+  .pkg.on .pkg-was {
+    color: rgba(243, 238, 250, 0.6);
+  }
+
+  .chip-was {
+    font-size: 0.8em;
+    opacity: 0.5;
+  }
+
+  .qb :global(.chip.inc .chip-was) {
+    display: none;
+  }
+
+  .qb-total-was {
+    font-size: 0.86rem;
+    color: rgba(20, 17, 26, 0.45);
   }
 
   .pkg-sub {
@@ -375,7 +408,10 @@ const isTier = tiers.some((t) => t.id === startPkg);
       const s = state();
       const headline = s.total || !s.monthly ? aud(s.total) : `${aud(s.monthly)}/mo`;
       document.querySelectorAll("[data-quote-total]").forEach((el) => (el.textContent = headline));
-      document.querySelectorAll("[data-quote-rrp]").forEach((el) => (el.textContent = aud(s.full)));
+      document.querySelectorAll<HTMLElement>("[data-quote-rrp]").forEach((el) => {
+        el.textContent = aud(s.full);
+        el.hidden = Math.round(s.full) === Math.round(s.total);
+      });
       document.querySelectorAll("[data-quote-monthly]").forEach((el) => {
         if (mode === "form") el.textContent = s.monthly && s.total ? `+ ${aud(s.monthly)}/month` : "";
         else el.textContent = s.monthly && s.total ? `One-off, plus ${aud(s.monthly)}/month hosting & care` : s.monthly ? "Hosting & care" : "One-off, no lock-in";
