@@ -66,8 +66,9 @@ const nextSteps = [
 <span class="field-error" id="err-captcha" role="alert"></span>
 </div>
 <button type="submit" class="btn btn-primary send-btn" id="submit-btn" style="min-height: 56px; font-family: inherit; font-size: 1rem"><span class="spinner" aria-hidden="true"></span><span class="btn-label">Send it over</span> <svg class="send-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
-<p class="submit-error" id="submit-error" role="alert" hidden>Something went wrong sending that. Please email us directly at <a href="mailto:info@cgdesignaus.com">info@cgdesignaus.com</a> instead.</p>
+<p class="submit-error" id="submit-error" role="alert" hidden>Sorry, that didn't send. Please <a href="https://wa.me/447306100251" target="_blank" rel="noopener noreferrer">message us on WhatsApp</a> or email <a href="mailto:info@cgdesignaus.com">info@cgdesignaus.com</a> instead.</p>
 <input type="hidden" name="access_key" value="af8becda-b0eb-46ce-928f-29364cea38c2">
+<input type="hidden" name="from_name" value="CG Design website">
 <input type="hidden" id="form-subject" name="subject" value="New enquiry — A free business check">
 <input type="hidden" id="service" name="service" value="Free business check">
 <input type="checkbox" name="botcheck" style="display: none;" tabindex="-1" autocomplete="off">
@@ -355,7 +356,9 @@ const nextSteps = [
         body: new FormData(form),
         headers: { Accept: "application/json" },
       });
-      if (res.ok) {
+      // Only count it as sent when Web3Forms says so in its reply, not just a 200 status.
+      const reply = (await res.json().catch(() => null)) as { success?: boolean; message?: string } | null;
+      if (res.ok && reply?.success === true) {
         form.classList.add("is-hidden");
         if (successPanel) {
           successPanel.hidden = false;
@@ -367,8 +370,9 @@ const nextSteps = [
             successPanel.focus({ preventScroll: true });
           });
         }
-      } else if (submitError) {
-        submitError.hidden = false;
+      } else {
+        console.warn("Enquiry not sent:", res.status, reply?.message);
+        if (submitError) submitError.hidden = false;
       }
     } catch {
       if (submitError) submitError.hidden = false;
