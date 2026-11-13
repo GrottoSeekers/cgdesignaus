@@ -12,9 +12,8 @@ interface Props {
 const { heading: Heading = "h2" } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-const priceLabel = (j: { price: number; per?: string }) => `${aud(j.price)}${j.per ? ` ${j.per}` : ""}`;
-const askHref = (name: string, price: string) =>
-  contactHref(base, { service: "Quick Job", pick: name, price, details: `Quick job: ${name} — ${price}` });
+// "Ask for this" opens the contact form with that job already ticked.
+const askHref = (jobId: string) => contactHref(base, { pkg: "small", items: [`job-${jobId}`] });
 const saving = starterBundle.separately - starterBundle.price;
 ---
 
@@ -34,7 +33,7 @@ const saving = starterBundle.separately - starterBundle.price;
 <h3 class="job-name">{j.name}</h3>
 <p class="job-price">{aud(j.price)}{j.per && <span class="job-per"> {j.per}</span>}</p>
 <p class="job-desc">{j.desc}</p>
-<a href={askHref(j.name, priceLabel(j))} class="job-ask">Ask for this <span aria-hidden="true">→</span></a>
+<a href={askHref(j.id)} class="job-ask">Ask for this <span aria-hidden="true">→</span></a>
 </div>
 ))}
 </div>
@@ -51,7 +50,7 @@ const saving = starterBundle.separately - starterBundle.price;
 <div class="bundle-buy">
 <p class="bundle-price"><span class="sr-only">{aud(starterBundle.price)}, instead of {aud(starterBundle.separately)}</span><span aria-hidden="true" class="bundle-count" data-from={starterBundle.separately} data-to={starterBundle.price}>{aud(starterBundle.price)}</span> <span aria-hidden="true" class="bundle-was">{aud(starterBundle.separately)}</span></p>
 <p class="bundle-save">Save {aud(saving)} on doing them one by one. Domain cost extra.</p>
-<a href={askHref(starterBundle.name, aud(starterBundle.price))} class="btn btn-violet">Get the starter bundle</a>
+<a href={askHref(starterBundle.id)} class="btn btn-violet">Get the starter bundle</a>
 </div>
 </div>
 
