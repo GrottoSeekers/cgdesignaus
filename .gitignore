@@ -4,3 +4,11 @@ dist/
 .env
 .DS_Store
 preview/
+
+# Outreach workspace: real prospect data stays local (contains personal contact details)
+leads/raw/*
+!leads/raw/leads_sample.csv
+leads/qualified/*
+audits/*
+drafts/*
+!**/.gitkeep
