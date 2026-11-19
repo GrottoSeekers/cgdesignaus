@@ -67,6 +67,7 @@ export const featureOptions = [
   { id: "seo", label: "Local SEO", desc: "Google Business optimisation and local keyword targeting", price: 300, recurring: false, fixed: false },
   { id: "booking", label: "Online bookings", desc: "Real-time appointment, table, or callout booking", price: 250, recurring: false, fixed: false },
   { id: "store", label: "Online store", desc: "Product catalogue and checkout", price: 800, recurring: false, fixed: false },
+  { id: "forms", label: "Client forms", desc: "Onboarding and weekly check-in forms, sent straight to your inbox", price: 199, recurring: false, fixed: true },
   { id: "admin", label: "Admin login", desc: "Sign in and update your own text, photos and prices", price: selfEdit.price, recurring: false, fixed: true },
   { id: "brand-tidy", label: "Logo tidy-up", desc: brandTidyUp.desc, price: brandTidyUp.price, recurring: false, fixed: true },
   { id: "brand", label: "Logo & branding", desc: "Two logo concepts, colours, fonts and a brand guide", price: brandIdentity.price, recurring: false, fixed: true },
