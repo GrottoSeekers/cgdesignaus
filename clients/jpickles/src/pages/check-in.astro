@@ -31,6 +31,14 @@ import { dm } from "../lib/site";
       done={{ title: "Check-in sent.", body: "Nice work this week. James will review it and adjust your plan before your next training week starts." }}
     >
       <Fragment slot="done">
+        <section class="week" data-week hidden aria-label="Your week">
+          <div class="week-head"><h3>Your week</h3><span data-week-date></span></div>
+          <dl class="week-grid" data-week-grid></dl>
+          <div class="week-next">
+            <p>Next check-in <strong data-next-date></strong>, by 12pm.</p>
+            <button type="button" class="btn btn-sm btn-ghost" data-ics><Icon name="calendar" />Add a Friday reminder</button>
+          </div>
+        </section>
         <div class="done-actions">
           <a class="btn" href={dm} target="_blank" rel="noopener noreferrer"><Icon name="message" />Message James</a>
           <a class="btn btn-ghost" href="/">Back to the site</a>
@@ -68,6 +76,65 @@ import { dm } from "../lib/site";
         weight_kg: v.weight_kg ? Number(v.weight_kg) : null,
         answers: v,
       }),
+      onDone: showWeek,
+    });
+
+    /* ---------- Thank-you screen: the week at a glance ---------- */
+    type V = Record<string, string | string[]>;
+    const historyKey = "jp-checkins"; // this phone's past check-ins, for "since last week"
+    const esc = (s: unknown) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
+    const nextFriday = () => {
+      const n = new Date();
+      n.setDate(n.getDate() + (((5 - n.getDay() + 7) % 7) || 7));
+      n.setHours(12, 0, 0, 0);
+      return n;
+    };
+
+    function showWeek(v: V) {
+      let past: { date: string; weight: number }[] = [];
+      try { past = JSON.parse(localStorage.getItem(historyKey) || "[]"); } catch { /* private mode */ }
+      const prev = past.filter((p) => p.date < String(v.checkin_date)).slice(-1)[0];
+      const w = Number(v.weight_kg);
+      const delta = prev && w ? w - prev.weight : null;
+      try {
+        const next = past.filter((p) => p.date !== v.checkin_date).concat(w ? [{ date: String(v.checkin_date), weight: w }] : []);
+        localStorage.setItem(historyKey, JSON.stringify(next.slice(-26)));
+      } catch { /* ignore */ }
+
+      const tile = (label: string, value: string, extra = "") => `<div><dt>${esc(label)}</dt><dd>${value}${extra}</dd></div>`;
+      const score = (k: string) => (v[k] ? `${esc(v[k])}<small>/10</small>` : "-");
+      const tiles = [
+        tile("Weight", w ? `${esc(w)}<small>kg</small>` : "-", delta != null && Math.abs(delta) >= 0.05 ? `<span class="${delta < 0 ? "down" : "up"}">${delta > 0 ? "+" : ""}${delta.toFixed(1)}</span>` : ""),
+        tile("Workouts", v.workouts ? esc(v.workouts) : "-"),
+        tile("Nutrition", v.nutrition ? `<span style="font-size:.8em">${esc(v.nutrition)}</span>` : "-"),
+        tile("Felt", score("physical")),
+        tile("Energy", score("energy")),
+        tile("Sleep", score("sleep")),
+      ];
+      document.querySelector("[data-week-grid]")!.innerHTML = tiles.join("");
+      const date = new Date(String(v.checkin_date));
+      document.querySelector("[data-week-date]")!.textContent = isNaN(+date) ? "" : date.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+      document.querySelector("[data-next-date]")!.textContent = nextFriday().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
+      document.querySelector<HTMLElement>("[data-week]")!.hidden = false;
+    }
+
+    // A weekly calendar reminder (Friday 9am, due 12pm), as a file any calendar app opens.
+    document.querySelector("[data-ics]")?.addEventListener("click", () => {
+      const f = nextFriday();
+      const ymd = `${f.getFullYear()}${String(f.getMonth() + 1).padStart(2, "0")}${String(f.getDate()).padStart(2, "0")}`;
+      const ics = [
+        "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//J.Pickles Coaching//Check-in//EN",
+        "BEGIN:VEVENT", `UID:jp-checkin-${ymd}@jpicklescoaching`, `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").split(".")[0]}Z`,
+        `DTSTART:${ymd}T090000`, `DTEND:${ymd}T091500`, "RRULE:FREQ=WEEKLY;BYDAY=FR",
+        "SUMMARY:J.Pickles check-in (due 12pm)", `DESCRIPTION:Your weekly check-in: ${location.href.split("?")[0]}`,
+        "BEGIN:VALARM", "TRIGGER:PT0M", "ACTION:DISPLAY", "DESCRIPTION:Check-in due by 12pm", "END:VALARM",
+        "END:VEVENT", "END:VCALENDAR",
+      ].join("\r\n");
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([ics], { type: "text/calendar" }));
+      a.download = "jpickles-check-in.ics";
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
     });
   </script>
 </Base>

@@ -16,11 +16,35 @@ const store = {
   del(k: string) { try { localStorage.removeItem(k); } catch { /* ignore */ } },
 };
 
+/* Thank-you screen: the gold ring draws, the tick snaps in, speed lines burst out
+   (like the logo's trails), then the rest of the screen rises in. */
+function celebrate(done: HTMLElement) {
+  const mark = $("[data-done-mark]", done);
+  const parts = Array.from(done.children).filter((c) => c !== mark && !(c as HTMLElement).hidden);
+  if (reduce || !mark) {
+    mark?.classList.add("is-drawn");
+    return;
+  }
+  const ring = $("circle", mark)!;
+  const tick = $("path", mark)!;
+  const lines = $$("i", mark);
+  gsap.set([ring, tick], { strokeDashoffset: 1 });
+  gsap.set(parts, { autoAlpha: 0, y: 24 });
+  gsap.timeline({ defaults: { ease: "expo.out" } })
+    .from(mark, { scale: 0.6, autoAlpha: 0, duration: 0.6 }, 0)
+    .to(ring, { strokeDashoffset: 0, duration: 0.9, ease: "power2.inOut" }, 0.1)
+    .to(mark, { "--fill": 1, duration: 0.5, ease: "power2.out" }, 0.75)
+    .to(tick, { strokeDashoffset: 0, duration: 0.5, ease: "power3.out" }, 0.8)
+    .fromTo(lines, { scaleX: 0, autoAlpha: 1, x: 0 }, { scaleX: 1, x: 26, autoAlpha: 0, duration: 0.9, stagger: 0.02, ease: "power3.out" }, 0.85)
+    .to(parts, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.08 }, 1);
+}
+
 export function initFlow(opts: {
   prefill?: Values;
   remember?: string[]; // fields kept for next time (e.g. name + email on the weekly check-in)
   toRow: (v: Values) => Record<string, unknown>;
   table: "onboarding" | "check_ins";
+  onDone?: (v: Values) => void; // fill in the thank-you screen (e.g. the week's summary)
 }) {
   const flow = $("[data-flow]");
   const form = $<HTMLFormElement>("[data-form]");
@@ -191,9 +215,10 @@ export function initFlow(opts: {
       done.hidden = false;
       bar.style.transform = "scaleX(1)";
       count.textContent = "Sent";
+      opts.onDone?.(values);
       scrollTo({ top: 0 });
       done.focus();
-      if (!reduce) gsap.from(done.children, { autoAlpha: 0, y: 20, duration: 0.7, ease: "expo.out", stagger: 0.08 });
+      celebrate(done);
     } catch {
       subErr.textContent = "That didn't send. Check your signal and try again. Your answers are still here.";
       subErr.hidden = false;

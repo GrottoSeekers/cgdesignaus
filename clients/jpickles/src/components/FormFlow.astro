@@ -99,7 +99,10 @@ const scale = (f: Field) => Array.from({ length: (f.max ?? 10) - (f.min ?? 1) + 
   </form>
 
   <section class="flow-done" data-done hidden tabindex="-1" aria-labelledby="done-title">
-    <div class="done-mark" aria-hidden="true"><Icon name="check" size={34} /></div>
+    <div class="done-mark" aria-hidden="true" data-done-mark>
+      <span class="done-burst">{Array.from({ length: 10 }, (_, i) => <i style={`--a:${i * 36}deg`}></i>)}</span>
+      <svg viewBox="0 0 80 80"><circle class="ring" cx="40" cy="40" r="37" pathLength="1" /><path class="tick" d="M24 41l11 11 21-23" pathLength="1" /></svg>
+    </div>
     <h2 id="done-title" class="step-title">{done.title}</h2>
     <p class="step-intro">{done.body}</p>
     <p class="done-note" data-preview-note hidden>Preview: this form isn't connected to a database yet, so nothing was saved.</p>
