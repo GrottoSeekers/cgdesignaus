@@ -51,6 +51,11 @@ const tuckedDesc: Record<string, string> = {
   brand: brandIdentity.desc,
   admin: "Sign in and change your own text, photos, prices and hours, any time.",
 };
+// Quick jobs alongside a website, domain first. Fixed prices, no founding discount.
+const jobOrder = ["domain", "google-profile", "social", "reviews"];
+const siteJobs = jobOrder.map((id) => quickJobs.find((j) => j.id === id)!).map((j) => ({
+  id: `job-${j.id}`, label: j.name, price: j.price, chip: `+${aud(j.price)}${j.per ? ` ${j.per}` : ""}`,
+}));
 // Everything each package gets, written out in full (not "Everything in Growth").
 const fullIncludes = tiers.map((t, i) =>
   tiers.slice(0, i + 1).flatMap((x) => x.includes).filter((line) => !line.startsWith("Everything in"))
@@ -97,6 +102,12 @@ const fullIncludes = tiers.map((t, i) =>
 <p class="quote-step">{mode === "pricing" ? "3. " : ""}Add extras</p>
 <div class="chips">
 {shownFeatures.map((o) => <button type="button" class:list={["chip", { inc: included(o.id) }]} aria-pressed="false" disabled={included(o.id)} data-id={o.id} data-label={o.label} data-price={o.price} data-recurring={o.recurring ? "1" : undefined} data-fixed={o.fixed ? "1" : undefined} title={o.desc}>{o.label} {discounted(o) && <s class="chip-was">{aud(o.price)}</s>} <span class="chip-price" data-text={siteChip(o)}>{included(o.id) ? "✓ Included" : siteChip(o)}</span></button>)}
+</div>
+</div>
+<div>
+<p class="quote-step">{mode === "pricing" ? "4. " : ""}Quick jobs <span>· most websites need a domain</span></p>
+<div class="chips">
+{siteJobs.map((o) => <button type="button" class:list={["chip", { inc: included(o.id) }]} aria-pressed="false" disabled={included(o.id)} data-id={o.id} data-label={o.label} data-price={o.price} data-fixed="1">{o.label} <span class="chip-price" data-text={o.chip}>{included(o.id) ? "✓ Included" : o.chip}</span></button>)}
 </div>
 </div>
 {mode === "pricing" && (

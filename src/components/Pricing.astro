@@ -269,7 +269,6 @@ const startTier = tiers.find((t) => t.feature) ?? tiers[0];
   const qb = document.querySelector<HTMLElement>("#quote [data-qb]");
   const toggle = document.getElementById("quote-toggle");
   const body = document.getElementById("quote-body");
-  const quote = document.getElementById("quote");
 
   const setOpen = (open: boolean) => {
     body?.classList.toggle("open", open);
@@ -286,10 +285,8 @@ const startTier = tiers.find((t) => t.feature) ?? tiers[0];
 
   const pick = (id: string) => {
     qb?.dispatchEvent(new CustomEvent("qb:select", { detail: id }));
+    // Open the quote below, but leave the scrolling to the visitor.
     setOpen(true);
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    // Let the quote start opening, then bring it into view.
-    window.setTimeout(() => quote?.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "start" }), 60);
   };
 
   // The whole card is tappable (on phones it's just the name and price).
