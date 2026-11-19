@@ -382,21 +382,32 @@ const jsonLd = {
     </section>
   </main>
 
-  <footer class="foot">
+  <footer class="foot" data-foot>
     <div class="wrap">
-      <div class="foot-logo" data-foot-logo>
-        <img src="/media/logo-full.svg" alt="J.Pickles Coaching" width="1682" height="554" loading="lazy" data-logo-part="runner" />
-        <img src="/media/logo-full.svg" alt="" width="1682" height="554" loading="lazy" aria-hidden="true" data-logo-part="name" />
-        <img src="/media/logo-full.svg" alt="" width="1682" height="554" loading="lazy" aria-hidden="true" data-logo-part="sub" />
-      </div>
-      <div class="foot-grid">
-        <div class="foot-links">
-          <a href={instagram} {...ext}>Instagram {handle}</a>
+      <a class="foot-logo" href="#top" aria-label="J.Pickles Coaching, back to top" data-foot-logo>
+        <img src="/media/logo-full.svg" alt="J.Pickles Coaching" width="1682" height="554" loading="lazy" />
+      </a>
+      <span class="foot-rule" aria-hidden="true" data-foot-rule></span>
+      <div class="foot-cols">
+        <div data-foot-col>
+          <h2>Coaching</h2>
           <a href="/start">Start coaching</a>
-          <a href="/check-in">Client check-in</a>
           <a href="#prices">Prices</a>
+          <a href="/check-in">Client check-in</a>
         </div>
+        <div data-foot-col>
+          <h2>Follow</h2>
+          <a href={instagram} {...ext}>Instagram</a>
+          <a href={dm} {...ext}>Message James</a>
+        </div>
+        <div data-foot-col>
+          <h2>Based in</h2>
+          <p>Leigh, Wigan, Westhoughton and Bolton. Online, anywhere.</p>
+        </div>
+      </div>
+      <div class="foot-bottom">
         <p>&copy; {new Date().getFullYear()} James Pickles. J.Pickles Coaching.</p>
+        <a href="#top" class="foot-top">Back to top <Icon name="arrowRight" class="up" /></a>
       </div>
     </div>
   </footer>

@@ -39,6 +39,13 @@ a { color: inherit; }
 button { font: inherit; color: inherit; }
 ::selection { background: var(--gold); color: var(--ink); }
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+/* The gold focus ring is for keyboard users. After a mouse click or tap (html.is-pointer,
+   set in Base.astro) it stays hidden; pressing Tab brings it back. */
+.is-pointer :focus, .is-pointer :focus-visible { outline: none; }
+/* Text stays selectable for copying, but controls don't highlight when clicked or double-clicked. */
+button, summary, .btn, .tabs, .tabbar, .nav, .plan-badge, .frame-dots, .chips, .scale, .opt-card, .pill-opt, .faq-list summary, .link-arrow, .foot-cols a, .foot-top {
+  -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent;
+}
 
 .wrap { width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
 .skip { position: absolute; left: -999px; top: 0; z-index: 100; background: var(--gold); color: var(--ink); padding: .6rem 1rem; }
@@ -344,16 +351,26 @@ section { position: relative; }
 .close-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
 
 /* Footer */
-.foot { border-top: 1px solid var(--line); padding: clamp(3rem, 7vw, 5rem) 0 2rem; }
-.foot-logo { position: relative; width: 100%; max-width: 980px; margin: 0 auto; color: var(--bone); }
+/* One centred logo with a soft gold glow, a hairline, three short columns, then a quiet bottom bar. */
+.foot { position: relative; overflow: hidden; border-top: 1px solid var(--line); padding: clamp(4rem, 9vw, 7rem) 0 1.6rem; isolation: isolate; }
+.foot::before { content: ""; position: absolute; left: 50%; top: 0; width: min(900px, 120vw); height: 520px; transform: translate(-50%, -30%); z-index: -1; pointer-events: none;
+  background: radial-gradient(closest-side, rgb(201 164 92 / .12), transparent); }
+.foot-logo { display: block; width: min(560px, 82%); margin: 0 auto; }
 .foot-logo img { width: 100%; height: auto; }
-/* Three copies of the logo, each showing one band (runner, name, COACHING), so they can animate in turn. */
-.foot-logo img + img { position: absolute; inset: 0; }
-.foot-grid { display: grid; gap: 1.5rem; margin-top: clamp(2.5rem, 6vw, 4rem); color: var(--mute); font-size: .92rem; }
-.foot-links { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; }
-.foot-links a { text-decoration: none; color: var(--bone); }
-.foot-links a:hover { color: var(--gold-2); }
-@media (min-width: 900px) { .foot-grid { grid-template-columns: 1fr auto; align-items: center; } }
+.foot-rule { display: block; height: 1px; margin: clamp(3rem, 6vw, 4.5rem) auto 0; background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent); }
+.foot-cols { display: grid; gap: 2rem; margin-top: clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+.foot-cols h2 { font: 400 .64rem/1.3 var(--wide); letter-spacing: .32em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+.foot-cols a { display: block; width: fit-content; margin: 0 auto; padding: .3rem 0; color: var(--bone); text-decoration: none; font-size: .98rem; background: linear-gradient(var(--gold), var(--gold)) 0 100% / 0 1px no-repeat; transition: background-size .45s var(--ease), color .3s; }
+.foot-cols a:hover { color: var(--gold-2); background-size: 100% 1px; }
+.foot-cols p { margin: 0 auto; color: var(--mute); font-size: .95rem; max-width: 26ch; }
+.foot-bottom { display: flex; flex-wrap: wrap; gap: .8rem 2rem; justify-content: space-between; align-items: center; margin-top: clamp(3rem, 6vw, 4.5rem); padding-top: 1.4rem; border-top: 1px solid var(--line); color: var(--mute); font-size: .85rem; }
+.foot-bottom p { margin: 0; }
+.foot-top { display: inline-flex; align-items: center; gap: .45rem; color: var(--mute); text-decoration: none; transition: color .3s; }
+.foot-top:hover { color: var(--bone); }
+.foot-top .up { width: 15px; height: 15px; transform: rotate(-90deg); transition: transform .4s var(--ease); }
+.foot-top:hover .up { transform: rotate(-90deg) translateX(3px); }
+@media (min-width: 760px) { .foot-cols { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 759px) { .foot-bottom { justify-content: center; text-align: center; } }
 
 /* CG Design credit (shared look across client sites) */
 .cg-credit { border-top: 1px solid var(--line); padding: 1.2rem 0 calc(1.2rem + var(--tabbar)); font-size: .85rem; color: var(--mute); }

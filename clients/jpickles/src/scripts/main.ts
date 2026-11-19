@@ -300,16 +300,24 @@ function revealsIn() {
   if (closeImg) gsap.fromTo(closeImg, { yPercent: -10 }, { yPercent: 0, ease: "none", scrollTrigger: { trigger: ".close", start: "top bottom", end: "bottom bottom", scrub: true } });
   const foot = $("[data-foot-logo]");
   if (foot) {
-    // Footer logo builds in three slow beats: the runner sprints in from the left,
-    // J.PICKLES rises up, then the COACHING line opens out from the centre.
-    const [runner, name, sub] = ["runner", "name", "sub"].map((p) => $(`[data-logo-part="${p}"]`, foot));
-    gsap.set(runner, { clipPath: "inset(0% 100% 44% 0%)", x: -60 });
-    gsap.set(name, { clipPath: "inset(86% 0% 14% 0%)", y: 40 });
-    gsap.set(sub, { clipPath: "inset(86% 50% 0% 50%)" });
-    gsap.timeline({ scrollTrigger: { trigger: foot, start: "top 88%", once: true } })
-      .to(runner, { clipPath: "inset(0% 0% 44% 0%)", x: 0, duration: 2.2, ease: "power3.out" })
-      .to(name, { clipPath: "inset(56% 0% 14% 0%)", y: 0, duration: 1.8, ease: "expo.out" }, 0.9)
-      .to(sub, { clipPath: "inset(86% 0% 0% 0%)", duration: 1.8, ease: "expo.inOut" }, 1.7);
+    // Footer: the logo is revealed by a soft-edged sweep (left to right, like the runner's
+    // trails) while it settles from a slight blur; then the gold hairline draws out from
+    // the centre and the three columns rise in. One calm sequence, about 3 seconds.
+    const img = $("img", foot)!;
+    const rule = $("[data-foot-rule]");
+    const cols = $$("[data-foot-col]");
+    const sweep = "linear-gradient(90deg, #000 40%, transparent 60%)";
+    gsap.set(img, { webkitMaskImage: sweep, maskImage: sweep, webkitMaskSize: "250% 100%", maskSize: "250% 100%",
+      webkitMaskPosition: "100% 0", maskPosition: "100% 0", webkitMaskRepeat: "no-repeat", maskRepeat: "no-repeat",
+      filter: "blur(6px)", y: 18, autoAlpha: 0.4 });
+    if (rule) gsap.set(rule, { scaleX: 0 });
+    gsap.set(cols, { autoAlpha: 0, y: 20 });
+    gsap.timeline({ scrollTrigger: { trigger: foot, start: "top 85%", once: true } })
+      .to(img, { webkitMaskPosition: "0% 0", maskPosition: "0% 0", duration: 2.4, ease: "power2.inOut" }, 0)
+      .to(img, { filter: "blur(0px)", y: 0, autoAlpha: 1, duration: 1.8, ease: "power3.out" }, 0.2)
+      .to(rule, { scaleX: 1, duration: 1.4, ease: "expo.inOut" }, 1.2)
+      .to(cols, { autoAlpha: 1, y: 0, duration: 1, ease: "expo.out", stagger: 0.12 }, 1.7)
+      .set(img, { clearProps: "maskImage,webkitMaskImage,filter" });
   }
 }
 

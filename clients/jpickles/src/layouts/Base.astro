@@ -44,6 +44,11 @@ const ext = { target: "_blank", rel: "noopener noreferrer" };
     <script is:inline>
       // Hide animated elements only when JS runs; the failsafe shows them after 2.5s.
       document.documentElement.classList.add("js");
+      // Mouse/touch users don't see focus rings after clicking; keyboard (Tab) users do.
+      (function (r) {
+        addEventListener("pointerdown", function () { r.classList.add("is-pointer"); }, true);
+        addEventListener("keydown", function (e) { if (e.key === "Tab") r.classList.remove("is-pointer"); }, true);
+      })(document.documentElement);
       setTimeout(function () { document.documentElement.classList.add("motion-ready"); }, 2500);
     </script>
   </head>
