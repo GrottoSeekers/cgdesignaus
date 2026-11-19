@@ -52,8 +52,14 @@ export const carePlan = {
   price: 60,
   changeHours: 1, // hours of changes included each month
   includes: "hosting, security, backups and up to 1 hour of changes a month",
-  firstMonthFree: "First month free with any package",
-  perks: ["Hosting, security and backups", "Up to 1 hour of changes a month", "First month free with any package"],
+};
+
+// ---- Your web address (domain): a yearly fee on every website ----
+// Registered in the client's business name and renewed by us each year.
+export const webAddress = {
+  name: "Your web address",
+  price: 49,
+  desc: "Registered in your business name and renewed every year, so it never lapses. It's yours to keep.",
 };
 
 // `fixed` extras keep their price in the quote builder: the founding discount doesn't apply.
@@ -64,6 +70,7 @@ export const featureOptions = [
   { id: "admin", label: "Admin login", desc: "Sign in and update your own text, photos and prices", price: selfEdit.price, recurring: false, fixed: true },
   { id: "brand-tidy", label: "Logo tidy-up", desc: brandTidyUp.desc, price: brandTidyUp.price, recurring: false, fixed: true },
   { id: "brand", label: "Logo & branding", desc: "Two logo concepts, colours, fonts and a brand guide", price: brandIdentity.price, recurring: false, fixed: true },
+  { id: "domain", label: "Web address", desc: webAddress.desc, price: webAddress.price, recurring: true, yearly: true, fixed: false },
   { id: "maintenance", label: "Hosting & care", desc: `Hosting, security, backups and up to ${carePlan.changeHours} hour of changes a month`, price: carePlan.price, recurring: true, fixed: false },
 ];
 
@@ -86,6 +93,7 @@ export const tiers = [
   {
     id: "essentials",
     parts: [] as string[],
+    domainYearFree: false,
     name: "Essentials",
     tagline: "A sharp one-pager that gets you found and called.",
     full: tier1Full,
@@ -95,6 +103,7 @@ export const tiers = [
   {
     id: "growth",
     parts: ["about", "services", "gallery", "job-google-profile"],
+    domainYearFree: false,
     name: "Growth",
     tagline: "The full shopfront — services, story and gallery.",
     full: tier2Full,
@@ -103,11 +112,12 @@ export const tiers = [
   },
   {
     id: "complete",
-    parts: ["about", "services", "gallery", "booking", "seo", "booking-page", "job-google-profile", "job-social", "job-reviews", "job-domain"],
+    parts: ["about", "services", "gallery", "booking", "seo", "booking-page", "job-google-profile", "job-social", "job-reviews"],
+    domainYearFree: true,
     name: "Complete",
     tagline: "Bookings and local search, done properly.",
     full: tier3Full,
-    includes: ["Everything in Growth", "Online booking system and page", "Local SEO package", "Facebook + Instagram setup", "Review booster QR card"],
+    includes: ["Everything in Growth", "Online booking system and page", "Local SEO package", "Facebook + Instagram setup", "Review booster QR card", "First year of your web address"],
     note: `Includes everything in our $${STARTER_BUNDLE_PRICE} Starter bundle`,
     feature: false,
   },
@@ -145,9 +155,10 @@ export const quickJobs = [
   },
   {
     id: "domain",
-    name: "Domain setup",
-    price: 49,
-    desc: "Your web address registered in your name, so it's yours and ready for a website. Domain cost extra.",
+    name: "Web address",
+    price: webAddress.price,
+    per: "a year",
+    desc: "Your web address (yourbusiness.com.au) registered in your business name and renewed every year, so it never lapses. Yours to keep.",
   },
 ];
 
@@ -157,7 +168,7 @@ export const starterBundle = {
   id: "starter-bundle",
   name: "Starter bundle",
   price: STARTER_BUNDLE_PRICE,
-  includes: ["Google Business Profile setup", "Facebook + Instagram setup", "Review booster QR card", "Domain registered in your name"],
+  includes: ["Google Business Profile setup", "Facebook + Instagram setup", "Review booster QR card", "Web address, first year included"],
   // What the same jobs cost one by one (social is per platform, so twice).
   separately: jobPrice("google-profile") + jobPrice("social") * 2 + jobPrice("reviews") + jobPrice("domain"),
 };
