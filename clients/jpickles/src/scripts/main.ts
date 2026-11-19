@@ -341,6 +341,36 @@ function tabs() {
       select(btns[(i + (e.key === "ArrowRight" ? 1 : btns.length - 1)) % btns.length], true);
     });
   });
+  // Phones: no dragging. Each package list gets a row of chips (Bronze, Silver...) above it;
+  // one card shows at a time and tapping a chip fades the next one in. The chip row follows
+  // its list's hidden state, so switching Online / 1:1 PT swaps the chips too.
+  $$("[data-plans]").forEach((panel) => {
+    const cards = $$("[data-plan]", panel);
+    const pick = document.createElement("div");
+    pick.className = "plan-pick";
+    pick.setAttribute("role", "group");
+    pick.setAttribute("aria-label", "Choose a package");
+    const start = Math.max(0, cards.findIndex((c) => c.classList.contains("is-featured")));
+    const chips = cards.map((c, i) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.textContent = $(".plan-name", c)?.textContent?.trim() || `Plan ${i + 1}`;
+      b.setAttribute("aria-pressed", String(i === start));
+      b.addEventListener("click", () => show(i));
+      pick.append(b);
+      return b;
+    });
+    const show = (n: number) => {
+      cards.forEach((c, i) => c.classList.toggle("is-active", i === n));
+      chips.forEach((b, i) => b.setAttribute("aria-pressed", String(i === n)));
+      gsap.fromTo(cards[n], { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.55, ease: "expo.out", overwrite: true });
+    };
+    cards.forEach((c, i) => c.classList.toggle("is-active", i === start));
+    pick.hidden = panel.hidden;
+    new MutationObserver(() => (pick.hidden = panel.hidden)).observe(panel, { attributes: true, attributeFilter: ["hidden"] });
+    panel.before(pick);
+  });
+
   place(btns[0]);
   document.fonts?.ready.then(() => place(btns.find((b) => b.getAttribute("aria-selected") === "true")!));
   addEventListener("resize", () => place(btns.find((b) => b.getAttribute("aria-selected") === "true")!));
