@@ -189,6 +189,58 @@ export function initFlow(opts: {
     }
   });
 
+  /* ---------- − / + buttons on number fields (tap, or press and hold to run) ---------- */
+  const nudge = (input: HTMLInputElement, dir: number) => {
+    const step = Number(input.dataset.nudge) || 1;
+    const decimals = (String(step).split(".")[1] || "").length;
+    const min = input.min !== "" ? Number(input.min) : -Infinity;
+    const max = input.max !== "" ? Number(input.max) : Infinity;
+    const cur = input.value === "" ? NaN : Number(input.value);
+    // Empty field: the first tap jumps to a sensible starting value (e.g. 75 kg).
+    let next = Number.isNaN(cur) ? Number(input.dataset.start ?? min) : cur + dir * step;
+    next = Math.min(max, Math.max(min, next));
+    input.value = next.toFixed(decimals);
+    input.classList.remove("is-nudged");
+    void input.offsetWidth;
+    input.classList.add("is-nudged");
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    syncSteppers(input);
+  };
+  const syncSteppers = (input: HTMLInputElement) => {
+    const wrap = input.closest(".input-wrap");
+    if (!wrap) return;
+    const v = input.value === "" ? NaN : Number(input.value);
+    $$<HTMLButtonElement>("[data-nudge-dir]", wrap).forEach((b) => {
+      const down = b.dataset.nudgeDir === "-1";
+      b.disabled = !Number.isNaN(v) && (down ? input.min !== "" && v <= Number(input.min) : input.max !== "" && v >= Number(input.max));
+    });
+  };
+  $$<HTMLButtonElement>("[data-nudge-dir]", form).forEach((btn) => {
+    const input = $<HTMLInputElement>("input", btn.closest(".input-wrap")!)!;
+    const dir = Number(btn.dataset.nudgeDir);
+    let hold = 0, repeat = 0;
+    const stop = () => { clearTimeout(hold); clearInterval(repeat); btn.classList.remove("is-held"); };
+    btn.addEventListener("pointerdown", (e) => {
+      e.preventDefault(); // keep the keyboard closed on phones
+      nudge(input, dir);
+      btn.classList.add("is-held");
+      // Hold: starts repeating after 0.4s and speeds up the longer it's held.
+      let speed = 120;
+      hold = window.setTimeout(function tickFaster() {
+        clearInterval(repeat);
+        repeat = window.setInterval(() => nudge(input, dir), speed);
+        if (speed > 40) { speed -= 30; hold = window.setTimeout(tickFaster, 600); }
+      }, 400);
+    });
+    ["pointerup", "pointerleave", "pointercancel", "blur"].forEach((ev) => btn.addEventListener(ev, stop));
+    // Keyboard users: Enter/Space on the button still works.
+    btn.addEventListener("click", (e) => { if ((e as PointerEvent).pointerType === "") nudge(input, dir); });
+  });
+  $$<HTMLInputElement>("input[data-nudge]", form).forEach((i) => {
+    i.addEventListener("input", () => syncSteppers(i));
+    syncSteppers(i);
+  });
+
   /* ---------- Textareas grow with their content ---------- */
   const grow = (t: HTMLTextAreaElement) => { t.style.height = "auto"; t.style.height = `${t.scrollHeight + 2}px`; };
   $$<HTMLTextAreaElement>("[data-autosize]", form).forEach((t) => t.addEventListener("input", () => grow(t)));

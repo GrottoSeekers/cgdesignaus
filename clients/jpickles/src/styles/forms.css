@@ -47,6 +47,29 @@
 .input-wrap { position: relative; }
 .input-wrap.has-unit input { padding-right: 4rem; }
 .unit { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); color: var(--mute); font-size: .95rem; pointer-events: none; }
+
+/* Number fields: the browser's own up/down arrows are hidden and replaced by two
+   round − / + buttons on the right (tap, or press and hold to run). */
+.flow input[type="number"] { -moz-appearance: textfield; appearance: textfield; font-variant-numeric: tabular-nums; }
+.flow input[type="number"]::-webkit-inner-spin-button, .flow input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.input-wrap.has-stepper input { padding-right: 6.4rem; }
+.input-wrap.has-stepper.has-unit input { padding-right: 9.2rem; }
+.input-wrap.has-stepper .unit { right: 6.1rem; }
+.stepper { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); display: flex; gap: 4px; }
+.stepper button { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--line-2); background: var(--ink-3); color: var(--bone); cursor: pointer;
+  transition: background-color .25s var(--ease), border-color .25s var(--ease), color .25s var(--ease), transform .2s var(--ease); touch-action: manipulation; }
+.stepper button svg { width: 18px; height: 18px; }
+.stepper button:hover { border-color: var(--gold); color: var(--gold-2); }
+.stepper button:active, .stepper button.is-held { background: var(--gold); border-color: var(--gold); color: var(--ink); transform: scale(.92); }
+.stepper button:disabled { opacity: .35; pointer-events: none; }
+.input-wrap:focus-within .stepper button { border-color: rgb(201 164 92 / .45); }
+/* The number gives a small tick when a button changes it. */
+.flow input.is-nudged { animation: nudge .28s var(--ease); }
+@keyframes nudge { 40% { color: var(--gold-2); } }
+@media (max-width: 420px) {
+  .field.half .input-wrap.has-stepper.has-unit input { padding-right: 8.6rem; }
+  .stepper button { width: 40px; height: 40px; }
+}
 .field.is-invalid input, .field.is-invalid textarea { border-color: var(--danger); }
 .field.is-invalid .opt-card, .field.is-invalid .pill-opt span { border-color: rgb(240 140 122 / .6); }
 .err { margin: 0; color: var(--danger); font-size: .9rem; display: flex; gap: .4rem; align-items: center; }

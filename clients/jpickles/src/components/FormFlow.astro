@@ -72,13 +72,20 @@ const scale = (f: Field) => Array.from({ length: (f.max ?? 10) - (f.min ?? 1) + 
                   {f.type === "textarea" ? (
                     <textarea id={fid(f)} name={f.id} rows="3" required={f.required} placeholder={f.placeholder} aria-describedby={f.help ? `${fid(f)}-help` : undefined} data-autosize></textarea>
                   ) : (
-                    <div class:list={["input-wrap", { "has-unit": f.unit }]}>
+                    <div class:list={["input-wrap", { "has-unit": f.unit, "has-stepper": f.nudge }]}>
                       <input
                         id={fid(f)} name={f.id} type={f.type} required={f.required} placeholder={f.placeholder}
                         min={f.min} max={f.max} step={f.step} autocomplete={f.autocomplete ?? "off"} inputmode={f.inputmode as any}
                         aria-describedby={f.help ? `${fid(f)}-help` : undefined}
+                        data-nudge={f.nudge} data-start={f.start}
                       />
                       {f.unit && <span class="unit" aria-hidden="true">{f.unit}</span>}
+                      {f.nudge && (
+                        <span class="stepper">
+                          <button type="button" tabindex="-1" data-nudge-dir="-1" aria-label={`Decrease ${f.label.toLowerCase()} by ${f.nudge}`}><Icon name="minus" size={18} /></button>
+                          <button type="button" tabindex="-1" data-nudge-dir="1" aria-label={`Increase ${f.label.toLowerCase()} by ${f.nudge}`}><Icon name="plus" size={18} /></button>
+                        </span>
+                      )}
                     </div>
                   )}
                 </>

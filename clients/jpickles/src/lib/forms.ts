@@ -20,6 +20,8 @@ export type Field = {
   half?: boolean; // sits side by side with the next half field on wider screens
   exclusive?: string; // checkbox option that clears the others (e.g. "None")
   multiple?: boolean; // chips: allow more than one
+  nudge?: number; // number fields: amount the − / + buttons change it by
+  start?: number; // number fields: value the − / + buttons start from when empty
 };
 
 export type Section = { id: string; title: string; intro?: string; fields: Field[] };
@@ -36,9 +38,9 @@ export const onboarding: Section[] = [
       { id: "name", label: "Full name", type: "text", required: true, autocomplete: "name" },
       { id: "email", label: "Email", type: "email", required: true, autocomplete: "email", inputmode: "email" },
       { id: "phone", label: "Phone number", type: "tel", required: true, autocomplete: "tel", inputmode: "tel", half: true },
-      { id: "age", label: "Age", type: "number", required: true, min: 14, max: 99, inputmode: "numeric", half: true },
-      { id: "weight_kg", label: "Weight", type: "number", unit: "kg", step: 0.1, min: 30, max: 300, inputmode: "decimal", half: true },
-      { id: "height_cm", label: "Height", type: "number", unit: "cm", min: 120, max: 230, inputmode: "numeric", half: true },
+      { id: "age", label: "Age", type: "number", nudge: 1, start: 30, required: true, min: 14, max: 99, inputmode: "numeric", half: true },
+      { id: "weight_kg", label: "Weight", type: "number", nudge: 0.1, start: 75, unit: "kg", step: 0.1, min: 30, max: 300, inputmode: "decimal", half: true },
+      { id: "height_cm", label: "Height", type: "number", nudge: 1, start: 170, unit: "cm", min: 120, max: 230, inputmode: "numeric", half: true },
       { id: "plan", label: "Which coaching are you interested in?", type: "radio", required: true, help: "You can change this when we talk.", options: [] /* filled from site.ts on the page */ },
     ],
   },
@@ -85,7 +87,7 @@ export const onboarding: Section[] = [
       { id: "snacks", label: "What snacks would you have?", help: "Protein shakes, chocolate, crisps, nuts, fruit.", type: "textarea" },
       { id: "eating_consistency", label: "How consistent is your eating?", type: "radio", required: true, options: ["Inconsistent", "Consistent"] },
       { id: "water", label: "Water a day", type: "text", required: true, placeholder: "e.g. 2 litres", half: true },
-      { id: "sleep_hours", label: "Average sleep", type: "number", unit: "hours", step: 0.5, min: 2, max: 14, inputmode: "decimal", half: true },
+      { id: "sleep_hours", label: "Average sleep", type: "number", nudge: 0.5, start: 7, unit: "hours", step: 0.5, min: 2, max: 14, inputmode: "decimal", half: true },
       { id: "rest_day", label: "Preferred rest day", type: "chips", options: days.map((d) => d.slice(0, 3)) },
       { id: "diet", label: "Dietary requirements", type: "radio", required: true, options: ["None", "Vegetarian", "Vegan", "Pescatarian", "Other"] },
       { id: "allergies", label: "Allergies, intolerances or special requirements", type: "textarea" },
@@ -133,7 +135,7 @@ export const checkin: Section[] = [
       { id: "name", label: "Full name", type: "text", required: true, autocomplete: "name" },
       { id: "email", label: "Email", type: "email", required: true, autocomplete: "email", inputmode: "email", help: "So your check-ins stay together." },
       { id: "checkin_date", label: "Check-in date", type: "date", required: true, half: true },
-      { id: "weight_kg", label: "Current weight", type: "number", unit: "kg", step: 0.1, min: 30, max: 300, required: true, inputmode: "decimal", half: true, help: "First thing in the morning, after the toilet, before food or drink." },
+      { id: "weight_kg", label: "Current weight", type: "number", nudge: 0.1, start: 75, unit: "kg", step: 0.1, min: 30, max: 300, required: true, inputmode: "decimal", half: true, help: "First thing in the morning, after the toilet, before food or drink." },
     ],
   },
   {
@@ -153,8 +155,8 @@ export const checkin: Section[] = [
     fields: [
       { id: "nutrition", label: "How consistent were you with your nutrition?", help: "Against your agreed targets.", type: "radio", required: true, options: ["Excellent", "Good", "Average", "Poor"] },
       { id: "nutrition_factors", label: "What affected your nutrition?", help: "Tick all that apply.", type: "checkbox", exclusive: "Nothing, it went to plan", options: ["Nothing, it went to plan", "Hunger or cravings", "Eating out or social events", "Busy schedule or travel", "Meal prep or food availability", "Stress or emotional eating", "Weekend consistency", "Other"] },
-      { id: "avg_calories", label: "Average daily calories", help: "Optional. From MyFitnessPal or your tracker.", type: "number", min: 500, max: 8000, inputmode: "numeric", half: true },
-      { id: "avg_protein", label: "Average daily protein", unit: "g", help: "Optional.", type: "number", min: 0, max: 500, inputmode: "numeric", half: true },
+      { id: "avg_calories", label: "Average daily calories", help: "Optional. From MyFitnessPal or your tracker.", type: "number", unit: "kcal", nudge: 50, start: 2000, min: 500, max: 8000, inputmode: "numeric", half: true },
+      { id: "avg_protein", label: "Average daily protein", unit: "g", help: "Optional.", type: "number", nudge: 5, start: 120, min: 0, max: 500, inputmode: "numeric", half: true },
     ],
   },
   {
@@ -163,7 +165,7 @@ export const checkin: Section[] = [
     fields: [
       { id: "energy", label: "Average daily energy", type: "scale", min: 1, max: 10, scaleLabels: ["Very low", "Excellent"] },
       { id: "sleep", label: "Sleep quality", help: "How well you slept and how rested you felt.", type: "scale", min: 1, max: 10, scaleLabels: ["Very poor", "Excellent"] },
-      { id: "steps", label: "Average daily steps", help: "From your phone or watch. Leave blank if you didn't track.", type: "number", min: 0, max: 60000, inputmode: "numeric" },
+      { id: "steps", label: "Average daily steps", help: "From your phone or watch. Leave blank if you didn't track.", type: "number", nudge: 500, start: 8000, min: 0, max: 60000, inputmode: "numeric" },
     ],
   },
   {

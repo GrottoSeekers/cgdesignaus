@@ -12,6 +12,7 @@ export const icons = {
   menu: '<path d="M4 6l16 0"/><path d="M4 12l16 0"/><path d="M4 18l16 0"/>',
   x: '<path d="M18 6l-12 12"/><path d="M6 6l12 12"/>',
   plus: '<path d="M12 5l0 14"/><path d="M5 12l14 0"/>',
+  minus: '<path d="M5 12l14 0"/>',
   calendar: '<path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/>',
   mapPin: '<path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0"/>',
   play: '<path d="M7 4v16l13 -8l-13 -8"/>',
