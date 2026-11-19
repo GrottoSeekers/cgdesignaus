@@ -101,49 +101,91 @@ const toSecs = (t: string) => { const [m, s] = t.split(":").map(Number); return 
 const fmt = (n: number) => `${Math.floor(n / 60)}:${String(Math.round(n) % 60).padStart(2, "0")}`;
 
 function story() {
+  // No scroll-linked motion here: the time counts down once when it comes into view,
+  // and the photos run as a carousel on their own (see storyCarousel).
   const time = $("[data-time]");
   const to = $("[data-count-time]");
-  const words = $("[data-scrub-words]");
-  if (reduce || !time || !to || !words) return;
-  const from = toSecs(to.dataset.fromTime!);
-  const target = toSecs(to.dataset.countTime!);
-  const obj = { s: from, strike: 0 };
+  if (reduce || !time || !to) return;
+  const obj = { s: toSecs(to.dataset.fromTime!), strike: 0 };
   const paint = () => {
     to.textContent = fmt(obj.s);
     time.style.setProperty("--strike", String(obj.strike));
   };
   paint();
-  const split = SplitText.create(words, { type: "words", wordsClass: "word" });
-  // The caption and signature fade in with the story, not with the page-wide reveals.
-  const extras = $$("[data-reveal]", $("#story")!);
-  gsap.set(extras, { autoAlpha: 1, y: 0 });
-  extras.forEach((el) => el.removeAttribute("data-reveal"));
+  gsap.to(obj, { s: toSecs(to.dataset.countTime!), strike: 1, duration: 2.2, ease: "power3.inOut", onUpdate: paint, scrollTrigger: { trigger: time, start: "top 80%", once: true } });
+}
 
-  // Desktop: pin the whole story. The time counts down, the words light up and the
-  // text drifts up while each photo wipes in over the last, always fully in view.
-  mm.add("(min-width: 900px) and (min-height: 600px)", () => {
-    const items = $$("[data-stack-item]");
-    const copy = time.parentElement!;
-    gsap.set(items.slice(1), { clipPath: "inset(100% 0% 0% 0%)" });
-    const tl = gsap.timeline({
-      defaults: { ease: "none" },
-      scrollTrigger: { trigger: "#story", start: "top top", end: () => `+=${innerHeight * 1.5}`, pin: true, scrub: 0.6, anticipatePin: 1, invalidateOnRefresh: true },
+/* ---------- Story photos: carousel like the MYAH "Who we are" frame ----------
+   Cross-fades every 5.5s (soft blur + slow zoom-out), the dots fill as a timer,
+   tap a dot to jump, swipe on phones. Pauses when off screen or the tab is hidden. */
+function storyCarousel() {
+  const frame = $("[data-frame]");
+  if (!frame) return;
+  const slides = $$<HTMLImageElement>("[data-fslide]", frame);
+  const dots = $$<HTMLButtonElement>("[data-fdot]");
+  const dotsBox = dots[0]?.parentElement;
+  const cap = $("[data-fcap]");
+  const MS = 5500;
+  let i = 0;
+  let timer = 0;
+  let visible = false;
+
+  const show = (n: number) => {
+    if (n === i) return;
+    const old = slides[i];
+    old.classList.remove("on");
+    old.classList.add("out");
+    old.setAttribute("aria-hidden", "true");
+    setTimeout(() => old.classList.remove("out"), 1400);
+    i = n;
+    slides[i].classList.add("on");
+    slides[i].removeAttribute("aria-hidden");
+    dots.forEach((d, k) => {
+      d.classList.remove("on");
+      if (k === i) { void d.offsetWidth; d.classList.add("on"); } // restart the fill
     });
-    tl.to(obj, { s: target, strike: 1, duration: 0.8, onUpdate: paint }, 0);
-    tl.fromTo(split.words, { opacity: 0.16 }, { opacity: 1, stagger: 0.04, duration: 0.3 }, 0.2);
-    tl.fromTo(copy, { y: 24 }, { y: -24, duration: 3 }, 0);
-    items.slice(1).forEach((el, i) => {
-      const at = 0.35 + i * 0.85;
-      tl.to(el, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.7 }, at);
-      tl.fromTo($("img", el), { scale: 1.15 }, { scale: 1, duration: 0.7 }, at);
-    });
+    if (cap) {
+      cap.classList.add("is-swap");
+      setTimeout(() => { cap.textContent = slides[i].dataset.cap || ""; cap.classList.remove("is-swap"); }, 350);
+    }
+  };
+  const next = (step = 1) => show((i + step + slides.length) % slides.length);
+  const run = () => {
+    clearInterval(timer);
+    dotsBox?.classList.toggle("is-paused", !visible);
+    if (visible && !document.hidden && slides.length > 1) timer = window.setInterval(() => next(), MS);
+  };
+  const restartFill = () => { const d = dots[i]; d.classList.remove("on"); void d.offsetWidth; d.classList.add("on"); };
+
+  dots.forEach((d) => d.addEventListener("click", () => { show(Number(d.dataset.fdot)); run(); }));
+
+  // Swipe left/right on touch screens.
+  let sx: number | null = null;
+  frame.addEventListener("touchstart", (e) => { sx = e.touches[0].clientX; }, { passive: true });
+  frame.addEventListener("touchend", (e) => {
+    if (sx === null) return;
+    const dx = e.changedTouches[0].clientX - sx;
+    sx = null;
+    if (Math.abs(dx) > 40) { next(dx < 0 ? 1 : -1); run(); }
   });
 
-  // Phones and short screens: no pin; the time and words follow the scroll.
-  mm.add("(max-width: 899px), (max-height: 599px)", () => {
-    gsap.to(obj, { s: target, strike: 1, ease: "none", onUpdate: paint, scrollTrigger: { trigger: time, start: "top 85%", end: "top 35%", scrub: 0.5 } });
-    gsap.fromTo(split.words, { opacity: 0.16 }, { opacity: 1, ease: "none", stagger: 0.1, scrollTrigger: { trigger: words, start: "top 80%", end: "bottom 55%", scrub: 0.6 } });
-  });
+  // Only tick while the carousel is on screen.
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([e]) => {
+      const was = visible;
+      visible = e.isIntersecting;
+      if (visible && !was) restartFill();
+      run();
+    }, { threshold: 0.25 }).observe(frame);
+  } else { visible = true; run(); }
+  document.addEventListener("visibilitychange", run);
+
+  // First photo eases in once (zoom-out from 1.12) when the page has painted.
+  const first = slides[0];
+  first.classList.remove("on");
+  requestAnimationFrame(() => requestAnimationFrame(() => first.classList.add("on")));
+  frame.style.setProperty("--frame-ms", `${MS}ms`);
+  dotsBox?.style.setProperty("--frame-ms", `${MS}ms`);
 }
 
 /* ---------- Method rail ---------- */
@@ -338,6 +380,7 @@ intro();
 chrome();
 marquee();
 story();
+storyCarousel();
 rail();
 tabs();
 reels();

@@ -15,10 +15,11 @@ const offerOn = Date.now() < Date.parse(offer.ends); // re-checked in the browse
 const eventOn = Date.now() < Date.parse(event.ends);
 
 const story = [
-  { src: "leigh-10k", alt: "James running his first Leigh 10K seven years ago", cap: "Leigh 10K, day one. 47:37." },
-  { src: "electrician", alt: "James on a building site in hi-vis on his last day as an electrician", cap: "Last day on site, after 13 years." },
+  { src: "leigh-day-one", alt: "James finishing his first Leigh 10K seven years ago, with his result of 47:37", cap: "Leigh 10K, day one. 47:37." },
+  { src: "leigh-10k", big: 1000, alt: "James after the Trafford 10K in 2025, chip time 40:15", cap: "Trafford 10K, 2025. 40:15." },
+  { src: "electrician", big: 1100, alt: "James on a building site in hi-vis on his last day as an electrician", cap: "Last day on site, after 13 years." },
   { src: "hyrox-sandbag", alt: "James carrying a sandbag at HYROX Birmingham", cap: "HYROX Birmingham, 2026." },
-  { src: "dad", alt: "James carrying his baby daughter's car seat down a corridor", cap: "Dad first. Training fits round it." },
+  { src: "dad", big: 1100, alt: "James carrying his baby daughter's car seat down a corridor", cap: "Dad first. Training fits round it." },
 ];
 
 const reels = [
@@ -131,7 +132,7 @@ const jsonLd = {
             <span class="to" data-count-time="40:15" data-from-time="47:37">40:15</span>
           </h2>
           <p class="story-cap" data-reveal>My first 10K in Leigh, and my best. Seven years apart.</p>
-          <p class="story-text" data-scrub-words>
+          <p class="story-text" data-reveal>
             I spent 13 years as an electrician. Last September I put the tools down to coach full time.
             I'm a new dad and I race HYROX, so I know what training around real life takes.
             <em>That's what your plan is built around.</em>
@@ -141,13 +142,27 @@ const jsonLd = {
             <p><strong>James Pickles</strong>Coach, online and 1:1</p>
           </div>
         </div>
-        <div class="stack" data-stack>
-          {story.map((s, i) => (
-            <figure data-stack-item>
-              <img src={`/media/${s.src}-720.webp`} srcset={s.src.startsWith("hyrox") ? undefined : `/media/${s.src}-720.webp 720w, /media/${s.src}-${s.src === "leigh-10k" ? 1000 : 1100}.webp 1100w`} sizes="(min-width: 900px) 40vw, 80vw" width="720" height="900" alt={s.alt} loading="lazy" decoding="async" />
-              <figcaption>{s.cap}</figcaption>
-            </figure>
-          ))}
+        <!-- Photo carousel: cross-fades on its own, dots fill as a timer, swipe on phones. -->
+        <div class="frame-wrap" data-reveal>
+          <div class="frame" data-frame role="group" aria-roledescription="carousel" aria-label="James's story in photos">
+            {story.map((s, i) => (
+              <img
+                src={`/media/${s.src}-720.webp`}
+                srcset={s.big ? `/media/${s.src}-720.webp 720w, /media/${s.src}-${s.big}.webp ${s.big}w` : undefined}
+                sizes="(min-width: 900px) 40vw, 90vw" width="720" height="900" alt={s.alt}
+                loading={i === 0 ? "lazy" : "eager"} decoding="async"
+                class:list={{ on: i === 0 }} data-fslide data-cap={s.cap} aria-hidden={i === 0 ? undefined : "true"}
+              />
+            ))}
+          </div>
+          <div class="frame-foot">
+            <p class="frame-cap" aria-live="polite" data-fcap>{story[0].cap}</p>
+            <div class="frame-dots">
+              {story.map((s, i) => (
+                <button type="button" aria-label={`Photo ${i + 1}: ${s.cap}`} class:list={{ on: i === 0 }} data-fdot={i}><i></i></button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
