@@ -1,0 +1,108 @@
+---
+// Multi-step form shell used by /start (onboarding) and /check-in (weekly check-in).
+// One section per screen, progress bar, Back/Next, validation per step, draft autosave.
+import Icon from "./Icon.astro";
+import type { Section, Field } from "../lib/forms";
+
+interface Props {
+  form: "onboarding" | "checkin";
+  sections: Section[];
+  title: string;
+  submitLabel: string;
+  done: { title: string; body: string };
+}
+const { form, sections, title, submitLabel, done } = Astro.props;
+const fid = (f: Field) => `f-${f.id}`;
+const choiceType = (f: Field) => (f.type === "checkbox" || (f.type === "chips" && f.multiple) ? "checkbox" : "radio");
+const scale = (f: Field) => Array.from({ length: (f.max ?? 10) - (f.min ?? 1) + 1 }, (_, i) => String((f.min ?? 1) + i));
+---
+
+<div class="flow" data-flow={form} data-steps={sections.length}>
+  <header class="flow-top">
+    <a class="flow-brand" href="/" aria-label="Back to J.Pickles Coaching">
+      <img src="/media/logo-word.svg" alt="J.Pickles Coaching" width="190" height="25" />
+    </a>
+    <div class="flow-progress" aria-hidden="true"><span data-progress></span></div>
+    <p class="flow-count" aria-live="polite" data-count>Step 1 of {sections.length}</p>
+  </header>
+
+  <form class="flow-form" novalidate data-form>
+    <h1 class="sr">{title}</h1>
+    {sections.map((s, i) => (
+      <fieldset class="step" data-step={i} hidden={i !== 0} aria-labelledby={`h-${s.id}`}>
+        <legend class="sr">{s.title}</legend>
+        <h2 class="step-title" id={`h-${s.id}`}>{s.title}</h2>
+        {s.intro && <p class="step-intro">{s.intro}</p>}
+        <div class="fields">
+          {s.fields.map((f) => (
+            <div class:list={["field", `field-${f.type}`, { half: f.half }]} data-field={f.id} data-required={f.required ? "" : undefined} data-type={f.type}>
+              {["radio", "checkbox", "chips", "scale"].includes(f.type) ? (
+                <fieldset class="choice" aria-describedby={f.help ? `${fid(f)}-help` : undefined}>
+                  <legend class="label">{f.label}{f.required ? <span class="req" aria-hidden="true"> *</span> : <span class="opt"> optional</span>}</legend>
+                  {f.help && <p class="help" id={`${fid(f)}-help`}>{f.help}</p>}
+                  {f.type === "scale" ? (
+                    <div class="scale" style={`--n:${scale(f).length}`}>
+                      {scale(f).map((v) => (
+                        <label class="pill-opt"><input type="radio" name={f.id} value={v} required={f.required} /><span>{v}</span></label>
+                      ))}
+                      {f.scaleLabels && <div class="scale-ends" aria-hidden="true"><span>{f.scaleLabels[0]}</span><span>{f.scaleLabels[1]}</span></div>}
+                    </div>
+                  ) : f.type === "chips" ? (
+                    <div class="chips">
+                      {f.options!.map((o) => (
+                        <label class="pill-opt"><input type={choiceType(f)} name={f.id} value={o} /><span>{o}</span></label>
+                      ))}
+                    </div>
+                  ) : (
+                    <div class="options">
+                      {f.options!.map((o) => (
+                        <label class="opt-card">
+                          <input type={choiceType(f)} name={f.id} value={o} data-exclusive={f.exclusive === o ? "" : undefined} />
+                          <span class="tick" aria-hidden="true"><Icon name="check" size={14} /></span>
+                          <span class="opt-text">{o}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                </fieldset>
+              ) : (
+                <>
+                  <label class="label" for={fid(f)}>{f.label}{f.required ? <span class="req" aria-hidden="true"> *</span> : <span class="opt"> optional</span>}</label>
+                  {f.help && <p class="help" id={`${fid(f)}-help`}>{f.help}</p>}
+                  {f.type === "textarea" ? (
+                    <textarea id={fid(f)} name={f.id} rows="3" required={f.required} placeholder={f.placeholder} aria-describedby={f.help ? `${fid(f)}-help` : undefined} data-autosize></textarea>
+                  ) : (
+                    <div class:list={["input-wrap", { "has-unit": f.unit }]}>
+                      <input
+                        id={fid(f)} name={f.id} type={f.type} required={f.required} placeholder={f.placeholder}
+                        min={f.min} max={f.max} step={f.step} autocomplete={f.autocomplete ?? "off"} inputmode={f.inputmode as any}
+                        aria-describedby={f.help ? `${fid(f)}-help` : undefined}
+                      />
+                      {f.unit && <span class="unit" aria-hidden="true">{f.unit}</span>}
+                    </div>
+                  )}
+                </>
+              )}
+              <p class="err" data-err role="alert" hidden></p>
+            </div>
+          ))}
+        </div>
+      </fieldset>
+    ))}
+
+    <div class="flow-actions">
+      <button type="button" class="btn btn-ghost" data-back hidden><Icon name="arrowLeft" />Back</button>
+      <button type="button" class="btn" data-next>Next <Icon name="arrowRight" /></button>
+      <button type="submit" class="btn" data-submit hidden>{submitLabel} <Icon name="check" /></button>
+    </div>
+    <p class="flow-error" data-submit-error role="alert" hidden></p>
+  </form>
+
+  <section class="flow-done" data-done hidden tabindex="-1" aria-labelledby="done-title">
+    <div class="done-mark" aria-hidden="true"><Icon name="check" size={34} /></div>
+    <h2 id="done-title" class="step-title">{done.title}</h2>
+    <p class="step-intro">{done.body}</p>
+    <p class="done-note" data-preview-note hidden>Preview: this form isn't connected to a database yet, so nothing was saved.</p>
+    <slot name="done" />
+  </section>
+</div>

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /coach
+Disallow: /check-in
+Sitemap: https://www.jpicklescoaching.co.uk/sitemap.xml
