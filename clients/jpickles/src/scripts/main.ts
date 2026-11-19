@@ -56,7 +56,13 @@ function intro() {
 /* ---------- Nav, tab bar, sheet ---------- */
 function chrome() {
   const nav = $("[data-nav]");
-  if (nav) ScrollTrigger.create({ start: 10, onToggle: (s) => nav.classList.toggle("is-solid", s.isActive) });
+  // Solid header background anywhere below the very top. Based on the live scroll
+  // position (not a trigger range), so pinned sections can't switch it off.
+  if (nav) {
+    const solid = () => nav.classList.toggle("is-solid", scrollY > 10);
+    solid();
+    ScrollTrigger.create({ start: 0, end: "max", onUpdate: solid, onRefresh: solid });
+  }
 
   const tabs = $$("[data-tab]");
   const setTab = (id: string) => tabs.forEach((t) => t.classList.toggle("is-current", t.dataset.tab === id));
