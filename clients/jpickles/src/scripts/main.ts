@@ -72,19 +72,20 @@ function chrome() {
 /* ---------- Goals marquee: drifts left, scroll speed pushes it ---------- */
 function marquee() {
   const track = $("[data-marquee]");
-  if (!track || reduce) return;
-  const loop = gsap.to(track, { xPercent: -50, ease: "none", duration: 38, repeat: -1 });
-  let dir = 1;
+  if (!track) return;
+  // Always drifting left from page load, never stops or reverses. Scrolling speeds it up
+  // for a moment; with Reduce Motion on it drifts more slowly and ignores scrolling.
+  const loop = gsap.to(track, { xPercent: -50, ease: "none", duration: reduce ? 70 : 38, repeat: -1 });
+  if (reduce) return;
+  const settle = gsap.quickTo(loop, "timeScale", { duration: 1.2, ease: "power2.out" });
   ScrollTrigger.create({
     trigger: track,
     start: "top bottom",
     end: "bottom top",
     onUpdate: (self) => {
-      const v = self.getVelocity();
-      dir = self.direction;
-      const boost = gsap.utils.clamp(1, 6, 1 + Math.abs(v) / 400);
-      gsap.to(loop, { timeScale: boost * dir, duration: 0.2, overwrite: true });
-      gsap.to(loop, { timeScale: dir, duration: 1.2, delay: 0.2, ease: "power2.out" });
+      const boost = gsap.utils.clamp(1, 5, 1 + Math.abs(self.getVelocity()) / 400);
+      loop.timeScale(Math.max(loop.timeScale(), boost));
+      settle(1);
     },
   });
 }
@@ -309,11 +310,17 @@ function lines() {
       const { createSpeedLines } = await import("./speedlines");
       const fx = createSpeedLines(canvas, { reduce });
       if (!fx) return;
+      // Runs all the time while the hero is on screen (from page load, no scroll needed);
+      // only pauses when scrolled fully out of view or the tab is hidden, to save battery.
+      fx.play();
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(([e]) => (e.isIntersecting ? fx.play() : fx.pause())).observe(canvas);
+      }
+      // Scrolling still gives the lines an extra burst of speed.
       ScrollTrigger.create({
         trigger: ".hero",
-        start: "top top",
+        start: "top bottom",
         end: "bottom top",
-        onToggle: (s) => (s.isActive ? fx.play() : fx.pause()),
         onUpdate: (s) => fx.setBoost(Math.min(4, Math.abs(s.getVelocity()) / 600)),
       });
       if (!reduce) gsap.from(canvas, { autoAlpha: 0, duration: 1.6, ease: "power2.out" });

@@ -129,7 +129,8 @@ export function createSpeedLines(canvas: HTMLCanvasElement, { reduce }: Opts) {
     last = now;
     boostNow += (boost - boostNow) * 0.08;
     boost *= 0.94;
-    t += dt * (1 + boostNow * 2.5);
+    // Always moving. With Reduce Motion on it drifts slowly and ignores scroll bursts.
+    t += reduce ? dt * 0.35 : dt * (1 + boostNow * 2.5);
     mat.uniforms.uTime.value = t;
     const p = mat.uniforms.uPointer.value as number[];
     p[0] += (target[0] - p[0]) * 0.05;
@@ -144,7 +145,7 @@ export function createSpeedLines(canvas: HTMLCanvasElement, { reduce }: Opts) {
 
   const api = {
     play() {
-      if (running || reduce || document.hidden) return;
+      if (running) return;
       running = true;
       last = performance.now();
       raf = requestAnimationFrame(frame);
@@ -156,6 +157,5 @@ export function createSpeedLines(canvas: HTMLCanvasElement, { reduce }: Opts) {
     setBoost(v: number) { boost = Math.max(boost, v); },
   };
   document.addEventListener("visibilitychange", () => (document.hidden ? api.pause() : api.play()));
-  if (scrollY < innerHeight) api.play();
   return api;
 }
