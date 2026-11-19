@@ -6,7 +6,7 @@
 //   It writes a plain summary into the form, so the email and WhatsApp say exactly what's wanted.
 import {
   tiers, pageOptions, featureOptions, quickJobs, starterBundle, brandTidyUp, brandIdentity,
-  selfEdit, carePlan, FOUNDING_DISCOUNT_RATE, aud, founding,
+  selfEdit, carePlan, webAddress, FOUNDING_DISCOUNT_RATE, aud, founding,
 } from "../lib/pricing";
 
 interface Props {
@@ -22,14 +22,14 @@ const startParts: string[] = mode === "pricing" ? startTier.parts : [];
 
 // Chips show what you actually pay: the founding price for most website extras, the full
 // price for fixed ones (branding, admin login) and monthly ones.
-type SiteOption = { id: string; label: string; price: number; recurring?: boolean; fixed?: boolean; desc?: string };
+type SiteOption = { id: string; label: string; price: number; recurring?: boolean; yearly?: boolean; fixed?: boolean; desc?: string };
 const sitePrice = (o: SiteOption) => (o.recurring || o.fixed ? o.price : founding(o.price));
-const siteChip = (o: SiteOption) => `+${aud(sitePrice(o))}${o.recurring ? "/mo" : ""}`;
+const siteChip = (o: SiteOption) => `+${aud(sitePrice(o))}${o.yearly ? "/year" : o.recurring ? "/mo" : ""}`;
 const discounted = (o: SiteOption) => !o.recurring && !o.fixed;
 
 // Things that can be bought without a website package.
 const smallOptions = [
-  ...quickJobs.map((j) => ({ id: `job-${j.id}`, label: j.name, price: j.price, suffix: j.per ? ` ${j.per}` : "", recurring: false })),
+  ...quickJobs.map((j) => ({ id: `job-${j.id}`, label: j.name, price: j.price, suffix: j.per ? ` ${j.per}` : "", recurring: false, yearly: j.id === "domain" })),
   { id: "job-starter-bundle", label: starterBundle.name, price: starterBundle.price, suffix: "", recurring: false },
   { id: "brand-tidy", label: brandTidyUp.name, price: brandTidyUp.price, suffix: "", recurring: false },
   { id: "brand", label: brandIdentity.name, price: brandIdentity.price, suffix: "", recurring: false },
@@ -43,7 +43,7 @@ const isTier = tiers.some((t) => t.id === startPkg);
 // Pricing page: website features as chips, branding and the admin login tucked into a dropdown,
 // and hosting & care always part of the quote (explained just under the builder).
 const tucked = ["brand-tidy", "brand", "admin"];
-const shownFeatures = mode === "pricing" ? featureOptions.filter((o) => !tucked.includes(o.id) && o.id !== "maintenance") : featureOptions;
+const shownFeatures = mode === "pricing" ? featureOptions.filter((o) => !tucked.includes(o.id) && o.id !== "maintenance" && o.id !== "domain") : featureOptions;
 const tuckedOptions = tucked.map((id) => featureOptions.find((o) => o.id === id)!);
 const tuckedName: Record<string, string> = { "brand-tidy": brandTidyUp.name, brand: brandIdentity.name, admin: selfEdit.name };
 const tuckedDesc: Record<string, string> = {
@@ -51,8 +51,9 @@ const tuckedDesc: Record<string, string> = {
   brand: brandIdentity.desc,
   admin: "Sign in and change your own text, photos, prices and hours, any time.",
 };
-// Quick jobs alongside a website, domain first. Fixed prices, no founding discount.
-const jobOrder = ["domain", "google-profile", "social", "reviews"];
+// Quick jobs alongside a website (the web address is already part of every website quote).
+// Fixed prices, no founding discount.
+const jobOrder = ["google-profile", "social", "reviews"];
 const siteJobs = jobOrder.map((id) => quickJobs.find((j) => j.id === id)!).map((j) => ({
   id: `job-${j.id}`, label: j.name, price: j.price, chip: `+${aud(j.price)}${j.per ? ` ${j.per}` : ""}`,
 }));
@@ -62,13 +63,13 @@ const fullIncludes = tiers.map((t, i) =>
 );
 ---
 
-<div class:list={["qb", `qb-${mode}`]} data-qb={mode} data-rate={FOUNDING_DISCOUNT_RATE} data-base={base} data-care={carePlan.price}>
+<div class:list={["qb", `qb-${mode}`]} data-qb={mode} data-rate={FOUNDING_DISCOUNT_RATE} data-base={base} data-care={carePlan.price} data-domain={webAddress.price}>
 <div class="qb-picks">
 <div>
 <p class="quote-step">{mode === "pricing" ? "1. Pick a package" : "What would you like?"}</p>
 <div class="pkgs" role="group" aria-label={mode === "pricing" ? "Package" : "What would you like?"}>
 {tiers.map((t) => (
-<button type="button" class:list={["pkg", { on: t.id === startPkg }]} aria-pressed={t.id === startPkg ? "true" : "false"} data-pkg={t.id} data-name={`${t.name} package`} data-full={t.full} data-parts={t.parts.join(",")}><span class="pkg-name">{t.name}</span><span class="pkg-prices"><span class="pkg-price">{aud(founding(t.full))}</span><s class="pkg-was">{aud(t.full)}</s></span></button>
+<button type="button" class:list={["pkg", { on: t.id === startPkg }]} aria-pressed={t.id === startPkg ? "true" : "false"} data-pkg={t.id} data-name={`${t.name} package`} data-full={t.full} data-parts={t.parts.join(",")} data-domain-free={t.domainYearFree ? "1" : undefined}><span class="pkg-name">{t.name}</span><span class="pkg-prices"><span class="pkg-price">{aud(founding(t.full))}</span><s class="pkg-was">{aud(t.full)}</s></span></button>
 ))}
 {mode === "form" && (
 <>
@@ -101,11 +102,11 @@ const fullIncludes = tiers.map((t, i) =>
 <div>
 <p class="quote-step">{mode === "pricing" ? "3. " : ""}Add extras</p>
 <div class="chips">
-{shownFeatures.map((o) => <button type="button" class:list={["chip", { inc: included(o.id) }]} aria-pressed="false" disabled={included(o.id)} data-id={o.id} data-label={o.label} data-price={o.price} data-recurring={o.recurring ? "1" : undefined} data-fixed={o.fixed ? "1" : undefined} title={o.desc}>{o.label} {discounted(o) && <s class="chip-was">{aud(o.price)}</s>} <span class="chip-price" data-text={siteChip(o)}>{included(o.id) ? "✓ Included" : siteChip(o)}</span></button>)}
+{shownFeatures.map((o) => <button type="button" class:list={["chip", { inc: included(o.id) }]} aria-pressed="false" disabled={included(o.id)} data-id={o.id} data-label={o.label} data-price={o.price} data-recurring={o.recurring ? "1" : undefined} data-yearly={o.yearly ? "1" : undefined} data-fixed={o.fixed ? "1" : undefined} title={o.desc}>{o.label} {discounted(o) && <s class="chip-was">{aud(o.price)}</s>} <span class="chip-price" data-text={siteChip(o)}>{included(o.id) ? "✓ Included" : siteChip(o)}</span></button>)}
 </div>
 </div>
 <div>
-<p class="quote-step">{mode === "pricing" ? "4. " : ""}Quick jobs <span>· most websites need a domain</span></p>
+<p class="quote-step">{mode === "pricing" ? "4. " : ""}Get found online</p>
 <div class="chips">
 {siteJobs.map((o) => <button type="button" class:list={["chip", { inc: included(o.id) }]} aria-pressed="false" disabled={included(o.id)} data-id={o.id} data-label={o.label} data-price={o.price} data-fixed="1">{o.label} <span class="chip-price" data-text={o.chip}>{included(o.id) ? "✓ Included" : o.chip}</span></button>)}
 </div>
@@ -126,7 +127,7 @@ const fullIncludes = tiers.map((t, i) =>
 <div class="qb-small" hidden>
 <p class="quote-step">Pick what you need</p>
 <div class="chips">
-{smallOptions.map((o) => <button type="button" class="chip" aria-pressed="false" data-id={o.id} data-label={o.label} data-price={o.price} data-recurring={o.recurring ? "1" : undefined}>{o.label} <span class="chip-price">+{aud(o.price)}{o.suffix}</span></button>)}
+{smallOptions.map((o) => <button type="button" class="chip" aria-pressed="false" data-id={o.id} data-label={o.label} data-price={o.price} data-recurring={o.recurring ? "1" : undefined} data-yearly={o.yearly ? "1" : undefined}>{o.label} <span class="chip-price">+{aud(o.price)}{o.suffix}</span></button>)}
 </div>
 </div>
 )}
@@ -136,7 +137,11 @@ const fullIncludes = tiers.map((t, i) =>
 <div class="qb-estimate">
 <span class="qb-estimate-tag">Your estimate</span>
 <span class="qb-estimate-row"><span class="qb-estimate-total"><span data-quote-total aria-live="polite">{aud(founding(startTier.full))}</span></span><span class="qb-estimate-rrp"><span data-quote-rrp>{aud(startTier.full)}</span></span></span>
-<span class="qb-estimate-note"><span data-quote-monthly>One-off, plus {aud(carePlan.price)}/month hosting &amp; care</span></span>
+<span class="qb-estimate-tag-small">One-off website</span>
+<ul class="qb-running" data-quote-running>
+<li><strong>+ {aud(carePlan.price)}/month</strong> Hosting &amp; care</li>
+<li><strong>+ {aud(webAddress.price)}/year</strong> Your web address</li>
+</ul>
 <a href={`${base}/contact`} class="btn btn-violet" data-qb-send style="margin-top: 14px">Send me this quote</a>
 <span class="qb-estimate-small">No payment, no obligation.</span>
 </div>
@@ -553,6 +558,36 @@ const fullIncludes = tiers.map((t, i) =>
     }
   }
 
+  .qb-estimate-tag-small {
+    font-size: 0.86rem;
+    color: rgba(243, 238, 250, 0.72);
+  }
+
+  .qb-running {
+    list-style: none;
+    margin: 6px 0 0;
+    padding: 12px 0 0;
+    border-top: 1px solid rgba(243, 238, 250, 0.18);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.9rem;
+    color: rgba(243, 238, 250, 0.85);
+  }
+
+  .qb-running :global(strong) {
+    color: #ffffff;
+    margin-right: 4px;
+  }
+
+  .qb-running :global(em) {
+    font-style: normal;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #7cd68c;
+    margin-left: 4px;
+  }
+
   .qb-estimate-small {
     font-size: 0.78rem;
     color: rgba(243, 238, 250, 0.6);
@@ -570,6 +605,8 @@ const fullIncludes = tiers.map((t, i) =>
     const base = root.dataset.base ?? "";
     // On the Pricing page hosting & care is always part of a website quote.
     const care = mode === "pricing" ? Number(root.dataset.care ?? 0) : 0;
+    // ...and so is the web address, a yearly fee (Complete includes its first year).
+    const domain = mode === "pricing" ? Number(root.dataset.domain ?? 0) : 0;
     const aud = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
 
     const pkgs = Array.from(root.querySelectorAll<HTMLButtonElement>(".pkg"));
@@ -607,10 +644,9 @@ const fullIncludes = tiers.map((t, i) =>
       });
       // What the package gets, in full (Pricing page).
       root?.querySelectorAll<HTMLElement>("[data-incl]").forEach((el) => (el.hidden = el.dataset.incl !== next.dataset.pkg));
-      // Every website comes with hosting & care, so the form ticks it when a package is picked.
+      // Every website comes with hosting & care and a web address, so the form ticks both.
       if (kind === "site" && !wasSite) {
-        const careChip = siteChips.find((c) => c.dataset.id === "maintenance");
-        if (careChip) tick(careChip, true);
+        siteChips.forEach((c) => (c.dataset.id === "maintenance" || c.dataset.id === "domain") && tick(c, true));
       }
       root?.dispatchEvent(new CustomEvent("qb:pkg", { detail: next.dataset.pkg, bubbles: true }));
       update();
@@ -619,37 +655,45 @@ const fullIncludes = tiers.map((t, i) =>
     // What's been picked, in plain words, with the price.
     function state() {
       const kind = kindOf(pkg);
-      if (kind === "check") return { kind, ids: [] as string[], total: 0, full: 0, monthly: 0, list: "", price: "", empty: true };
+      if (kind === "check") return { kind, ids: [] as string[], total: 0, full: 0, monthly: 0, yearly: 0, yearFree: false, list: "", price: "", empty: true };
       const picked = (kind === "small" ? smallChips : siteChips).filter((c) => c.classList.contains("on") && !c.disabled);
       let full = kind === "small" ? 0 : Number(pkg.dataset.full ?? 0);
       let fixed = 0;
       let monthly = kind === "site" ? care : 0;
+      let yearly = kind === "site" ? domain : 0;
       picked.forEach((c) => {
         const price = Number(c.dataset.price);
-        if (c.hasAttribute("data-recurring")) monthly += price;
+        if (c.hasAttribute("data-yearly")) yearly += price;
+        else if (c.hasAttribute("data-recurring")) monthly += price;
         else if (kind === "small" || c.hasAttribute("data-fixed")) fixed += price;
         else full += price;
       });
       const total = kind === "small" ? fixed : full * rate + fixed;
       const list = [kind === "site" ? pkg.dataset.name : "", ...picked.map((c) => c.dataset.label)].filter(Boolean).join(" + ");
-      const price = [total ? aud(total) : "", monthly ? `${aud(monthly)}/month` : ""].filter(Boolean).join(" + ");
+      const yearFree = kind === "site" && pkg.hasAttribute("data-domain-free") && yearly > 0;
+      const yearText = yearly ? `${aud(yearly)}/year${yearFree ? " (first year included)" : ""}` : "";
+      const price = [total ? aud(total) : "", monthly ? `${aud(monthly)}/month` : "", yearText].filter(Boolean).join(" + ");
       const ids = picked.map((c) => c.dataset.id ?? "");
       if (care && kind === "site") ids.push("maintenance");
-      return { kind, ids, total, full: full + fixed, monthly, list, price, empty: !list };
+      if (domain && kind === "site") ids.push("domain");
+      return { kind, ids, total, full: full + fixed, monthly, yearly, yearFree, list, price, empty: !list };
     }
 
     function update() {
       const s = state();
-      const headline = s.total || !s.monthly ? aud(s.total) : `${aud(s.monthly)}/mo`;
+      const headline = s.total ? aud(s.total) : s.monthly ? `${aud(s.monthly)}/mo` : s.yearly ? `${aud(s.yearly)}/year` : aud(0);
       document.querySelectorAll("[data-quote-total]").forEach((el) => (el.textContent = headline));
       document.querySelectorAll<HTMLElement>("[data-quote-rrp]").forEach((el) => {
         el.textContent = aud(s.full);
         el.hidden = Math.round(s.full) === Math.round(s.total);
       });
       document.querySelectorAll("[data-quote-monthly]").forEach((el) => {
-        if (mode === "form") el.textContent = s.monthly && s.total ? `+ ${aud(s.monthly)}/month` : "";
-        else el.textContent = s.monthly && s.total ? `One-off, plus ${aud(s.monthly)}/month hosting & care` : s.monthly ? "Hosting & care" : "One-off, no lock-in";
+        const run = [s.monthly ? `${aud(s.monthly)}/month` : "", s.yearly ? `${aud(s.yearly)}/year` : ""].filter(Boolean).join(" + ");
+        el.textContent = run && s.total ? `+ ${run}` : "";
       });
+      // Pricing page: the two running costs under the one-off price.
+      const yearLine = root?.querySelector<HTMLElement>("[data-quote-running] li:last-child");
+      if (yearLine) yearLine.innerHTML = `<strong>+ ${aud(s.yearly)}/year</strong> Your web address${s.yearFree ? " <em>first year included</em>" : ""}`;
 
       if (mode !== "form") return;
       const totalLine = root?.querySelector<HTMLElement>(".qb-total");

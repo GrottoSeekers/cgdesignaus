@@ -2,7 +2,7 @@
 // Fixed-price jobs to get found online without a website (website extras and branding live
 // on the Pricing page).
 // Prices live in src/lib/pricing.ts.
-import { quickJobs, starterBundle, aud } from "../lib/pricing";
+import { quickJobs, starterBundle, webAddress, aud } from "../lib/pricing";
 import { contactHref } from "../lib/prefill";
 
 interface Props {
@@ -49,7 +49,7 @@ const saving = starterBundle.separately - starterBundle.price;
 </div>
 <div class="bundle-buy">
 <p class="bundle-price"><span class="sr-only">{aud(starterBundle.price)}, instead of {aud(starterBundle.separately)}</span><span aria-hidden="true" class="bundle-count" data-from={starterBundle.separately} data-to={starterBundle.price}>{aud(starterBundle.price)}</span> <span aria-hidden="true" class="bundle-was">{aud(starterBundle.separately)}</span></p>
-<p class="bundle-save">Save {aud(saving)} on doing them one by one. Domain cost extra.</p>
+<p class="bundle-save">Save {aud(saving)} on doing them one by one. Web address renews at {aud(webAddress.price)} a year.</p>
 <a href={askHref(starterBundle.id)} class="btn btn-violet">Get the starter bundle</a>
 </div>
 </div>
