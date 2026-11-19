@@ -316,13 +316,7 @@ function lines() {
       if ("IntersectionObserver" in window) {
         new IntersectionObserver(([e]) => (e.isIntersecting ? fx.play() : fx.pause())).observe(canvas);
       }
-      // Scrolling still gives the lines an extra burst of speed.
-      ScrollTrigger.create({
-        trigger: ".hero",
-        start: "top bottom",
-        end: "bottom top",
-        onUpdate: (s) => fx.setBoost(Math.min(4, Math.abs(s.getVelocity()) / 600)),
-      });
+      // Steady speed: scrolling doesn't change it.
       if (!reduce) gsap.from(canvas, { autoAlpha: 0, duration: 1.6, ease: "power2.out" });
     } catch {
       /* no WebGL: the hero still looks right without it */
