@@ -72,22 +72,36 @@ const jsonLd = {
       </nav>
       <div class="nav-end">
         <a class="btn btn-sm btn-ghost nav-checkin" href="/check-in">Client check-in</a>
-        <a class="btn btn-sm nav-cta" href="/start"><span class="cta-long">Start coaching</span><span class="cta-short">Start</span></a>
-        <button type="button" class="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu" data-burger>
-          <span></span><span></span><span></span>
-        </button>
+        <!-- Phones: one glass capsule holding "Start coaching" and the menu button. -->
+        <div class="nav-capsule">
+          <a class="btn btn-sm nav-cta" href="/start"><span class="cta-long">Start coaching</span><span class="cta-short">Start</span><Icon name="arrowRight" class="cta-arrow" /></a>
+          <button type="button" class="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu" data-burger>
+            <span></span><span></span><span></span>
+          </button>
+        </div>
       </div>
     </div>
   </header>
 
   <!-- Phone menu (three lines, top right): full-screen, same links and buttons as desktop. -->
   <div class="menu" id="menu" data-menu hidden>
+    <div class="menu-bg" aria-hidden="true" data-menu-bg>
+      <img src="/media/city-run-720.webp" alt="" width="720" height="900" />
+    </div>
     <nav class="menu-links" aria-label="Menu">
-      <a href="#story" data-menu-link>Story</a>
-      <a href="#how" data-menu-link>How it works</a>
-      <a href="#prices" data-menu-link>Prices</a>
-      <a href="#results" data-menu-link>Results</a>
-      <a href="#faq" data-menu-link>Questions</a>
+      {[
+        { href: "#story", label: "Story", note: "47:37 to 40:15" },
+        { href: "#how", label: "How it works", note: "4 steps" },
+        { href: "#prices", label: "Prices", note: "From £30" },
+        { href: "#results", label: "Results", note: "Client wins" },
+        { href: "#faq", label: "Questions", note: `${faqs.length} answers` },
+      ].map((l) => (
+        <a href={l.href} data-menu-link>
+          <span class="ml-mask"><span class="ml-text">{l.label}</span></span>
+          <small class="ml-note">{l.note}</small>
+          <i class="ml-rule" aria-hidden="true"></i>
+        </a>
+      ))}
     </nav>
     <div class="menu-ctas" data-menu-item>
       <a class="btn btn-block" href="/start">Start coaching <Icon name="arrowRight" /></a>

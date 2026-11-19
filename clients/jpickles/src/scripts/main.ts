@@ -90,27 +90,56 @@ function chrome() {
   const burger = $<HTMLButtonElement>("[data-burger]");
   const menu = $("[data-menu]");
   if (!burger || !menu) return;
-  const items = [...$$("[data-menu-link]", menu), ...$$("[data-menu-item]", menu)];
+  const links = $$<HTMLAnchorElement>("[data-menu-link]", menu);
+  const texts = links.map((a) => $(".ml-text", a)!);
+  const notes = links.map((a) => $(".ml-note", a)!);
+  const rules = links.map((a) => $(".ml-rule", a)!);
+  const extras = $$("[data-menu-item]", menu);
+  const bg = $("[data-menu-bg]", menu);
   let open = false;
+  let tl: gsap.core.Timeline | null = null;
+
+  // The section you're currently looking at is shown in gold italic in the menu.
+  const markCurrent = () => {
+    let current = "";
+    links.forEach((a) => {
+      const sec = document.querySelector(a.getAttribute("href")!);
+      if (sec && sec.getBoundingClientRect().top < innerHeight * 0.45) current = a.getAttribute("href")!;
+    });
+    links.forEach((a) => a.classList.toggle("is-current", a.getAttribute("href") === current));
+  };
+
   const set = (on: boolean, jumpTo?: string) => {
     if (on === open) return;
     open = on;
     burger.setAttribute("aria-expanded", String(on));
     burger.setAttribute("aria-label", on ? "Close menu" : "Open menu");
+    tl?.kill();
     if (on) {
+      markCurrent();
       menu.hidden = false;
       root.classList.add("menu-open");
-      gsap.fromTo(menu, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35, ease: "power2.out" });
-      gsap.fromTo(items, { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: "expo.out", stagger: 0.05, delay: 0.05 });
+      // Open: backdrop fades, photo drifts in, each word rises out of its own mask,
+      // the dividing lines draw left to right, then the buttons settle.
+      tl = gsap.timeline({ defaults: { ease: "expo.out" } })
+        .fromTo(menu, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, ease: "power2.out" }, 0)
+        .fromTo(bg, { scale: 1.12, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 1.6, ease: "power3.out" }, 0)
+        .fromTo(texts, { yPercent: 115 }, { yPercent: 0, duration: 0.9, stagger: 0.06 }, 0.08)
+        .fromTo(rules, { scaleX: 0 }, { scaleX: 1, duration: 1, stagger: 0.06, ease: "expo.inOut" }, 0.1)
+        .fromTo(notes, { autoAlpha: 0, x: -8 }, { autoAlpha: 1, x: 0, duration: 0.6, stagger: 0.06 }, 0.35)
+        .fromTo(extras, { autoAlpha: 0, y: 22 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.08 }, 0.4);
     } else {
-      gsap.to(menu, {
-        autoAlpha: 0, duration: 0.3, ease: "power2.in",
+      // Close: words drop back behind their masks, then the screen fades.
+      tl = gsap.timeline({
         onComplete: () => {
           menu.hidden = true;
           root.classList.remove("menu-open");
           if (jumpTo) document.querySelector(jumpTo)?.scrollIntoView({ behavior: "smooth" });
         },
-      });
+      })
+        .to([...extras, ...notes], { autoAlpha: 0, duration: 0.2, ease: "power2.in" }, 0)
+        .to(texts, { yPercent: -110, duration: 0.35, stagger: 0.03, ease: "power3.in" }, 0)
+        .to(menu, { autoAlpha: 0, duration: 0.3, ease: "power2.in" }, 0.22);
     }
   };
   burger.addEventListener("click", () => set(!open));
@@ -259,12 +288,17 @@ function rail() {
       ease: "none",
       scrollTrigger: {
         trigger: wrap,
-        start: desk ? "top 75%" : "top 70%",
-        end: desk ? "bottom 55%" : "bottom 60%",
+        start: desk ? "top 75%" : "top 80%",
+        end: desk ? "bottom 55%" : "bottom 45%",
         scrub: 0.4,
         onUpdate: (self) => {
-          const lit = Math.floor(self.progress * stepsEls.length + 0.15);
-          stepsEls.forEach((s, i) => s.classList.toggle("is-on", i < lit));
+          const n = stepsEls.length;
+          const lit = Math.floor(self.progress * n + 0.15);
+          stepsEls.forEach((s, i) => {
+            s.classList.toggle("is-on", i < lit);
+            // Phones (2x2 grid): each step has its own gold line that fills in turn.
+            s.style.setProperty("--fill", String(Math.min(1, Math.max(0, self.progress * n - i))));
+          });
         },
       },
     });
