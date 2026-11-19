@@ -168,9 +168,18 @@ section { position: relative; }
 .stack figure { position: absolute; inset: 0; margin: 0; }
 .stack img { width: 100%; height: 100%; object-fit: cover; }
 .stack figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 2.5rem 1.2rem 1.1rem; font-size: .88rem; color: var(--bone); background: linear-gradient(transparent, rgb(12 12 13 / .85)); }
-@media (min-width: 900px) {
-  .story-grid { grid-template-columns: 1.1fr .9fr; gap: clamp(3rem, 7vw, 7rem); align-items: start; }
-  .stack { position: sticky; top: 96px; }
+@media (min-width: 900px) and (min-height: 600px) {
+  /* Desktop: the story pins in place, text on the left, photos fully in view on the right. */
+  #story { min-height: 100dvh; display: grid; align-items: center; padding-block: 84px 28px; }
+  .story-grid { grid-template-columns: 1.1fr .9fr; gap: clamp(3rem, 6vw, 6rem); align-items: center; }
+  .story-time { font-size: clamp(4.4rem, 8.5vw, 7.6rem); }
+  .story-text { margin-top: 1.6rem; font-size: clamp(1.35rem, 2vw, 1.95rem); }
+  .story-sign { margin-top: 1.4rem; }
+  .stack { height: min(calc(100dvh - 130px), 680px); aspect-ratio: 4/5; width: auto; max-width: 100%; justify-self: end; }
+}
+@media (min-width: 900px) and (max-height: 599px) {
+  .story-grid { grid-template-columns: 1.1fr .9fr; gap: 4rem; align-items: start; }
+  .stack { position: sticky; top: 84px; }
 }
 @media (max-width: 899px) {
   .stack { aspect-ratio: auto; display: grid; grid-auto-flow: column; grid-auto-columns: 78%; gap: .75rem; overflow-x: auto; scroll-snap-type: x mandatory; background: none; border-radius: 0; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); scrollbar-width: none; }
@@ -215,6 +224,22 @@ section { position: relative; }
 .plans[hidden] { display: none; }
 .plan { position: relative; display: flex; flex-direction: column; padding: 1.6rem 1.4rem 1.4rem; border: 1px solid var(--line); border-radius: var(--r); background: var(--ink-2); overflow: hidden; }
 .plan.is-featured { border-color: rgb(201 164 92 / .65); background: linear-gradient(180deg, rgb(201 164 92 / .08), transparent 40%), var(--ink-2); }
+/* Hover (mouse only): a gold spotlight follows the cursor, the border lights up, the card lifts and tilts. */
+.plan::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .4s var(--ease);
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgb(201 164 92 / .16), transparent 45%); }
+.plan::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .4s var(--ease); padding: 1px;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), var(--gold), transparent 60%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+.plan > :not(.plan-badge) { position: relative; z-index: 1; }
+.plan-badge { z-index: 2; }
+@media (hover: hover) and (pointer: fine) {
+  .plans { perspective: 1200px; }
+  .plan { transition: border-color .4s var(--ease), box-shadow .5s var(--ease); will-change: transform; }
+  .plan:hover { border-color: var(--line-2); box-shadow: 0 30px 60px -30px rgb(0 0 0 / .8), 0 0 0 1px rgb(201 164 92 / .12); }
+  .plan:hover::before, .plan:hover::after { opacity: 1; }
+  .plan .plan-price .now { transition: color .3s; }
+  .plan:hover .plan-price .now { color: var(--gold-2); }
+}
 .plan-badge { position: absolute; top: 1.1rem; right: 1.1rem; font: 600 .72rem/1 var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--ink); background: var(--gold); padding: .42rem .65rem; border-radius: 999px; }
 .plan-name { font: 400 .72rem/1.3 var(--wide); letter-spacing: .3em; text-transform: uppercase; color: var(--mute); }
 .plan-price { display: flex; align-items: baseline; gap: .55rem; margin: 1rem 0 .1rem; }
@@ -243,13 +268,12 @@ section { position: relative; }
 
 /* Floor: reels + event */
 .floor-head { display: grid; gap: 1rem; }
-.reels { margin-top: 2.5rem; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(200px, 1fr); gap: .75rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
-.reels::-webkit-scrollbar { display: none; }
-.reel { position: relative; aspect-ratio: 9/16; border-radius: var(--r); overflow: hidden; background: var(--ink-3); scroll-snap-align: start; margin: 0; }
-.reel video, .reel img { width: 100%; height: 100%; object-fit: cover; }
+/* A plain grid: nothing scrolls sideways, so the page scroll never gets caught here. */
+.reels { margin-top: 2.5rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: .75rem; }
+.reel { position: relative; aspect-ratio: 9/16; border-radius: var(--r); overflow: hidden; background: var(--ink-3); margin: 0; }
+.reel video, .reel img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
 .reel figcaption { position: absolute; left: .9rem; bottom: .8rem; right: .9rem; font-size: .85rem; font-weight: 500; text-shadow: 0 1px 12px rgb(0 0 0 / .6); }
-.reel:nth-child(even) { transform: translateY(2.2rem); }
-@media (max-width: 899px) { .reels { grid-auto-columns: 62%; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); } .reel:nth-child(even) { transform: none; } }
+@media (max-width: 899px) { .reels { grid-template-columns: repeat(2, 1fr); gap: .6rem; } .reel figcaption { left: .7rem; bottom: .6rem; font-size: .8rem; } }
 .event { margin-top: clamp(3.5rem, 7vw, 5rem); display: grid; gap: 1.5rem; padding: clamp(1.4rem, 3vw, 2.2rem); border: 1px solid var(--line-2); border-radius: var(--r); align-items: center; }
 .event[hidden] { display: none; }
 .event h3 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); line-height: 1.05; }
@@ -314,8 +338,10 @@ section { position: relative; }
 
 /* Footer */
 .foot { border-top: 1px solid var(--line); padding: clamp(3rem, 7vw, 5rem) 0 2rem; }
-.foot-logo { width: 100%; max-width: 980px; margin: 0 auto; color: var(--bone); }
+.foot-logo { position: relative; width: 100%; max-width: 980px; margin: 0 auto; color: var(--bone); }
 .foot-logo img { width: 100%; height: auto; }
+/* Three copies of the logo, each showing one band (runner, name, COACHING), so they can animate in turn. */
+.foot-logo img + img { position: absolute; inset: 0; }
 .foot-grid { display: grid; gap: 1.5rem; margin-top: clamp(2.5rem, 6vw, 4rem); color: var(--mute); font-size: .92rem; }
 .foot-links { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; }
 .foot-links a { text-decoration: none; color: var(--bone); }

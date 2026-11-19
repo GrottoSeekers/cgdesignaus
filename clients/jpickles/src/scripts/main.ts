@@ -96,39 +96,46 @@ const fmt = (n: number) => `${Math.floor(n / 60)}:${String(Math.round(n) % 60).p
 function story() {
   const time = $("[data-time]");
   const to = $("[data-count-time]");
-  if (time && to && !reduce) {
-    const from = toSecs(to.dataset.fromTime!);
-    const target = toSecs(to.dataset.countTime!);
-    const obj = { s: from, strike: 0 };
-    to.textContent = fmt(from);
-    gsap.to(obj, {
-      s: target,
-      strike: 1,
-      ease: "none",
-      onUpdate: () => {
-        to.textContent = fmt(obj.s);
-        time.style.setProperty("--strike", String(obj.strike));
-      },
-      scrollTrigger: { trigger: time, start: "top 85%", end: "top 35%", scrub: 0.5 },
-    });
-  }
-
   const words = $("[data-scrub-words]");
-  if (words && !reduce) {
-    const split = SplitText.create(words, { type: "words", wordsClass: "word" });
-    gsap.fromTo(split.words, { opacity: 0.16 }, { opacity: 1, ease: "none", stagger: 0.1, scrollTrigger: { trigger: words, start: "top 80%", end: "bottom 55%", scrub: 0.6 } });
-  }
+  if (reduce || !time || !to || !words) return;
+  const from = toSecs(to.dataset.fromTime!);
+  const target = toSecs(to.dataset.countTime!);
+  const obj = { s: from, strike: 0 };
+  const paint = () => {
+    to.textContent = fmt(obj.s);
+    time.style.setProperty("--strike", String(obj.strike));
+  };
+  paint();
+  const split = SplitText.create(words, { type: "words", wordsClass: "word" });
+  // The caption and signature fade in with the story, not with the page-wide reveals.
+  const extras = $$("[data-reveal]", $("#story")!);
+  gsap.set(extras, { autoAlpha: 1, y: 0 });
+  extras.forEach((el) => el.removeAttribute("data-reveal"));
 
-  // Photo stack (desktop): each photo wipes up over the last as the story scrolls.
-  mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)", () => {
+  // Desktop: pin the whole story. The time counts down, the words light up and the
+  // text drifts up while each photo wipes in over the last, always fully in view.
+  mm.add("(min-width: 900px) and (min-height: 600px)", () => {
     const items = $$("[data-stack-item]");
-    if (items.length < 2) return;
+    const copy = time.parentElement!;
     gsap.set(items.slice(1), { clipPath: "inset(100% 0% 0% 0%)" });
-    const tl = gsap.timeline({ scrollTrigger: { trigger: "#story", start: "top 30%", end: "bottom 70%", scrub: 0.6 } });
-    items.slice(1).forEach((el, i) => {
-      tl.to(el, { clipPath: "inset(0% 0% 0% 0%)", ease: "none", duration: 1 }, i);
-      tl.from($("img", el), { scale: 1.15, ease: "none", duration: 1 }, i);
+    const tl = gsap.timeline({
+      defaults: { ease: "none" },
+      scrollTrigger: { trigger: "#story", start: "top top", end: () => `+=${innerHeight * 1.5}`, pin: true, scrub: 0.6, anticipatePin: 1, invalidateOnRefresh: true },
     });
+    tl.to(obj, { s: target, strike: 1, duration: 0.8, onUpdate: paint }, 0);
+    tl.fromTo(split.words, { opacity: 0.16 }, { opacity: 1, stagger: 0.04, duration: 0.3 }, 0.2);
+    tl.fromTo(copy, { y: 24 }, { y: -24, duration: 3 }, 0);
+    items.slice(1).forEach((el, i) => {
+      const at = 0.35 + i * 0.85;
+      tl.to(el, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.7 }, at);
+      tl.fromTo($("img", el), { scale: 1.15 }, { scale: 1, duration: 0.7 }, at);
+    });
+  });
+
+  // Phones and short screens: no pin; the time and words follow the scroll.
+  mm.add("(max-width: 899px), (max-height: 599px)", () => {
+    gsap.to(obj, { s: target, strike: 1, ease: "none", onUpdate: paint, scrollTrigger: { trigger: time, start: "top 85%", end: "top 35%", scrub: 0.5 } });
+    gsap.fromTo(split.words, { opacity: 0.16 }, { opacity: 1, ease: "none", stagger: 0.1, scrollTrigger: { trigger: words, start: "top 80%", end: "bottom 55%", scrub: 0.6 } });
   });
 }
 
@@ -211,12 +218,8 @@ function tabs() {
 function reels() {
   const vids = $$<HTMLVideoElement>("video[data-autoplay]");
   if (!reduce) {
-    gsap.from("[data-reel]", { autoAlpha: 0, y: 60, duration: 1.1, ease: "expo.out", stagger: 0.1, scrollTrigger: { trigger: "[data-reels]", start: "top 85%", once: true } });
-    mm.add("(min-width: 900px)", () => {
-      $$("[data-reel]").forEach((r, i) => {
-        gsap.fromTo(r, { y: i % 2 ? 70 : 0 }, { y: i % 2 ? -10 : 30, ease: "none", scrollTrigger: { trigger: "[data-reels]", start: "top bottom", end: "bottom top", scrub: true } });
-      });
-    });
+    // One fade-in, then the reels sit still (no scroll-linked movement).
+    gsap.from("[data-reel]", { autoAlpha: 0, duration: 0.9, ease: "power2.out", stagger: 0.08, scrollTrigger: { trigger: "[data-reels]", start: "top 85%", once: true } });
   }
   if (reduce || !("IntersectionObserver" in window)) return; // posters only
   const io = new IntersectionObserver(
@@ -248,7 +251,16 @@ function revealsIn() {
   if (closeImg) gsap.fromTo(closeImg, { yPercent: -10 }, { yPercent: 0, ease: "none", scrollTrigger: { trigger: ".close", start: "top bottom", end: "bottom bottom", scrub: true } });
   const foot = $("[data-foot-logo]");
   if (foot) {
-    gsap.fromTo(foot, { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: "expo.inOut", scrollTrigger: { trigger: foot, start: "top 92%", once: true } });
+    // Footer logo builds in three slow beats: the runner sprints in from the left,
+    // J.PICKLES rises up, then the COACHING line opens out from the centre.
+    const [runner, name, sub] = ["runner", "name", "sub"].map((p) => $(`[data-logo-part="${p}"]`, foot));
+    gsap.set(runner, { clipPath: "inset(0% 100% 44% 0%)", x: -60 });
+    gsap.set(name, { clipPath: "inset(86% 0% 14% 0%)", y: 40 });
+    gsap.set(sub, { clipPath: "inset(86% 50% 0% 50%)" });
+    gsap.timeline({ scrollTrigger: { trigger: foot, start: "top 88%", once: true } })
+      .to(runner, { clipPath: "inset(0% 0% 44% 0%)", x: 0, duration: 2.2, ease: "power3.out" })
+      .to(name, { clipPath: "inset(56% 0% 14% 0%)", y: 0, duration: 1.8, ease: "expo.out" }, 0.9)
+      .to(sub, { clipPath: "inset(86% 0% 0% 0%)", duration: 1.8, ease: "expo.inOut" }, 1.7);
   }
 }
 
@@ -264,6 +276,27 @@ function magnetic() {
       yTo((e.clientY - (r.top + r.height / 2)) * 0.32);
     });
     btn.addEventListener("pointerleave", () => { xTo(0); yTo(0); });
+  });
+}
+
+/* ---------- Price cards: spotlight follows the cursor, card lifts and tilts (mouse only) ---------- */
+function planHover() {
+  if (!finePointer) return;
+  $$("[data-plan]").forEach((card) => {
+    const rx = reduce ? null : gsap.quickTo(card, "rotationX", { duration: 0.6, ease: "power3.out" });
+    const ry = reduce ? null : gsap.quickTo(card, "rotationY", { duration: 0.6, ease: "power3.out" });
+    const lift = reduce ? null : gsap.quickTo(card, "y", { duration: 0.6, ease: "power3.out" });
+    card.addEventListener("pointermove", (e) => {
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width;
+      const py = (e.clientY - r.top) / r.height;
+      card.style.setProperty("--mx", `${px * 100}%`);
+      card.style.setProperty("--my", `${py * 100}%`);
+      rx?.((0.5 - py) * 6);
+      ry?.((px - 0.5) * 8);
+      lift?.(-8);
+    });
+    card.addEventListener("pointerleave", () => { rx?.(0); ry?.(0); lift?.(0); });
   });
 }
 
@@ -303,5 +336,6 @@ tabs();
 reels();
 revealsIn();
 magnetic();
+planHover();
 lines();
 document.fonts?.ready.then(() => ScrollTrigger.refresh());
