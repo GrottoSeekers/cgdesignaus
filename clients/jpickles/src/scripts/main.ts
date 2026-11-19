@@ -40,11 +40,31 @@ if (!reduce) {
 root.classList.add("motion-ready");
 
 /* ---------- Hero intro ---------- */
+/** Resolves once an image is downloaded and decoded (or after `maxMs`, or on error). */
+function imageReady(img: HTMLImageElement, maxMs = 4000) {
+  const done = () => (img.decode ? img.decode().catch(() => {}) : Promise.resolve());
+  const loaded = img.complete && img.naturalWidth
+    ? done()
+    : new Promise<void>((res) => {
+        img.addEventListener("load", () => done().then(() => res()), { once: true });
+        img.addEventListener("error", () => res(), { once: true });
+      });
+  return Promise.race([loaded, new Promise((res) => setTimeout(res, maxMs))]);
+}
+
 function intro() {
   if (reduce) return;
   const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
-  if (heroPhoto) tl.fromTo(heroPhoto, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.5, ease: "expo.inOut" }, 0);
-  if (heroImg) tl.from(heroImg, { scale: 1.25, duration: 2 }, 0);
+  // The photo's wipe only starts once the photo is fully downloaded and decoded, so it
+  // never wipes in half-drawn (gives up waiting after 2.5s).
+  if (heroPhoto && heroImg) {
+    gsap.set(heroPhoto, { clipPath: "inset(100% 0% 0% 0%)" });
+    gsap.set(heroImg, { scale: 1.25 });
+    imageReady(heroImg as HTMLImageElement, 2500).then(() => {
+      gsap.to(heroPhoto, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.5, ease: "expo.inOut" });
+      gsap.to(heroImg, { scale: 1, duration: 2, ease: "expo.out" });
+    });
+  }
   tl.to(heroFades[0], { autoAlpha: 1, y: 0, duration: 0.9 }, 0.25);
   tl.to(heroLines, { yPercent: 0, duration: 1.2, stagger: 0.12 }, 0.3);
   tl.to(heroFades.slice(1), { autoAlpha: 1, y: 0, duration: 1, stagger: 0.1 }, 0.75);
@@ -130,7 +150,14 @@ function storyCarousel() {
   let timer = 0;
   let visible = false;
 
+  // Only swap to a photo once it's fully loaded, so a slide can't fade in half-drawn.
+  let pending = -1;
   const show = (n: number) => {
+    if (n === i || n === pending) return;
+    pending = n;
+    imageReady(slides[n], 3000).then(() => { if (pending === n) { pending = -1; swap(n); } });
+  };
+  const swap = (n: number) => {
     if (n === i) return;
     const old = slides[i];
     old.classList.remove("on");

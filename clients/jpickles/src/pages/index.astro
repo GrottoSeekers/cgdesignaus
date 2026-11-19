@@ -138,7 +138,7 @@ const jsonLd = {
             <em>That's what your plan is built around.</em>
           </p>
           <div class="story-sign" data-reveal>
-            <img src="/media/james-portrait-720.webp" width="54" height="54" alt="" loading="lazy" decoding="async" />
+            <img src="/media/james-portrait-720.webp" width="54" height="54" alt="" decoding="async" />
             <p><strong>James Pickles</strong>Coach, online and 1:1</p>
           </div>
         </div>
@@ -150,7 +150,7 @@ const jsonLd = {
                 src={`/media/${s.src}-720.webp`}
                 srcset={s.big ? `/media/${s.src}-720.webp 720w, /media/${s.src}-${s.big}.webp ${s.big}w` : undefined}
                 sizes="(min-width: 900px) 40vw, 90vw" width="720" height="900" alt={s.alt}
-                loading={i === 0 ? "lazy" : "eager"} decoding="async"
+                decoding="async"
                 class:list={{ on: i === 0 }} data-fslide data-cap={s.cap} aria-hidden={i === 0 ? undefined : "true"}
               />
             ))}
@@ -319,7 +319,7 @@ const jsonLd = {
     <section class="method pad" id="coach" aria-labelledby="coach-title">
       <div class="wrap coach-grid">
         <div class="coach-photo" data-reveal>
-          <img src="/media/james-portrait-720.webp" srcset="/media/james-portrait-720.webp 720w, /media/james-portrait-1100.webp 1100w" sizes="(min-width: 900px) 38vw, 100vw" width="720" height="900" alt="James Pickles between events at a fitness competition" loading="lazy" decoding="async" data-parallax />
+          <img src="/media/james-portrait-720.webp" srcset="/media/james-portrait-720.webp 720w, /media/james-portrait-1100.webp 1100w" sizes="(min-width: 900px) 38vw, 100vw" width="720" height="900" alt="James Pickles between events at a fitness competition" decoding="async" data-parallax />
         </div>
         <div>
           <p class="kicker" data-reveal>Your coach</p>
@@ -370,7 +370,7 @@ const jsonLd = {
     <!-- Close -->
     <section class="close" aria-labelledby="close-title">
       <div class="close-bg" aria-hidden="true">
-        <img src="/media/arms-up-720.webp" srcset="/media/arms-up-720.webp 720w, /media/arms-up-1200.webp 1200w" sizes="100vw" alt="" loading="lazy" decoding="async" data-close-img />
+        <img src="/media/arms-up-720.webp" srcset="/media/arms-up-720.webp 720w, /media/arms-up-1200.webp 1200w" sizes="100vw" alt="" decoding="async" data-close-img />
       </div>
       <div class="wrap close-inner">
         <h2 id="close-title" class="close-title" data-reveal>Your first block starts with <em>one form.</em></h2>
@@ -385,7 +385,7 @@ const jsonLd = {
   <footer class="foot" data-foot>
     <div class="wrap">
       <a class="foot-logo" href="#top" aria-label="J.Pickles Coaching, back to top" data-foot-logo>
-        <img src="/media/logo-full.svg" alt="J.Pickles Coaching" width="1682" height="554" loading="lazy" />
+        <img src="/media/logo-full.svg" alt="J.Pickles Coaching" width="1682" height="554" />
       </a>
       <span class="foot-rule" aria-hidden="true" data-foot-rule></span>
       <div class="foot-cols">

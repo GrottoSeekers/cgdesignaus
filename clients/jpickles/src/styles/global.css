@@ -38,6 +38,12 @@ img, video, canvas, svg { display: block; max-width: 100%; }
 a { color: inherit; }
 button { font: inherit; color: inherit; }
 ::selection { background: var(--gold); color: var(--ink); }
+/* Photos: hidden until fully loaded and decoded (Base.astro adds .img-ready), then a short
+   fade from 0 to whatever opacity the element normally has, so animations keep working. */
+.js img:not(.img-ready) { opacity: 0 !important; }
+.js img.img-ready { animation: img-in .6s ease backwards; }
+@keyframes img-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .js img.img-ready { animation: none; } }
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
 /* The gold focus ring is for keyboard users. After a mouse click or tap (html.is-pointer,
    set in Base.astro) it stays hidden; pressing Tab brings it back. */

@@ -6,6 +6,12 @@ import "@fontsource/michroma/latin-400.css";
 import "../styles/global.css";
 import Icon from "../components/Icon.astro";
 import { site, cgLinks } from "../lib/site";
+// The four font files every page uses, preloaded so text never swaps fonts after showing.
+import bodoniUrl from "@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-opsz-normal.woff2?url";
+import bodoniItalicUrl from "@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-opsz-italic.woff2?url";
+import hankenUrl from "@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-wght-normal.woff2?url";
+import michromaUrl from "@fontsource/michroma/files/michroma-latin-400-normal.woff2?url";
+const fonts = [bodoniUrl, bodoniItalicUrl, hankenUrl, michromaUrl];
 
 interface Props {
   title: string;
@@ -39,11 +45,32 @@ const ext = { target: "_blank", rel: "noopener noreferrer" };
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    {fonts.map((f) => <link rel="preload" as="font" type="font/woff2" href={f} crossorigin />)}
     {preload && <link rel="preload" as="image" href={preload.href} imagesrcset={preload.srcset} imagesizes={preload.sizes} fetchpriority="high" />}
     <slot name="head" />
     <script is:inline>
       // Hide animated elements only when JS runs; the failsafe shows them after 2.5s.
       document.documentElement.classList.add("js");
+      // Photos stay invisible until fully downloaded and decoded, then fade in (never pop or
+      // paint half-loaded). Runs before the page paints; failsafe reveals any after 4s.
+      (function () {
+        function ready(img) { img.classList.add("img-ready"); }
+        function watch(img) {
+          if (img.dataset.watched) return;
+          img.dataset.watched = "1";
+          if (img.complete && img.naturalWidth) { (img.decode ? img.decode() : Promise.resolve()).then(function () { ready(img); }, function () { ready(img); }); return; }
+          img.addEventListener("load", function () { (img.decode ? img.decode() : Promise.resolve()).then(function () { ready(img); }, function () { ready(img); }); }, { once: true });
+          img.addEventListener("error", function () { ready(img); }, { once: true });
+        }
+        new MutationObserver(function (list) {
+          list.forEach(function (m) { m.addedNodes.forEach(function (n) {
+            if (n.tagName === "IMG") watch(n);
+            else if (n.querySelectorAll) n.querySelectorAll("img").forEach(watch);
+          }); });
+        }).observe(document.documentElement, { childList: true, subtree: true });
+        addEventListener("DOMContentLoaded", function () { document.querySelectorAll("img").forEach(watch); });
+        setTimeout(function () { document.querySelectorAll("img").forEach(ready); }, 4000);
+      })();
       // Mouse/touch users don't see focus rings after clicking; keyboard (Tab) users do.
       (function (r) {
         addEventListener("pointerdown", function () { r.classList.add("is-pointer"); }, true);
@@ -59,7 +86,7 @@ const ext = { target: "_blank", rel: "noopener noreferrer" };
       <aside class="cg-credit" aria-label="Website credit">
         <div class="wrap">
           <div class="cg-credit-lead">
-            <img src="/media/cgd-logo.webp" alt="CG Design" width="62" height="24" loading="lazy" />
+            <img src="/media/cgd-logo.webp" alt="CG Design" width="62" height="24" />
             <span>Want a website like this? Reach out to CG Design.</span>
           </div>
           <div class="cg-credit-links">
