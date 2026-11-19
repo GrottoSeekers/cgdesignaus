@@ -356,11 +356,11 @@ const jsonLd = {
     <section class="pad" id="faq" aria-labelledby="faq-title">
       <div class="wrap faq-grid">
         <h2 id="faq-title" class="h2" data-reveal>Before you <em>start.</em></h2>
-        <div class="faq-list">
+        <div class="faq-list" data-faq>
           {faqs.map((f) => (
             <details data-reveal>
               <summary>{f.q}<Icon name="plus" /></summary>
-              <p>{f.a}</p>
+              <div class="faq-a"><p>{f.a}</p></div>
             </details>
           ))}
         </div>

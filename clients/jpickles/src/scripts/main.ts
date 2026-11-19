@@ -321,6 +321,56 @@ function revealsIn() {
   }
 }
 
+/* ---------- FAQ: one answer open at a time, smooth open/close, and the list keeps a
+   fixed height (room for the longest answer) so nothing below it ever moves. ---------- */
+function faq() {
+  const list = $("[data-faq]");
+  if (!list) return;
+  const items = $$<HTMLDetailsElement>("details", list);
+
+  const reserve = () => {
+    const was = items.find((d) => d.open);
+    list.style.minHeight = "";
+    let max = 0;
+    items.forEach((d) => {
+      items.forEach((x) => (x.open = x === d));
+      max = Math.max(max, list.offsetHeight);
+    });
+    items.forEach((x) => (x.open = x === was));
+    list.style.minHeight = `${max}px`;
+    ScrollTrigger.refresh();
+  };
+
+  const close = (d: HTMLDetailsElement) => {
+    const a = $(".faq-a", d)!;
+    if (reduce) { d.open = false; return; }
+    gsap.fromTo(a, { height: a.offsetHeight }, { height: 0, duration: 0.45, ease: "power3.inOut", onComplete: () => { d.open = false; gsap.set(a, { clearProps: "height" }); } });
+  };
+  const open = (d: HTMLDetailsElement) => {
+    d.open = true;
+    if (reduce) return;
+    const a = $(".faq-a", d)!;
+    gsap.fromTo(a, { height: 0 }, { height: "auto", duration: 0.55, ease: "power3.out", clearProps: "height" });
+    gsap.fromTo($("p", a), { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.5, delay: 0.1, ease: "power2.out" });
+  };
+
+  items.forEach((d) => {
+    $("summary", d)!.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (d.open) close(d);
+      else {
+        items.forEach((x) => x !== d && x.open && close(x));
+        open(d);
+      }
+    });
+  });
+
+  reserve();
+  document.fonts?.ready.then(reserve);
+  let t = 0;
+  addEventListener("resize", () => { clearTimeout(t); t = window.setTimeout(reserve, 200); });
+}
+
 /* ---------- Magnetic buttons (mouse only) ---------- */
 function magnetic() {
   if (!finePointer || reduce) return;
@@ -394,6 +444,7 @@ tabs();
 reels();
 revealsIn();
 magnetic();
+faq();
 planHover();
 lines();
 document.fonts?.ready.then(() => ScrollTrigger.refresh());

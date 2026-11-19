@@ -85,8 +85,19 @@ body::after {
 .btn-bone:hover { --bg: #fff; }
 .btn-sm { min-height: 40px; padding: 0 1.1rem; font-size: .9rem; }
 .btn-block { width: 100%; }
-.link-arrow { display: inline-flex; align-items: center; gap: .4rem; color: var(--bone); text-decoration: none; border-bottom: 1px solid var(--line-2); padding-bottom: 2px; font-weight: 500; }
-.link-arrow:hover { border-color: var(--gold); color: var(--gold-2); }
+/* One hover for every text link on the site: it turns gold and a gold underline draws across
+   from the left. Links inside sentences keep a faint underline at rest so they read as links. */
+.nav-links a, .lede a, .prices-foot a, .link-arrow, .foot-cols a, .foot-top, .cg-credit-links a, .done-note a, .step-intro a {
+  text-decoration: none; padding-bottom: 2px;
+  background: linear-gradient(var(--gold), var(--gold)) 0 100% / 0 1px no-repeat;
+  transition: background-size .45s var(--ease), color .3s var(--ease);
+}
+.lede a, .prices-foot a, .link-arrow { color: var(--bone);
+  background: linear-gradient(var(--gold), var(--gold)) 0 100% / 0 1px no-repeat, linear-gradient(var(--line-2), var(--line-2)) 0 100% / 100% 1px no-repeat; }
+.nav-links a:hover, .lede a:hover, .prices-foot a:hover, .link-arrow:hover, .foot-cols a:hover, .foot-top:hover, .cg-credit-links a:hover, .done-note a:hover, .step-intro a:hover {
+  color: var(--gold-2); background-size: 100% 1px, 100% 1px;
+}
+.link-arrow { display: inline-flex; align-items: center; gap: .4rem; font-weight: 500; }
 .link-arrow svg { width: 16px; height: 16px; transition: transform .3s var(--ease); }
 .link-arrow:hover svg { transform: translateX(3px); }
 
@@ -97,8 +108,7 @@ body::after {
 .brand { display: block; text-decoration: none; flex: none; }
 .brand img { height: 30px; width: auto; }
 .nav-links { display: none; gap: 1.8rem; margin-left: auto; }
-.nav-links a { text-decoration: none; font-size: .92rem; color: var(--mute); transition: color .25s; }
-.nav-links a:hover { color: var(--bone); }
+.nav-links a { font-size: .92rem; color: var(--mute); }
 .nav-end { display: flex; align-items: center; gap: .6rem; margin-left: auto; }
 .nav-checkin { display: none; }
 @media (min-width: 960px) {
@@ -338,7 +348,8 @@ section { position: relative; }
 .faq-list summary::-webkit-details-marker { display: none; }
 .faq-list summary svg { width: 20px; height: 20px; color: var(--gold); flex: none; transition: transform .4s var(--ease); }
 .faq-list details[open] summary svg { transform: rotate(45deg); }
-.faq-list details p { margin: 0 0 1.3rem; color: var(--mute); max-width: 60ch; }
+.faq-list details p { margin: 0; padding-bottom: 1.3rem; color: var(--mute); max-width: 60ch; }
+.faq-a { overflow: hidden; }
 @media (min-width: 900px) { .faq-grid { grid-template-columns: .8fr 1.2fr; gap: 5rem; } }
 
 /* Close */
@@ -360,13 +371,11 @@ section { position: relative; }
 .foot-rule { display: block; height: 1px; margin: clamp(3rem, 6vw, 4.5rem) auto 0; background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent); }
 .foot-cols { display: grid; gap: 2rem; margin-top: clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
 .foot-cols h2 { font: 400 .64rem/1.3 var(--wide); letter-spacing: .32em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
-.foot-cols a { display: block; width: fit-content; margin: 0 auto; padding: .3rem 0; color: var(--bone); text-decoration: none; font-size: .98rem; background: linear-gradient(var(--gold), var(--gold)) 0 100% / 0 1px no-repeat; transition: background-size .45s var(--ease), color .3s; }
-.foot-cols a:hover { color: var(--gold-2); background-size: 100% 1px; }
+.foot-cols a { display: block; width: fit-content; margin: .3rem auto; padding-top: .1rem; color: var(--bone); font-size: .98rem; }
 .foot-cols p { margin: 0 auto; color: var(--mute); font-size: .95rem; max-width: 26ch; }
 .foot-bottom { display: flex; flex-wrap: wrap; gap: .8rem 2rem; justify-content: space-between; align-items: center; margin-top: clamp(3rem, 6vw, 4.5rem); padding-top: 1.4rem; border-top: 1px solid var(--line); color: var(--mute); font-size: .85rem; }
 .foot-bottom p { margin: 0; }
-.foot-top { display: inline-flex; align-items: center; gap: .45rem; color: var(--mute); text-decoration: none; transition: color .3s; }
-.foot-top:hover { color: var(--bone); }
+.foot-top { display: inline-flex; align-items: center; gap: .45rem; color: var(--mute); }
 .foot-top .up { width: 15px; height: 15px; transform: rotate(-90deg); transition: transform .4s var(--ease); }
 .foot-top:hover .up { transform: rotate(-90deg) translateX(3px); }
 @media (min-width: 760px) { .foot-cols { grid-template-columns: repeat(3, 1fr); } }
@@ -378,8 +387,7 @@ section { position: relative; }
 .cg-credit-lead { display: flex; align-items: center; gap: .7rem; }
 .cg-credit-lead img { height: 22px; width: auto; }
 .cg-credit-links { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; }
-.cg-credit-links a { display: inline-flex; align-items: center; gap: .35rem; text-decoration: none; color: var(--mute); }
-.cg-credit-links a:hover { color: var(--bone); }
+.cg-credit-links a { display: inline-flex; align-items: center; gap: .35rem; color: var(--mute); }
 .cg-credit-links svg { width: 15px; height: 15px; }
 
 /* Phone tab bar */
