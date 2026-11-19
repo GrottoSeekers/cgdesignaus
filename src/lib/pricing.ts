@@ -62,6 +62,7 @@ export const featureOptions = [
   { id: "booking", label: "Online bookings", desc: "Real-time appointment, table, or callout booking", price: 250, recurring: false, fixed: false },
   { id: "store", label: "Online store", desc: "Product catalogue and checkout", price: 800, recurring: false, fixed: false },
   { id: "admin", label: "Admin login", desc: "Sign in and update your own text, photos and prices", price: selfEdit.price, recurring: false, fixed: true },
+  { id: "brand-tidy", label: "Logo tidy-up", desc: brandTidyUp.desc, price: brandTidyUp.price, recurring: false, fixed: true },
   { id: "brand", label: "Logo & branding", desc: "Two logo concepts, colours, fonts and a brand guide", price: brandIdentity.price, recurring: false, fixed: true },
   { id: "maintenance", label: "Hosting & care", desc: `Hosting, security, backups and up to ${carePlan.changeHours} hour of changes a month`, price: carePlan.price, recurring: true, fixed: false },
 ];
