@@ -94,7 +94,7 @@ export const tiers = [
   },
   {
     id: "growth",
-    parts: ["about", "services", "gallery"],
+    parts: ["about", "services", "gallery", "job-google-profile"],
     name: "Growth",
     tagline: "The full shopfront — services, story and gallery.",
     full: tier2Full,
@@ -103,7 +103,7 @@ export const tiers = [
   },
   {
     id: "complete",
-    parts: ["about", "services", "gallery", "booking", "seo", "booking-page"],
+    parts: ["about", "services", "gallery", "booking", "seo", "booking-page", "job-google-profile", "job-social", "job-reviews", "job-domain"],
     name: "Complete",
     tagline: "Bookings and local search, done properly.",
     full: tier3Full,
