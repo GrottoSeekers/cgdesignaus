@@ -217,9 +217,6 @@ a{color:#5b2695}a:hover{color:#2f1147}
 /* before & after drag: the frame handles pointer drags; the range input stays for keyboard users */
 .cg .ba-range{pointer-events:none}
 .cg .ba-overlay{touch-action:pan-y;cursor:ew-resize}
-/* pricing detail panel (phones only) */
-.cg .tier-detail{display:none}
-.cg .tier-panel{display:none}
 
 /* ================= PHONE: compact, fits each section without long scrolls ================= */
 @media (max-width:640px){
@@ -255,7 +252,7 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .ba-fact > div > span{font-size:.72rem !important}
 .cg .ba-fact .ba-arrow{display:none}
 .cg .ba-fact p{display:none}
-/* pricing: three compact blocks side by side, tap one for its details */
+/* pricing: three compact blocks side by side, tap one to open its quote */
 .cg .founding{padding:14px 16px !important;gap:6px 14px !important;margin-bottom:16px !important;border-radius:16px !important}
 .cg .founding > span{font-size:1.6rem !important}
 .cg .founding p{font-size:.82rem !important}
@@ -272,12 +269,6 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .tier.sel{box-shadow:0 0 0 2px #5b2a96,0 18px 30px -20px rgba(47,17,71,.6) !important}
 .cg .tier-feature.sel{box-shadow:0 0 0 2px #b58cf0,0 18px 30px -20px rgba(47,17,71,.6) !important}
 .cg .tier:hover{transform:none !important}
-.cg .tier-detail{display:block;margin-top:12px}
-.cg .tier-panel.show{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:16px;background:#ffffff;border:1px solid rgba(20,17,26,.08);animation:cg-fade-up .45s cubic-bezier(.16,1,.3,1) both}
-.cg .tier-panel-tag{font-size:.88rem;color:rgba(20,17,26,.72)}
-.cg .tier-panel-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 10px;font-size:.8rem;color:rgba(20,17,26,.78)}
-.cg .tier-panel-list .tick{width:16px;height:16px;margin-right:6px;font-size:.6rem}
-.cg .tier-panel .btn{min-height:46px;font-size:.9rem}
 .cg #pricing p[style*="margin-top: 22px"]{margin-top:12px !important;font-size:.76rem !important}
 .cg .quote{margin-top:14px !important;border-radius:16px !important}
 .cg .quote-toggle{padding:14px 16px !important;gap:12px !important}
@@ -351,8 +342,7 @@ a{color:#5b2695}a:hover{color:#2f1147}
 @keyframes cg-fade{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion: reduce){
 .cg .blob-a,.cg .blob-b,.cg .blob-c,.cg .hero-dark .bob,.cg .hero-dark .phone,.cg .nigel-strands,.cg .ba-frame.auto .ba-before,.cg .ba-frame.auto .ba-handle,.cg .ba-arrow,.cg .tier-feature::before,.cg .step-node-final,.cg .founding::after,.cg .hero-dark .scroll-dot{animation:none !important}
-.cg .site-header,.cg .hero-dark .line > span,.cg .hero-dark .fade,.cg .hero-dark .browser,.cg section.landed .eyebrow,.cg section.landed h2,.cg .tier-panel.show,.cg .form-success{animation-name:cg-fade !important}
-.cg .hero-dark .browser{transform:none !important}
+.cg .site-header,.cg .hero-dark .line > span,.cg .hero-dark .fade,.cg .hero-dark .browser,.cg section.landed .eyebrow,.cg section.landed h2,.cg .hero-dark .browser{transform:none !important}
 .cg section.landed .eyebrow::before{animation:none !important}
 .cg *,.cg *::before,.cg *::after{transition-property:opacity,color,background-color,border-color,box-shadow,grid-template-rows !important}
 .cg .rv,.cg .rv.rv-x{transform:none !important}

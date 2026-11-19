@@ -1,9 +1,8 @@
 ---
 // Prices live in src/lib/pricing.ts so the packages, quote builder and quick jobs always agree.
 import {
-  FOUNDING_DISCOUNT_RATE, tiers, carePlan, lowestQuickJobPrice, brandTidyUp, brandIdentity, selfEdit, aud, founding,
+  FOUNDING_DISCOUNT_RATE, tiers, carePlan, lowestQuickJobPrice, aud, founding,
 } from "../lib/pricing";
-import { contactHref } from "../lib/prefill";
 import QuoteBuilder from "./QuoteBuilder.astro";
 
 interface Props {
@@ -13,12 +12,8 @@ interface Props {
 const { heading: Heading = "h2" } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-// Buttons open the contact form with the quote builder already set.
+// Each package's button picks it in the quote builder below and opens the quote.
 const startTier = tiers.find((t) => t.feature) ?? tiers[0];
-const startHref = (t: (typeof tiers)[number]) => contactHref(base, { pkg: t.id });
-const brandHref = contactHref(base, { pkg: "small" });
-const adminHref = contactHref(base, { pkg: "small", items: ["admin"] });
-const careHref = contactHref(base, { pkg: "small", items: ["maintenance"] });
 ---
 
 <section id="pricing" style="position: relative; overflow: hidden; padding: 112px 0 104px; background: #f3f0f8; border-top: 1px solid rgba(20,17,26,0.1); border-bottom: 1px solid rgba(20,17,26,0.1)">
@@ -49,9 +44,9 @@ const careHref = contactHref(base, { pkg: "small", items: ["maintenance"] });
 <ul class="ticks" style="list-style: none; margin: 0; padding: 22px 0 0; border-top: 1px solid rgba(243,238,250,0.18); display: flex; flex-direction: column; gap: 12px; font-size: 0.92rem; color: rgba(243,238,250,0.9); flex: 1">
 {t.includes.map((line) => <li><span class="tick tick-dark" aria-hidden="true">✓</span>{line}</li>)}
 </ul>
-<a href={startHref(t)} class="btn btn-violet">Start with {t.name}</a>
+<a href="#quote" class="btn btn-violet" data-pick={t.id}>Choose {t.name}</a>
 </div>
-<button type="button" class="tier-pick sr-only" data-tier-pick={t.id} aria-pressed="true" aria-controls="tier-detail">Show what's in {t.name}</button>
+<button type="button" class="tier-pick sr-only" data-tier-pick={t.id} aria-pressed="true" aria-controls="quote-body">Get a quote for {t.name}</button>
 </div>
 ) : (
 <div class="tier" data-tier={t.id} style="background: #ffffff; border: 1px solid rgba(20,17,26,0.1); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 22px">
@@ -61,50 +56,18 @@ const careHref = contactHref(base, { pkg: "small", items: ["maintenance"] });
 <ul class="ticks" style="list-style: none; margin: 0; padding: 22px 0 0; border-top: 1px solid rgba(20,17,26,0.1); display: flex; flex-direction: column; gap: 12px; font-size: 0.92rem; color: rgba(20,17,26,0.78); flex: 1">
 {t.includes.map((line) => <li><span class="tick" aria-hidden="true">✓</span>{line}</li>)}
 </ul>
-<a href={startHref(t)} class="btn btn-ghost">Start with {t.name}</a>
-<button type="button" class="tier-pick sr-only" data-tier-pick={t.id} aria-pressed="false" aria-controls="tier-detail">Show what's in {t.name}</button>
-</div>
-))}
-</div>
-<div class="tier-detail" id="tier-detail" aria-live="polite">
-{tiers.map((t) => (
-<div class:list={["tier-panel", { show: t.feature }]} data-panel={t.id}>
-<p class="tier-panel-tag"><strong>{t.name}:</strong> {t.tagline}</p>
-{t.note && <p class="tier-note">{t.note}</p>}
-<ul class="tier-panel-list">{t.includes.map((line) => <li><span class="tick" aria-hidden="true">✓</span>{line}</li>)}</ul>
-<a href={startHref(t)} class="btn btn-primary">Start with {t.name}</a>
+<a href="#quote" class="btn btn-ghost" data-pick={t.id}>Choose {t.name}</a>
+<button type="button" class="tier-pick sr-only" data-tier-pick={t.id} aria-pressed="false" aria-controls="quote-body">Get a quote for {t.name}</button>
 </div>
 ))}
 </div>
 <p class="pay-line">Pay 50% to start and 50% when you're live. Domains at cost, nothing hidden.</p>
 
-<div class="extras">
-<div class="extra-card">
-<p class="extra-tag">Branding</p>
-<h3 class="extra-title">Need a logo?</h3>
-<div class="extra-option"><div><strong>{brandTidyUp.name}</strong><span>{brandTidyUp.desc}</span></div><span class="extra-price">{aud(brandTidyUp.price)}</span></div>
-<div class="extra-option"><div><strong>{brandIdentity.name}</strong><span>{brandIdentity.desc}</span></div><span class="extra-price">{aud(brandIdentity.price)}</span></div>
-<p class="extra-foot"><a href={brandHref} class="extra-ask">Ask about branding <span aria-hidden="true">→</span></a></p>
-</div>
-<div class="extra-card">
-<p class="extra-tag">Website extra</p>
-<h3 class="extra-title">{selfEdit.name}</h3>
-<ul class="extra-list">{selfEdit.includes.map((line) => <li><span class="tick" aria-hidden="true">✓</span>{line}</li>)}</ul>
-<p class="extra-foot"><span class="extra-price">{aud(selfEdit.price)}</span> <span class="extra-per">one-off</span> <a href={adminHref} class="extra-ask">Ask for this <span aria-hidden="true">→</span></a></p>
-</div>
-<div class="extra-card extra-care">
-<p class="extra-tag">Monthly</p>
-<h3 class="extra-title">Hosting &amp; care</h3>
-<ul class="extra-list">{carePlan.perks.map((line) => <li><span class="tick tick-dark" aria-hidden="true">✓</span>{line}</li>)}</ul>
-<p class="extra-foot"><span class="extra-price">{aud(carePlan.price)}</span> <span class="extra-per">/month</span> <a href={careHref} class="extra-ask">Add it <span aria-hidden="true">→</span></a></p>
-</div>
-</div>
-<a href={`${base}/quick-jobs`} class="quick-link">Not after a full website? <strong>See quick jobs from {aud(lowestQuickJobPrice)}</strong> <span aria-hidden="true">→</span></a>
 
 <div class="quote" id="quote" style="margin-top: 28px; border-radius: 22px; border: 1px solid rgba(20,17,26,0.12); background: #ffffff; overflow: hidden">
 <button type="button" class="quote-toggle" id="quote-toggle" aria-expanded="false" aria-controls="quote-body" style="display: flex; align-items: center; gap: 16px; width: 100%; padding: 20px 24px; border: 0; background: transparent; text-align: left; font-family: inherit; color: #14111a; cursor: pointer">
 <span class="quote-chev" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(47,17,71,0.1); color: #2f1147; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
-<span style="display: flex; flex-direction: column; flex: 1"><span style="font-weight: 700; font-size: 1.05rem">Add extras to a package</span><span style="font-size: 0.86rem; color: rgba(20,17,26,0.6)">Pick a package, add what you need, see your price</span></span>
+<span style="display: flex; flex-direction: column; flex: 1"><span style="font-weight: 700; font-size: 1.05rem">Your quote</span><span style="font-size: 0.86rem; color: rgba(20,17,26,0.6)">See what you get, and add anything extra</span></span>
 <span style="font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 600; color: #2f1147"><span data-quote-total>{aud(founding(startTier.full))}</span></span>
 </button>
 <div class="quote-body" id="quote-body">
@@ -113,6 +76,15 @@ const careHref = contactHref(base, { pkg: "small", items: ["maintenance"] });
 </div>
 </div>
 </div>
+<div class="care">
+<p class="care-price"><span>{aud(carePlan.price)}</span>/month</p>
+<div class="care-text">
+<p class="care-title">Hosting &amp; care <span>· comes with every website</span></p>
+<p>Your website needs looking after to keep working. We host it, keep it secure and backed up, and make up to {carePlan.changeHours} hour of changes each month: new photos, prices, opening hours, a fresh offer. Want something bigger? We'll quote you first.</p>
+<p class="care-free">{carePlan.firstMonthFree}</p>
+</div>
+</div>
+<a href={`${base}/quick-jobs`} class="quick-link">Not after a full website? <strong>See quick jobs from {aud(lowestQuickJobPrice)}</strong> <span aria-hidden="true">→</span></a>
 </div>
 </section>
 
@@ -128,10 +100,6 @@ const careHref = contactHref(base, { pkg: "small", items: ["maintenance"] });
     color: #d8bff0;
   }
 
-  .tier-panel .tier-note {
-    margin: 0 0 12px;
-  }
-
   .pay-line {
     margin-top: 22px;
     text-align: center;
@@ -140,146 +108,83 @@ const careHref = contactHref(base, { pkg: "small", items: ["maintenance"] });
     color: rgba(20, 17, 26, 0.72);
   }
 
-  .extras {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-    gap: 20px;
-    margin-top: 24px;
+  .tier {
+    cursor: pointer;
+    transition: box-shadow 0.25s ease;
   }
 
-  .extra-card {
+  .tier.sel:not(.tier-feature) {
+    box-shadow: 0 0 0 2px #5b2a96;
+  }
+
+  #quote {
+    scroll-margin-top: 88px;
+  }
+
+  /* Hosting & care: just under the quote, part of every website */
+  .care {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 28px;
-    border-radius: 24px;
-    background: #ffffff;
-    border: 1px solid rgba(20, 17, 26, 0.1);
-  }
-
-  .extra-care {
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 14px;
+    padding: 20px 24px;
+    border-radius: 22px;
     background: #2f1147;
-    border-color: #2f1147;
     color: #f3eefa;
-    box-shadow: 0 40px 70px -40px rgba(47, 17, 71, 0.7);
   }
 
-  .extra-care .extra-tag {
-    color: #d8bff0;
+  .care-price {
+    flex-shrink: 0;
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: rgba(243, 238, 250, 0.7);
   }
 
-  .extra-care .extra-title,
-  .extra-care .extra-price {
+  .care-price span {
+    display: block;
+    font-family: "Fraunces", serif;
+    font-size: 2.2rem;
+    font-weight: 600;
+    line-height: 1;
     color: #ffffff;
   }
 
-  .extra-care .extra-list,
-  .extra-care .extra-per {
+  .care-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.9rem;
     color: rgba(243, 238, 250, 0.85);
   }
 
-  .extra-care .extra-ask {
+  .care-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #ffffff;
+  }
+
+  .care-title span {
+    font-weight: 600;
     color: #d8bff0;
   }
 
-  .extra-tag {
-    font-size: 0.72rem;
+  .care-free {
+    font-size: 0.82rem;
     font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #5b2695;
-  }
-
-  .extra-title {
-    font-size: 1.4rem;
-  }
-
-  .extra-desc {
-    font-size: 0.92rem;
-    color: rgba(20, 17, 26, 0.68);
-  }
-
-  .extra-option {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
-    padding: 12px 0;
-    border-top: 1px solid rgba(20, 17, 26, 0.1);
-  }
-
-  .extra-option div {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    font-size: 0.86rem;
-    color: rgba(20, 17, 26, 0.64);
-  }
-
-  .extra-option strong {
-    font-size: 0.96rem;
-    color: #14111a;
-  }
-
-  .extra-price {
-    font-family: "Fraunces", serif;
-    font-size: 1.7rem;
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: -0.02em;
-    color: #2f1147;
-    white-space: nowrap;
-  }
-
-  .extra-per {
-    font-size: 0.86rem;
-    font-weight: 600;
-    color: rgba(20, 17, 26, 0.6);
-  }
-
-  .extra-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    font-size: 0.9rem;
-    color: rgba(20, 17, 26, 0.78);
-  }
-
-  .extra-list li {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .extra-foot {
-    margin-top: auto;
-    padding-top: 8px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 6px 10px;
-    font-size: 0.86rem;
-    color: rgba(20, 17, 26, 0.6);
-  }
-
-  .extra-ask {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    min-height: 44px;
-    margin-left: auto;
-    font-weight: 700;
-    font-size: 0.92rem;
-    color: #5b2695;
-    text-decoration: none;
+    color: #7cd68c;
   }
 
   @media (max-width: 560px) {
-    .extra-card {
-      padding: 22px 20px;
+    .care {
+      gap: 14px;
+      padding: 16px;
+      border-radius: 16px;
+    }
+    .care-price span {
+      font-size: 1.7rem;
+    }
+    .care-text {
+      font-size: 0.82rem;
     }
   }
 
@@ -359,30 +264,43 @@ const careHref = contactHref(base, { pkg: "small", items: ["maintenance"] });
     });
   }
 
-  // ---- Phones: tap a package block to see what's in it ----
+  // ---- Packages: pick one and the quote opens straight away, showing what it gets ----
   const tierEls = Array.from(document.querySelectorAll<HTMLElement>(".tier[data-tier]"));
-  const selectTier = (id: string) => {
+  const qb = document.querySelector<HTMLElement>("#quote [data-qb]");
+  const toggle = document.getElementById("quote-toggle");
+  const body = document.getElementById("quote-body");
+  const quote = document.getElementById("quote");
+
+  const setOpen = (open: boolean) => {
+    body?.classList.toggle("open", open);
+    toggle?.querySelector(".quote-chev")?.classList.toggle("open", open);
+    toggle?.setAttribute("aria-expanded", String(open));
+  };
+
+  const markTier = (id: string) => {
     tierEls.forEach((t) => t.classList.toggle("sel", t.dataset.tier === id));
     document.querySelectorAll<HTMLButtonElement>("[data-tier-pick]").forEach((b) => {
       b.setAttribute("aria-pressed", String(b.dataset.tierPick === id));
     });
-    document.querySelectorAll<HTMLElement>(".tier-panel").forEach((p) => p.classList.toggle("show", p.dataset.panel === id));
   };
+
+  const pick = (id: string) => {
+    qb?.dispatchEvent(new CustomEvent("qb:select", { detail: id }));
+    setOpen(true);
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Let the quote start opening, then bring it into view.
+    window.setTimeout(() => quote?.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "start" }), 60);
+  };
+
+  // The whole card is tappable (on phones it's just the name and price).
   tierEls.forEach((t) =>
     t.addEventListener("click", (e) => {
-      // On larger screens the cards' own "Start with …" links just go to the form.
-      if ((e.target as Element).closest("a")) return;
-      selectTier(t.dataset.tier ?? "");
+      e.preventDefault();
+      pick(t.dataset.tier ?? "");
     })
   );
+  // Keep the cards in step when the package is changed inside the quote.
+  qb?.addEventListener("qb:pkg", (e) => markTier((e as CustomEvent<string>).detail));
 
-  // ---- Quote builder: open and close (the builder itself is QuoteBuilder.astro) ----
-  const toggle = document.getElementById("quote-toggle");
-  const body = document.getElementById("quote-body");
-  toggle?.addEventListener("click", () => {
-    const open = !body?.classList.contains("open");
-    body?.classList.toggle("open", open);
-    toggle.querySelector(".quote-chev")?.classList.toggle("open", open);
-    toggle.setAttribute("aria-expanded", String(open));
-  });
+  toggle?.addEventListener("click", () => setOpen(!body?.classList.contains("open")));
 </script>
