@@ -11,7 +11,9 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 const root = document.documentElement;
 const $ = <T extends Element = HTMLElement>(s: string, el: ParentNode = document) => el.querySelector<T>(s);
 const $$ = <T extends Element = HTMLElement>(s: string, el: ParentNode = document) => Array.from(el.querySelectorAll<T>(s));
-const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+// James wants the full animated experience on every phone, including iPhones with
+// "Reduce Motion" switched on (which used to turn most of it off). So animations always run.
+const reduce = false;
 const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
 const mm = gsap.matchMedia();
 
@@ -84,15 +86,39 @@ function chrome() {
     ScrollTrigger.create({ start: 0, end: "max", onUpdate: solid, onRefresh: solid });
   }
 
-  const tabs = $$("[data-tab]");
-  const setTab = (id: string) => tabs.forEach((t) => t.classList.toggle("is-current", t.dataset.tab === id));
-  setTab("top");
-  ([["#top", "top"], ["#story", "top"], ["#how", "top"], ["#prices", "prices"], ["#results", "more"], ["#coach", "more"], ["#faq", "more"]] as const).forEach(([sel, id]) => {
-    if (!$(sel)) return;
-    ScrollTrigger.create({ trigger: sel, start: "top 55%", end: "bottom 55%", onToggle: (s) => s.isActive && setTab(id) });
-  });
-  const sheet = $<HTMLElement & { hidePopover?: () => void }>("#more");
-  $$("[data-sheet-link]").forEach((a) => a.addEventListener("click", () => sheet?.hidePopover?.()));
+  // Three-line menu (phones): fades up full screen, links slide in one after another.
+  const burger = $<HTMLButtonElement>("[data-burger]");
+  const menu = $("[data-menu]");
+  if (!burger || !menu) return;
+  const items = [...$$("[data-menu-link]", menu), ...$$("[data-menu-item]", menu)];
+  let open = false;
+  const set = (on: boolean, jumpTo?: string) => {
+    if (on === open) return;
+    open = on;
+    burger.setAttribute("aria-expanded", String(on));
+    burger.setAttribute("aria-label", on ? "Close menu" : "Open menu");
+    if (on) {
+      menu.hidden = false;
+      root.classList.add("menu-open");
+      gsap.fromTo(menu, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35, ease: "power2.out" });
+      gsap.fromTo(items, { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: "expo.out", stagger: 0.05, delay: 0.05 });
+    } else {
+      gsap.to(menu, {
+        autoAlpha: 0, duration: 0.3, ease: "power2.in",
+        onComplete: () => {
+          menu.hidden = true;
+          root.classList.remove("menu-open");
+          if (jumpTo) document.querySelector(jumpTo)?.scrollIntoView({ behavior: "smooth" });
+        },
+      });
+    }
+  };
+  burger.addEventListener("click", () => set(!open));
+  $$<HTMLAnchorElement>("[data-menu-link]", menu).forEach((a) =>
+    a.addEventListener("click", (e) => { e.preventDefault(); set(false, a.getAttribute("href")!); })
+  );
+  addEventListener("keydown", (e) => e.key === "Escape" && set(false));
+  matchMedia("(min-width: 960px)").addEventListener("change", (e) => e.matches && set(false));
 }
 
 /* ---------- Goals marquee: drifts left, scroll speed pushes it ---------- */

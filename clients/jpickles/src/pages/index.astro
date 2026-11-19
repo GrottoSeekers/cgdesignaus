@@ -72,10 +72,32 @@ const jsonLd = {
       </nav>
       <div class="nav-end">
         <a class="btn btn-sm btn-ghost nav-checkin" href="/check-in">Client check-in</a>
-        <a class="btn btn-sm nav-cta" href="/start">Start coaching</a>
+        <a class="btn btn-sm nav-cta" href="/start"><span class="cta-long">Start coaching</span><span class="cta-short">Start</span></a>
+        <button type="button" class="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu" data-burger>
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </div>
   </header>
+
+  <!-- Phone menu (three lines, top right): full-screen, same links and buttons as desktop. -->
+  <div class="menu" id="menu" data-menu hidden>
+    <nav class="menu-links" aria-label="Menu">
+      <a href="#story" data-menu-link>Story</a>
+      <a href="#how" data-menu-link>How it works</a>
+      <a href="#prices" data-menu-link>Prices</a>
+      <a href="#results" data-menu-link>Results</a>
+      <a href="#faq" data-menu-link>Questions</a>
+    </nav>
+    <div class="menu-ctas" data-menu-item>
+      <a class="btn btn-block" href="/start">Start coaching <Icon name="arrowRight" /></a>
+      <a class="btn btn-block btn-ghost" href="/check-in">Client check-in</a>
+    </div>
+    <div class="menu-foot" data-menu-item>
+      <a href={instagram} {...ext}><Icon name="instagram" size={18} />{handle}</a>
+      <a href={dm} {...ext}><Icon name="message" size={18} />Message James</a>
+    </div>
+  </div>
 
   <main id="main">
     <!-- Hero -->
@@ -411,29 +433,6 @@ const jsonLd = {
       </div>
     </div>
   </footer>
-
-  <!-- Phones: app-style tab bar -->
-  <nav class="tabbar" aria-label="Quick links">
-    <a href="#top" data-tab="top"><Icon name="home" />Home</a>
-    <a href="#prices" data-tab="prices"><Icon name="tag" />Prices</a>
-    <a class="tab-main" href="/start"><span class="tab-main-dot"><Icon name="run" /></span>Start</a>
-    <a href="/check-in"><Icon name="clipboard" />Check-in</a>
-    <button type="button" popovertarget="more" data-tab="more"><Icon name="menu" />More</button>
-  </nav>
-  <div id="more" class="sheet" popover aria-labelledby="more-title">
-    <div class="sheet-head">
-      <img id="more-title" src="/media/logo-word.svg" alt="J.Pickles Coaching" width="200" height="26" />
-      <button type="button" class="sheet-close" popovertarget="more" popovertargetaction="hide" aria-label="Close"><Icon name="x" /></button>
-    </div>
-    <ul class="sheet-links">
-      <li><a href="#story" data-sheet-link><Icon name="run" />James's story</a></li>
-      <li><a href="#how" data-sheet-link><Icon name="clipboard" />How it works</a></li>
-      <li><a href="#results" data-sheet-link><Icon name="check" />Client results</a></li>
-      <li><a href="#faq" data-sheet-link><Icon name="plus" />Questions</a></li>
-      <li><a href={dm} {...ext}><Icon name="message" />Message James</a></li>
-      <li><a href={instagram} {...ext}><Icon name="instagram" />{handle}</a></li>
-    </ul>
-  </div>
 
   <script>
     import "../scripts/main.ts";

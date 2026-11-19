@@ -6,7 +6,8 @@ import { dbReady, insert } from "../lib/db";
 
 const $ = <T extends Element = HTMLElement>(s: string, el: ParentNode = document) => el.querySelector<T>(s);
 const $$ = <T extends Element = HTMLElement>(s: string, el: ParentNode = document) => Array.from(el.querySelectorAll<T>(s));
-const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+// Animations run on every phone, including with Reduce Motion on (James's request).
+const reduce = false;
 
 type Values = Record<string, string | string[]>;
 
