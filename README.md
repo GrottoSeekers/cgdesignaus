@@ -39,8 +39,8 @@ this is not a placeholder build:
       list it in the Privacy and Cookies policies first.
 - [x] **Founding client offer**: half price until the date in
       `src/lib/pricing.ts` (`FOUNDING_ENDS`). It switches off at the first
-      build after that date, so push any change (or re-run the deploy
-      workflow) on 1 January.
+      build after that date; the deploy workflow rebuilds the site
+      automatically at 00:05 Sydney time on 1 January.
 - [x] **Fonts**: self-hosted in `public/fonts` (`src/styles/fonts.css`), so
       no page contacts Google Fonts.
 - [x] **Real client work**: `src/components/Client.astro` is a carousel of
