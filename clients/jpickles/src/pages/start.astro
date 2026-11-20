@@ -4,7 +4,7 @@ import FormFlow from "../components/FormFlow.astro";
 import Icon from "../components/Icon.astro";
 import "../styles/forms.css";
 import { onboarding } from "../lib/forms";
-import { online, pt, gbp, dm } from "../lib/site";
+import { online, pt, gbp, wa } from "../lib/site";
 
 // Plan choices come from the price list, so they always match the site.
 const planOptions = [
@@ -46,7 +46,7 @@ const sections = onboarding.map((s) => ({
           <li><strong>Every Friday</strong>A five-minute check-in. James reads it and adjusts your plan before Monday.</li>
         </ul>
         <div class="done-actions">
-          <a class="btn" href={dm} target="_blank" rel="noopener noreferrer"><Icon name="message" />Message James now</a>
+          <a class="btn" href={wa("Hi James, I've just sent my onboarding form.")} target="_blank" rel="noopener noreferrer"><Icon name="whatsapp" />WhatsApp James</a>
           <a class="btn btn-ghost" href="/">Back to the site</a>
         </div>
       </Fragment>

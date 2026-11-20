@@ -2,7 +2,7 @@
 import Base from "../layouts/Base.astro";
 import Icon from "../components/Icon.astro";
 import {
-  site, coach, instagram, handle, dm, gym, areas, offer, online, pt, ptTerms, goals, steps,
+  site, coach, instagram, handle, dm, wa, phoneDisplay, phoneIntl, gym, areas, offer, online, pt, ptTerms, goals, steps,
   reviews, qualifications, partners, event, faqs, gbp,
 } from "../lib/site";
 
@@ -37,7 +37,8 @@ const jsonLd = {
   url: site,
   image: new URL("/media/hero-1200.webp", site).href,
   logo: new URL("/media/logo-full.svg", site).href,
-  founder: { "@type": "Person", name: coach, jobTitle: "Personal trainer and online coach", sameAs: [instagram] },
+  founder: { "@type": "Person", name: coach, jobTitle: "Personal trainer and online coach", telephone: phoneIntl, sameAs: [instagram] },
+  telephone: phoneIntl,
   areaServed: areas.map((a) => ({ "@type": "City", name: a })),
   sameAs: [instagram],
   priceRange: "£30 to £200",
@@ -109,7 +110,7 @@ const jsonLd = {
     </div>
     <div class="menu-foot" data-menu-item>
       <a href={instagram} {...ext}><Icon name="instagram" size={18} />{handle}</a>
-      <a href={dm} {...ext}><Icon name="message" size={18} />Message James</a>
+      <a href={dm} {...ext}><Icon name="whatsapp" size={18} />WhatsApp James</a>
     </div>
   </div>
 
@@ -244,7 +245,7 @@ const jsonLd = {
         </div>
 
         {offerOn && (
-          <a class="offer" href={dm} {...ext} data-offer-only style="margin-top:2rem;border-radius:var(--r)">
+          <a class="offer" href={wa("Hi James, BLACKFRIDAY. I'd like the 50% off online coaching offer.")} {...ext} data-offer-only style="margin-top:2rem;border-radius:var(--r)">
             <Icon name="tag" />
             <strong>{offer.label}: {offer.headline}.</strong>
             <span>{offer.detail}</span>
@@ -285,7 +286,7 @@ const jsonLd = {
         </div>
 
         <div class="prices-foot" data-prices-foot="online">
-          <p>Online prices are per 4 weeks. Not sure which fits? <a href={dm} {...ext}>Message me</a> and I'll tell you honestly.</p>
+          <p>Online prices are per 4 weeks. Not sure which fits? <a href={wa("Hi James, I'm not sure which coaching package suits me. Can you help?")} {...ext}>WhatsApp me</a> and I'll tell you honestly.</p>
         </div>
         <div class="prices-foot" data-prices-foot="pt" hidden>
           {ptTerms.map((t) => <p>{t}</p>)}
@@ -322,7 +323,7 @@ const jsonLd = {
                 <li><Icon name="tag" />{event.price}</li>
               </ul>
             </div>
-            <a class="btn btn-ghost" href={dm} {...ext}><Icon name="message" />Book a start time</a>
+            <a class="btn btn-ghost" href={wa("Hi James, I'd like to book a start time for the HYROX simulation on 2 January.")} {...ext}><Icon name="whatsapp" />Book a start time</a>
           </div>
         )}
       </div>
@@ -411,7 +412,7 @@ const jsonLd = {
         <h2 id="close-title" class="close-title" data-reveal>Your first block starts with <em>one form.</em></h2>
         <div class="close-actions" data-reveal>
           <a class="btn" href="/start" data-magnetic>Start coaching <Icon name="arrowRight" /></a>
-          <a class="btn btn-ghost" href={dm} {...ext}><Icon name="message" />Message James</a>
+          <a class="btn btn-ghost" href={dm} {...ext}><Icon name="whatsapp" />WhatsApp James</a>
         </div>
       </div>
     </section>
@@ -431,9 +432,9 @@ const jsonLd = {
           <a href="/check-in">Client check-in</a>
         </div>
         <div data-foot-col>
-          <h2>Follow</h2>
+          <h2>Get in touch</h2>
           <a href={instagram} {...ext}>Instagram</a>
-          <a href={dm} {...ext}>Message James</a>
+          <a href={dm} {...ext}>WhatsApp {phoneDisplay}</a>
         </div>
         <div data-foot-col>
           <h2>Based in</h2>

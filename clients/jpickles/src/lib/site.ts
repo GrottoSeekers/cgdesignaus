@@ -7,8 +7,13 @@ export const coach = "James Pickles";
 
 export const instagram = "https://www.instagram.com/jamespickles_fitness/";
 export const handle = "@jamespickles_fitness";
-// Opens an Instagram DM to James (works on phones with the app and on desktop).
-export const dm = "https://ig.me/m/jamespickles_fitness";
+// WhatsApp is James's main contact. Every "message James" button opens a chat with a
+// ready-written first line (the client can edit it before sending).
+export const phoneDisplay = "07848 162640";
+export const phoneIntl = "+447848162640";
+export const wa = (text = "Hi James, I've just been on your website and have a question.") =>
+  `https://wa.me/447848162640?text=${encodeURIComponent(text)}`;
+export const dm = wa();
 export const linktree = "https://linktr.ee/jpickles.coaching";
 export const gym = { name: "Renegade Strength & Fitness", ig: "https://www.instagram.com/renegade_strengthfitness/" };
 export const areas = ["Leigh", "Wigan", "Westhoughton", "Bolton"];
@@ -114,7 +119,7 @@ export const event = {
   date: "Saturday 2 January 2027",
   place: "Renegade Strength & Fitness",
   price: "£10 members, £15 non-members",
-  detail: "Solo or doubles, open or pro. Message James to book a start time.",
+  detail: "Solo or doubles, open or pro. WhatsApp James to book a start time.",
   ends: "2027-01-02T23:59:59+00:00",
 };
 
@@ -124,7 +129,7 @@ export const faqs = [
   { q: "Do I need a gym?", a: "It helps, but tell me what kit you have and I'll write around it." },
   { q: "How do check-ins work?", a: "A short form every Friday by 12pm. I read it over the weekend and update your plan before Monday." },
   { q: "Can you help with HYROX?", a: "Yes. I race it myself and run HYROX classes and simulations. Your plan can build towards a race date." },
-  { q: "Where are 1:1 sessions?", a: "Around Leigh, Wigan, Westhoughton and Bolton. Message me and we'll sort a time and place." },
+  { q: "Where are 1:1 sessions?", a: "Around Leigh, Wigan, Westhoughton and Bolton. WhatsApp me and we'll sort a time and place." },
 ];
 
 // CG Design & Co. credit strip (same as the other client sites).
