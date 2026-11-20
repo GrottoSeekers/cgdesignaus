@@ -1,0 +1,137 @@
+---
+// Ryan's editing page. Sign in, then add/edit workouts and swap photos.
+// Everything saves to Supabase and shows on the landing page straight away.
+import "@fontsource-variable/archivo/wdth.css";
+import "../styles/global.css";
+import "../styles/admin.css";
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Kettlebaz | Edit your site</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#0b0b0c" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="admin">
+    <header class="a-top">
+      <a class="brand" href="/" aria-label="Kettlebaz, view site">
+        <span class="brand-badge" aria-hidden="true">KB</span>
+        <span class="brand-name">Kettlebaz</span>
+      </a>
+      <div class="a-top-end" data-signed-in hidden>
+        <a class="a-link" href="/" target="_blank" rel="noopener">View site</a>
+        <button class="a-link" type="button" data-sign-out>Sign out</button>
+      </div>
+    </header>
+
+    <main class="a-main">
+      <!-- Not connected (no Supabase keys in this build) -->
+      <section class="a-card" data-view="offline" hidden>
+        <h1 class="a-h1">Not connected yet</h1>
+        <p class="a-muted">This page needs the site's Supabase keys before it can save anything. See the README in <code>clients/kettlebaz</code>.</p>
+      </section>
+
+      <!-- Sign in -->
+      <section class="a-card a-narrow" data-view="signin" hidden>
+        <h1 class="a-h1">Sign in</h1>
+        <form class="a-form" data-signin-form>
+          <label class="a-field">
+            <span>Email</span>
+            <input type="email" name="email" autocomplete="email" required />
+          </label>
+          <label class="a-field">
+            <span>Password</span>
+            <input type="password" name="password" autocomplete="current-password" required />
+          </label>
+          <p class="a-msg" data-signin-msg role="status"></p>
+          <button class="btn btn-lg btn-block" type="submit">Sign in</button>
+          <button class="a-link a-center" type="button" data-forgot>Forgot password?</button>
+        </form>
+      </section>
+
+      <!-- Set a new password (after the reset email link) -->
+      <section class="a-card a-narrow" data-view="reset" hidden>
+        <h1 class="a-h1">New password</h1>
+        <form class="a-form" data-reset-form>
+          <label class="a-field">
+            <span>New password (8+ characters)</span>
+            <input type="password" name="password" autocomplete="new-password" minlength="8" required />
+          </label>
+          <p class="a-msg" data-reset-msg role="status"></p>
+          <button class="btn btn-lg btn-block" type="submit">Save password</button>
+        </form>
+      </section>
+
+      <!-- Signed in -->
+      <section data-view="app" hidden>
+        <nav class="a-tabs" role="tablist" aria-label="What to edit">
+          <button type="button" role="tab" aria-selected="true" data-tab-btn="workouts">Workouts</button>
+          <button type="button" role="tab" aria-selected="false" data-tab-btn="photos">Photos</button>
+        </nav>
+
+        <!-- Workouts -->
+        <div data-tab-panel="workouts">
+          <div class="a-row">
+            <h1 class="a-h1">Workouts</h1>
+            <button class="btn" type="button" data-new-workout>Add workout</button>
+          </div>
+          <p class="a-muted">These show in “Try one tonight”, top first. Hidden ones stay saved but don't show on the site.</p>
+          <p class="a-msg" data-list-msg role="status"></p>
+          <ul class="a-list" data-workout-list></ul>
+        </div>
+
+        <!-- Photos -->
+        <div data-tab-panel="photos" hidden>
+          <h1 class="a-h1">Photos</h1>
+          <p class="a-muted">Photos show in black and white on the site. Portrait photos work best.</p>
+          <div class="a-photos" data-photo-grid></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Add / edit workout -->
+    <dialog class="a-dialog" data-workout-dialog aria-labelledby="wd-title">
+      <form class="a-form" method="dialog" data-workout-form>
+        <div class="a-row">
+          <h2 class="a-h2" id="wd-title" data-wd-title>Add workout</h2>
+          <button class="a-link" type="button" data-wd-cancel>Cancel</button>
+        </div>
+        <label class="a-field">
+          <span>Name</span>
+          <input name="name" required maxlength="40" placeholder="AMRAP 10" />
+        </label>
+        <label class="a-field">
+          <span>Time or format</span>
+          <input name="note" maxlength="40" placeholder="10 minutes" />
+        </label>
+        <label class="a-field">
+          <span>Moves, one per line</span>
+          <textarea name="moves" rows="5" placeholder={"5 thrusters\n5 high pulls\n5 press-ups"}></textarea>
+        </label>
+        <label class="a-field">
+          <span data-video-label>Video (up to 50 MB)</span>
+          <input name="video" type="file" accept="video/mp4,video/quicktime,video/*" />
+          <small class="a-muted" data-video-hint></small>
+        </label>
+        <label class="a-field">
+          <span>Instagram post link (optional)</span>
+          <input name="instagram_url" type="url" inputmode="url" placeholder="https://www.instagram.com/p/..." />
+        </label>
+        <label class="a-check">
+          <input name="published" type="checkbox" checked />
+          <span>Show on the site</span>
+        </label>
+        <p class="a-msg" data-wd-msg role="status"></p>
+        <button class="btn btn-lg btn-block" type="submit" data-wd-save>Save workout</button>
+      </form>
+    </dialog>
+
+    <script>
+      import "../scripts/admin.ts";
+    </script>
+  </body>
+</html>

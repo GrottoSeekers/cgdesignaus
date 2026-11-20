@@ -25,7 +25,8 @@ this is not a placeholder build:
       in `src/components/Contact.astro` (the `access_key` hidden input). To
       change the destination email, generate a new access key at
       web3forms.com and swap that value.
-- [x] **Pricing**: real AUD figures in `src/components/Pricing.astro`.
+- [x] **Pricing**: real AUD figures for packages, the quote builder and quick jobs, all in
+      `src/lib/pricing.ts` (change a price there and every page updates).
 - [x] **Domain**: `astro.config.mjs` points at `https://cgdesignaus.com`;
       `public/CNAME` holds the custom domain for GitHub Pages.
 - [x] **Legal pages**: Privacy, Terms & Conditions, Cookies, Refund Policy
@@ -88,11 +89,15 @@ and `astro.config.mjs`'s `site` value — live at https://cgdesignaus.com.
 /
 ├── public/              # Static assets (favicon, images)
 ├── src/
-│   ├── components/      # Header, Hero, Services, Pricing, Contact, etc.
+│   ├── components/      # Header, Hero, Pricing, QuickJobs, Contact, etc.
 │   ├── layouts/
-│   │   └── BaseLayout.astro
-│   ├── pages/
-│   │   └── index.astro
+│   │   ├── HomeLayout.astro   # Main pages
+│   │   └── BaseLayout.astro   # Legal pages
+│   ├── lib/
+│   │   ├── pricing.ts   # Every price on the site
+│   │   └── prefill.ts   # Buttons that open the contact form pre-filled
+│   ├── pages/           # One file per page: index (home), work, pricing,
+│   │                    # quick-jobs, how-it-works, contact, legal pages
 │   └── styles/
 │       └── global.css   # Colours, type, and shared design tokens
 ├── astro.config.mjs

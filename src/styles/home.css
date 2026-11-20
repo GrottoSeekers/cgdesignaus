@@ -206,12 +206,10 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .nav-cta .cta-arrow{transition:transform .3s cubic-bezier(.16,1,.3,1)}
 @media (hover:hover){.cg .nav-cta:hover .cta-arrow{transform:translateX(4px)}}
 @media (max-width:1000px){.cg .nav-link{padding:9px 11px}}
-/* pressing a link: squish, ring pulse, then the section you land on lifts into place */
-@keyframes cg-press-ring{0%{box-shadow:0 0 0 0 rgba(91,42,150,.55)}100%{box-shadow:0 0 0 12px rgba(91,42,150,0)}}
+/* pressing a link: squish, then the section you land on lifts into place */
 @keyframes cg-land{0%{opacity:.35;transform:translateY(26px)}100%{opacity:1;transform:none}}
 @keyframes cg-land-line{0%{width:0}100%{width:22px}}
-.cg .nav-link:active,.cg .btn:active,.cg .nav-cta:active,.cg .snav .dot:active .dot-marker{transform:scale(.94)}
-.cg .nav-link.clicked{animation:cg-press-ring .7s ease-out}
+.cg .nav-link:active,.cg .btn:active,.cg .nav-cta:active{transform:scale(.94)}
 .cg section.landed .eyebrow,.cg section.landed h2{animation:cg-land .9s cubic-bezier(.16,1,.3,1) both}
 .cg section.landed h2{animation-delay:.08s}
 .cg section.landed .eyebrow::before{animation:cg-land-line .8s .2s cubic-bezier(.16,1,.3,1) both}
@@ -219,9 +217,6 @@ a{color:#5b2695}a:hover{color:#2f1147}
 /* before & after drag: the frame handles pointer drags; the range input stays for keyboard users */
 .cg .ba-range{pointer-events:none}
 .cg .ba-overlay{touch-action:pan-y;cursor:ew-resize}
-/* pricing detail panel (phones only) */
-.cg .tier-detail{display:none}
-.cg .tier-panel{display:none}
 
 /* ================= PHONE: compact, fits each section without long scrolls ================= */
 @media (max-width:640px){
@@ -257,7 +252,7 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .ba-fact > div > span{font-size:.72rem !important}
 .cg .ba-fact .ba-arrow{display:none}
 .cg .ba-fact p{display:none}
-/* pricing: three compact blocks side by side, tap one for its details */
+/* pricing: three compact blocks side by side, tap one to open its quote */
 .cg .founding{padding:14px 16px !important;gap:6px 14px !important;margin-bottom:16px !important;border-radius:16px !important}
 .cg .founding > span{font-size:1.6rem !important}
 .cg .founding p{font-size:.82rem !important}
@@ -274,12 +269,6 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .tier.sel{box-shadow:0 0 0 2px #5b2a96,0 18px 30px -20px rgba(47,17,71,.6) !important}
 .cg .tier-feature.sel{box-shadow:0 0 0 2px #b58cf0,0 18px 30px -20px rgba(47,17,71,.6) !important}
 .cg .tier:hover{transform:none !important}
-.cg .tier-detail{display:block;margin-top:12px}
-.cg .tier-panel.show{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:16px;background:#ffffff;border:1px solid rgba(20,17,26,.08);animation:cg-fade-up .45s cubic-bezier(.16,1,.3,1) both}
-.cg .tier-panel-tag{font-size:.88rem;color:rgba(20,17,26,.72)}
-.cg .tier-panel-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 10px;font-size:.8rem;color:rgba(20,17,26,.78)}
-.cg .tier-panel-list .tick{width:16px;height:16px;margin-right:6px;font-size:.6rem}
-.cg .tier-panel .btn{min-height:46px;font-size:.9rem}
 .cg #pricing p[style*="margin-top: 22px"]{margin-top:12px !important;font-size:.76rem !important}
 .cg .quote{margin-top:14px !important;border-radius:16px !important}
 .cg .quote-toggle{padding:14px 16px !important;gap:12px !important}
@@ -344,23 +333,7 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .foot-links{font-size:.84rem !important;gap:8px !important}
 }
 /* section nav rail (kept from the live site) */
-.cg .snav .dot{display:flex;align-items:center;gap:10px;text-decoration:none;color:rgba(20,17,26,0.6);position:relative}
-.cg .snav .dot-marker{width:7px;height:7px;border-radius:50%;background:rgba(20,17,26,0.2);transition:background .3s ease,transform .3s ease,box-shadow .3s ease;flex-shrink:0}
-.cg .snav .dot-label{font-size:.74rem;font-weight:600;letter-spacing:.02em;white-space:nowrap;opacity:0;transform:translateX(-6px);transition:opacity .25s ease,transform .25s ease}
-@media (hover:hover){.cg .snav .dot:hover .dot-label{opacity:1;transform:none}}
-@media (hover:hover){.cg .snav .dot:hover .dot-marker{background:#2f1147}}
-.cg .snav .dot.active .dot-marker{background:#5b2a96;transform:scale(1.5);box-shadow:0 0 0 4px rgba(91,42,150,0.14)}
-.cg .snav .dot.active .dot-label{color:#14111a}
 /* over the dark hero/footer the rail flips to white so it stays visible */
-.cg .snav .snav-rail{transition:background .4s ease}
-.cg .snav .dot-label{transition:opacity .25s ease,transform .25s ease,color .4s ease}
-.cg .snav.on-dark .snav-rail{background:rgba(243,238,250,0.28) !important}
-.cg .snav.on-dark .dot{color:rgba(243,238,250,0.75)}
-.cg .snav.on-dark .dot-marker{background:rgba(243,238,250,0.5)}
-@media (hover:hover){.cg .snav.on-dark .dot:hover .dot-marker{background:#ffffff}}
-.cg .snav.on-dark .dot.active .dot-marker{background:#ffffff;box-shadow:0 0 0 4px rgba(255,255,255,0.22)}
-.cg .snav.on-dark .dot.active .dot-label{color:#ffffff}
-@media (max-width:1100px){.cg .snav{display:none !important}}
 /* Reduce Motion (often switched on to save battery): swap movement for dissolves, as iOS itself does.
    Fades, line draws, the price count-down and scroll-linked fills stay, and so do three small, contained
    effects: the work screens scrolling inside their phone frames, the light sweep on the hero button and
@@ -369,8 +342,7 @@ a{color:#5b2695}a:hover{color:#2f1147}
 @keyframes cg-fade{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion: reduce){
 .cg .blob-a,.cg .blob-b,.cg .blob-c,.cg .hero-dark .bob,.cg .hero-dark .phone,.cg .nigel-strands,.cg .ba-frame.auto .ba-before,.cg .ba-frame.auto .ba-handle,.cg .ba-arrow,.cg .tier-feature::before,.cg .step-node-final,.cg .founding::after,.cg .hero-dark .scroll-dot{animation:none !important}
-.cg .site-header,.cg .hero-dark .line > span,.cg .hero-dark .fade,.cg .hero-dark .browser,.cg section.landed .eyebrow,.cg section.landed h2,.cg .tier-panel.show,.cg .form-success{animation-name:cg-fade !important}
-.cg .hero-dark .browser{transform:none !important}
+.cg .site-header,.cg .hero-dark .line > span,.cg .hero-dark .fade,.cg .hero-dark .browser,.cg section.landed .eyebrow,.cg section.landed h2,.cg .hero-dark .browser{transform:none !important}
 .cg section.landed .eyebrow::before{animation:none !important}
 .cg *,.cg *::before,.cg *::after{transition-property:opacity,color,background-color,border-color,box-shadow,grid-template-rows !important}
 .cg .rv,.cg .rv.rv-x{transform:none !important}
@@ -433,3 +405,13 @@ html{scroll-padding-top:78px}
 .cg .hero-visual.hold .nigel-strands path{animation:none}
 /* each phone screen gets its own layer so iOS Safari clips the auto-scrolling screenshot to the rounded screen */
 .cg #client .device > span{-webkit-transform:translateZ(0);transform:translateZ(0);isolation:isolate}
+
+/* Page-to-page: the new page fades and rises in while the header stays put. Browsers
+   without cross-document view transitions just load the page as before. */
+@view-transition{navigation:auto}
+.cg .site-header{view-transition-name:site-header}
+::view-transition-old(root){animation:cg-vt-out .22s cubic-bezier(.4,0,1,1) both}
+::view-transition-new(root){animation:cg-vt-in .42s cubic-bezier(.16,1,.3,1) both}
+@keyframes cg-vt-out{to{opacity:0}}
+@keyframes cg-vt-in{from{opacity:0;transform:translateY(14px)}}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}

@@ -1,0 +1,23 @@
+---
+import HomeLayout from "../layouts/HomeLayout.astro";
+import Header from "../components/Header.astro";
+import Client from "../components/Client.astro";
+import BeforeAfter from "../components/BeforeAfter.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Footer from "../components/Footer.astro";
+import CookieConsent from "../components/CookieConsent.astro";
+---
+
+<HomeLayout
+  title="Our Work | CG Design & Co."
+  description="Websites we've designed, written and launched for local businesses, plus a before-and-after of a real redesign."
+>
+  <Header />
+  <main id="main">
+    <Client heading="h1" />
+    <BeforeAfter />
+    <CtaBand title="Want yours to look like this?" flush />
+  </main>
+  <Footer />
+  <CookieConsent />
+</HomeLayout>
