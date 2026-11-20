@@ -49,6 +49,7 @@ export function initFlow(opts: {
   table: "onboarding" | "check_ins";
   onDone?: (v: Values) => void; // fill in the thank-you screen (e.g. the week's summary)
   email?: (v: Values) => EmailParts; // the branded email James receives
+  whatsapp?: (v: Values) => string; // quick-start form: open WhatsApp with the answers instead of emailing
 }) {
   const flow = $("[data-flow]");
   const form = $<HTMLFormElement>("[data-form]");
@@ -167,7 +168,7 @@ export function initFlow(opts: {
     const last = i === steps.length - 1;
     next.hidden = last;
     submit.hidden = !last;
-    count.textContent = `Step ${i + 1} of ${steps.length}`;
+    count.textContent = steps.length > 1 ? `Step ${i + 1} of ${steps.length}` : "Takes 30 seconds";
     const p = (i + 1) / steps.length;
     if (reduce) bar.style.transform = `scaleX(${p})`;
     else gsap.to(bar, { scaleX: p, duration: 0.6, ease: "expo.out" });
@@ -257,6 +258,27 @@ export function initFlow(opts: {
     }
     const values = read();
     subErr.hidden = true;
+    // Quick start: open WhatsApp straight away (inside the tap, so phones allow it),
+    // then show the thank-you screen with a button in case WhatsApp didn't open.
+    if (opts.whatsapp) {
+      const url = opts.whatsapp(values);
+      const win = window.open(url, "_blank");
+      if (win) win.opener = null;
+      else location.href = url;
+      store.del(draftKey);
+      if (opts.remember) store.set(rememberKey, Object.fromEntries(opts.remember.map((k) => [k, values[k]])));
+      form.hidden = true;
+      const done = $("[data-done]")!;
+      $<HTMLAnchorElement>("[data-wa-again]", done)?.setAttribute("href", url);
+      done.hidden = false;
+      bar.style.transform = "scaleX(1)";
+      count.textContent = "Sent";
+      opts.onDone?.(values);
+      scrollTo({ top: 0 });
+      done.focus();
+      celebrate(done);
+      return;
+    }
     submit.setAttribute("aria-busy", "true");
     const label = submit.innerHTML;
     submit.textContent = "Sending…";

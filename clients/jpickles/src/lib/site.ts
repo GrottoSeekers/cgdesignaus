@@ -16,7 +16,8 @@ export const wa = (text = "Hi James, I've just been on your website and have a q
 export const dm = wa();
 export const linktree = "https://linktr.ee/jpickles.coaching";
 export const gym = { name: "Renegade Strength & Fitness", ig: "https://www.instagram.com/renegade_strengthfitness/" };
-export const areas = ["Leigh", "Wigan", "Westhoughton", "Bolton"];
+// Where James does 1:1 sessions: at Renegade in Westhoughton, and in and around Leigh.
+export const areas = ["Westhoughton", "Leigh"];
 
 // Black Friday: 50% off online coaching. Shown until the end date, then hidden automatically.
 export const offer = {
@@ -126,10 +127,10 @@ export const event = {
 export const faqs = [
   { q: "Online or 1:1, which should I pick?", a: "Online if you train on your own and want a plan and accountability. 1:1 if you want me there for technique and a push. Platinum gives you both." },
   { q: "I'm a complete beginner. Is this for me?", a: "Yes. Plenty of clients start with \"I don't know how to use the gym\". The programme starts where you are." },
-  { q: "Do I need a gym?", a: "It helps, but tell me what kit you have and I'll write around it." },
+  { q: "Do I need a gym?", a: "It helps, but tell me what kit you have and I'll plan around it." },
   { q: "How do check-ins work?", a: "A short form every Friday by 12pm. I read it over the weekend and update your plan before Monday." },
   { q: "Can you help with HYROX?", a: "Yes. I race it myself and run HYROX classes and simulations. Your plan can build towards a race date." },
-  { q: "Where are 1:1 sessions?", a: "Around Leigh, Wigan, Westhoughton and Bolton. WhatsApp me and we'll sort a time and place." },
+  { q: "Where are 1:1 sessions?", a: "I coach at Renegade Strength & Fitness in Westhoughton, and I'm also available in and around Leigh. WhatsApp me and we'll find a time that suits you." },
 ];
 
 // CG Design & Co. credit strip (same as the other client sites).

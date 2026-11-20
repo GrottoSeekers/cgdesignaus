@@ -11,7 +11,8 @@ pathways, FAQ) and Red On (choose your level of coaching, credentials, one clear
 | Page | What it is |
 | --- | --- |
 | `/` | Landing page: hero, story (47:37 to 40:15 10K), how coaching works, prices (online / 1:1 tabs), reels + next event, results, coach, FAQ |
-| `/start` | Onboarding & consultation form (replaces the Google Form). Every question kept, 8 short steps, saves a draft as you go. `?plan=silver` pre-picks a plan |
+| `/start` | "Start coaching": name, number and which coaching option, then WhatsApp opens with that message ready to send to James. Every Start / Choose button links here (`?plan=silver` pre-picks the plan) |
+| `/onboarding` | Full onboarding & consultation form (replaces the Google Form) for James to send new clients after the first chat. Every question kept, 8 short steps, saves a draft as you go. Not linked from the site or shown in Google |
 | `/check-in` | Weekly check-in (replaces the Google Form). 5 steps, under 5 minutes, remembers the client's name and email for next Friday |
 | `/coach` | James's private dashboard: check-ins grouped by client, weight trend, 4-week averages, flags (pain, too hard, poor food, low sleep), new-client forms, CSV export |
 

@@ -6,9 +6,9 @@ import {
   reviews, qualifications, partners, event, faqs, gbp,
 } from "../lib/site";
 
-const title = "J.Pickles Coaching | Personal trainer in Leigh, Wigan and Bolton | Online coaching";
+const title = "J.Pickles Coaching | Personal trainer in Westhoughton and Leigh | Online coaching";
 const description =
-  "Online coaching and 1:1 personal training with James Pickles. Strength, running, HYROX and fat loss. Leigh, Wigan, Westhoughton and Bolton, or online anywhere.";
+  "Online coaching and 1:1 personal training with James Pickles. Strength, running, HYROX and fat loss. 1:1 in Westhoughton (Bolton) and Leigh (Wigan), or online anywhere.";
 
 const ext = { target: "_blank", rel: "noopener noreferrer" };
 const offerOn = Date.now() < Date.parse(offer.ends); // re-checked in the browser, so a stale build still hides it
@@ -170,7 +170,7 @@ const jsonLd = {
           </h2>
           <p class="story-cap" data-reveal>My first 10K in Leigh, and my best. Seven years apart.</p>
           <p class="story-text" data-reveal>
-            I spent 13 years as an electrician. Last September I put the tools down to coach full time.
+            I spent 13 years as an electrician. This September I put the tools down to coach full time.
             I'm a new dad and I race HYROX, so I know what training around real life takes.
             <em>That's what your plan is built around.</em>
           </p>
@@ -361,8 +361,8 @@ const jsonLd = {
           <p class="kicker" data-reveal>Your coach</p>
           <h2 id="coach-title" class="h2" data-reveal>Coached by someone who <em>still races.</em></h2>
           <p class="lede" data-reveal>
-            HYROX athlete, Applied Nutrition coach and newly full-time PT. I train at
-            <a href={gym.ig} {...ext}>{gym.name}</a> and coach in person around Leigh, Wigan, Westhoughton and Bolton.
+            HYROX athlete, Applied Nutrition coach and newly full-time PT. I coach at
+            <a href={gym.ig} {...ext}>{gym.name}</a> in Westhoughton, and I'm also available for 1:1 sessions in and around Leigh.
           </p>
           <div class="coach-cols">
             <div data-reveal>
@@ -381,7 +381,8 @@ const jsonLd = {
             </div>
           </div>
           <div class="areas" data-reveal aria-label="Areas covered for 1:1 sessions">
-            {areas.map((a) => <span>{a}</span>)}
+            <span>Renegade, Westhoughton</span>
+            <span>In and around Leigh</span>
             <span>Online, anywhere</span>
           </div>
         </div>
@@ -438,7 +439,7 @@ const jsonLd = {
         </div>
         <div data-foot-col>
           <h2>Based in</h2>
-          <p>Leigh, Wigan, Westhoughton and Bolton. Online, anywhere.</p>
+          <p>1:1 at Renegade in Westhoughton, and in and around Leigh. Online, anywhere.</p>
         </div>
       </div>
       <div class="foot-bottom">

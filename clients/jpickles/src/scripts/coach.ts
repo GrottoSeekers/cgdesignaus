@@ -150,7 +150,7 @@ function renderOnboarding() {
   const box = $("[data-onboarding]");
   $("[data-count-clients]").textContent = String(clients.filter((c) => c.status === "new").length || "");
   if (!clients.length) {
-    box.innerHTML = `<div class="empty"><p>No new client forms yet. Your "Start coaching" buttons send people to /start.</p></div>`;
+    box.innerHTML = `<div class="empty"><p>No new client forms yet. Send new clients the onboarding form at /onboarding.</p></div>`;
     return;
   }
   const wa = (p: string | null) => {

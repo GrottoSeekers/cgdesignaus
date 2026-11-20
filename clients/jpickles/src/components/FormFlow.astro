@@ -1,17 +1,18 @@
 ---
-// Multi-step form shell used by /start (onboarding) and /check-in (weekly check-in).
+// Multi-step form shell used by /start (quick WhatsApp start), /onboarding and /check-in.
 // One section per screen, progress bar, Back/Next, validation per step, draft autosave.
 import Icon from "./Icon.astro";
 import type { Section, Field } from "../lib/forms";
 
 interface Props {
-  form: "onboarding" | "checkin";
+  form: "onboarding" | "checkin" | "start";
   sections: Section[];
   title: string;
   submitLabel: string;
+  submitIcon?: "check" | "whatsapp";
   done: { title: string; body: string };
 }
-const { form, sections, title, submitLabel, done } = Astro.props;
+const { form, sections, title, submitLabel, submitIcon = "check", done } = Astro.props;
 const fid = (f: Field) => `f-${f.id}`;
 const choiceType = (f: Field) => (f.type === "checkbox" || (f.type === "chips" && f.multiple) ? "checkbox" : "radio");
 const scale = (f: Field) => Array.from({ length: (f.max ?? 10) - (f.min ?? 1) + 1 }, (_, i) => String((f.min ?? 1) + i));
@@ -23,7 +24,7 @@ const scale = (f: Field) => Array.from({ length: (f.max ?? 10) - (f.min ?? 1) + 
       <img src="/media/logo-word.svg" alt="J.Pickles Coaching" width="190" height="25" />
     </a>
     <div class="flow-progress" aria-hidden="true"><span data-progress></span></div>
-    <p class="flow-count" aria-live="polite" data-count>Step 1 of {sections.length}</p>
+    <p class="flow-count" aria-live="polite" data-count>{sections.length > 1 ? `Step 1 of ${sections.length}` : "Takes 30 seconds"}</p>
   </header>
 
   <form class="flow-form" novalidate data-form>
@@ -100,7 +101,7 @@ const scale = (f: Field) => Array.from({ length: (f.max ?? 10) - (f.min ?? 1) + 
     <div class="flow-actions">
       <button type="button" class="btn btn-ghost" data-back hidden><Icon name="arrowLeft" />Back</button>
       <button type="button" class="btn" data-next>Next <Icon name="arrowRight" /></button>
-      <button type="submit" class="btn" data-submit hidden>{submitLabel} <Icon name="check" /></button>
+      <button type="submit" class="btn" data-submit hidden>{submitLabel} <Icon name={submitIcon} /></button>
     </div>
     <p class="flow-error" data-submit-error role="alert" hidden></p>
   </form>
