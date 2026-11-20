@@ -58,6 +58,7 @@ const sections = onboarding.map((s) => ({
   </script>
   <script>
     import { initFlow } from "../scripts/form";
+    import { onboardingEmail } from "../lib/email";
     const plans = (window as any).__plans as { id: string; label: string }[];
     const wanted = new URLSearchParams(location.search).get("plan");
     const match = plans.find((p) => p.id === wanted);
@@ -71,6 +72,7 @@ const sections = onboarding.map((s) => ({
         plan: v.plan,
         answers: v,
       }),
+      email: onboardingEmail,
     });
   </script>
 </Base>

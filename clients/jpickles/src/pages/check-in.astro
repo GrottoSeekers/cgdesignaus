@@ -49,6 +49,7 @@ import { dm } from "../lib/site";
 
   <script>
     import { initFlow } from "../scripts/form";
+    import { checkinEmail } from "../lib/email";
     const d = new Date();
     const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 
@@ -77,6 +78,15 @@ import { dm } from "../lib/site";
         answers: v,
       }),
       onDone: showWeek,
+      // Email to James, with the weight change since this phone's last check-in.
+      email: (v) => {
+        let prev: number | undefined;
+        try {
+          const past = JSON.parse(localStorage.getItem("jp-checkins") || "[]") as { date: string; weight: number }[];
+          prev = past.filter((p) => p.date < String(v.checkin_date)).slice(-1)[0]?.weight;
+        } catch { /* private mode */ }
+        return checkinEmail(v, prev);
+      },
     });
 
     /* ---------- Thank-you screen: the week at a glance ---------- */

@@ -3,6 +3,8 @@
 // to Supabase. Works without animation when Reduce Motion is on.
 import { gsap } from "gsap";
 import { dbReady, insert } from "../lib/db";
+import { emailReady, sendEmail } from "../lib/send";
+import type { EmailParts } from "../lib/email";
 
 const $ = <T extends Element = HTMLElement>(s: string, el: ParentNode = document) => el.querySelector<T>(s);
 const $$ = <T extends Element = HTMLElement>(s: string, el: ParentNode = document) => Array.from(el.querySelectorAll<T>(s));
@@ -46,6 +48,7 @@ export function initFlow(opts: {
   toRow: (v: Values) => Record<string, unknown>;
   table: "onboarding" | "check_ins";
   onDone?: (v: Values) => void; // fill in the thank-you screen (e.g. the week's summary)
+  email?: (v: Values) => EmailParts; // the branded email James receives
 }) {
   const flow = $("[data-flow]");
   const form = $<HTMLFormElement>("[data-form]");
@@ -258,12 +261,20 @@ export function initFlow(opts: {
     const label = submit.innerHTML;
     submit.textContent = "Sending…";
     try {
-      if (dbReady) await insert(opts.table, opts.toRow(values));
-      else console.info("[J.Pickles] Supabase not configured. Answers:", values);
+      // Email the answers to James (and, if set up, save them for the coach dashboard).
+      // It counts as sent if either works; if neither is set up yet, it's a preview.
+      const jobs: Promise<unknown>[] = [];
+      if (emailReady && opts.email) jobs.push(sendEmail(opts.email(values)));
+      if (dbReady) jobs.push(insert(opts.table, opts.toRow(values)));
+      if (!jobs.length) console.info("[J.Pickles] Email and database not set up yet. Answers:", values);
+      else {
+        const results = await Promise.allSettled(jobs);
+        if (!results.some((r) => r.status === "fulfilled")) throw new Error("not sent");
+      }
       store.del(draftKey);
       if (opts.remember) store.set(rememberKey, Object.fromEntries(opts.remember.map((k) => [k, values[k]])));
       form.hidden = true;
-      $("[data-preview-note]")!.hidden = dbReady;
+      $("[data-preview-note]")!.hidden = dbReady || emailReady;
       const done = $("[data-done]")!;
       done.hidden = false;
       bar.style.transform = "scaleX(1)";

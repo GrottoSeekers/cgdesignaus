@@ -48,9 +48,27 @@ Suggested: **jpicklescoaching.co.uk** (matches the logo and Instagram link). Als
 **jamespicklesfitness.co.uk** and pointing it at the same site, so people searching his name find it.
 The page title and description target "personal trainer Leigh / Wigan / Bolton" and "online coaching".
 
-## One-time setup: saving forms (Supabase, free)
+## Form emails (EmailJS, free): every form goes to jpickles.coaching@outlook.com
 
-Until this is done, the forms still work but show "Preview: not connected" and nothing is saved.
+Like his old Google Forms, but the full answers arrive as a branded email (built in
+`src/lib/email.ts`): a summary at the top (weight and change, workouts, scores, anything that
+"needs a look" such as pain or a poor week), then every answer in form order. New-client emails
+have WhatsApp / Email / Call buttons. Hitting **Reply** answers the client directly.
+
+1. Sign up free at [emailjs.com](https://www.emailjs.com) (200 emails a month on the free plan).
+2. **Email Services > Add New Service > Outlook**, sign in as **jpickles.coaching@outlook.com**. Copy the **Service ID**.
+3. **Email Templates > Create New Template**:
+   - To Email: `{{to_email}}` · From Name: `{{from_name}}` · Reply To: `{{reply_to}}` · Subject: `{{subject}}`
+   - Content: open the code editor (`<>`), delete everything and paste exactly `{{{html}}}` (three braces). Save, copy the **Template ID**.
+4. **Account > General**: copy the **Public Key**. Under **Security**, add the live domain to the allowed list.
+5. Add `PUBLIC_EMAILJS_SERVICE_ID`, `PUBLIC_EMAILJS_TEMPLATE_ID` and `PUBLIC_EMAILJS_PUBLIC_KEY` in Vercel (Settings > Environment Variables), then **Redeploy**.
+
+The logo in the email loads from `https://<domain>/media/email-logo.png`, so it appears once the site is live on its domain.
+
+## One-time setup: saving forms for the dashboard (Supabase, free, optional)
+
+Emails work on their own. Add this as well if James wants the `/coach` dashboard (weight
+charts, all check-ins in one place). Until either is set up, the forms show "Preview: not connected".
 
 1. Create a project at [supabase.com](https://supabase.com) (region: London). Use a new project, not another client's.
 2. **SQL Editor > New query**: paste all of `supabase/setup.sql`, **Run**.
