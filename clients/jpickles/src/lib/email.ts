@@ -110,7 +110,7 @@ export function checkinEmail(v: Values, prevWeight?: number): EmailParts {
   const name = val(v.name) || "Client";
   const w = Number(v.weight_kg);
   const delta = prevWeight && w ? w - prevWeight : null;
-  const deltaTxt = delta != null && Math.abs(delta) >= 0.05 ? `${delta > 0 ? "+" : "&minus;"}${Math.abs(delta).toFixed(1)} kg vs last week` : "";
+  const deltaTxt = delta != null && Math.abs(delta) >= 0.05 ? `${delta > 0 ? "+" : "&minus;"}${Math.abs(delta).toFixed(1)} kg` : "";
   const score = (k: string) => (val(v[k]) ? `${esc(val(v[k]))}<span style="font:400 13px ${SANS};color:${C.mute};">/10</span>` : "");
 
   const issues: string[] = [];
@@ -125,7 +125,7 @@ export function checkinEmail(v: Values, prevWeight?: number): EmailParts {
   const body = table(
     hero(esc(name), `${esc(niceDate(val(v.checkin_date)))} &nbsp;&middot;&nbsp; <a href="mailto:${esc(val(v.email))}" style="color:${C.goldDark};text-decoration:none;">${esc(val(v.email))}</a>`) +
       tiles([
-        ["Weight", w ? `${esc(w)}<span style="font:400 13px ${SANS};color:${C.mute};"> kg</span>` : "", deltaTxt],
+        ["Weight", w ? `<span style="white-space:nowrap;">${esc(w)}<span style="font:400 13px ${SANS};color:${C.mute};">kg</span></span>` : "", deltaTxt],
         ["Workouts", esc(val(v.workouts))],
         ["Nutrition", `<span style="font-size:20px;">${esc(val(v.nutrition))}</span>`],
         ["Felt", score("physical")],
