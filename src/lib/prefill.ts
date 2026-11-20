@@ -11,7 +11,7 @@ export interface Prefill {
 export function contactHref(base: string, p: Prefill) {
   const q = new URLSearchParams({ pkg: p.pkg });
   if (p.items?.length) q.set("items", p.items.join(","));
-  return `${base}/contact?${q}`;
+  return `${base}/contact/?${q}`;
 }
 
 export function readPrefill(search: string): Prefill | null {

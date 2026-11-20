@@ -7,6 +7,9 @@ interface Props {
   heading?: "h1" | "h2";
 }
 const { heading: Heading = "h2" } = Astro.props;
+// Headings inside the section sit one level below its title (h2 under a page h1). The
+// "sub-h" class keeps them looking the same whichever level they are.
+const Sub = Heading === "h1" ? "h2" : "h3";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -45,7 +48,7 @@ const nextSteps = [
 <div class="contact-form-wrap">
 <form class="contact-form" id="lead-form" action="https://api.web3forms.com/submit" method="POST" novalidate style="position: relative; display: flex; flex-direction: column; gap: 18px; background: #ffffff; border: 1px solid rgba(20,17,26,0.08); border-radius: 28px; padding: 36px; box-shadow: 0 50px 100px -50px rgba(47,17,71,0.45)">
 <div style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 4px">
-<h3 style="font-size: 1.5rem">Tell us about your business</h3>
+<Sub class="sub-h" style="font-size: 1.5rem">Tell us about your business</Sub>
 <p style="font-size: 0.9rem; color: rgba(20,17,26,0.6)">Takes about a minute.</p>
 </div>
 <div class="field-wants">
@@ -56,13 +59,13 @@ const nextSteps = [
 <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" placeholder="jane@business.com.au" required><span class="field-error" id="err-email" role="alert"></span></div>
 </div>
 <div class="field"><label for="business_name">Business name</label><input id="business_name" name="business_name" type="text" autocomplete="organization" placeholder="Apex Heating &amp; Electrical" required><span class="field-error" id="err-business_name" role="alert"></span></div>
-<div class="field"><label for="website">Website or social link <span style="font-weight: 500; color: rgba(20,17,26,0.5)">(optional)</span></label><input id="website" name="website" type="text" inputmode="url" autocomplete="url" placeholder="yourbusiness.com.au or @yourbusiness"><span class="field-error" id="err-website" role="alert"></span></div>
+<div class="field"><label for="website">Website or social link <span style="font-weight: 500; color: rgba(20,17,26,0.64)">(optional)</span></label><input id="website" name="website" type="text" inputmode="url" autocomplete="url" placeholder="yourbusiness.com.au or @yourbusiness"><span class="field-error" id="err-website" role="alert"></span></div>
 <div class="field-consent">
-<label for="consent" style="display: flex; gap: 10px; align-items: flex-start; font-size: 0.85rem; color: rgba(20,17,26,0.7)"><input id="consent" name="consent" type="checkbox" required style="margin-top: 3px; width: 18px; height: 18px; accent-color: #5b2a96"><span>I agree to my details being used to reply to this enquiry, as described in the <a href={`${base}/privacy-policy`} target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</span></label>
+<label for="consent" style="display: flex; gap: 10px; align-items: flex-start; font-size: 0.85rem; color: rgba(20,17,26,0.7)"><input id="consent" name="consent" type="checkbox" required style="margin-top: 3px; width: 18px; height: 18px; flex-shrink: 0; accent-color: #5b2a96"><span>I've read the <a href={`${base}/privacy-policy/`} target="_blank" rel="noopener noreferrer">Privacy Policy<span class="sr-only"> (opens in a new tab)</span></a> and I'm happy for you to use my details to reply to this enquiry.</span></label>
 <span class="field-error" id="err-consent" role="alert"></span>
 </div>
 <div class="field-captcha">
-<div class="h-captcha" data-captcha="true"></div>
+<div class="h-captcha" id="lead-captcha" data-captcha="true"></div>
 <span class="field-error" id="err-captcha" role="alert"></span>
 </div>
 <button type="submit" class="btn btn-primary send-btn" id="submit-btn" style="min-height: 56px; font-family: inherit; font-size: 1rem"><span class="spinner" aria-hidden="true"></span><span class="btn-label">Send it over</span> <svg class="send-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
@@ -76,11 +79,10 @@ const nextSteps = [
 </form>
 <div class="form-success" id="form-success" tabindex="-1" role="status" hidden>
 <svg class="success-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle class="success-icon-circle" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle><path class="success-icon-check" d="m8 12.5 2.5 2.5L16 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-<h3>Got it — thanks!</h3>
+<Sub class="sub-h">Got it — thanks!</Sub>
 <p>We'll take a look and get back to you within one business day.</p>
 <button type="button" class="btn btn-ghost" id="reset-form">Send another enquiry</button>
 </div>
-<script is:inline src="https://web3forms.com/client/script.js" async defer></script>
 </div>
 </div>
 </section>
@@ -191,12 +193,12 @@ const nextSteps = [
     padding: 10px 14px;
     border-radius: 12px;
     background: var(--error-soft);
-    color: var(--error);
+    color: #a8341f; /* darker than --error so it passes contrast on the pink background */
     font-size: 0.85rem;
   }
 
   .submit-error a {
-    color: var(--error);
+    color: #a8341f;
     font-weight: 700;
   }
 
@@ -254,7 +256,7 @@ const nextSteps = [
     }
   }
 
-  .form-success h3 {
+  .form-success .sub-h {
     font-size: 1.4rem;
   }
 
@@ -277,6 +279,48 @@ const nextSteps = [
   const submitError = document.getElementById("submit-error");
   const successPanel = document.getElementById("form-success");
   const resetBtn = document.getElementById("reset-form");
+
+  // ---- Spam check (hCaptcha, through Web3Forms) ----
+  // Loaded only once the visitor starts using the form, not on page load (see the Cookies Policy).
+  // The site key is Web3Forms' public hCaptcha key, so Web3Forms can verify the answer. Where the form is
+  // narrower than the normal widget (most phones), the compact one is used so it isn't cut off.
+  const CAPTCHA_SITEKEY = "50b2fe65-b00b-4b9e-ad62-3ba471098be2";
+  type HCaptcha = { render: (el: HTMLElement, opts: Record<string, unknown>) => string; reset: (id?: string) => void };
+  const w = window as unknown as { hcaptcha?: HCaptcha; cgCaptchaReady?: () => void };
+  let captchaRequested = false;
+  let captchaId: string | undefined;
+
+  function loadCaptcha() {
+    if (captchaRequested) return;
+    captchaRequested = true;
+    w.cgCaptchaReady = () => {
+      const el = document.getElementById("lead-captcha");
+      if (!el || !w.hcaptcha) return;
+      captchaId = w.hcaptcha.render(el, {
+        sitekey: CAPTCHA_SITEKEY,
+        // The captcha row is hidden until the widget draws, so measure the consent row beside it.
+        size: (form?.querySelector<HTMLElement>(".field-consent")?.clientWidth ?? 0) < 304 ? "compact" : "normal", // normal is 303px wide
+        callback: () => {
+          const err = document.getElementById("err-captcha");
+          if (err) err.textContent = "";
+          document.querySelector(".field-captcha")?.classList.remove("has-error");
+        },
+      });
+    };
+    const script = document.createElement("script");
+    script.src = "https://js.hcaptcha.com/1/api.js?render=explicit&onload=cgCaptchaReady&recaptchacompat=off";
+    script.async = true;
+    script.addEventListener("error", () => {
+      captchaRequested = false; // let the next interaction try again
+    });
+    document.head.appendChild(script);
+  }
+
+  function resetCaptcha() {
+    if (captchaId !== undefined) w.hcaptcha?.reset(captchaId);
+  }
+
+  ["focusin", "pointerdown", "keydown"].forEach((type) => form?.addEventListener(type, loadCaptcha, { once: true }));
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const urlPattern = /^(https?:\/\/)?[a-z0-9-]+(\.[a-z0-9-]+)+([/?#].*)?$/i;
@@ -323,9 +367,10 @@ const nextSteps = [
     if (website && !urlPattern.test(website) && !handlePattern.test(website)) fail("website", "Add a web address or an @handle.");
 
     if (!(form.elements.namedItem("consent") as HTMLInputElement).checked) {
-      fail("consent", "Please agree to the Privacy Policy to continue.");
+      fail("consent", "Please tick to confirm you've read the Privacy Policy.");
     }
 
+    loadCaptcha();
     const captchaResponse = form.querySelector<HTMLTextAreaElement>("textarea[name='h-captcha-response']")?.value;
     if (!captchaResponse) {
       const err = document.getElementById("err-captcha");
@@ -357,6 +402,7 @@ const nextSteps = [
         headers: { Accept: "application/json" },
       });
       // Only count it as sent when Web3Forms says so in its reply, not just a 200 status.
+      // (Same endpoint and access key as before: submissions keep arriving in the same inbox.)
       const reply = (await res.json().catch(() => null)) as { success?: boolean; message?: string } | null;
       if (res.ok && reply?.success === true) {
         form.classList.add("is-hidden");
@@ -371,12 +417,12 @@ const nextSteps = [
           });
         }
       } else {
-        console.warn("Enquiry not sent:", res.status, reply?.message);
         if (submitError) submitError.hidden = false;
       }
     } catch {
       if (submitError) submitError.hidden = false;
     } finally {
+      resetCaptcha(); // a captcha answer only works once
       setLoading(false);
     }
   });

@@ -6,49 +6,59 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 <LegalLayout
   title="Cookies Policy — CG Design & Co."
-  description="What this site stores in your browser, and why."
+  description="What this site stores in your browser and why: no tracking, analytics or advertising cookies."
   pageTitle="Cookies Policy"
-  lastUpdated="7 September 2026"
+  lastUpdated="20 November 2026"
 >
   <h2>The short version</h2>
   <p>
-    This site doesn't use tracking, advertising, or analytics cookies. It
-    doesn't build a profile of you or sell data to anyone. It uses your
-    browser's local storage for one thing only: remembering that you've
-    seen the cookie notice, so we don't show it to you again.
+    This site doesn't use tracking, advertising or analytics cookies. It
+    doesn't build a profile of you or sell data to anyone. The only things
+    it stores are strictly necessary for the site to work, which is why we
+    don't ask you to accept them.
   </p>
 
   <h2>What we store</h2>
   <ul>
     <li>
-      <strong>Cookie notice preference</strong> — saved in your browser's
-      local storage (not a cookie in the strict sense) when you accept or
-      dismiss the banner. Strictly necessary for the notice to work as
-      intended; expires only if you clear your browser data.
+      <strong>Cookie notice</strong> (<code>cg-cookie-consent</code>, in your
+      browser's local storage) — remembers that you've seen the notice about
+      cookies, so it isn't shown again. Kept until you clear your browser
+      data.
     </li>
   </ul>
 
-  <h2>Third-party requests</h2>
+  <h2>Spam protection on the contact form</h2>
   <p>
-    This site loads typefaces from Google Fonts. Loading a font makes a
-    request to Google's servers, which may log your IP address as part of
-    normal web server logging — Google Fonts doesn't set cookies for this.
-    When you submit the contact form, your details are sent to Formspree, a
-    third-party form-handling service, so we receive your enquiry by email.
-    See our <a href={`${base}/privacy-policy`}>Privacy Policy</a>
-    for more on how that data is used.
+    When you start filling in the contact form, we load
+    <a href="https://www.hcaptcha.com/privacy" target="_blank" rel="noopener noreferrer">hCaptcha</a>,
+    a spam check run by Intuition Machines, Inc. It may set a cookie or use
+    local storage, and it looks at device and interaction data, such as
+    mouse and keyboard activity, to tell people from bots. It only loads
+    once you use the form, and it's strictly necessary to send your enquiry
+    safely. Your details are then delivered to us by Web3Forms.
+  </p>
+
+  <h2>Other sites</h2>
+  <p>
+    Our fonts are hosted on this site, so loading a page doesn't contact
+    Google or any other font service. If you pay us through Stripe, follow a
+    link to WhatsApp, Google or a client's website, those sites set their
+    own cookies under their own policies.
   </p>
 
   <h2>If that changes</h2>
   <p>
-    If we ever add analytics or advertising tools that use cookies, we'll
-    update this page and ask for your consent before they run.
+    If we ever add analytics or advertising tools, we'll update this page
+    and ask for your consent before they run. Nothing like that will load
+    until you've said yes.
   </p>
 
   <h2>Controlling storage yourself</h2>
   <p>
-    You can clear local storage and cookies for this site at any time
-    through your browser's settings — this will make the cookie notice
-    appear again on your next visit.
+    You can clear cookies and local storage for this site at any time in
+    your browser's settings. The cookie notice will then show again on your
+    next visit. See our <a href={`${base}/privacy-policy/`}>Privacy Policy</a>
+    for how we use personal data.
   </p>
 </LegalLayout>

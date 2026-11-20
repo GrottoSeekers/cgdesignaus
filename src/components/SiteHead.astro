@@ -1,13 +1,15 @@
 ---
 // Shared <head> meta for every page (SEO, social cards, favicon, fonts).
+// Fonts are self-hosted (src/styles/fonts.css), so pages never contact Google Fonts.
 interface Props {
   title: string;
   description: string;
   image: string;
-  fontsHref: string;
+  /** Pages that shouldn't appear in search results (the 404 page). */
+  noindex?: boolean;
 }
 
-const { title, description, image, fontsHref } = Astro.props;
+const { title, description, image, noindex = false } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -21,7 +23,7 @@ const ogImageURL = new URL(image, Astro.site);
 <link rel="apple-touch-icon" href={`${base}/apple-touch-icon.png`} />
 <title>{title}</title>
 <meta name="description" content={description} />
-<link rel="canonical" href={canonicalURL} />
+{noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonicalURL} />}
 <meta property="og:type" content="website" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
@@ -31,11 +33,12 @@ const ogImageURL = new URL(image, Astro.site);
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="CG Design & Co.: Your business online in under a week." />
 <meta property="og:site_name" content="CG Design & Co." />
+<meta property="og:locale" content="en_AU" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImageURL} />
 <meta name="color-scheme" content="light" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href={fontsHref} rel="stylesheet" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<link rel="preload" href={`${base}/fonts/plus-jakarta-sans-latin-wght-normal.woff2`} as="font" type="font/woff2" crossorigin />
+<link rel="preload" href={`${base}/fonts/fraunces-latin-opsz-normal.woff2`} as="font" type="font/woff2" crossorigin />

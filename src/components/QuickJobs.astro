@@ -2,7 +2,7 @@
 // Fixed-price jobs to get found online without a website (website extras and branding live
 // on the Pricing page).
 // Prices live in src/lib/pricing.ts.
-import { quickJobs, starterBundle, webAddress, aud } from "../lib/pricing";
+import { quickJobs, starterBundle, webAddress, aud, PRICE_NOTE } from "../lib/pricing";
 import { contactHref } from "../lib/prefill";
 
 interface Props {
@@ -10,6 +10,9 @@ interface Props {
   heading?: "h1" | "h2";
 }
 const { heading: Heading = "h2" } = Astro.props;
+// Headings inside the section sit one level below its title (h2 under a page h1). The
+// "sub-h" class keeps them looking the same whichever level they are.
+const Sub = Heading === "h1" ? "h2" : "h3";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 // "Ask for this" opens the contact form with that job already ticked.
@@ -30,7 +33,7 @@ const saving = starterBundle.separately - starterBundle.price;
 <div class="jobs">
 {quickJobs.map((j) => (
 <div class="job-card">
-<h3 class="job-name">{j.name}</h3>
+<Sub class="sub-h job-name">{j.name}</Sub>
 <p class="job-price">{aud(j.price)}{j.per && <span class="job-per"> {j.per}</span>}</p>
 <p class="job-desc">{j.desc}</p>
 <a href={askHref(j.id)} class="job-ask">Ask for this <span aria-hidden="true">→</span></a>
@@ -41,7 +44,7 @@ const saving = starterBundle.separately - starterBundle.price;
 <div class="bundle">
 <div class="bundle-copy">
 <span class="bundle-tag">Best value</span>
-<h3 class="bundle-name">{starterBundle.name}</h3>
+<Sub class="sub-h bundle-name">{starterBundle.name}</Sub>
 <p class="bundle-sub">Everything a new business needs to be found and look the part. Already included in our Complete website package.</p>
 <ul class="bundle-list">
 {starterBundle.includes.map((line) => <li><span class="bundle-tick" aria-hidden="true">✓</span>{line}</li>)}
@@ -50,6 +53,7 @@ const saving = starterBundle.separately - starterBundle.price;
 <div class="bundle-buy">
 <p class="bundle-price"><span class="sr-only">{aud(starterBundle.price)}, instead of {aud(starterBundle.separately)}</span><span aria-hidden="true" class="bundle-count" data-from={starterBundle.separately} data-to={starterBundle.price}>{aud(starterBundle.price)}</span> <span aria-hidden="true" class="bundle-was">{aud(starterBundle.separately)}</span></p>
 <p class="bundle-save">Save {aud(saving)} on doing them one by one. Web address renews at {aud(webAddress.price)} a year.</p>
+<p class="bundle-save">{PRICE_NOTE}</p>
 <a href={askHref(starterBundle.id)} class="btn btn-violet">Get the starter bundle</a>
 </div>
 </div>

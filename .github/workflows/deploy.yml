@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Rebuild at 00:05 Sydney time on 1 January (13:05 UTC on 31 December) so the founding
+  # client offer (FOUNDING_ENDS in src/lib/pricing.ts) switches off on time by itself.
+  # Harmless in later years: it just redeploys the same site.
+  schedule:
+    - cron: "5 13 31 12 *"
 
 permissions:
   contents: read

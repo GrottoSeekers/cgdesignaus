@@ -2,16 +2,18 @@
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
-<div class="cookie-banner" id="cookie-banner" hidden role="dialog" aria-live="polite" aria-label="Cookie notice">
+<!-- A notice, not a consent prompt: the site only stores what's strictly necessary (see the
+     Cookies Policy), so there's nothing to accept or decline. If analytics or ads are ever added,
+     replace this with a real consent manager that blocks them until the visitor opts in. -->
+<div class="cookie-banner" id="cookie-banner" hidden role="region" aria-label="Cookie notice">
   <div class="wrap cookie-inner">
     <p>
-      This site doesn't use tracking or advertising cookies — just your
-      browser's local storage to remember this choice. See our
-      <a href={`${base}/cookies-policy`}>Cookies Policy</a> for details.
+      No tracking or advertising cookies here. We only store what the site
+      needs to work, like remembering you've seen this message. See our
+      <a href={`${base}/cookies-policy/`}>Cookies Policy</a>.
     </p>
     <div class="cookie-actions">
-      <button type="button" class="btn-cookie btn-cookie--ghost" id="cookie-decline">Decline</button>
-      <button type="button" class="btn-cookie btn-cookie--accept" id="cookie-accept">Accept</button>
+      <button type="button" class="btn-cookie btn-cookie--accept" id="cookie-ok">OK</button>
     </div>
   </div>
 </div>
@@ -150,6 +152,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     );
   }
 
-  document.getElementById("cookie-accept")?.addEventListener("click", () => recordChoice("accepted"));
-  document.getElementById("cookie-decline")?.addEventListener("click", () => recordChoice("declined"));
+  // Same storage key as before, so visitors who already dismissed the old banner don't see it again.
+  document.getElementById("cookie-ok")?.addEventListener("click", () => recordChoice("seen"));
 </script>

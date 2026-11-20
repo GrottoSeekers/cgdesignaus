@@ -4,6 +4,9 @@ interface Props {
   heading?: "h1" | "h2";
 }
 const { heading: Heading = "h2" } = Astro.props;
+// Headings inside the section sit one level below its title (h2 under a page h1). The
+// "sub-h" class keeps them looking the same whichever level they are.
+const Sub = Heading === "h1" ? "h2" : "h3";
 ---
 
 <section id="process" style="padding: 112px 0 104px; background: #ffffff">
@@ -33,20 +36,20 @@ const { heading: Heading = "h2" } = Astro.props;
 <div class="steps" style="display: flex; flex-direction: column; gap: 24px">
 <div class="step" style="position: relative; padding: 30px; background: #f3f0f8; border: 1px solid rgba(20,17,26,0.08); border-radius: 22px">
 <span class="step-node" aria-hidden="true" style="position: absolute; left: -76px; top: 22px; width: 56px; height: 56px; border-radius: 50%; background: #ffffff; border: 2px solid #5b2a96; color: #5b2a96; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600">01</span>
-<span style="font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(20,17,26,0.55)">Day one</span>
-<h3 style="font-size: 1.4rem; margin: 6px 0 8px">Free business check</h3>
+<span style="font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(20,17,26,0.64)">Day one</span>
+<Sub class="sub-h" style="font-size: 1.4rem; margin: 6px 0 8px">Free business check</Sub>
 <p style="font-size: 0.95rem; color: rgba(20,17,26,0.68)">Send your business name and any links you have: website, Google listing or socials. You get an honest written read on what's costing you customers.</p>
 </div>
 <div class="step" style="position: relative; padding: 30px; background: #f3f0f8; border: 1px solid rgba(20,17,26,0.08); border-radius: 22px">
 <span class="step-node" aria-hidden="true" style="position: absolute; left: -76px; top: 22px; width: 56px; height: 56px; border-radius: 50%; background: #ffffff; border: 2px solid #5b2a96; color: #5b2a96; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600">02</span>
-<span style="font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(20,17,26,0.55)">Before we start</span>
-<h3 style="font-size: 1.4rem; margin: 6px 0 8px">Fixed quote and a date</h3>
+<span style="font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(20,17,26,0.64)">Before we start</span>
+<Sub class="sub-h" style="font-size: 1.4rem; margin: 6px 0 8px">Fixed quote and a date</Sub>
 <p style="font-size: 0.95rem; color: rgba(20,17,26,0.68)">A package or a custom scope, priced to the dollar, with a launch date you can hold us to.</p>
 </div>
 <div class="step" style="position: relative; padding: 30px; background: #2f1147; border: 1px solid #2f1147; border-radius: 22px; color: #f3eefa">
 <span class="step-node step-node-final" aria-hidden="true" style="position: absolute; left: -76px; top: 22px; width: 56px; height: 56px; border-radius: 50%; background: #5b2a96; border: 2px solid #5b2a96; color: #ffffff; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600">03</span>
 <span style="font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #d8bff0">Within a week</span>
-<h3 style="font-size: 1.4rem; margin: 6px 0 8px; color: #ffffff">Live in under a week</h3>
+<Sub class="sub-h" style="font-size: 1.4rem; margin: 6px 0 8px; color: #ffffff">Live in under a week</Sub>
 <p style="font-size: 0.95rem; color: rgba(243,238,250,0.78)">We write the copy, source the images, build it and launch on your domain. The site is yours outright.</p>
 </div>
 </div>
