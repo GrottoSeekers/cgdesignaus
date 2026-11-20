@@ -16,7 +16,7 @@ const { title, description, pageTitle, lastUpdated } = Astro.props;
 
 <BaseLayout title={title} description={description}>
   <Header />
-  <main class="legal">
+  <main class="legal" id="main" tabindex="-1">
     <div class="wrap legal-wrap">
       <span class="eyebrow">Legal</span>
       <h1>{pageTitle}</h1>

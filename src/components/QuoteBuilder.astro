@@ -6,7 +6,7 @@
 //   It writes a plain summary into the form, so the email and WhatsApp say exactly what's wanted.
 import {
   tiers, pageOptions, featureOptions, quickJobs, starterBundle, brandTidyUp, brandIdentity,
-  selfEdit, carePlan, webAddress, FOUNDING_DISCOUNT_RATE, aud, founding,
+  selfEdit, carePlan, webAddress, FOUNDING_DISCOUNT_RATE, FOUNDING_ACTIVE, PRICE_NOTE, aud, founding,
 } from "../lib/pricing";
 
 interface Props {
@@ -25,7 +25,7 @@ const startParts: string[] = mode === "pricing" ? startTier.parts : [];
 type SiteOption = { id: string; label: string; price: number; recurring?: boolean; yearly?: boolean; fixed?: boolean; desc?: string };
 const sitePrice = (o: SiteOption) => (o.recurring || o.fixed ? o.price : founding(o.price));
 const siteChip = (o: SiteOption) => `+${aud(sitePrice(o))}${o.yearly ? "/year" : o.recurring ? "/mo" : ""}`;
-const discounted = (o: SiteOption) => !o.recurring && !o.fixed;
+const discounted = (o: SiteOption) => FOUNDING_ACTIVE && !o.recurring && !o.fixed;
 
 // Things that can be bought without a website package.
 const smallOptions = [
@@ -69,7 +69,7 @@ const fullIncludes = tiers.map((t, i) =>
 <p class="quote-step">{mode === "pricing" ? "1. Pick a package" : "What would you like?"}</p>
 <div class="pkgs" role="group" aria-label={mode === "pricing" ? "Package" : "What would you like?"}>
 {tiers.map((t) => (
-<button type="button" class:list={["pkg", { on: t.id === startPkg }]} aria-pressed={t.id === startPkg ? "true" : "false"} data-pkg={t.id} data-name={`${t.name} package`} data-full={t.full} data-parts={t.parts.join(",")} data-domain-free={t.domainYearFree ? "1" : undefined}><span class="pkg-name">{t.name}</span><span class="pkg-prices"><span class="pkg-price">{aud(founding(t.full))}</span><s class="pkg-was">{aud(t.full)}</s></span></button>
+<button type="button" class:list={["pkg", { on: t.id === startPkg }]} aria-pressed={t.id === startPkg ? "true" : "false"} data-pkg={t.id} data-name={`${t.name} package`} data-full={t.full} data-parts={t.parts.join(",")} data-domain-free={t.domainYearFree ? "1" : undefined}><span class="pkg-name">{t.name}</span><span class="pkg-prices"><span class="pkg-price">{aud(founding(t.full))}</span>{FOUNDING_ACTIVE && <s class="pkg-was">{aud(t.full)}</s>}</span></button>
 ))}
 {mode === "form" && (
 <>
@@ -136,14 +136,15 @@ const fullIncludes = tiers.map((t, i) =>
 {mode === "pricing" ? (
 <div class="qb-estimate">
 <span class="qb-estimate-tag">Your estimate</span>
-<span class="qb-estimate-row"><span class="qb-estimate-total"><span data-quote-total aria-live="polite">{aud(founding(startTier.full))}</span></span><span class="qb-estimate-rrp"><span data-quote-rrp>{aud(startTier.full)}</span></span></span>
+<span class="qb-estimate-row"><span class="qb-estimate-total"><span data-quote-total aria-live="polite">{aud(founding(startTier.full))}</span></span>{FOUNDING_ACTIVE && <span class="qb-estimate-rrp"><span data-quote-rrp>{aud(startTier.full)}</span></span>}</span>
 <span class="qb-estimate-tag-small">One-off website</span>
 <ul class="qb-running" data-quote-running>
 <li><strong>+ {aud(carePlan.price)}/month</strong> Hosting &amp; care</li>
 <li><strong>+ {aud(webAddress.price)}/year</strong> Your web address</li>
 </ul>
-<a href={`${base}/contact`} class="btn btn-violet" data-qb-send style="margin-top: 14px">Send me this quote</a>
+<a href={`${base}/contact/`} class="btn btn-violet" data-qb-send style="margin-top: 14px">Send me this quote</a>
 <span class="qb-estimate-small">No payment, no obligation.</span>
+<span class="qb-estimate-small">{PRICE_NOTE}</span>
 </div>
 ) : (
 <p class="qb-total" hidden>Your estimate: <strong data-quote-total aria-live="polite"></strong> <s class="qb-total-was" data-quote-rrp></s> <span data-quote-monthly></span></p>

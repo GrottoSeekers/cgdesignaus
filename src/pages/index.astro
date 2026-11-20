@@ -9,21 +9,32 @@ import CtaBand from "../components/CtaBand.astro";
 import Footer from "../components/Footer.astro";
 import CookieConsent from "../components/CookieConsent.astro";
 import { GOOGLE_PROFILE_URL } from "../lib/business";
+import { tiers, founding, lowestQuickJobPrice, aud } from "../lib/pricing";
+
+// Cheapest quick job to the dearest website package, as currently priced.
+const priceRange = `${aud(lowestQuickJobPrice)}–${aud(founding(Math.max(...tiers.map((t) => t.full))))} AUD`;
 
 const businessSchema = {
   "@context": "https://schema.org",
-  "@type": ["LocalBusiness", "ProfessionalService", "WebDesignCompany"],
+  "@type": "ProfessionalService",
+  "@id": "https://cgdesignaus.com/#business",
   name: "CG Design & Co.",
   alternateName: "CGD",
   description:
-    "CG Design & Co. designs and builds fast, mobile-friendly websites for local businesses across Australia, with fixed pricing and a clear delivery timeline.",
+    "CG Design & Co. designs and builds fast, mobile-friendly websites for local businesses in Australia and the UK, with fixed pricing and a clear delivery timeline.",
   url: "https://cgdesignaus.com",
   logo: "https://cgdesignaus.com/logo-full.png",
   image: "https://cgdesignaus.com/logo-full.png",
   email: "info@cgdesignaus.com",
+  telephone: "+447306100251",
   sameAs: [GOOGLE_PROFILE_URL],
   hasMap: GOOGLE_PROFILE_URL,
   taxID: "25 672 082 550",
+  identifier: {
+    "@type": "PropertyValue",
+    propertyID: "ABN",
+    value: "25 672 082 550",
+  },
   address: {
     "@type": "PostalAddress",
     streetAddress: "St Luke Street",
@@ -32,17 +43,19 @@ const businessSchema = {
     postalCode: "2031",
     addressCountry: "AU",
   },
-  areaServed: {
-    "@type": "Country",
-    name: "Australia",
-  },
+  areaServed: [
+    { "@type": "Country", name: "Australia" },
+    { "@type": "Country", name: "United Kingdom" },
+  ],
   contactPoint: {
     "@type": "ContactPoint",
     email: "info@cgdesignaus.com",
+    telephone: "+447306100251",
     contactType: "customer service",
-    areaServed: "AU",
+    areaServed: ["AU", "GB"],
+    availableLanguage: "English",
   },
-  priceRange: "$500-$3000",
+  priceRange,
   currenciesAccepted: "AUD",
   hasOfferCatalog: {
     "@type": "OfferCatalog",
@@ -119,7 +132,7 @@ const businessSchema = {
 
 <HomeLayout
   title="CG Design & Co. | Websites & Branding for Local Businesses"
-  description="CG Design & Co. designs fast, mobile-friendly websites, logos and branding for local businesses across Australia, with fixed pricing and a clear delivery timeline."
+  description="CG Design & Co. designs fast, mobile-friendly websites, logos and branding for local businesses in Australia and the UK, with fixed pricing and a clear delivery timeline."
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(businessSchema)} />
@@ -139,11 +152,11 @@ const businessSchema = {
     // (ads, bookmarks, the Google profile) such as /#pricing to the right one.
     (function () {
       var moved = {
-        "#before-after": "/work#before-after",
-        "#pricing": "/pricing",
-        "#process": "/how-it-works",
-        "#faq": "/how-it-works#faq",
-        "#contact": "/contact",
+        "#before-after": "/work/#before-after",
+        "#pricing": "/pricing/",
+        "#process": "/how-it-works/",
+        "#faq": "/how-it-works/#faq",
+        "#contact": "/contact/",
       };
       var to = moved[location.hash];
       if (to) location.replace(to);

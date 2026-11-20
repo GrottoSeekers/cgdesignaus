@@ -8,7 +8,20 @@
 // ---- Website builds ----
 // Each package's full price is the base plus what it includes; the founding price halves it.
 export const BASE_PRICE = 580;
-export const FOUNDING_DISCOUNT_RATE = 0.5;
+
+// ---- Founding client offer ----
+// Half price on website packages for quotes accepted by the end date below. It switches itself
+// off at the first build after that moment (the deploy workflow rebuilds the site just after
+// midnight Sydney time on 1 January), so the crossed-out prices are only ever a genuine, time-limited
+// offer (Australian Consumer Law). To run a new offer, move the date and update the wording.
+export const FOUNDING_ENDS = new Date("2026-12-31T23:59:59+11:00");
+export const FOUNDING_ENDS_LABEL = "31 December 2026";
+export const FOUNDING_ACTIVE = Date.now() <= FOUNDING_ENDS.getTime();
+/** What a client pays as a share of the full price: 0.5 during the offer, 1 after it. */
+export const FOUNDING_DISCOUNT_RATE = FOUNDING_ACTIVE ? 0.5 : 1;
+
+// Shown wherever prices appear. ABN 25 672 082 550 is not registered for GST.
+export const PRICE_NOTE = "All prices in Australian dollars (AUD). We're not registered for GST, so no GST is added.";
 const STARTER_BUNDLE_PRICE = 299; // used by the bundle and by the Complete package note
 
 export const pageOptions = [
