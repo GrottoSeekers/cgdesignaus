@@ -20,8 +20,8 @@ export const FOUNDING_ACTIVE = Date.now() <= FOUNDING_ENDS.getTime();
 /** What a client pays as a share of the full price: 0.5 during the offer, 1 after it. */
 export const FOUNDING_DISCOUNT_RATE = FOUNDING_ACTIVE ? 0.5 : 1;
 
-// Shown wherever prices appear. ABN 25 672 082 550 is not registered for GST.
-export const PRICE_NOTE = "All prices in Australian dollars (AUD). We're not registered for GST, so no GST is added.";
+// Shown wherever prices appear. ABN 25 672 082 550 is not registered for GST (the Terms say so in full).
+export const PRICE_NOTE = "Prices in AUD, no GST.";
 const STARTER_BUNDLE_PRICE = 299; // used by the bundle and by the Complete package note
 
 export const pageOptions = [
@@ -172,7 +172,7 @@ export const quickJobs = [
     name: "Web address",
     price: webAddress.price,
     per: "a year",
-    desc: "Your web address (yourbusiness.com.au) registered in your business name and renewed every year, so it never lapses. Yours to keep.",
+    desc: "Your web address (yourbusiness.com) registered in your business name and renewed every year, so it never lapses. Yours to keep.",
   },
 ];
 
