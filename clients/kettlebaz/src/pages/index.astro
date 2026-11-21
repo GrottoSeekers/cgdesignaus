@@ -193,7 +193,6 @@ const jsonLd = {
               width="1200"
               height="1600"
               alt="Ryan Horne standing in the gym"
-              data-slot="hero"
               fetchpriority="high"
               decoding="async"
             />
@@ -209,7 +208,7 @@ const jsonLd = {
             <span class="accent">Now I'll show you how.</span>
           </p>
           <div class="story-sign" data-reveal>
-            <img src="/media/ryan-portrait.webp" width="577" height="577" alt="" loading="lazy" decoding="async" data-slot="portrait" />
+            <img src="/media/ryan-portrait.webp" width="577" height="577" alt="" loading="lazy" decoding="async" />
             <p><strong>Ryan Horne</strong><br />Coach, kettlebells and running. Ex St Helens RLFC, reserves and under-19s.</p>
           </div>
         </div>
@@ -224,7 +223,7 @@ const jsonLd = {
               <article class={`cell cell-${p.key}`} data-cell>
                 {p.img && (
                   <div class="cell-media">
-                    <img src={p.img} alt={p.alt} loading="lazy" decoding="async" data-parallax data-slot={p.key === "ryan" ? "portrait" : p.key} />
+                    <img src={p.img} alt={p.alt} loading="lazy" decoding="async" data-parallax />
                   </div>
                 )}
                 {p.key === "rolling" && <span class="cell-big" aria-hidden="true">4<small>weeks</small></span>}
