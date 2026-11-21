@@ -4,7 +4,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
-import { isSiteFile, loadPublicContent, mediaUrl, movesList } from "../lib/content";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -324,77 +323,6 @@ function kettlebell() {
   io.observe(box);
 }
 
-/* ---------- Ryan's content from /admin (Supabase) ----------
-   The page ships with built-in workouts and photos. If Ryan has added his
-   own, they replace those once loaded. Any failure leaves the page as is. */
-async function liveContent() {
-  const data = await loadPublicContent();
-  if (!data) return;
-
-  // Photos: one per slot.
-  data.photos.forEach((p) => {
-    const url = `${mediaUrl(p.path)}?v=${encodeURIComponent(p.updated_at)}`;
-    $$<HTMLImageElement>(`img[data-slot="${p.slot}"]`).forEach((img) => {
-      img.removeAttribute("srcset");
-      img.src = isSiteFile(p.path) ? p.path : url;
-      img.classList.toggle("is-upload", !isSiteFile(p.path));
-    });
-  });
-
-  // Workouts: rebuild the track from the first card as a template.
-  const track = $("[data-wk-track]");
-  const template = track ? $("[data-wk]", track) : null;
-  if (!track || !template || !data.workouts.length) return;
-
-  const cards = data.workouts.map((w) => {
-    const card = template.cloneNode(true) as HTMLElement;
-    card.removeAttribute("style"); // drop any GSAP inline state from the template
-    const video = $<HTMLVideoElement>("video", card)!;
-    const src = mediaUrl(w.video_path);
-    video.innerHTML = "";
-    video.src = src;
-    video.dataset.full = src;
-    video.classList.toggle("is-upload", !isSiteFile(w.video_path));
-    if (w.poster_path) video.poster = mediaUrl(w.poster_path);
-    else {
-      video.removeAttribute("poster");
-      video.preload = "metadata";
-    }
-    $("[data-play]", card)!.setAttribute("aria-label", `Play ${w.name} video with sound`);
-    $("h3", card)!.textContent = w.name;
-    const note = $(".wk-note", card)!;
-    note.textContent = w.note;
-    note.hidden = !w.note;
-    const ul = $("ul", card)!;
-    ul.replaceChildren(
-      ...movesList(w.moves).map((m) => {
-        const li = document.createElement("li");
-        li.textContent = m;
-        return li;
-      })
-    );
-    const ig = $<HTMLAnchorElement>(".wk-ig", card);
-    if (ig) {
-      if (w.instagram_url && /^https:\/\/(www\.)?instagram\.com\//.test(w.instagram_url)) ig.href = w.instagram_url;
-      else ig.remove();
-    }
-    return card;
-  });
-
-  // Stop and forget the built-in videos before swapping.
-  $$<HTMLVideoElement>("video", track).forEach((v) => {
-    videoIO?.unobserve(v);
-    v.pause();
-  });
-  track.replaceChildren(...cards);
-  cards.forEach((card) => {
-    wirePlayer($("[data-player]", card)!);
-    const v = $<HTMLVideoElement>("video", card)!;
-    if (videoIO) videoIO.observe(v);
-  });
-  ScrollTrigger.refresh();
-}
-
 intro();
 chrome();
 story();
@@ -407,7 +335,6 @@ price();
 footWord();
 magnetic();
 kettlebell();
-liveContent();
 
 // Fonts change line lengths; measure again once they've landed.
 document.fonts?.ready.then(() => ScrollTrigger.refresh());
