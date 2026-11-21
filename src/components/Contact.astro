@@ -56,10 +56,10 @@ const nextSteps = [
 </div>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap: 16px">
 <div class="field"><label for="client_name">Your name</label><input id="client_name" name="client_name" type="text" autocomplete="name" placeholder="Jane Doe" required><span class="field-error" id="err-client_name" role="alert"></span></div>
-<div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" placeholder="jane@business.com.au" required><span class="field-error" id="err-email" role="alert"></span></div>
+<div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" placeholder="jane@business.com" required><span class="field-error" id="err-email" role="alert"></span></div>
 </div>
 <div class="field"><label for="business_name">Business name</label><input id="business_name" name="business_name" type="text" autocomplete="organization" placeholder="Apex Heating &amp; Electrical" required><span class="field-error" id="err-business_name" role="alert"></span></div>
-<div class="field"><label for="website">Website or social link <span style="font-weight: 500; color: rgba(20,17,26,0.64)">(optional)</span></label><input id="website" name="website" type="text" inputmode="url" autocomplete="url" placeholder="yourbusiness.com.au or @yourbusiness"><span class="field-error" id="err-website" role="alert"></span></div>
+<div class="field"><label for="website">Website or social link <span style="font-weight: 500; color: rgba(20,17,26,0.64)">(optional)</span></label><input id="website" name="website" type="text" inputmode="url" autocomplete="url" placeholder="yourbusiness.com or @yourbusiness"><span class="field-error" id="err-website" role="alert"></span></div>
 <div class="field-consent">
 <label for="consent" style="display: flex; gap: 10px; align-items: flex-start; font-size: 0.85rem; color: rgba(20,17,26,0.7)"><input id="consent" name="consent" type="checkbox" required style="margin-top: 3px; width: 18px; height: 18px; flex-shrink: 0; accent-color: #5b2a96"><span>I've read the <a href={`${base}/privacy-policy/`} target="_blank" rel="noopener noreferrer">Privacy Policy<span class="sr-only"> (opens in a new tab)</span></a> and I'm happy for you to use my details to reply to this enquiry.</span></label>
 <span class="field-error" id="err-consent" role="alert"></span>
