@@ -550,6 +550,29 @@ function lines() {
   else setTimeout(start, 600);
 }
 
+// Before/after card: Front / Side switch (tap, no dragging). The gold pill slides to the choice.
+function results() {
+  $$("[data-result]").forEach((card) => {
+    const btns = $$<HTMLButtonElement>("[data-show]", card);
+    const pill = $(".result-switch-pill", card);
+    const place = (b: HTMLElement) => {
+      if (!pill) return;
+      pill.style.width = `${b.offsetWidth}px`;
+      pill.style.transform = `translateX(${b.offsetLeft}px)`;
+    };
+    const select = (b: HTMLButtonElement) => {
+      card.dataset.view = b.dataset.show!;
+      btns.forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+      place(b);
+    };
+    btns.forEach((b) => b.addEventListener("click", () => select(b)));
+    const current = () => btns.find((b) => b.getAttribute("aria-pressed") === "true") ?? btns[0];
+    place(current());
+    document.fonts?.ready.then(() => place(current()));
+    addEventListener("resize", () => place(current()));
+  });
+}
+
 expiry();
 intro();
 chrome();
@@ -562,6 +585,7 @@ reels();
 revealsIn();
 magnetic();
 faq();
+results();
 planHover();
 lines();
 document.fonts?.ready.then(() => ScrollTrigger.refresh());

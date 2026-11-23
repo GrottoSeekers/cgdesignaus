@@ -96,6 +96,12 @@ export const steps = [
 
 // Placeholder until James sends real reviews (Google Form going out now).
 // Set `placeholder: false` and fill in the text when they arrive.
+// Before/after photos (graded B&W, files in public/media: <slug>-<view>-<before|after>-<480|720>.webp).
+// Only shown with the client's permission.
+export const results = [
+  { name: "Jilly", slug: "jilly", stat: "2.5", unit: "kg", label: "down", detail: "", views: ["front", "side"] as const },
+];
+
 export const reviews = [
   { name: "Client name", detail: "Online coaching, Silver", text: "Review to come.", placeholder: true },
   { name: "Client name", detail: "1:1 PT, Performance", text: "Review to come.", placeholder: true },

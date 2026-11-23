@@ -37,7 +37,7 @@ npm run build      # static output in dist/
 
 1. **Qualifications** (`qualifications` in `site.ts`): shown as "To confirm". Set the real titles and `placeholder: false`.
 2. **Client reviews** (`reviews` in `site.ts`): shown as "Review to come". Paste the Google Form answers in and set `placeholder: false`.
-3. **Client before/after photos**: the striped "Before and after" tile in the Results section (`index.astro`).
+3. **Client before/after photos**: Jilly is live (`results` in `site.ts`). For the next client, split their photos into before/after halves, grade black and white and save as `public/media/<slug>-<front|side>-<before|after>-<480|720>.webp`, then add them to `results` (originals go in `assets/originals/clients/`).
 4. **Domain**: `jpicklescoaching.co.uk` is a placeholder in `astro.config.mjs`, `site.ts`, `robots.txt` and `sitemap.xml`.
 
 The Black Friday banner (50% off online, 16-27 Nov) and the HYROX simulation card (2 Jan 2027)

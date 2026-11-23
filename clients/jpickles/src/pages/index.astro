@@ -3,7 +3,7 @@ import Base from "../layouts/Base.astro";
 import Icon from "../components/Icon.astro";
 import {
   site, coach, instagram, handle, dm, wa, phoneDisplay, phoneIntl, gym, areas, offer, online, pt, ptTerms, goals, steps,
-  reviews, qualifications, partners, event, faqs, gbp,
+  results, reviews, qualifications, partners, event, faqs, gbp,
 } from "../lib/site";
 
 const title = "J.Pickles Coaching | Personal trainer in Westhoughton and Leigh | Online coaching";
@@ -329,15 +329,43 @@ const jsonLd = {
       </div>
     </section>
 
-    <!-- Results: placeholders until client photos and reviews arrive -->
+    <!-- Results: client before/afters, then reviews (placeholders until James sends them) -->
     <section class="pad" id="results" aria-labelledby="results-title">
       <div class="wrap">
         <h2 id="results-title" class="h2" data-reveal>Client <em>results.</em></h2>
-        <p class="lede" data-reveal>Real clients, real numbers. Photos and reviews land here soon.</p>
+        <p class="lede" data-reveal>Real clients, real numbers. Shared with their permission.</p>
         <div class="results-grid">
-          <div class="ba" data-reveal>
-            <div><strong>Before and after</strong>Client photos coming soon, shared with each client's permission.</div>
-          </div>
+          {results.slice(0, 1).map((r) => (
+            <figure class="result" data-result data-view={r.views[0]} data-reveal>
+              <div class="result-photos">
+                {(["before", "after"] as const).map((when) => (
+                  <div class="result-shot">
+                    {r.views.map((v) => (
+                      <span class="result-view" data-view-of={v}>
+                        <img
+                          src={`/media/${r.slug}-${v}-${when}-720.webp`}
+                          srcset={`/media/${r.slug}-${v}-${when}-480.webp 480w, /media/${r.slug}-${v}-${when}-720.webp 720w`}
+                          sizes="(min-width: 900px) 22vw, 50vw" width="720" height="1252" decoding="async"
+                          alt={`${r.name} ${when === "before" ? "before coaching" : "after coaching"}, ${v} view`}
+                        />
+                      </span>
+                    ))}
+                    <span class="result-tag">{when === "before" ? "Before" : "After"}</span>
+                  </div>
+                ))}
+              </div>
+              <figcaption class="result-cap">
+                <p class="result-stat"><strong>{r.stat}<small>{r.unit}</small></strong> {r.label}</p>
+                <p class="result-who"><strong>{r.name}</strong>{r.detail}</p>
+                <div class="result-switch" role="group" aria-label="Photo angle">
+                  <span class="result-switch-pill" aria-hidden="true"></span>
+                  {r.views.map((v, i) => (
+                    <button type="button" data-show={v} aria-pressed={i === 0 ? "true" : "false"}>{v === "front" ? "Front" : "Side"}</button>
+                  ))}
+                </div>
+              </figcaption>
+            </figure>
+          ))}
           {reviews.map((r) => (
             <blockquote class:list={["quote", { "is-placeholder": r.placeholder }]} data-reveal>
               <span class="stars" aria-label="5 out of 5">
