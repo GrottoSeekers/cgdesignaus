@@ -106,7 +106,7 @@ export const results = [
 // spelling tidied. `name` follows each client's choice (full name or first name only).
 export const reviews = [
   {
-    name: "Jilly Westhead",
+    name: "Jilly",
     detail: "1:1 PT, 1 to 3 months",
     rating: 5,
     text: "He is quick at getting back to you and very good at what he does. James is the guy! He helps you feel comfortable and not judged.",
