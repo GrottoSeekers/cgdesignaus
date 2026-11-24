@@ -99,13 +99,24 @@ export const steps = [
 // Before/after photos (graded B&W, files in public/media: <slug>-<view>-<before|after>-<480|720>.webp).
 // Only shown with the client's permission.
 export const results = [
-  { name: "Jilly", slug: "jilly", stat: "2.5", unit: "kg", label: "down", detail: "", views: ["front", "side"] as const },
+  { name: "Jilly", slug: "jilly", stat: "2.5", unit: "kg", label: "down", detail: "1:1 PT", views: ["front", "side"] as const },
 ];
 
+// From James's testimonial form (both ticked permission to publish). Their own words; only
+// spelling tidied. `name` follows each client's choice (full name or first name only).
 export const reviews = [
-  { name: "Client name", detail: "Online coaching, Silver", text: "Review to come.", placeholder: true },
-  { name: "Client name", detail: "1:1 PT, Performance", text: "Review to come.", placeholder: true },
-  { name: "Client name", detail: "Online coaching, Gold", text: "Review to come.", placeholder: true },
+  {
+    name: "Jilly Westhead",
+    detail: "1:1 PT, 1 to 3 months",
+    rating: 5,
+    text: "He is quick at getting back to you and very good at what he does. James is the guy! He helps you feel comfortable and not judged.",
+  },
+  {
+    name: "Alex",
+    detail: "Online coaching, 1 to 3 months",
+    rating: 4,
+    text: "The training is good and I’m enjoying the way the program is set up, and the app is really good. Stronger and feeling better about myself. You won’t regret starting, and in a few months you will be glad you did.",
+  },
 ];
 
 // Placeholder until James confirms. Shown as "to confirm" on the page.

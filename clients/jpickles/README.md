@@ -36,7 +36,7 @@ npm run build      # static output in dist/
 ## Things still to add (placeholders on the page)
 
 1. **Qualifications** (`qualifications` in `site.ts`): shown as "To confirm". Set the real titles and `placeholder: false`.
-2. **Client reviews** (`reviews` in `site.ts`): shown as "Review to come". Paste the Google Form answers in and set `placeholder: false`.
+2. **Client reviews** (`reviews` in `site.ts`): Jilly and Alex are live. Add new ones from the testimonial form in their own words, with the name the way they chose (full or first name) and their star rating.
 3. **Client before/after photos**: Jilly is live (`results` in `site.ts`). For the next client, split their photos into before/after halves, grade black and white and save as `public/media/<slug>-<front|side>-<before|after>-<480|720>.webp`, then add them to `results` (originals go in `assets/originals/clients/`).
 4. **Domain**: `jpicklescoaching.co.uk` is a placeholder in `astro.config.mjs`, `site.ts`, `robots.txt` and `sitemap.xml`.
 
