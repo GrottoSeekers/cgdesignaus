@@ -417,9 +417,9 @@ function reels() {
 function revealsIn() {
   if (reduce) return;
   ScrollTrigger.batch(reveals, {
-    start: "top 90%",
+    start: "top 98%",
     once: true,
-    onEnter: (batch) => gsap.to(batch, { autoAlpha: 1, y: 0, duration: 1, ease: "expo.out", stagger: 0.08, overwrite: true }),
+    onEnter: (batch) => gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.7, ease: "expo.out", stagger: 0.06, overwrite: true }),
   });
   $$("[data-parallax]").forEach((img) => {
     gsap.fromTo(img, { yPercent: -5, scale: 1.1 }, { yPercent: 5, scale: 1.1, ease: "none", scrollTrigger: { trigger: img.parentElement, start: "top bottom", end: "bottom top", scrub: true } });

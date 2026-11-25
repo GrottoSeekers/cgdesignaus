@@ -47,13 +47,13 @@ const frag = /* glsl */ `
 `;
 
 export function createSpeedLines(canvas: HTMLCanvasElement, { reduce }: Opts) {
+  const small = matchMedia("(max-width: 899px)").matches;
   let renderer: WebGLRenderer;
   try {
-    renderer = new WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "low-power" });
+    renderer = new WebGLRenderer({ canvas, alpha: true, antialias: !small, powerPreference: "low-power" });
   } catch {
     return null;
   }
-  const small = matchMedia("(max-width: 899px)").matches;
   const COUNT = small ? 70 : 150;
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, small ? 1.5 : 1.75));
   renderer.setClearColor(0x000000, 0);
