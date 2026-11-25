@@ -5,9 +5,12 @@ import type { EmailParts } from "./email";
 // The recipient (James) is typed into the EmailJS template itself, never sent from here,
 // so the public key can't be used to email anyone else.
 
-const SERVICE = (import.meta.env.PUBLIC_EMAILJS_SERVICE_ID as string | undefined) ?? "";
-const TEMPLATE = (import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID as string | undefined) ?? "";
-const KEY = (import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY as string | undefined) ?? "";
+// James's EmailJS account (Outlook: jpickles.coaching@outlook.com). These are public by design:
+// they're visible in any browser. Safety comes from the template's fixed "To Email".
+// Vercel environment variables, if set, override them.
+const SERVICE = (import.meta.env.PUBLIC_EMAILJS_SERVICE_ID as string | undefined) || "service_xmftby5";
+const TEMPLATE = (import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID as string | undefined) || "template_b837y9l";
+const KEY = (import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY as string | undefined) || "8yJ3MF4HjOlUegLyf";
 export const emailReady = Boolean(SERVICE && TEMPLATE && KEY);
 
 export async function sendEmail(mail: EmailParts) {

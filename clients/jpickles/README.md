@@ -64,7 +64,7 @@ have WhatsApp / Email / Call buttons. Hitting **Reply** answers the client direc
    - To Email: type `jpickles.coaching@outlook.com` (never `{{to_email}}`: a fixed address means the public key can't be used to email anyone else) · From Name: `{{from_name}}` · Reply To: `{{reply_to}}` · Subject: `{{subject}}`
    - Content: open the code editor (`<>`), delete everything and paste exactly `{{{html}}}` (three braces). Save, copy the **Template ID**.
 4. **Account > General**: copy the **Public Key**. Under **Security**, add the live domain to the allowed list. Under **Account > Security** also turn on the limit on requests per IP address.
-5. Add `PUBLIC_EMAILJS_SERVICE_ID`, `PUBLIC_EMAILJS_TEMPLATE_ID` and `PUBLIC_EMAILJS_PUBLIC_KEY` in Vercel (Settings > Environment Variables), then **Redeploy**.
+5. Add `PUBLIC_EMAILJS_SERVICE_ID`, `PUBLIC_EMAILJS_TEMPLATE_ID` and `PUBLIC_EMAILJS_PUBLIC_KEY` in Vercel (Settings > Environment Variables), then **Redeploy**. (Optional: the IDs for James's account are already built into `src/lib/send.ts`; Vercel values override them.)
 
 The logo in the email loads from `https://<domain>/media/email-logo.png`, so it appears once the site is live on its domain.
 
