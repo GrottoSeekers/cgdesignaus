@@ -40,16 +40,21 @@ npm run build      # static output in dist/
 1. **Qualifications** (`qualifications` in `site.ts`): done (PT Level 3, HYROX Foundation & Level 1, England Boxing Level 2, FREC 3).
 2. **Client reviews** (`reviews` in `site.ts`): Jilly and Alex are live. Add new ones from the testimonial form in their own words, with the name the way they chose (full or first name) and their star rating.
 3. **Client before/after photos**: Jilly is live (`results` in `site.ts`). For the next client, split their photos into before/after halves, grade black and white and save as `public/media/<slug>-<front|side>-<before|after>-<480|720>.webp`, then add them to `results` (originals go in `assets/originals/clients/`).
-4. **Domain**: `jpicklescoaching.co.uk` is a placeholder in `astro.config.mjs`, `site.ts`, `robots.txt` and `sitemap.xml`.
 
 The Black Friday banner (50% off online, 16-27 Nov) and the HYROX simulation card (2 Jan 2027)
 hide themselves after their end dates. Change or add offers in `site.ts`.
 
 ## Domain
 
-Suggested: **jpicklescoaching.co.uk** (matches the logo and Instagram link). Also worth buying
-**jamespicklesfitness.co.uk** and pointing it at the same site, so people searching his name find it.
-The page title and description target "personal trainer Leigh / Wigan / Bolton" and "online coaching".
+**www.jpicklesfitnesscoaching.com** (bought on Namecheap, Nov 2026). Vercel project `jpickles-coaching`:
+`www` is the main address; `jpicklesfitnesscoaching.com` redirects to it. Namecheap DNS (Advanced DNS):
+
+| Type | Host | Value |
+| --- | --- | --- |
+| A Record | `@` | `216.198.79.1` |
+| CNAME Record | `www` | `70206afedcdc7e97.vercel-dns-017.com.` |
+
+The domain is set in `astro.config.mjs`, `src/lib/site.ts`, `public/robots.txt` and `public/sitemap.xml`.
 
 ## Form emails (EmailJS, free): every form goes to jpickles.coaching@outlook.com
 
