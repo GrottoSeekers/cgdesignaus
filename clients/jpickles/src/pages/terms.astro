@@ -1,0 +1,73 @@
+---
+// Terms of coaching (consumer contract, England and Wales). Gold "To confirm" marks are
+// facts only James can give; see the README. Not legal advice: worth a check before launch.
+import Legal from "../components/Legal.astro";
+import { email, phoneDisplay, ptTerms, offer } from "../lib/site";
+const offerOn = Date.now() < Date.parse(offer.ends);
+---
+
+<Legal title="Terms of coaching" description="The terms for online coaching and 1:1 personal training with J.Pickles Coaching." path="/terms" updated="25 November 2026">
+  <p>These terms apply when you book online coaching or 1:1 personal training with me. They're written to be read, so please do.</p>
+
+  <h2>Who I am</h2>
+  <p>J.Pickles Coaching is the trading name of James Pickles, <mark class="tbc">To confirm: sole trader</mark>. Contact: <a href={`mailto:${email}`}>{email}</a> or WhatsApp {phoneDisplay}.</p>
+
+  <h2>Booking and prices</h2>
+  <ul>
+    <li>Prices are shown on the website in pounds. <mark class="tbc">To confirm: VAT registered or not</mark></li>
+    <li>We agree your coaching over WhatsApp. The agreement starts when I confirm your place and you've paid.</li>
+    <li>Payment: <mark class="tbc">To confirm: how (bank transfer, card link, standing order) and when (in advance)</mark></li>
+  </ul>
+
+  <h2>Online coaching</h2>
+  <ul>
+    <li>Billed every 4 weeks, in advance.</li>
+    <li>Minimum term: <mark class="tbc">To confirm: none, or a number of months</mark></li>
+    <li>To stop, message me at least <mark class="tbc">To confirm: 7 days</mark> before your next payment. Coaching continues until the end of the period you've paid for.</li>
+  </ul>
+
+  <h2>1:1 personal training</h2>
+  <ul>
+    {ptTerms.map((t) => <li>{t}</li>)}
+    <li>If I need to cancel, I'll move the session or add it back to your package, and the 4 weeks are extended.</li>
+    <li>Sessions are at Renegade in Westhoughton, or in and around Leigh, as agreed.</li>
+  </ul>
+
+  <h2>Your right to cancel</h2>
+  <p>When you book online or over WhatsApp, the law gives you 14 days to change your mind, starting from the day we agree your coaching. To cancel, message or email me within that time.</p>
+  <ul>
+    <li>If you cancel before coaching starts, you get a full refund.</li>
+    <li>If you've asked to start within the 14 days, you pay for what you've already had: sessions used, or the days of online coaching up to when you cancel. The rest is refunded.</li>
+    <li>Refunds are made within 14 days, the same way you paid.</li>
+  </ul>
+
+  <h2>Refunds after 14 days</h2>
+  <p><mark class="tbc">To confirm: James's refund policy for unused sessions or coaching after the 14 days, e.g. no refunds, or unused sessions refunded if you're injured or ill with a doctor's note</mark></p>
+
+  {offerOn && (
+    <>
+      <h2>{offer.label} offer</h2>
+      <p>{offer.headline}. {offer.detail} <mark class="tbc">To confirm: whether 50% off is for the first 4 weeks or ongoing, and whether it's for new clients only</mark></p>
+    </>
+  )}
+
+  <h2>Your health</h2>
+  <ul>
+    <li>Tell me about any injury, illness, medication or pregnancy before we start, and when anything changes. The onboarding form asks for this.</li>
+    <li>If you're unsure whether exercise is safe for you, check with your GP first.</li>
+    <li>Train within your limits and stop if something hurts. Tell me straight away.</li>
+    <li>Nutrition guidance is general advice for healthy adults. It isn't medical or dietetic treatment.</li>
+  </ul>
+
+  <h2>Results</h2>
+  <p>Results depend on you following the plan, as well as on things outside anyone's control. Client results on this site are real, but yours may be different.</p>
+
+  <h2>Liability</h2>
+  <p>I hold <mark class="tbc">To confirm: insurer and level of public liability / professional indemnity cover</mark>. Nothing in these terms limits my liability for death or injury caused by my negligence, or anything else that can't be limited by law. Otherwise I'm not responsible for losses that weren't reasonably foreseeable.</p>
+
+  <h2>Complaints</h2>
+  <p>If something isn't right, tell me first at <a href={`mailto:${email}`}>{email}</a> or on WhatsApp and I'll do my best to fix it.</p>
+
+  <h2>Law</h2>
+  <p>These terms are governed by the law of England and Wales. Your rights as a consumer aren't affected.</p>
+</Legal>

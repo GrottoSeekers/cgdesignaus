@@ -6,7 +6,7 @@ import FormFlow from "../components/FormFlow.astro";
 import Icon from "../components/Icon.astro";
 import "../styles/forms.css";
 import type { Section } from "../lib/forms";
-import { online, pt, gbp, offer, phoneDisplay } from "../lib/site";
+import { online, pt, gbp, offer, phoneDisplay, wa } from "../lib/site";
 
 const planOptions = [
   ...online.map((p) => ({ id: p.id, kind: "online", label: `Online coaching: ${p.name} (${gbp(p.price)} ${p.unit})` })),
@@ -57,7 +57,7 @@ const sections: Section[] = [
           <li><strong>Then</strong>Your plan is built from your answers, and check-ins start on your first Friday.</li>
         </ul>
         <div class="done-actions">
-          <a class="btn" href="#" data-wa-again target="_blank" rel="noopener noreferrer"><Icon name="whatsapp" />Open WhatsApp</a>
+          <a class="btn" href={wa("Hi James, I'd like to start coaching.")} data-wa-again target="_blank" rel="noopener noreferrer"><Icon name="whatsapp" />Open WhatsApp</a>
           <a class="btn btn-ghost" href="/">Back to the site</a>
         </div>
         <p class="done-note" style="color:var(--mute)">Or WhatsApp James on {phoneDisplay}.</p>

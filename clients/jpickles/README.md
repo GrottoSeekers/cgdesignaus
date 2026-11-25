@@ -14,6 +14,8 @@ pathways, FAQ) and Red On (choose your level of coaching, credentials, one clear
 | `/start` | "Start coaching": name, number and which coaching option, then WhatsApp opens with that message ready to send to James. Every Start / Choose button links here (`?plan=silver` pre-picks the plan) |
 | `/onboarding` | Full onboarding & consultation form (replaces the Google Form) for James to send new clients after the first chat. Every question kept, 8 short steps, saves a draft as you go. Not linked from the site or shown in Google |
 | `/check-in` | Weekly check-in (replaces the Google Form). 5 steps, under 5 minutes, remembers the client's name and email for next Friday |
+| `/privacy`, `/terms` | Privacy policy (UK GDPR) and terms of coaching. Drafts: gold "To confirm" marks are facts James still needs to give |
+| `/404` | Custom not-found page |
 | `/coach` | James's private dashboard: check-ins grouped by client, weight trend, 4-week averages, flags (pain, too hard, poor food, low sleep), new-client forms, CSV export |
 
 ## Develop
@@ -59,9 +61,9 @@ have WhatsApp / Email / Call buttons. Hitting **Reply** answers the client direc
 1. Sign up free at [emailjs.com](https://www.emailjs.com) (200 emails a month on the free plan).
 2. **Email Services > Add New Service > Outlook**, sign in as **jpickles.coaching@outlook.com**. Copy the **Service ID**.
 3. **Email Templates > Create New Template**:
-   - To Email: `{{to_email}}` · From Name: `{{from_name}}` · Reply To: `{{reply_to}}` · Subject: `{{subject}}`
+   - To Email: type `jpickles.coaching@outlook.com` (never `{{to_email}}`: a fixed address means the public key can't be used to email anyone else) · From Name: `{{from_name}}` · Reply To: `{{reply_to}}` · Subject: `{{subject}}`
    - Content: open the code editor (`<>`), delete everything and paste exactly `{{{html}}}` (three braces). Save, copy the **Template ID**.
-4. **Account > General**: copy the **Public Key**. Under **Security**, add the live domain to the allowed list.
+4. **Account > General**: copy the **Public Key**. Under **Security**, add the live domain to the allowed list. Under **Account > Security** also turn on the limit on requests per IP address.
 5. Add `PUBLIC_EMAILJS_SERVICE_ID`, `PUBLIC_EMAILJS_TEMPLATE_ID` and `PUBLIC_EMAILJS_PUBLIC_KEY` in Vercel (Settings > Environment Variables), then **Redeploy**.
 
 The logo in the email loads from `https://<domain>/media/email-logo.png`, so it appears once the site is live on its domain.
@@ -93,6 +95,15 @@ What's built in now:
 If James wants clients to log food and receive meal plans in one app, the next step is a coaching
 platform with MyFitnessPal sync built in (Everfit or Trainerize are the usual picks for UK PTs). The site's
 forms and dashboard can sit alongside it or link to it.
+
+## Security and privacy (built in)
+
+- `vercel.json` sends security headers on every page (HTTPS-only, no framing, nosniff, referrer policy, and a content security policy allowing only this site, EmailJS and Supabase). If a new outside service is added (analytics, a booking widget), add its address to the CSP or it will be blocked.
+- Forms: a hidden spam-trap field plus a minimum fill time. Bots see the thank-you screen but nothing is sent.
+- The onboarding and check-in forms end with a required consent tickbox for health details (UK GDPR special category data). The answer is included in the email, as a record.
+- Unfinished form drafts are kept in the browser for 7 days at most.
+- The site sets no cookies and loads no trackers, so no cookie banner is needed. Adding analytics or a pixel changes that.
+- Footer "Pause animations" stops the looping motion (accessibility rule WCAG 2.2.2). Everything still runs by default.
 
 ## Deploy (Vercel)
 

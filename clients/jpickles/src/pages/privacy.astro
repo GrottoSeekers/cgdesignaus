@@ -1,0 +1,73 @@
+---
+// Privacy policy (UK GDPR). Gold "To confirm" marks are facts only James can give;
+// see the README. Not legal advice: worth a check before launch.
+import Legal from "../components/Legal.astro";
+import { email, phoneDisplay } from "../lib/site";
+---
+
+<Legal title="Privacy policy" description="How J.Pickles Coaching collects, uses and protects your information." path="/privacy" updated="25 November 2026">
+  <p>This explains what information I collect when you use this website or get coached by me, why, who else handles it and your rights. If anything is unclear, message me.</p>
+
+  <h2>Who I am</h2>
+  <p>J.Pickles Coaching is the trading name of James Pickles, <mark class="tbc">To confirm: sole trader</mark>, based in Westhoughton and Leigh. I decide how your information is used (the "controller").</p>
+  <p>Contact: <a href={`mailto:${email}`}>{email}</a> or WhatsApp {phoneDisplay}.</p>
+
+  <h2>What I collect</h2>
+  <ul>
+    <li><strong>Start coaching form:</strong> your name, phone number and the coaching you're interested in. This opens WhatsApp on your phone and you choose whether to send it.</li>
+    <li><strong>Onboarding form:</strong> contact details, your goals, training history, lifestyle, nutrition habits, availability and health details such as injuries, medical conditions and anything that affects how you train.</li>
+    <li><strong>Weekly check-ins:</strong> your weight, how training, food, sleep, energy and steps went, any pain or injuries, and comments.</li>
+    <li><strong>Messages:</strong> anything you send me on WhatsApp, Instagram or email.</li>
+    <li><strong>Payments:</strong> what you've paid and when. <mark class="tbc">To confirm: how clients pay</mark></li>
+    <li><strong>Reviews and photos:</strong> only if you give them to me and agree to them being shared.</li>
+  </ul>
+
+  <h2>Why I use it, and the legal basis</h2>
+  <ul>
+    <li><strong>To coach you</strong> (training plans, nutrition guidance, check-ins): because we have an agreement for coaching ("contract").</li>
+    <li><strong>Health details</strong> are a special category of information. I only use them with your explicit consent, which you give by ticking the box on the forms. You can withdraw it at any time, though I may then not be able to coach you safely.</li>
+    <li><strong>Replying to enquiries:</strong> my legitimate interest in answering people who contact me.</li>
+    <li><strong>Records of payments:</strong> to meet my tax obligations ("legal obligation").</li>
+    <li><strong>Reviews and before-and-after photos:</strong> only with your consent, given when you send them.</li>
+  </ul>
+  <p>I don't sell your information or use it for advertising. I don't send marketing emails.</p>
+
+  <h2>Who else handles it</h2>
+  <p>Only I see your answers. These services store or carry them for me, under their own security and data-protection terms:</p>
+  <ul>
+    <li><strong>EmailJS</strong> sends your form answers to my inbox.</li>
+    <li><strong>Microsoft Outlook</strong> is my email inbox.</li>
+    <li><strong>Supabase</strong> stores form answers for my coaching dashboard, in its London region. <mark class="tbc">To confirm: only if the dashboard is used</mark></li>
+    <li><strong>Vercel</strong> hosts this website.</li>
+    <li><strong>WhatsApp</strong> (Meta) for messages.</li>
+    <li><mark class="tbc">To confirm: the coaching app clients use, if any</mark></li>
+  </ul>
+  <p>Some of these companies are based in the US, so your information may be processed there. They protect it under the UK-US data bridge or the UK's approved contract clauses.</p>
+
+  <h2>How long I keep it</h2>
+  <ul>
+    <li>Coaching records, including health details and check-ins: while you're a client and <mark class="tbc">To confirm: 12 months</mark> after you finish, then deleted.</li>
+    <li>Enquiries that don't go further: <mark class="tbc">To confirm: 6 months</mark>.</li>
+    <li>Payment records: 6 years, as HMRC requires.</li>
+  </ul>
+
+  <h2>On your device</h2>
+  <p>This site doesn't use cookies, analytics or tracking. The forms save your unfinished answers in your browser so you don't lose them. That's deleted when you send the form, or after 7 days. The check-in also remembers your name and email for next week. Clearing your browser data removes all of it.</p>
+
+  <h2>Your rights</h2>
+  <p>You can ask me to:</p>
+  <ul>
+    <li>give you a copy of the information I hold about you</li>
+    <li>correct anything that's wrong</li>
+    <li>delete it</li>
+    <li>stop or limit using it</li>
+    <li>send it to you or someone else in a usable format</li>
+  </ul>
+  <p>Message or email me. I'll reply within one month, and it's free.</p>
+
+  <h2>Complaints</h2>
+  <p>If you're unhappy with how I've handled your information, please tell me first at <a href={`mailto:${email}`}>{email}</a> and I'll put it right. You can also complain to the Information Commissioner's Office at <a href="https://ico.org.uk/make-a-complaint/" target="_blank" rel="noopener noreferrer">ico.org.uk</a> or on 0303 123 1113.</p>
+
+  <h2>Changes</h2>
+  <p>If this policy changes, the new version will be on this page with a new date.</p>
+</Legal>

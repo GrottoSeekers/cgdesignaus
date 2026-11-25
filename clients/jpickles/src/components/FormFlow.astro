@@ -27,8 +27,8 @@ const scale = (f: Field) => Array.from({ length: (f.max ?? 10) - (f.min ?? 1) + 
     <p class="flow-count" aria-live="polite" data-count>{sections.length > 1 ? `Step 1 of ${sections.length}` : "Takes 30 seconds"}</p>
   </header>
 
-  <form class="flow-form" novalidate data-form>
-    <h1 class="sr">{title}</h1>
+  <form class="flow-form" novalidate data-form aria-label={title}>
+    <div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="company_site" tabindex="-1" autocomplete="off" /></label></div>
     {sections.map((s, i) => (
       <fieldset class="step" data-step={i} hidden={i !== 0} aria-labelledby={`h-${s.id}`}>
         <legend class="sr">{s.title}</legend>
@@ -104,6 +104,7 @@ const scale = (f: Field) => Array.from({ length: (f.max ?? 10) - (f.min ?? 1) + 
       <button type="submit" class="btn" data-submit hidden>{submitLabel} <Icon name={submitIcon} /></button>
     </div>
     <p class="flow-error" data-submit-error role="alert" hidden></p>
+    <p class="flow-privacy">Your answers go to James only. <a href="/privacy">Privacy policy</a></p>
   </form>
 
   <section class="flow-done" data-done hidden tabindex="-1" aria-labelledby="done-title">

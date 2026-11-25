@@ -158,3 +158,8 @@
 }
 
 [data-field="plan"] .options { grid-template-columns: 1fr; }
+
+/* Spam trap: off-screen, never seen or tabbed to by people */
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.flow-privacy { margin: 1.2rem 0 0; font-size: .8rem; color: var(--mute); }
+.flow-privacy a { color: var(--bone); display: inline-flex; align-items: center; min-height: 28px; }

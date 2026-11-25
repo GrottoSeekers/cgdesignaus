@@ -121,6 +121,7 @@ export const onboarding: Section[] = [
       { id: "training_time", label: "Preferred training time", type: "radio", options: ["Morning", "Afternoon", "Evening"] },
       { id: "coaching_style", label: "What coaching style suits you?", type: "radio", required: true, options: ["Strict", "Supportive", "Flexible", "Accountability"] },
       { id: "confirm", label: "I confirm my health information is accurate and I'll tell James if anything changes.", type: "checkbox", required: true, options: ["I confirm"] },
+      { id: "consent", label: "Your health details", help: "Needed so James can use what you've told him about your health to coach you. See the privacy policy for how it's kept.", type: "checkbox", required: true, options: ["I agree to James using my answers, including health details, to coach me."] },
     ],
   },
 ];
@@ -173,6 +174,7 @@ export const checkin: Section[] = [
     title: "Next week",
     fields: [
       { id: "support", label: "What would help you most next week?", help: "Your biggest win, main challenge, upcoming events, anything to change.", type: "textarea" },
+      { id: "consent", label: "Your health details", help: "Needed so James can use what you've told him about your health to coach you. See the privacy policy for how it's kept.", type: "checkbox", required: true, options: ["I agree to James using this check-in, including health details, to coach me."] },
     ],
   },
 ];

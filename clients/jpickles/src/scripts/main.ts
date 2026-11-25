@@ -14,6 +14,11 @@ const $$ = <T extends Element = HTMLElement>(s: string, el: ParentNode = documen
 // James wants the full animated experience on every phone, including iPhones with
 // "Reduce Motion" switched on (which used to turn most of it off). So animations always run.
 const reduce = false;
+// Pause button (footer): stops the motion that loops on its own (marquee, speed lines,
+// reels, story autoplay). Everything runs by default; the choice is remembered on this device.
+let motionPaused = (() => { try { return localStorage.getItem("jp-motion") === "paused"; } catch { return false; } })();
+const motionHooks: ((paused: boolean) => void)[] = [];
+const onMotion = (fn: (paused: boolean) => void) => { motionHooks.push(fn); fn(motionPaused); };
 const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
 const mm = gsap.matchMedia();
 
@@ -157,6 +162,7 @@ function marquee() {
   // Always drifting left from page load, never stops or reverses. Scrolling speeds it up
   // for a moment; with Reduce Motion on it drifts more slowly and ignores scrolling.
   const loop = gsap.to(track, { xPercent: -50, ease: "none", duration: reduce ? 70 : 38, repeat: -1 });
+  onMotion((p) => (p ? loop.pause() : loop.play()));
   if (reduce) return;
   const settle = gsap.quickTo(loop, "timeScale", { duration: 1.2, ease: "power2.out" });
   ScrollTrigger.create({
@@ -235,11 +241,12 @@ function storyCarousel() {
   const run = () => {
     clearInterval(timer);
     dotsBox?.classList.toggle("is-paused", !visible);
-    if (visible && !document.hidden && slides.length > 1) timer = window.setInterval(() => next(), MS);
+    if (visible && !motionPaused && !document.hidden && slides.length > 1) timer = window.setInterval(() => next(), MS);
   };
   const restartFill = () => { const d = dots[i]; d.classList.remove("on"); void d.offsetWidth; d.classList.add("on"); };
 
   dots.forEach((d) => d.addEventListener("click", () => { show(Number(d.dataset.fdot)); run(); }));
+  motionHooks.push(() => run());
 
   // Swipe left/right on touch screens.
   let sx: number | null = null;
@@ -388,10 +395,13 @@ function reels() {
     gsap.from("[data-reel]", { autoAlpha: 0, duration: 0.9, ease: "power2.out", stagger: 0.08, scrollTrigger: { trigger: "[data-reels]", start: "top 85%", once: true } });
   }
   if (reduce || !("IntersectionObserver" in window)) return; // posters only
+  const inView = new Set<HTMLVideoElement>();
   const io = new IntersectionObserver(
     (entries) => entries.forEach((e) => {
       const v = e.target as HTMLVideoElement;
-      if (e.isIntersecting && e.intersectionRatio >= 0.4) {
+      const on = e.isIntersecting && e.intersectionRatio >= 0.4;
+      inView[on ? "add" : "delete"](v);
+      if (on && !motionPaused) {
         if (v.preload !== "auto") v.preload = "auto";
         v.play().catch(() => {});
       } else v.pause();
@@ -399,6 +409,7 @@ function reels() {
     { threshold: [0, 0.4] }
   );
   vids.forEach((v) => io.observe(v));
+  motionHooks.push((p) => vids.forEach((v) => (p || !inView.has(v) ? v.pause() : v.play().catch(() => {}))));
   document.addEventListener("visibilitychange", () => document.hidden && vids.forEach((v) => v.pause()));
 }
 
@@ -535,9 +546,12 @@ function lines() {
       if (!fx) return;
       // Runs all the time while the hero is on screen (from page load, no scroll needed);
       // only pauses when scrolled fully out of view or the tab is hidden, to save battery.
-      fx.play();
+      let seen = true;
+      const sync = () => (seen && !motionPaused ? fx.play() : fx.pause());
+      sync();
+      motionHooks.push(sync);
       if ("IntersectionObserver" in window) {
-        new IntersectionObserver(([e]) => (e.isIntersecting ? fx.play() : fx.pause())).observe(canvas);
+        new IntersectionObserver(([e]) => { seen = e.isIntersecting; sync(); }).observe(canvas);
       }
       // Steady speed: scrolling doesn't change it.
       if (!reduce) gsap.from(canvas, { autoAlpha: 0, duration: 1.6, ease: "power2.out" });
@@ -573,6 +587,22 @@ function results() {
   });
 }
 
+function motionToggle() {
+  $$<HTMLButtonElement>("[data-motion]").forEach((b) => {
+    const paint = () => {
+      b.setAttribute("aria-pressed", String(motionPaused));
+      b.textContent = motionPaused ? "Play animations" : "Pause animations";
+    };
+    paint();
+    b.addEventListener("click", () => {
+      motionPaused = !motionPaused;
+      try { localStorage.setItem("jp-motion", motionPaused ? "paused" : "on"); } catch { /* private mode */ }
+      motionHooks.forEach((fn) => fn(motionPaused));
+      paint();
+    });
+  });
+}
+
 expiry();
 intro();
 chrome();
@@ -586,6 +616,7 @@ revealsIn();
 magnetic();
 faq();
 results();
+motionToggle();
 planHover();
 lines();
 document.fonts?.ready.then(() => ScrollTrigger.refresh());

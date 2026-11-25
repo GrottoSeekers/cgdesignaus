@@ -3,12 +3,12 @@ import Base from "../layouts/Base.astro";
 import Icon from "../components/Icon.astro";
 import {
   site, coach, instagram, handle, dm, wa, phoneDisplay, phoneIntl, gym, areas, offer, online, pt, ptTerms, goals, steps,
-  results, reviews, qualifications, partners, event, faqs, gbp,
+  results, reviews, qualifications, email, partners, event, faqs, gbp,
 } from "../lib/site";
 
 const title = "J.Pickles Coaching | Personal trainer in Westhoughton and Leigh | Online coaching";
 const description =
-  "Online coaching and 1:1 personal training with James Pickles. Strength, running, HYROX and fat loss. 1:1 in Westhoughton (Bolton) and Leigh (Wigan), or online anywhere.";
+  "Online coaching and 1:1 personal training with James Pickles in Westhoughton and Leigh. Strength, running, HYROX and fat loss, in person or online.";
 
 const ext = { target: "_blank", rel: "noopener noreferrer" };
 const offerOn = Date.now() < Date.parse(offer.ends); // re-checked in the browser, so a stale build still hides it
@@ -463,6 +463,7 @@ const jsonLd = {
           <h2>Get in touch</h2>
           <a href={instagram} {...ext}>Instagram</a>
           <a href={dm} {...ext}>WhatsApp {phoneDisplay}</a>
+          <a href={`mailto:${email}`}>{email}</a>
         </div>
         <div data-foot-col>
           <h2>Based in</h2>
@@ -470,8 +471,13 @@ const jsonLd = {
         </div>
       </div>
       <div class="foot-bottom">
-        <p>&copy; {new Date().getFullYear()} James Pickles. J.Pickles Coaching.</p>
-        <a href="#top" class="foot-top">Back to top <Icon name="arrowRight" class="up" /></a>
+        <p>&copy; {new Date().getFullYear()} J.Pickles Coaching is the trading name of James Pickles.</p>
+        <nav class="foot-legal" aria-label="Legal">
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+          <button type="button" class="foot-motion" data-motion aria-pressed="false">Pause animations</button>
+          <a href="#top" class="foot-top">Back to top <Icon name="arrowRight" class="up" /></a>
+        </nav>
       </div>
     </div>
   </footer>

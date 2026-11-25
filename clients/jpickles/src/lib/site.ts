@@ -9,6 +9,7 @@ export const instagram = "https://www.instagram.com/jamespickles_fitness/";
 export const handle = "@jamespickles_fitness";
 // WhatsApp is James's main contact. Every "message James" button opens a chat with a
 // ready-written first line (the client can edit it before sending).
+export const email = "jpickles.coaching@outlook.com";
 export const phoneDisplay = "07848 162640";
 export const phoneIntl = "+447848162640";
 export const wa = (text = "Hi James, I've just been on your website and have a question.") =>

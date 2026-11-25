@@ -12,6 +12,8 @@ const $$ = <T extends Element = HTMLElement>(s: string, el: ParentNode = documen
 const reduce = false;
 
 type Values = Record<string, string | string[]>;
+const HP = "company_site"; // hidden spam-trap field (see FormFlow.astro)
+const DRAFT_DAYS = 7;
 
 const store = {
   get<T>(k: string): T | null { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch { return null; } },
@@ -65,12 +67,14 @@ export function initFlow(opts: {
   const count = $("[data-count]")!;
   const subErr = $("[data-submit-error]", form)!;
   let i = 0;
+  const openedAt = Date.now();
 
   /* ---------- Values ---------- */
   const read = (): Values => {
     const out: Values = {};
     const fd = new FormData(form);
     for (const key of new Set(Array.from(fd.keys()))) {
+      if (key === HP) continue; // spam trap, never sent
       const all = fd.getAll(key).map(String).filter((x) => x.trim() !== "");
       const field = $(`[data-field="${key}"]`, form);
       const multi = !!field && $$<HTMLInputElement>("input[type=checkbox]", field).length > 0;
@@ -97,7 +101,10 @@ export function initFlow(opts: {
     const choice = inputs.some((x) => x instanceof HTMLInputElement && (x.type === "radio" || x.type === "checkbox"));
     if (choice) {
       const any = inputs.some((x) => (x as HTMLInputElement).checked);
-      if (required && !any) return inputs[0] instanceof HTMLInputElement && inputs[0].type === "checkbox" ? "Pick at least one." : "Pick one.";
+      if (required && !any) {
+        if (inputs.length === 1) return "Please tick to continue.";
+        return inputs[0] instanceof HTMLInputElement && inputs[0].type === "checkbox" ? "Pick at least one." : "Pick one.";
+      }
       return "";
     }
     const el = inputs[0];
@@ -143,7 +150,7 @@ export function initFlow(opts: {
   form.addEventListener("input", (e) => {
     const field = (e.target as HTMLElement).closest<HTMLElement>("[data-field]");
     if (field?.classList.contains("is-invalid")) showError(field, fieldError(field));
-    store.set(draftKey, { step: i, values: read() });
+    store.set(draftKey, { step: i, values: read(), at: Date.now() });
   });
   form.addEventListener("change", (e) => {
     const t = e.target as HTMLInputElement;
@@ -156,7 +163,7 @@ export function initFlow(opts: {
     }
     const field = t.closest<HTMLElement>("[data-field]");
     if (field?.classList.contains("is-invalid")) showError(field, fieldError(field));
-    store.set(draftKey, { step: i, values: read() });
+    store.set(draftKey, { step: i, values: read(), at: Date.now() });
   });
 
   /* ---------- Steps ---------- */
@@ -182,7 +189,7 @@ export function initFlow(opts: {
         gsap.fromTo($$(".field", steps[i]), { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "expo.out", stagger: 0.04, delay: 0.05 });
       }
     }
-    store.set(draftKey, { step: i, values: read() });
+    store.set(draftKey, { step: i, values: read(), at: Date.now() });
   };
   next.addEventListener("click", () => validateStep(i) && render(i + 1, 1));
   back.addEventListener("click", () => render(i - 1, -1));
@@ -258,9 +265,14 @@ export function initFlow(opts: {
     }
     const values = read();
     subErr.hidden = true;
+    // Spam: bots fill the hidden field or submit within a second or two. Show them the
+    // thank-you screen but send nothing.
+    const trap = form.elements.namedItem(HP) as HTMLInputElement | null;
+    // (The WhatsApp quick-start sends nothing itself, so only the hidden field applies there.)
+    const bot = Boolean(trap?.value) || (!opts.whatsapp && Date.now() - openedAt < 2500);
     // Quick start: open WhatsApp straight away (inside the tap, so phones allow it),
     // then show the thank-you screen with a button in case WhatsApp didn't open.
-    if (opts.whatsapp) {
+    if (opts.whatsapp && !bot) {
       const url = opts.whatsapp(values);
       const win = window.open(url, "_blank");
       if (win) win.opener = null;
@@ -286,10 +298,10 @@ export function initFlow(opts: {
       // Email the answers to James (and, if set up, save them for the coach dashboard).
       // It counts as sent if either works; if neither is set up yet, it's a preview.
       const jobs: Promise<unknown>[] = [];
+      if (bot) throw new Error("ignored");
       if (emailReady && opts.email) jobs.push(sendEmail(opts.email(values)));
       if (dbReady) jobs.push(insert(opts.table, opts.toRow(values)));
-      if (!jobs.length) console.info("[J.Pickles] Email and database not set up yet. Answers:", values);
-      else {
+      if (jobs.length) {
         const results = await Promise.allSettled(jobs);
         if (!results.some((r) => r.status === "fulfilled")) throw new Error("not sent");
       }
@@ -305,7 +317,8 @@ export function initFlow(opts: {
       scrollTo({ top: 0 });
       done.focus();
       celebrate(done);
-    } catch {
+    } catch (err) {
+      if (bot) { form.hidden = true; $("[data-done]")!.hidden = false; return; }
       subErr.textContent = "That didn't send. Check your signal and try again. Your answers are still here.";
       subErr.hidden = false;
       subErr.scrollIntoView({ block: "center" });
@@ -316,7 +329,10 @@ export function initFlow(opts: {
   });
 
   /* ---------- Start: draft, remembered details, prefill ---------- */
-  const draft = store.get<{ step: number; values: Values }>(draftKey);
+  // Drafts can hold health answers, so they expire after a week (shared devices).
+  const saved = store.get<{ step: number; values: Values; at?: number }>(draftKey);
+  const draft = saved && saved.at && Date.now() - saved.at < DRAFT_DAYS * 864e5 ? saved : null;
+  if (saved && !draft) store.del(draftKey);
   const remembered = opts.remember ? store.get<Values>(rememberKey) : null;
   write({ ...(remembered || {}), ...(draft?.values || {}), ...(opts.prefill || {}) });
   $$<HTMLTextAreaElement>("[data-autosize]", form).forEach(grow);

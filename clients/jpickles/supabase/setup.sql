@@ -41,20 +41,22 @@ drop policy if exists "Anyone can send a check-in" on public.check_ins;
 create policy "Anyone can send a check-in" on public.check_ins
   for insert to anon, authenticated with check (reviewed = false);
 
--- James (signed in) can read, update (status / reviewed) and delete.
+-- Only James's own login can read, update (status / reviewed) and delete. Pinned to his email,
+-- so even if sign-ups were ever switched back on, a new account couldn't read anything.
+-- If he signs in to /coach with a different address, change it in the six lines below.
 drop policy if exists "James reads onboarding" on public.onboarding;
-create policy "James reads onboarding" on public.onboarding for select to authenticated using (true);
+create policy "James reads onboarding" on public.onboarding for select to authenticated using ((auth.jwt() ->> 'email') = 'jpickles.coaching@outlook.com');
 drop policy if exists "James updates onboarding" on public.onboarding;
-create policy "James updates onboarding" on public.onboarding for update to authenticated using (true) with check (true);
+create policy "James updates onboarding" on public.onboarding for update to authenticated using ((auth.jwt() ->> 'email') = 'jpickles.coaching@outlook.com') with check ((auth.jwt() ->> 'email') = 'jpickles.coaching@outlook.com');
 drop policy if exists "James deletes onboarding" on public.onboarding;
-create policy "James deletes onboarding" on public.onboarding for delete to authenticated using (true);
+create policy "James deletes onboarding" on public.onboarding for delete to authenticated using ((auth.jwt() ->> 'email') = 'jpickles.coaching@outlook.com');
 
 drop policy if exists "James reads check-ins" on public.check_ins;
-create policy "James reads check-ins" on public.check_ins for select to authenticated using (true);
+create policy "James reads check-ins" on public.check_ins for select to authenticated using ((auth.jwt() ->> 'email') = 'jpickles.coaching@outlook.com');
 drop policy if exists "James updates check-ins" on public.check_ins;
-create policy "James updates check-ins" on public.check_ins for update to authenticated using (true) with check (true);
+create policy "James updates check-ins" on public.check_ins for update to authenticated using ((auth.jwt() ->> 'email') = 'jpickles.coaching@outlook.com') with check ((auth.jwt() ->> 'email') = 'jpickles.coaching@outlook.com');
 drop policy if exists "James deletes check-ins" on public.check_ins;
-create policy "James deletes check-ins" on public.check_ins for delete to authenticated using (true);
+create policy "James deletes check-ins" on public.check_ins for delete to authenticated using ((auth.jwt() ->> 'email') = 'jpickles.coaching@outlook.com');
 
 -- The website's public key can insert but never read back.
 revoke select, update, delete on public.onboarding from anon;

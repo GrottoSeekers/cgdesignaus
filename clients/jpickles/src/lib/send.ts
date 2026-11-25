@@ -1,7 +1,9 @@
 // Emails a finished form to James through EmailJS (free plan: 200 emails a month).
 // The email's design is built by email.ts; the EmailJS template just prints it ({{{html}}}).
 // Setup steps are in the README ("Form emails").
-import { COACH_EMAIL, type EmailParts } from "./email";
+import type { EmailParts } from "./email";
+// The recipient (James) is typed into the EmailJS template itself, never sent from here,
+// so the public key can't be used to email anyone else.
 
 const SERVICE = (import.meta.env.PUBLIC_EMAILJS_SERVICE_ID as string | undefined) ?? "";
 const TEMPLATE = (import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID as string | undefined) ?? "";
@@ -17,7 +19,6 @@ export async function sendEmail(mail: EmailParts) {
       template_id: TEMPLATE,
       user_id: KEY,
       template_params: {
-        to_email: COACH_EMAIL,
         reply_to: mail.replyTo,
         from_name: mail.fromName,
         subject: mail.subject,
