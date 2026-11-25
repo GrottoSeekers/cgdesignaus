@@ -45,11 +45,15 @@ const offerOn = Date.now() < Date.parse(offer.ends);
   <p><mark class="tbc">To confirm: James's refund policy for unused sessions or coaching after the 14 days, e.g. no refunds, or unused sessions refunded if you're injured or ill with a doctor's note</mark></p>
 
   {offerOn && (
-    <>
+    <div data-offer-only>
       <h2>{offer.label} offer</h2>
-      <p>{offer.headline}. {offer.detail} <mark class="tbc">To confirm: whether 50% off is for the first 4 weeks or ongoing, and whether it's for new clients only</mark></p>
-    </>
+      <p>{offer.headline}. {offer.detail} The offer ends after 27 November.</p>
+    </div>
   )}
+  <script is:inline define:vars={{ ends: offer.ends }}>
+    // Removes the offer the moment it ends, even if the site hasn't been rebuilt since.
+    if (Date.now() >= Date.parse(ends)) document.querySelectorAll("[data-offer-only]").forEach((el) => el.remove());
+  </script>
 
   <h2>Your health</h2>
   <ul>
