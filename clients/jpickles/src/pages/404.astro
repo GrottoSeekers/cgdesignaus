@@ -1,0 +1,23 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import { dm } from "../lib/site";
+---
+
+<Base title="Page not found | J.Pickles Coaching" description="This page doesn't exist." path="/404" noindex credit={false}>
+  <div class="legal">
+    <header class="legal-top">
+      <a href="/" aria-label="J.Pickles Coaching home"><img src="/media/logo-word.svg" alt="J.Pickles Coaching" width="190" height="25" /></a>
+    </header>
+    <main id="main" class="legal-body nf">
+      <p class="nf-code">404</p>
+      <h1>Wrong <em>turn.</em></h1>
+      <p>This page doesn't exist, or it's moved.</p>
+      <div class="nf-actions">
+        <a class="btn" href="/">Back to the site <Icon name="arrowRight" /></a>
+        <a class="btn btn-ghost" href="/start">Start coaching</a>
+      </div>
+      <p class="nf-help">Looking for something? <a href={dm} target="_blank" rel="noopener noreferrer">WhatsApp James</a>.</p>
+    </main>
+  </div>
+</Base>

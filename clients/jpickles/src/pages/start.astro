@@ -1,0 +1,103 @@
+---
+// "Start coaching": three questions, then WhatsApp opens with the answers ready to send to
+// James. (The full onboarding form lives at /onboarding for James to send new clients.)
+import Base from "../layouts/Base.astro";
+import FormFlow from "../components/FormFlow.astro";
+import Icon from "../components/Icon.astro";
+import "../styles/forms.css";
+import type { Section } from "../lib/forms";
+import { online, pt, gbp, offer, phoneDisplay, wa } from "../lib/site";
+
+const planOptions = [
+  ...online.map((p) => ({ id: p.id, kind: "online", label: `Online coaching: ${p.name} (${gbp(p.price)} ${p.unit})` })),
+  ...pt.map((p) => ({ id: p.id, kind: "pt", label: `1:1 PT: ${p.name} (${gbp(p.price)}, ${p.unit})` })),
+  { id: "unsure", kind: "unsure", label: "Not sure yet, help me choose" },
+];
+
+const sections: Section[] = [
+  {
+    id: "start",
+    title: "Start coaching",
+    intro: "Three quick questions. Tap send and WhatsApp opens with your message to James, ready to go.",
+    fields: [
+      { id: "name", label: "Your name", type: "text", required: true, autocomplete: "name" },
+      { id: "phone", label: "Your number", type: "tel", required: true, autocomplete: "tel", inputmode: "tel", help: "So James can save you and reply." },
+      { id: "plan", label: "Which coaching option?", type: "radio", required: true, options: planOptions.map((p) => p.label) },
+    ],
+  },
+];
+---
+
+<Base
+  title="Start coaching | J.Pickles Coaching"
+  description="Send James your name, number and which coaching you're after. He replies on WhatsApp."
+  path="/start"
+  credit={false}
+>
+  <div class="form-page">
+    <aside class="form-aside">
+      <img src="/media/city-run-1200.webp" alt="" width="1200" height="1500" />
+      <div class="form-aside-copy">
+        <h1>Let's get you <em>started.</em></h1>
+        <p>Three questions, then it's a WhatsApp chat with James. He'll reply himself.</p>
+      </div>
+    </aside>
+    <FormFlow
+      form="start"
+      sections={sections}
+      title="Start coaching with James"
+      submitLabel="Send on WhatsApp"
+      submitIcon="whatsapp"
+      done={{ title: "Over to WhatsApp.", body: "Your message to James is ready in WhatsApp. Just press send, and he'll reply himself." }}
+    >
+      <Fragment slot="done">
+        <ul class="done-list">
+          <li><strong>Now</strong>Press send in WhatsApp. If it didn't open, use the button below.</li>
+          <li><strong>Next</strong>James replies to talk through your goals and sends you his onboarding form.</li>
+          <li><strong>Then</strong>Your plan is built from your answers, and check-ins start on your first Friday.</li>
+        </ul>
+        <div class="done-actions">
+          <a class="btn" href={wa("Hi James, I'd like to start coaching.")} data-wa-again target="_blank" rel="noopener noreferrer"><Icon name="whatsapp" />Open WhatsApp</a>
+          <a class="btn btn-ghost" href="/">Back to the site</a>
+        </div>
+        <p class="done-note" style="color:var(--mute)">Or WhatsApp James on {phoneDisplay}.</p>
+      </Fragment>
+    </FormFlow>
+  </div>
+
+  <script define:vars={{ planOptions, offerEnds: offer.ends, offerLabel: `${offer.label}: ${offer.headline}` }} is:inline>
+    window.__start = { planOptions, offerEnds, offerLabel };
+  </script>
+  <script>
+    import { initFlow } from "../scripts/form";
+    import { wa } from "../lib/site";
+    const { planOptions, offerEnds, offerLabel } = (window as any).__start as {
+      planOptions: { id: string; kind: string; label: string }[];
+      offerEnds: string;
+      offerLabel: string;
+    };
+    const wanted = new URLSearchParams(location.search).get("plan");
+    const match = planOptions.find((p) => p.id === wanted);
+
+    initFlow({
+      table: "onboarding",
+      remember: ["name", "phone"],
+      prefill: match ? { plan: match.label } : undefined,
+      toRow: (v) => v,
+      // The WhatsApp message James receives.
+      whatsapp: (v) => {
+        const plan = planOptions.find((p) => p.label === v.plan);
+        const offerOn = plan?.kind === "online" && Date.now() < Date.parse(offerEnds);
+        return wa(
+          [
+            "Hi James, I'd like to start coaching.",
+            "",
+            `Name: ${v.name}`,
+            `Number: ${v.phone}`,
+            `Coaching: ${v.plan}${offerOn ? ` (${offerLabel})` : ""}`,
+          ].join("\n")
+        );
+      },
+    });
+  </script>
+</Base>

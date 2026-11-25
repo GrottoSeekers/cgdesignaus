@@ -1,0 +1,341 @@
+// Engine for the multi-step client forms. Validates each step before moving on,
+// keeps a draft in this browser (so a closed tab doesn't lose answers), and saves
+// to Supabase. Works without animation when Reduce Motion is on.
+import { gsap } from "gsap";
+import { dbReady, insert } from "../lib/db";
+import { emailReady, sendEmail } from "../lib/send";
+import type { EmailParts } from "../lib/email";
+
+const $ = <T extends Element = HTMLElement>(s: string, el: ParentNode = document) => el.querySelector<T>(s);
+const $$ = <T extends Element = HTMLElement>(s: string, el: ParentNode = document) => Array.from(el.querySelectorAll<T>(s));
+// Animations run on every phone, including with Reduce Motion on (James's request).
+const reduce = false;
+
+type Values = Record<string, string | string[]>;
+const HP = "company_site"; // hidden spam-trap field (see FormFlow.astro)
+const DRAFT_DAYS = 7;
+
+const store = {
+  get<T>(k: string): T | null { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch { return null; } },
+  set(k: string, v: unknown) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* private mode */ } },
+  del(k: string) { try { localStorage.removeItem(k); } catch { /* ignore */ } },
+};
+
+/* Thank-you screen: the gold ring draws, the tick snaps in, speed lines burst out
+   (like the logo's trails), then the rest of the screen rises in. */
+function celebrate(done: HTMLElement) {
+  const mark = $("[data-done-mark]", done);
+  const parts = Array.from(done.children).filter((c) => c !== mark && !(c as HTMLElement).hidden);
+  if (reduce || !mark) {
+    mark?.classList.add("is-drawn");
+    return;
+  }
+  const ring = $("circle", mark)!;
+  const tick = $("path", mark)!;
+  const lines = $$("i", mark);
+  gsap.set([ring, tick], { strokeDashoffset: 1 });
+  gsap.set(parts, { autoAlpha: 0, y: 24 });
+  gsap.timeline({ defaults: { ease: "expo.out" } })
+    .from(mark, { scale: 0.6, autoAlpha: 0, duration: 0.6 }, 0)
+    .to(ring, { strokeDashoffset: 0, duration: 0.9, ease: "power2.inOut" }, 0.1)
+    .to(mark, { "--fill": 1, duration: 0.5, ease: "power2.out" }, 0.75)
+    .to(tick, { strokeDashoffset: 0, duration: 0.5, ease: "power3.out" }, 0.8)
+    .fromTo(lines, { scaleX: 0, autoAlpha: 1, x: 0 }, { scaleX: 1, x: 26, autoAlpha: 0, duration: 0.9, stagger: 0.02, ease: "power3.out" }, 0.85)
+    .to(parts, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.08 }, 1);
+}
+
+export function initFlow(opts: {
+  prefill?: Values;
+  remember?: string[]; // fields kept for next time (e.g. name + email on the weekly check-in)
+  toRow: (v: Values) => Record<string, unknown>;
+  table: "onboarding" | "check_ins";
+  onDone?: (v: Values) => void; // fill in the thank-you screen (e.g. the week's summary)
+  email?: (v: Values) => EmailParts; // the branded email James receives
+  whatsapp?: (v: Values) => string; // quick-start form: open WhatsApp with the answers instead of emailing
+}) {
+  const flow = $("[data-flow]");
+  const form = $<HTMLFormElement>("[data-form]");
+  if (!flow || !form) return;
+  const kind = flow.dataset.flow!;
+  const draftKey = `jp-draft-${kind}`;
+  const rememberKey = "jp-client";
+  const steps = $$<HTMLFieldSetElement>("[data-step]", form);
+  const back = $<HTMLButtonElement>("[data-back]", form)!;
+  const next = $<HTMLButtonElement>("[data-next]", form)!;
+  const submit = $<HTMLButtonElement>("[data-submit]", form)!;
+  const bar = $("[data-progress]")!;
+  const count = $("[data-count]")!;
+  const subErr = $("[data-submit-error]", form)!;
+  let i = 0;
+  const openedAt = Date.now();
+
+  /* ---------- Values ---------- */
+  const read = (): Values => {
+    const out: Values = {};
+    const fd = new FormData(form);
+    for (const key of new Set(Array.from(fd.keys()))) {
+      if (key === HP) continue; // spam trap, never sent
+      const all = fd.getAll(key).map(String).filter((x) => x.trim() !== "");
+      const field = $(`[data-field="${key}"]`, form);
+      const multi = !!field && $$<HTMLInputElement>("input[type=checkbox]", field).length > 0;
+      if (multi) out[key] = all;
+      else if (all[0] !== undefined) out[key] = all[0].trim();
+    }
+    return out;
+  };
+  const write = (v: Values) => {
+    Object.entries(v).forEach(([k, val]) => {
+      const vals = Array.isArray(val) ? val : [val];
+      $$<HTMLInputElement | HTMLTextAreaElement>(`[name="${CSS.escape(k)}"]`, form).forEach((el) => {
+        if (el instanceof HTMLInputElement && (el.type === "radio" || el.type === "checkbox")) el.checked = vals.includes(el.value);
+        else el.value = vals[0] ?? "";
+      });
+    });
+  };
+
+  /* ---------- Validation ---------- */
+  const fieldError = (field: HTMLElement): string => {
+    const id = field.dataset.field!;
+    const required = field.hasAttribute("data-required");
+    const inputs = $$<HTMLInputElement | HTMLTextAreaElement>("input, textarea", field);
+    const choice = inputs.some((x) => x instanceof HTMLInputElement && (x.type === "radio" || x.type === "checkbox"));
+    if (choice) {
+      const any = inputs.some((x) => (x as HTMLInputElement).checked);
+      if (required && !any) {
+        if (inputs.length === 1) return "Please tick to continue.";
+        return inputs[0] instanceof HTMLInputElement && inputs[0].type === "checkbox" ? "Pick at least one." : "Pick one.";
+      }
+      return "";
+    }
+    const el = inputs[0];
+    const val = el.value.trim();
+    if (required && !val) return "This one's needed.";
+    if (!val) return "";
+    if (el instanceof HTMLInputElement) {
+      if (el.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val)) return "That email doesn't look right.";
+      if (el.type === "tel" && val.replace(/\D/g, "").length < 10) return "Add the full number.";
+      if (el.type === "number") {
+        const n = Number(val);
+        if (Number.isNaN(n)) return "Numbers only.";
+        if (el.min && n < Number(el.min)) return `That looks low. Check the number.`;
+        if (el.max && n > Number(el.max)) return `That looks high. Check the number.`;
+      }
+    }
+    void id;
+    return "";
+  };
+  const showError = (field: HTMLElement, msg: string) => {
+    const err = $("[data-err]", field)!;
+    field.classList.toggle("is-invalid", !!msg);
+    err.hidden = !msg;
+    err.textContent = msg;
+    $$("input, textarea", field).forEach((x) => (msg ? x.setAttribute("aria-invalid", "true") : x.removeAttribute("aria-invalid")));
+  };
+  const validateStep = (n: number) => {
+    let first: HTMLElement | null = null;
+    $$("[data-field]", steps[n]).forEach((f) => {
+      const msg = fieldError(f);
+      showError(f, msg);
+      if (msg && !first) first = f;
+    });
+    if (first) {
+      (first as HTMLElement).scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+      $<HTMLElement>("input, textarea", first)?.focus({ preventScroll: true });
+      if (!reduce) gsap.fromTo(first, { x: -6 }, { x: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
+      return false;
+    }
+    return true;
+  };
+  // Clear an error as soon as it's fixed.
+  form.addEventListener("input", (e) => {
+    const field = (e.target as HTMLElement).closest<HTMLElement>("[data-field]");
+    if (field?.classList.contains("is-invalid")) showError(field, fieldError(field));
+    store.set(draftKey, { step: i, values: read(), at: Date.now() });
+  });
+  form.addEventListener("change", (e) => {
+    const t = e.target as HTMLInputElement;
+    // "None" style options clear the rest, and picking anything else clears "None".
+    if (t.type === "checkbox") {
+      const field = t.closest<HTMLElement>("[data-field]")!;
+      const boxes = $$<HTMLInputElement>("input[type=checkbox]", field);
+      if (t.hasAttribute("data-exclusive") && t.checked) boxes.forEach((b) => b !== t && (b.checked = false));
+      else if (t.checked) boxes.forEach((b) => b.hasAttribute("data-exclusive") && (b.checked = false));
+    }
+    const field = t.closest<HTMLElement>("[data-field]");
+    if (field?.classList.contains("is-invalid")) showError(field, fieldError(field));
+    store.set(draftKey, { step: i, values: read(), at: Date.now() });
+  });
+
+  /* ---------- Steps ---------- */
+  const render = (to: number, dir = 1) => {
+    const from = i;
+    i = to;
+    steps.forEach((s, n) => (s.hidden = n !== i));
+    back.hidden = i === 0;
+    const last = i === steps.length - 1;
+    next.hidden = last;
+    submit.hidden = !last;
+    count.textContent = steps.length > 1 ? `Step ${i + 1} of ${steps.length}` : "Takes 30 seconds";
+    const p = (i + 1) / steps.length;
+    if (reduce) bar.style.transform = `scaleX(${p})`;
+    else gsap.to(bar, { scaleX: p, duration: 0.6, ease: "expo.out" });
+    if (from !== to) {
+      scrollTo({ top: 0, behavior: "auto" });
+      const title = $<HTMLElement>(".step-title", steps[i]);
+      title?.setAttribute("tabindex", "-1");
+      title?.focus({ preventScroll: true });
+      if (!reduce) {
+        gsap.fromTo(steps[i], { autoAlpha: 0, x: 28 * dir }, { autoAlpha: 1, x: 0, duration: 0.55, ease: "expo.out" });
+        gsap.fromTo($$(".field", steps[i]), { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "expo.out", stagger: 0.04, delay: 0.05 });
+      }
+    }
+    store.set(draftKey, { step: i, values: read(), at: Date.now() });
+  };
+  next.addEventListener("click", () => validateStep(i) && render(i + 1, 1));
+  back.addEventListener("click", () => render(i - 1, -1));
+  // Enter in a single-line input moves forward instead of submitting early.
+  form.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && e.target instanceof HTMLInputElement) {
+      e.preventDefault();
+      if (!next.hidden) next.click();
+    }
+  });
+
+  /* ---------- − / + buttons on number fields (tap, or press and hold to run) ---------- */
+  const nudge = (input: HTMLInputElement, dir: number) => {
+    const step = Number(input.dataset.nudge) || 1;
+    const decimals = (String(step).split(".")[1] || "").length;
+    const min = input.min !== "" ? Number(input.min) : -Infinity;
+    const max = input.max !== "" ? Number(input.max) : Infinity;
+    const cur = input.value === "" ? NaN : Number(input.value);
+    // Empty field: the first tap jumps to a sensible starting value (e.g. 75 kg).
+    let next = Number.isNaN(cur) ? Number(input.dataset.start ?? min) : cur + dir * step;
+    next = Math.min(max, Math.max(min, next));
+    input.value = next.toFixed(decimals);
+    input.classList.remove("is-nudged");
+    void input.offsetWidth;
+    input.classList.add("is-nudged");
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    syncSteppers(input);
+  };
+  const syncSteppers = (input: HTMLInputElement) => {
+    const wrap = input.closest(".input-wrap");
+    if (!wrap) return;
+    const v = input.value === "" ? NaN : Number(input.value);
+    $$<HTMLButtonElement>("[data-nudge-dir]", wrap).forEach((b) => {
+      const down = b.dataset.nudgeDir === "-1";
+      b.disabled = !Number.isNaN(v) && (down ? input.min !== "" && v <= Number(input.min) : input.max !== "" && v >= Number(input.max));
+    });
+  };
+  $$<HTMLButtonElement>("[data-nudge-dir]", form).forEach((btn) => {
+    const input = $<HTMLInputElement>("input", btn.closest(".input-wrap")!)!;
+    const dir = Number(btn.dataset.nudgeDir);
+    let hold = 0, repeat = 0;
+    const stop = () => { clearTimeout(hold); clearInterval(repeat); btn.classList.remove("is-held"); };
+    btn.addEventListener("pointerdown", (e) => {
+      e.preventDefault(); // keep the keyboard closed on phones
+      nudge(input, dir);
+      btn.classList.add("is-held");
+      // Hold: starts repeating after 0.4s and speeds up the longer it's held.
+      let speed = 120;
+      hold = window.setTimeout(function tickFaster() {
+        clearInterval(repeat);
+        repeat = window.setInterval(() => nudge(input, dir), speed);
+        if (speed > 40) { speed -= 30; hold = window.setTimeout(tickFaster, 600); }
+      }, 400);
+    });
+    ["pointerup", "pointerleave", "pointercancel", "blur"].forEach((ev) => btn.addEventListener(ev, stop));
+    // Keyboard users: Enter/Space on the button still works.
+    btn.addEventListener("click", (e) => { if ((e as PointerEvent).pointerType === "") nudge(input, dir); });
+  });
+  $$<HTMLInputElement>("input[data-nudge]", form).forEach((i) => {
+    i.addEventListener("input", () => syncSteppers(i));
+    syncSteppers(i);
+  });
+
+  /* ---------- Textareas grow with their content ---------- */
+  const grow = (t: HTMLTextAreaElement) => { t.style.height = "auto"; t.style.height = `${t.scrollHeight + 2}px`; };
+  $$<HTMLTextAreaElement>("[data-autosize]", form).forEach((t) => t.addEventListener("input", () => grow(t)));
+
+  /* ---------- Submit ---------- */
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    for (let n = 0; n < steps.length; n++) {
+      if (!validateStep(n)) { if (n !== i) render(n, -1); validateStep(n); return; }
+    }
+    const values = read();
+    subErr.hidden = true;
+    // Spam: bots fill the hidden field or submit within a second or two. Show them the
+    // thank-you screen but send nothing.
+    const trap = form.elements.namedItem(HP) as HTMLInputElement | null;
+    // (The WhatsApp quick-start sends nothing itself, so only the hidden field applies there.)
+    const bot = Boolean(trap?.value) || (!opts.whatsapp && Date.now() - openedAt < 2500);
+    // Quick start: open WhatsApp straight away (inside the tap, so phones allow it),
+    // then show the thank-you screen with a button in case WhatsApp didn't open.
+    if (opts.whatsapp && !bot) {
+      const url = opts.whatsapp(values);
+      const win = window.open(url, "_blank");
+      if (win) win.opener = null;
+      else location.href = url;
+      store.del(draftKey);
+      if (opts.remember) store.set(rememberKey, Object.fromEntries(opts.remember.map((k) => [k, values[k]])));
+      form.hidden = true;
+      const done = $("[data-done]")!;
+      $<HTMLAnchorElement>("[data-wa-again]", done)?.setAttribute("href", url);
+      done.hidden = false;
+      bar.style.transform = "scaleX(1)";
+      count.textContent = "Sent";
+      opts.onDone?.(values);
+      scrollTo({ top: 0 });
+      done.focus();
+      celebrate(done);
+      return;
+    }
+    submit.setAttribute("aria-busy", "true");
+    const label = submit.innerHTML;
+    submit.textContent = "Sending…";
+    try {
+      // Email the answers to James (and, if set up, save them for the coach dashboard).
+      // It counts as sent if either works; if neither is set up yet, it's a preview.
+      const jobs: Promise<unknown>[] = [];
+      if (bot) throw new Error("ignored");
+      if (emailReady && opts.email) jobs.push(sendEmail(opts.email(values)));
+      if (dbReady) jobs.push(insert(opts.table, opts.toRow(values)));
+      if (jobs.length) {
+        const results = await Promise.allSettled(jobs);
+        if (!results.some((r) => r.status === "fulfilled")) throw new Error("not sent");
+      }
+      store.del(draftKey);
+      if (opts.remember) store.set(rememberKey, Object.fromEntries(opts.remember.map((k) => [k, values[k]])));
+      form.hidden = true;
+      $("[data-preview-note]")!.hidden = dbReady || emailReady;
+      const done = $("[data-done]")!;
+      done.hidden = false;
+      bar.style.transform = "scaleX(1)";
+      count.textContent = "Sent";
+      opts.onDone?.(values);
+      scrollTo({ top: 0 });
+      done.focus();
+      celebrate(done);
+    } catch (err) {
+      if (bot) { form.hidden = true; $("[data-done]")!.hidden = false; return; }
+      subErr.textContent = "That didn't send. Check your signal and try again. Your answers are still here.";
+      subErr.hidden = false;
+      subErr.scrollIntoView({ block: "center" });
+    } finally {
+      submit.removeAttribute("aria-busy");
+      submit.innerHTML = label;
+    }
+  });
+
+  /* ---------- Start: draft, remembered details, prefill ---------- */
+  // Drafts can hold health answers, so they expire after a week (shared devices).
+  const saved = store.get<{ step: number; values: Values; at?: number }>(draftKey);
+  const draft = saved && saved.at && Date.now() - saved.at < DRAFT_DAYS * 864e5 ? saved : null;
+  if (saved && !draft) store.del(draftKey);
+  const remembered = opts.remember ? store.get<Values>(rememberKey) : null;
+  write({ ...(remembered || {}), ...(draft?.values || {}), ...(opts.prefill || {}) });
+  $$<HTMLTextAreaElement>("[data-autosize]", form).forEach(grow);
+  render(Math.min(draft?.step ?? 0, steps.length - 1));
+  if (!reduce) gsap.from([".flow-top", steps[i]], { autoAlpha: 0, y: 16, duration: 0.8, ease: "expo.out", stagger: 0.1 });
+}

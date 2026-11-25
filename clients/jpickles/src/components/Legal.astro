@@ -1,0 +1,20 @@
+---
+// Shell for the legal pages (/privacy, /terms): logo home link, readable column, back link.
+import Base from "../layouts/Base.astro";
+interface Props { title: string; description: string; path: string; updated: string }
+const { title, description, path, updated } = Astro.props;
+---
+
+<Base title={`${title} | J.Pickles Coaching`} description={description} path={path} credit={false}>
+  <div class="legal">
+    <header class="legal-top">
+      <a href="/" aria-label="J.Pickles Coaching home"><img src="/media/logo-word.svg" alt="J.Pickles Coaching" width="190" height="25" /></a>
+    </header>
+    <main id="main" class="legal-body">
+      <h1>{title}</h1>
+      <p class="legal-updated">Last updated {updated}</p>
+      <slot />
+      <p class="legal-back"><a href="/">Back to the site</a></p>
+    </main>
+  </div>
+</Base>

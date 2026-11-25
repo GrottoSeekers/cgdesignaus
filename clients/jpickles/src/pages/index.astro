@@ -1,0 +1,488 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import {
+  site, coach, instagram, handle, dm, wa, phoneDisplay, phoneIntl, gym, areas, offer, online, pt, ptTerms, goals, steps,
+  results, reviews, qualifications, email, partners, event, faqs, gbp,
+} from "../lib/site";
+
+const title = "J.Pickles Coaching | Personal trainer in Westhoughton and Leigh | Online coaching";
+const description =
+  "Online coaching and 1:1 personal training with James Pickles in Westhoughton and Leigh. Strength, running, HYROX and fat loss, in person or online.";
+
+const ext = { target: "_blank", rel: "noopener noreferrer" };
+const offerOn = Date.now() < Date.parse(offer.ends); // re-checked in the browser, so a stale build still hides it
+const eventOn = Date.now() < Date.parse(event.ends);
+
+const story = [
+  { src: "leigh-day-one", alt: "James finishing his first Leigh 10K seven years ago, with his result of 47:37", cap: "Leigh 10K, day one. 47:37." },
+  { src: "leigh-10k", big: 1000, alt: "James after the Trafford 10K in 2025, chip time 40:15", cap: "Trafford 10K, 2025. 40:15." },
+  { src: "electrician", big: 1100, alt: "James on a building site in hi-vis on his last day as an electrician", cap: "Last day on site, after 13 years." },
+  { src: "hyrox-sandbag", alt: "James carrying a sandbag at HYROX Birmingham", cap: "HYROX Birmingham, 2026." },
+  { src: "dad", big: 1100, alt: "James carrying his baby daughter's car seat down a corridor", cap: "Dad first. Training fits round it." },
+];
+
+const reels = [
+  { src: "reel-hyrox", cap: "HYROX race day" },
+  { src: "reel-class", cap: "Wednesday erg class" },
+  { src: "reel-race", cap: "Comp floor" },
+  { src: "reel-run", cap: "Early miles" },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "J.Pickles Coaching",
+  description,
+  url: site,
+  image: new URL("/media/hero-1200.webp", site).href,
+  logo: new URL("/media/logo-full.svg", site).href,
+  founder: { "@type": "Person", name: coach, jobTitle: "Personal trainer and online coach", telephone: phoneIntl, sameAs: [instagram] },
+  telephone: phoneIntl,
+  areaServed: areas.map((a) => ({ "@type": "City", name: a })),
+  sameAs: [instagram],
+  priceRange: "£30 to £200",
+  makesOffer: [...online, ...pt].map((p) => ({
+    "@type": "Offer",
+    name: p.name,
+    price: String(p.price),
+    priceCurrency: "GBP",
+    description: p.unit,
+  })),
+};
+---
+
+<Base
+  title={title}
+  description={description}
+  preload={{ href: "/media/hero-720.webp", srcset: "/media/hero-720.webp 720w, /media/hero-1200.webp 1200w, /media/hero-1600.webp 1600w", sizes: "(min-width: 900px) 40vw, 100vw" }}
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <header class="nav" data-nav>
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top" aria-label="J.Pickles Coaching, back to top">
+        <img src="/media/logo-word.svg" alt="J.Pickles Coaching" width="230" height="30" />
+      </a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="#story">Story</a>
+        <a href="#how">How it works</a>
+        <a href="#prices">Prices</a>
+        <a href="#results">Results</a>
+        <a href="#faq">Questions</a>
+      </nav>
+      <div class="nav-end">
+        <a class="btn btn-sm btn-ghost nav-checkin" href="/check-in">Client check-in</a>
+        <!-- Phones: one glass capsule holding "Start coaching" and the menu button. -->
+        <div class="nav-capsule">
+          <a class="btn btn-sm nav-cta" href="/start"><span class="cta-long">Start coaching</span><span class="cta-short">Start</span><Icon name="arrowRight" class="cta-arrow" /></a>
+          <button type="button" class="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu" data-burger>
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Phone menu (three lines, top right): full-screen, same links and buttons as desktop. -->
+  <div class="menu" id="menu" data-menu hidden>
+    <div class="menu-bg" aria-hidden="true" data-menu-bg>
+      <img src="/media/city-run-720.webp" alt="" width="720" height="900" />
+    </div>
+    <nav class="menu-links" aria-label="Menu">
+      {[
+        { href: "#story", label: "Story", note: "47:37 to 40:15" },
+        { href: "#how", label: "How it works", note: "4 steps" },
+        { href: "#prices", label: "Prices", note: "From £30" },
+        { href: "#results", label: "Results", note: "Client wins" },
+        { href: "#faq", label: "Questions", note: `${faqs.length} answers` },
+      ].map((l) => (
+        <a href={l.href} data-menu-link>
+          <span class="ml-mask"><span class="ml-text">{l.label}</span></span>
+          <small class="ml-note">{l.note}</small>
+          <i class="ml-rule" aria-hidden="true"></i>
+        </a>
+      ))}
+    </nav>
+    <div class="menu-ctas" data-menu-item>
+      <a class="btn btn-block" href="/start">Start coaching <Icon name="arrowRight" /></a>
+      <a class="btn btn-block btn-ghost" href="/check-in">Client check-in</a>
+    </div>
+    <div class="menu-foot" data-menu-item>
+      <a href={instagram} {...ext}><Icon name="instagram" size={18} />{handle}</a>
+      <a href={dm} {...ext}><Icon name="whatsapp" size={18} />WhatsApp James</a>
+    </div>
+  </div>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <canvas class="hero-lines" aria-hidden="true" data-lines></canvas>
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          {offerOn ? (
+            <a class="kicker" href="#prices" data-hero-fade data-offer-only style="text-decoration:none">Black Friday: half-price coaching</a>
+          ) : null}
+          <p class="kicker" data-hero-fade data-offer-off hidden={offerOn}>Online coaching &amp; 1:1 PT</p>
+          <h1 id="hero-title" class="hero-title">
+            <span class="line"><span>Get strong.</span></span>
+            <span class="line"><span>Run <em>faster.</em></span></span>
+          </h1>
+          <p class="hero-sub" data-hero-fade>
+            Online coaching and 1:1 personal training with <strong>James Pickles</strong>. Built around your week, checked every Friday.
+          </p>
+          <div class="hero-actions" data-hero-fade>
+            <a class="btn" href="/start" data-magnetic>Start coaching <Icon name="arrowRight" /></a>
+            <a class="btn btn-ghost" href="#prices">See prices</a>
+          </div>
+        </div>
+        <div class="hero-photo" data-hero-photo>
+          <img
+            src="/media/hero-720.webp"
+            srcset="/media/hero-720.webp 720w, /media/hero-1200.webp 1200w, /media/hero-1600.webp 1600w"
+            sizes="(min-width: 900px) 40vw, 100vw"
+            width="1200" height="1500"
+            alt="James Pickles mid-deadlift on the competition floor"
+            fetchpriority="high" decoding="async"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Who it's for: the one marquee on the page -->
+    <div class="goals" aria-label={`Coaching for: ${goals.join(", ")}`}>
+      <div class="goals-track" data-marquee>
+        {[0, 1].map((n) => (
+          <div class="goals-row" aria-hidden="true">
+            {goals.map((g) => (<><span>{g}</span><i></i></>))}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Story (Hybrid365's "the change wasn't just the weight" beat) -->
+    <section class="pad" id="story" aria-labelledby="story-title">
+      <div class="wrap story-grid">
+        <div>
+          <h2 id="story-title" class="story-time num" data-time>
+            <span class="fromrow"><span class="from">47:37</span><Icon name="arrowRight" class="arrow" /></span>
+            <span class="to" data-count-time="40:15" data-from-time="47:37">40:15</span>
+          </h2>
+          <p class="story-cap" data-reveal>My first 10K in Leigh, and my best. Seven years apart.</p>
+          <p class="story-text" data-reveal>
+            I spent 13 years as an electrician. This September I put the tools down to coach full time.
+            I'm a new dad and I race HYROX, so I know what training around real life takes.
+            <em>That's what your plan is built around.</em>
+          </p>
+          <div class="story-sign" data-reveal>
+            <img src="/media/james-portrait-720.webp" width="54" height="54" alt="" decoding="async" />
+            <p><strong>James Pickles</strong>Coach, online and 1:1</p>
+          </div>
+        </div>
+        <!-- Photo carousel: cross-fades on its own, dots fill as a timer, swipe on phones. -->
+        <div class="frame-wrap" data-reveal>
+          <div class="frame" data-frame role="group" aria-roledescription="carousel" aria-label="James's story in photos">
+            {story.map((s, i) => (
+              <img
+                src={`/media/${s.src}-720.webp`}
+                srcset={s.big ? `/media/${s.src}-720.webp 720w, /media/${s.src}-${s.big}.webp ${s.big}w` : undefined}
+                sizes="(min-width: 900px) 40vw, 90vw" width="720" height="900" alt={s.alt}
+                decoding="async"
+                class:list={{ on: i === 0 }} data-fslide data-cap={s.cap} aria-hidden={i === 0 ? undefined : "true"}
+              />
+            ))}
+          </div>
+          <div class="frame-foot">
+            <p class="frame-cap" aria-live="polite" data-fcap>{story[0].cap}</p>
+            <div class="frame-dots">
+              {story.map((s, i) => (
+                <button type="button" aria-label={`Photo ${i + 1}: ${s.cap}`} class:list={{ on: i === 0 }} data-fdot={i}><i></i></button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works (Hybrid365's Test, Train, Progress) -->
+    <section class="method pad" id="how" aria-labelledby="how-title">
+      <div class="wrap">
+        <div class="method-head">
+          <p class="kicker" data-reveal>How coaching works</p>
+          <h2 id="how-title" class="h2" data-reveal>Not a PDF. <em>A coach.</em></h2>
+          <p class="lede" data-reveal>Every plan starts with your answers and changes with your check-ins.</p>
+        </div>
+        <div class="rail" data-rail>
+          <span class="rail-line" aria-hidden="true"><span data-rail-fill></span></span>
+          {steps.map((s) => (
+            <div class="rail-step" data-rail-step>
+              <span class="rail-dot" aria-hidden="true"></span>
+              <h3>{s.verb}</h3>
+              <p>{s.body}</p>
+            </div>
+          ))}
+        </div>
+        <div class="method-foot" data-reveal>
+          <span>Already training with James?</span>
+          <a class="link-arrow" href="/check-in">Do your Friday check-in <Icon name="arrowRight" /></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prices (Red On's "choose your level") -->
+    <section class:list={["pad", { "has-offer": offerOn }]} id="prices" aria-labelledby="prices-title" data-prices>
+      <div class="wrap">
+        <div class="prices-head">
+          <div>
+            <h2 id="prices-title" class="h2" data-reveal>Choose how you <em>train.</em></h2>
+            <p class="lede" data-reveal>Online coaching wherever you are, or 1:1 sessions with me in the gym.</p>
+          </div>
+          <div class="tabs" role="tablist" aria-label="Coaching type" data-tabs data-reveal>
+            <span class="tabs-pill" aria-hidden="true" data-tabs-pill></span>
+            <button type="button" role="tab" id="tab-online" aria-controls="plans-online" aria-selected="true">Online coaching</button>
+            <button type="button" role="tab" id="tab-pt" aria-controls="plans-pt" aria-selected="false" tabindex="-1">1:1 PT</button>
+          </div>
+        </div>
+
+        {offerOn && (
+          <a class="offer" href={wa("Hi James, BLACKFRIDAY. I'd like the 50% off online coaching offer.")} {...ext} data-offer-only style="margin-top:2rem;border-radius:var(--r)">
+            <Icon name="tag" />
+            <strong>{offer.label}: {offer.headline}.</strong>
+            <span>{offer.detail}</span>
+          </a>
+        )}
+
+        <div class="plans" id="plans-online" role="tabpanel" aria-labelledby="tab-online" data-plans>
+          {online.map((p) => (
+            <article class:list={["plan", { "is-featured": !!p.badge }]} data-plan>
+              {p.badge && <span class="plan-badge">{p.badge}</span>}
+              <h3 class="plan-name">{p.name}</h3>
+              <p class="plan-price">
+                <span class="now num">
+                  <span class="plan-offer">{gbp(p.price * (1 - offer.discount))}</span>
+                  <span class="plan-full">{gbp(p.price)}</span>
+                </span>
+                <s class="plan-offer" aria-label={`was ${gbp(p.price)}`}>{gbp(p.price)}</s>
+              </p>
+              <p class="plan-unit">{p.unit}</p>
+              <ul>{p.features.map((f) => <li><Icon name="check" />{f}</li>)}</ul>
+              <a class:list={["btn btn-block", { "btn-ghost": !p.badge }]} href={`/start?plan=${p.id}`}>Choose {p.name}</a>
+            </article>
+          ))}
+        </div>
+
+        <div class="plans" id="plans-pt" role="tabpanel" aria-labelledby="tab-pt" data-plans hidden>
+          {pt.map((p) => (
+            <article class:list={["plan", { "is-featured": !!p.badge }]} data-plan>
+              {p.badge && <span class="plan-badge">{p.badge}</span>}
+              <h3 class="plan-name">{p.name}</h3>
+              <p class="plan-price"><span class="now num">{gbp(p.price)}</span></p>
+              <p class="plan-unit">{p.unit}</p>
+              {p.note && <p class="plan-note">{p.note}</p>}
+              <ul>{p.features.map((f) => <li><Icon name="check" />{f}</li>)}</ul>
+              <a class:list={["btn btn-block", { "btn-ghost": !p.badge }]} href={`/start?plan=${p.id}`}>Choose {p.name}</a>
+            </article>
+          ))}
+        </div>
+
+        <div class="prices-foot" data-prices-foot="online">
+          <p>Online prices are per 4 weeks. Not sure which fits? <a href={wa("Hi James, I'm not sure which coaching package suits me. Can you help?")} {...ext}>WhatsApp me</a> and I'll tell you honestly.</p>
+        </div>
+        <div class="prices-foot" data-prices-foot="pt" hidden>
+          {ptTerms.map((t) => <p>{t}</p>)}
+        </div>
+      </div>
+    </section>
+
+    <!-- On the floor: reels + next event -->
+    <section class="method pad" aria-labelledby="floor-title">
+      <div class="wrap">
+        <div class="floor-head">
+          <h2 id="floor-title" class="h2" data-reveal>On the <em>floor.</em></h2>
+          <p class="lede" data-reveal>Classes, comps and early runs. This is what training with me looks like.</p>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="reels" data-reels>
+          {reels.map((r) => (
+            <figure class="reel" data-reel>
+              <video muted loop playsinline preload="none" poster={`/media/${r.src}.webp`} data-autoplay>
+                <source src={`/media/${r.src}.mp4`} type="video/mp4" />
+              </video>
+              <figcaption>{r.cap}</figcaption>
+            </figure>
+          ))}
+        </div>
+        {eventOn && (
+          <div class="event" data-reveal data-event data-ends={event.ends}>
+            <div>
+              <h3>{event.title}</h3>
+              <ul class="event-meta">
+                <li><Icon name="calendar" />{event.date}</li>
+                <li><Icon name="mapPin" />{event.place}</li>
+                <li><Icon name="tag" />{event.price}</li>
+              </ul>
+            </div>
+            <a class="btn btn-ghost" href={wa("Hi James, I'd like to book a start time for the HYROX simulation on 2 January.")} {...ext}><Icon name="whatsapp" />Book a start time</a>
+          </div>
+        )}
+      </div>
+    </section>
+
+    <!-- Results: client before/afters and reviews -->
+    <section class="pad" id="results" aria-labelledby="results-title">
+      <div class="wrap">
+        <h2 id="results-title" class="h2" data-reveal>Client <em>results.</em></h2>
+        <div class="results-grid">
+          {results.slice(0, 1).map((r) => (
+            <figure class="result" data-result data-view={r.views[0]} data-reveal>
+              <div class="result-photos">
+                {(["before", "after"] as const).map((when) => (
+                  <div class="result-shot">
+                    {r.views.map((v) => (
+                      <span class="result-view" data-view-of={v}>
+                        <img
+                          src={`/media/${r.slug}-${v}-${when}-720.webp`}
+                          srcset={`/media/${r.slug}-${v}-${when}-480.webp 480w, /media/${r.slug}-${v}-${when}-720.webp 720w`}
+                          sizes="(min-width: 900px) 22vw, 50vw" width="720" height="1252" decoding="async"
+                          alt={`${r.name} ${when === "before" ? "before coaching" : "after coaching"}, ${v} view`}
+                        />
+                      </span>
+                    ))}
+                    <span class="result-tag">{when === "before" ? "Before" : "After"}</span>
+                  </div>
+                ))}
+              </div>
+              <figcaption class="result-cap">
+                <p class="result-stat"><strong>{r.stat}<small>{r.unit}</small></strong> {r.label}</p>
+                <p class="result-who"><strong>{r.name}</strong>{r.detail}</p>
+                <div class="result-switch" role="group" aria-label="Photo angle">
+                  <span class="result-switch-pill" aria-hidden="true"></span>
+                  {r.views.map((v, i) => (
+                    <button type="button" data-show={v} aria-pressed={i === 0 ? "true" : "false"}>{v === "front" ? "Front" : "Side"}</button>
+                  ))}
+                </div>
+              </figcaption>
+            </figure>
+          ))}
+          {reviews.map((r) => (
+            <blockquote class="quote" data-reveal>
+              <span class="stars" aria-label={`${r.rating} out of 5`}>
+                {[1, 2, 3, 4, 5].map((n) => <svg class:list={{ off: n > r.rating }} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" /></svg>)}
+              </span>
+              <p>“{r.text}”</p>
+              <footer><strong>{r.name}</strong>{r.detail}</footer>
+            </blockquote>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Coach -->
+    <section class="method pad" id="coach" aria-labelledby="coach-title">
+      <div class="wrap coach-grid">
+        <div class="coach-photo" data-reveal>
+          <img src="/media/james-portrait-720.webp" srcset="/media/james-portrait-720.webp 720w, /media/james-portrait-1100.webp 1100w" sizes="(min-width: 900px) 38vw, 100vw" width="720" height="900" alt="James Pickles between events at a fitness competition" decoding="async" data-parallax />
+        </div>
+        <div>
+          <p class="kicker" data-reveal>Your coach</p>
+          <h2 id="coach-title" class="h2" data-reveal>Coached by someone who <em>still races.</em></h2>
+          <p class="lede" data-reveal>
+            HYROX athlete, Applied Nutrition coach and newly full-time PT. I coach at
+            <a href={gym.ig} {...ext}>{gym.name}</a> in Westhoughton, and I'm also available for 1:1 sessions in and around Leigh.
+          </p>
+          <div class="coach-cols">
+            <div data-reveal>
+              <h3>Qualifications</h3>
+              <ul class="creds">
+                {qualifications.map((q) => (
+                  <li>{q.title}<small>{q.detail}</small></li>
+                ))}
+              </ul>
+            </div>
+            <div data-reveal>
+              <h3>Partners</h3>
+              <ul class="creds">
+                {partners.map((p) => <li>{p.name}<small>{p.role}</small></li>)}
+              </ul>
+            </div>
+          </div>
+          <div class="areas" data-reveal aria-label="Areas covered for 1:1 sessions">
+            <span>Renegade, Westhoughton</span>
+            <span>In and around Leigh</span>
+            <span>Online, anywhere</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Questions -->
+    <section class="pad" id="faq" aria-labelledby="faq-title">
+      <div class="wrap faq-grid">
+        <h2 id="faq-title" class="h2" data-reveal>Before you <em>start.</em></h2>
+        <div class="faq-list" data-faq>
+          {faqs.map((f) => (
+            <details data-reveal>
+              <summary>{f.q}<Icon name="plus" /></summary>
+              <div class="faq-a"><p>{f.a}</p></div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Close -->
+    <section class="close" aria-labelledby="close-title">
+      <div class="close-bg" aria-hidden="true">
+        <img src="/media/arms-up-720.webp" srcset="/media/arms-up-720.webp 720w, /media/arms-up-1200.webp 1200w" sizes="100vw" alt="" decoding="async" data-close-img />
+      </div>
+      <div class="wrap close-inner">
+        <h2 id="close-title" class="close-title" data-reveal>Your first block starts with <em>one form.</em></h2>
+        <div class="close-actions" data-reveal>
+          <a class="btn" href="/start" data-magnetic>Start coaching <Icon name="arrowRight" /></a>
+          <a class="btn btn-ghost" href={dm} {...ext}><Icon name="whatsapp" />WhatsApp James</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot" data-foot>
+    <div class="wrap">
+      <a class="foot-logo" href="#top" aria-label="J.Pickles Coaching, back to top" data-foot-logo>
+        <img src="/media/logo-full.svg" alt="J.Pickles Coaching" width="1682" height="554" />
+      </a>
+      <span class="foot-rule" aria-hidden="true" data-foot-rule></span>
+      <div class="foot-cols">
+        <div data-foot-col>
+          <h2>Coaching</h2>
+          <a href="/start">Start coaching</a>
+          <a href="#prices">Prices</a>
+          <a href="/check-in">Client check-in</a>
+        </div>
+        <div data-foot-col>
+          <h2>Get in touch</h2>
+          <a href={instagram} {...ext}>Instagram</a>
+          <a href={dm} {...ext}>WhatsApp {phoneDisplay}</a>
+          <a href={`mailto:${email}`}>{email}</a>
+        </div>
+        <div data-foot-col>
+          <h2>Based in</h2>
+          <p>1:1 at Renegade in Westhoughton, and in and around Leigh. Online, anywhere.</p>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <p>&copy; {new Date().getFullYear()} J.Pickles Coaching is the trading name of James Pickles.</p>
+        <nav class="foot-legal" aria-label="Legal">
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+          <button type="button" class="foot-motion" data-motion aria-pressed="false">Pause animations</button>
+          <a href="#top" class="foot-top">Back to top <Icon name="arrowRight" class="up" /></a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    import "../scripts/main.ts";
+  </script>
+</Base>

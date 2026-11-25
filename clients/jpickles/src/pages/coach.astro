@@ -1,0 +1,80 @@
+---
+// James's private dashboard: weekly check-ins by client, and new client onboarding forms.
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import "../styles/coach.css";
+import { onboarding, checkin } from "../lib/forms";
+
+// Section/field structure, passed to the script so answers show in form order with labels.
+const schema = {
+  onboarding: onboarding.map((s) => ({ title: s.title, fields: s.fields.map((f) => ({ id: f.id, label: f.label })) })),
+  checkin: checkin.map((s) => ({ title: s.title, fields: s.fields.map((f) => ({ id: f.id, label: f.label })) })),
+};
+---
+
+<Base title="Coach | J.Pickles Coaching" description="Coach dashboard" path="/coach" noindex credit={false}>
+  <div class="coach" data-coach>
+    <!-- Sign in -->
+    <section class="signin" data-view="signin" hidden>
+      <img src="/media/logo-full.svg" alt="J.Pickles Coaching" width="320" height="105" />
+      <form class="signin-form" data-signin novalidate>
+        <h1>Coach sign in</h1>
+        <label for="c-email">Email</label>
+        <input id="c-email" name="email" type="email" autocomplete="username" required />
+        <label for="c-pass">Password</label>
+        <input id="c-pass" name="password" type="password" autocomplete="current-password" required />
+        <button class="btn btn-block" type="submit">Sign in</button>
+        <button class="linkish" type="button" data-forgot>Forgot password?</button>
+        <p class="note" data-signin-msg role="status"></p>
+      </form>
+    </section>
+
+    <!-- Not set up -->
+    <section class="signin" data-view="setup" hidden>
+      <img src="/media/logo-full.svg" alt="J.Pickles Coaching" width="320" height="105" />
+      <div class="signin-form">
+        <h1>Almost there</h1>
+        <p class="note">The database isn't connected yet. Follow "One-time setup" in the README, then this page shows every check-in and new client form.</p>
+        <a class="btn btn-ghost" href="/">Back to the site</a>
+      </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section class="dash" data-view="dash" hidden>
+      <header class="dash-top">
+        <a href="/" class="dash-brand"><img src="/media/logo-word.svg" alt="J.Pickles Coaching" width="180" height="24" /></a>
+        <div class="dash-tabs" role="tablist">
+          <button role="tab" aria-selected="true" data-tab-btn="checkins">Check-ins <span class="count" data-count-checkins></span></button>
+          <button role="tab" aria-selected="false" data-tab-btn="clients">New clients <span class="count" data-count-clients></span></button>
+        </div>
+        <div class="dash-actions">
+          <button class="icon-btn" type="button" data-refresh aria-label="Refresh"><Icon name="refresh" /></button>
+          <button class="icon-btn" type="button" data-export aria-label="Download CSV"><Icon name="download" /></button>
+          <button class="icon-btn" type="button" data-signout aria-label="Sign out"><Icon name="logout" /></button>
+        </div>
+      </header>
+
+      <div class="dash-body" data-panel="checkins">
+        <aside class="clients">
+          <div class="clients-head">
+            <input type="search" placeholder="Search clients" aria-label="Search clients" data-search />
+            <label class="toggle"><input type="checkbox" data-unreviewed /> Needs review</label>
+          </div>
+          <ul class="client-list" data-client-list><li class="skeleton"></li><li class="skeleton"></li><li class="skeleton"></li></ul>
+        </aside>
+        <main class="detail" data-detail>
+          <div class="empty"><Icon name="clipboard" size={32} /><p>Pick a client to see their check-ins.</p></div>
+        </main>
+      </div>
+
+      <div class="dash-body single" data-panel="clients" hidden>
+        <main class="detail" data-onboarding></main>
+      </div>
+    </section>
+  </div>
+
+  <script define:vars={{ schema }} is:inline>window.__schema = schema;</script>
+  <script>
+    import "../scripts/coach.ts";
+  </script>
+</Base>
