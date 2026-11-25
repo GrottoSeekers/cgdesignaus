@@ -1,7 +1,7 @@
 // Everything James might want to change lives here: links, prices, offer dates, copy lists.
 // Pages import from this file, so a price changed here changes everywhere.
 
-export const site = "https://www.jpicklescoaching.co.uk/"; // placeholder until the domain is bought
+export const site = "https://www.jpicklesfitnesscoaching.com/";
 export const brand = "J.Pickles Coaching";
 export const coach = "James Pickles";
 

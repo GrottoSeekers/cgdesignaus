@@ -134,7 +134,7 @@ import { wa } from "../lib/site";
       const ymd = `${f.getFullYear()}${String(f.getMonth() + 1).padStart(2, "0")}${String(f.getDate()).padStart(2, "0")}`;
       const ics = [
         "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//J.Pickles Coaching//Check-in//EN",
-        "BEGIN:VEVENT", `UID:jp-checkin-${ymd}@jpicklescoaching`, `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").split(".")[0]}Z`,
+        "BEGIN:VEVENT", `UID:jp-checkin-${ymd}@jpicklesfitnesscoaching.com`, `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").split(".")[0]}Z`,
         `DTSTART:${ymd}T090000`, `DTEND:${ymd}T091500`, "RRULE:FREQ=WEEKLY;BYDAY=FR",
         "SUMMARY:J.Pickles check-in (due 12pm)", `DESCRIPTION:Your weekly check-in: ${location.href.split("?")[0]}`,
         "BEGIN:VALARM", "TRIGGER:PT0M", "ACTION:DISPLAY", "DESCRIPTION:Check-in due by 12pm", "END:VALARM",

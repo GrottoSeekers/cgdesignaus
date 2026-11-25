@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 # Private pages (/coach, /check-in, /onboarding) carry a noindex tag instead of a block here,
 # so search engines can read it and keep them out of results.
-Sitemap: https://www.jpicklescoaching.co.uk/sitemap.xml
+Sitemap: https://www.jpicklesfitnesscoaching.com/sitemap.xml
