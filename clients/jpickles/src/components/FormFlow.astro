@@ -27,6 +27,7 @@ const scale = (f: Field) => Array.from({ length: (f.max ?? 10) - (f.min ?? 1) + 
     <p class="flow-count" aria-live="polite" data-count>{sections.length > 1 ? `Step 1 of ${sections.length}` : "Takes 30 seconds"}</p>
   </header>
 
+  <h1 class="sr">{title}</h1>
   <form class="flow-form" novalidate data-form aria-label={title}>
     <div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="company_site" tabindex="-1" autocomplete="off" /></label></div>
     {sections.map((s, i) => (

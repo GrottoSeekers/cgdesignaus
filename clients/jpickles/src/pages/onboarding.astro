@@ -25,11 +25,11 @@ const sections = onboarding.map((s) => ({
   noindex
   credit={false}
 >
-  <div class="form-page">
+  <main class="form-page" id="main">
     <aside class="form-aside">
       <img src="/media/city-run-1200.webp" alt="" width="1200" height="1500" />
       <div class="form-aside-copy">
-        <h1>Let's build your <em>plan.</em></h1>
+        <p class="aside-title display" aria-hidden="true">Let's build your <em>plan.</em></p>
         <p>About ten minutes. Answers save as you go, so you can finish later on this phone or laptop.</p>
       </div>
     </aside>
@@ -52,7 +52,7 @@ const sections = onboarding.map((s) => ({
         </div>
       </Fragment>
     </FormFlow>
-  </div>
+  </main>
 
   <script define:vars={{ planOptions }} is:inline>
     window.__plans = planOptions;

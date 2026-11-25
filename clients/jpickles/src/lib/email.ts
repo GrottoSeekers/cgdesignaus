@@ -3,6 +3,7 @@
 // styles, no web fonts or SVG, so it looks right in Outlook, Gmail and Apple Mail.
 import { checkin, onboarding, type Section } from "./forms";
 import { site } from "./site";
+import { dbReady } from "./db";
 
 type Values = Record<string, string | string[]>;
 export type EmailParts = { subject: string; html: string; text: string; replyTo: string; fromName: string };
@@ -134,7 +135,7 @@ export function checkinEmail(v: Values, prevWeight?: number): EmailParts {
       ]) +
       flags("Needs a look", issues) +
       answers(checkin, v, ["name", "email", "checkin_date", "weight_kg"]) +
-      buttons([[`Reply to ${first(name)}`, `mailto:${val(v.email)}?subject=${encodeURIComponent("Your check-in")}`, true], ["Open coach dashboard", abs("/coach")]])
+      buttons([[`Reply to ${first(name)}`, `mailto:${val(v.email)}?subject=${encodeURIComponent("Your check-in")}`, true], ...(dbReady ? [["Open coach dashboard", abs("/coach")] as [string, string]] : [])])
   );
   const wt = w ? ` · ${w} kg${delta != null && Math.abs(delta) >= 0.05 ? ` (${delta > 0 ? "+" : "-"}${Math.abs(delta).toFixed(1)})` : ""}` : "";
   return {
@@ -172,7 +173,7 @@ export function onboardingEmail(v: Values): EmailParts {
       (val(v.goal) ? `<tr><td style="padding:10px 32px 0;font:400 14px/1.5 ${SANS};color:${C.ink};"><span style="font:600 10px/1 ${SANS};letter-spacing:2px;text-transform:uppercase;color:${C.mute};">Goals</span><br>${esc(val(v.goal))}</td></tr>` : "") +
       flags("Health", health) +
       answers(onboarding, v, ["name", "age", "weight_kg", "height_cm", "plan", "confirm"]) +
-      buttons([[`Reply to ${first(name)}`, `mailto:${val(v.email)}?subject=${encodeURIComponent("Your coaching with J.Pickles")}`, true], ["Open coach dashboard", abs("/coach")]])
+      buttons([[`Reply to ${first(name)}`, `mailto:${val(v.email)}?subject=${encodeURIComponent("Your coaching with J.Pickles")}`, true], ...(dbReady ? [["Open coach dashboard", abs("/coach")] as [string, string]] : [])])
   );
   return {
     subject: `New client: ${name}${val(v.plan) ? ` · ${val(v.plan).replace(/\s*\(.*\)$/, "")}` : ""}`,

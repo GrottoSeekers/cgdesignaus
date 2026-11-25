@@ -14,11 +14,11 @@ import { wa } from "../lib/site";
   noindex
   credit={false}
 >
-  <div class="form-page">
+  <main class="form-page" id="main">
     <aside class="form-aside">
       <img src="/media/hyrox-wallball-720.webp" alt="" width="599" height="799" />
       <div class="form-aside-copy">
-        <h1>Friday <em>check-in.</em></h1>
+        <p class="aside-title display" aria-hidden="true">Friday <em>check-in.</em></p>
         <p>Under five minutes. James reads it over the weekend and updates your plan before Monday.</p>
         <p class="due" data-due><Icon name="calendar" /><span>Due by 12pm Friday</span></p>
       </div>
@@ -45,7 +45,7 @@ import { wa } from "../lib/site";
         </div>
       </Fragment>
     </FormFlow>
-  </div>
+  </main>
 
   <script>
     import { initFlow } from "../scripts/form";
