@@ -1,55 +1,86 @@
 ---
 import LegalLayout from "../layouts/LegalLayout.astro";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <LegalLayout
   title="Refund Policy — CG Design & Co."
-  description="When and how refunds work for CG Design & Co. website projects."
+  description="When and how refunds work for CG Design & Co. websites, branding and setup jobs, including your rights under Australian and UK consumer law."
   pageTitle="Refund Policy"
-  lastUpdated="7 September 2026"
+  lastUpdated="20 November 2026"
 >
   <p>
-    This policy sits alongside, and doesn't limit, any consumer guarantee
-    or remedy you're entitled to under the Australian Consumer Law.
+    This policy sits alongside our
+    <a href={`${base}/terms-and-conditions/`}>Terms &amp; Conditions</a>. It
+    doesn't limit any guarantee or remedy you have under the Australian
+    Consumer Law, or, if you're a UK consumer, the Consumer Rights Act 2015
+    and the Consumer Contracts Regulations 2013.
+  </p>
+
+  <h2>If there's a problem with our work</h2>
+  <p>
+    If something we built doesn't work as agreed, tell us and we'll fix it
+    at no extra cost. If there's a major failure, such as work that's
+    substantially unfit for its purpose or can't be fixed in a reasonable
+    time, you can choose to cancel and get a refund for the affected work,
+    or to receive compensation for the drop in value.
   </p>
 
   <h2>Before work begins</h2>
   <p>
-    If you change your mind before we've started work on your project, any
-    deposit paid is refunded in full.
+    If you change your mind before we've started work, any deposit you've
+    paid is refunded in full.
+  </p>
+
+  <h2>UK and EU consumers: 14 days to cancel</h2>
+  <p>
+    You can cancel within 14 days of accepting our quote, for any reason.
+    If you asked us to start during those 14 days, we'll refund what you've
+    paid minus a fair amount for the work done before you told us. If the
+    work was fully completed at your request within the 14 days, this
+    cancellation right no longer applies.
   </p>
 
   <h2>Once work is underway</h2>
   <p>
-    Once we've started, we charge for the work actually completed. If you
-    cancel partway through:
+    If you cancel partway through, we charge only for the work actually
+    completed:
   </p>
   <ul>
-    <li>You'll be charged (or your deposit will cover) the work done up to that point.</li>
-    <li>Anything paid beyond that is refunded within 14 days.</li>
+    <li>Your deposit covers the work done up to that point.</li>
+    <li>Anything you've paid beyond that is refunded within 14 days.</li>
     <li>If the deposit doesn't cover the work completed, we'll invoice you for the difference.</li>
   </ul>
 
   <h2>Once a project is finished and paid for</h2>
   <p>
-    Because a finished website is custom work built specifically for your
-    business, we don't offer refunds once the final payment has been made
-    and the site handed over — the same way a tailor-made suit or a custom
-    commission isn't returnable once delivered. If something we built
-    isn't working as agreed, tell us and we'll fix it at no extra cost.
+    A finished website is custom work made for your business, so we don't
+    give refunds just because you've changed your mind once the final
+    payment is made and the site has been handed over. This never affects
+    your right to a fix, refund or compensation if our work has a problem,
+    as set out above.
   </p>
 
-  <h2>Monthly care/hosting plans</h2>
+  <h2>Monthly hosting &amp; care plans</h2>
   <p>
-    You can cancel an ongoing monthly plan at any time; you won't be
-    charged again after your next billing date, and we don't offer partial
-    refunds for the month already paid.
+    You can cancel a monthly plan at any time. You won't be charged again
+    after your current month, and we don't give partial refunds for a month
+    already paid, unless the service wasn't provided as agreed.
   </p>
 
-  <h2>How to request a refund</h2>
+  <h2>How refunds are paid</h2>
+  <p>
+    Refunds are paid in Australian dollars (AUD) to the card or account you
+    paid with, within 14 days of being agreed. If you paid from outside
+    Australia, the amount you receive may differ slightly because of
+    exchange rates set by your bank.
+  </p>
+
+  <h2>How to ask for a refund</h2>
   <p>
     Email <a href="mailto:info@cgdesignaus.com">info@cgdesignaus.com</a>
-    with your name and project details, and we'll get back to you within a
-    few working days.
+    with your name and project details, and we'll reply within a few
+    working days.
   </p>
 </LegalLayout>

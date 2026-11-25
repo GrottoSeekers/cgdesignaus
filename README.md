@@ -25,12 +25,24 @@ this is not a placeholder build:
       in `src/components/Contact.astro` (the `access_key` hidden input). To
       change the destination email, generate a new access key at
       web3forms.com and swap that value.
+      Spam protection is hCaptcha with Web3Forms' public site key, loaded only
+      once a visitor starts using the form (same file). In the Web3Forms
+      dashboard, restrict the key to `cgdesignaus.com`.
 - [x] **Pricing**: real AUD figures for packages, the quote builder and quick jobs, all in
       `src/lib/pricing.ts` (change a price there and every page updates).
 - [x] **Domain**: `astro.config.mjs` points at `https://cgdesignaus.com`;
       `public/CNAME` holds the custom domain for GitHub Pages.
 - [x] **Legal pages**: Privacy, Terms & Conditions, Cookies, Refund Policy
-      — all filled in with the real ABN, address, and NSW governing law.
+      — real ABN, address and NSW governing law, written for both Australian
+      (ACL, APPs) and UK/EU (UK GDPR, PECR, consumer law) visitors. If you add
+      a new service that handles visitors' data (analytics, a booking tool),
+      list it in the Privacy and Cookies policies first.
+- [x] **Founding client offer**: half price until the date in
+      `src/lib/pricing.ts` (`FOUNDING_ENDS`). It switches off at the first
+      build after that date; the deploy workflow rebuilds the site
+      automatically at 00:05 Sydney time on 1 January.
+- [x] **Fonts**: self-hosted in `public/fonts` (`src/styles/fonts.css`), so
+      no page contacts Google Fonts.
 - [x] **Real client work**: `src/components/Client.astro` is a carousel of
       real client sites (Nigel's Hairdressing, NIR-MA-TA, Rochses) with real
       screenshots. `src/components/BeforeAfter.astro` is a drag-to-compare

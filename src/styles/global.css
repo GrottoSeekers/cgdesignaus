@@ -425,3 +425,8 @@ img {
 @keyframes cg-vt-out { to { opacity: 0; } }
 @keyframes cg-vt-in { from { opacity: 0; transform: translateY(14px); } }
 @media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
+
+/* "Skip to content": hidden until a keyboard user presses Tab, then shown top-left. */
+.skip-link{position:absolute;left:12px;top:-100px;z-index:1000;padding:12px 18px;border-radius:12px;background:#2f1147;color:#fff;font-weight:700;text-decoration:none}
+.skip-link:focus{top:12px}
+#main:focus{outline:none}

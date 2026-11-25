@@ -1,95 +1,184 @@
 ---
 import LegalLayout from "../layouts/LegalLayout.astro";
+import { FOUNDING_ACTIVE, FOUNDING_ENDS_LABEL } from "../lib/pricing";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <LegalLayout
   title="Terms & Conditions — CG Design & Co."
-  description="The terms that apply when you work with CG Design & Co. on a website project."
+  description="The terms that apply when you work with CG Design & Co. on a website, branding or setup job, for businesses and individuals."
   pageTitle="Terms & Conditions"
-  lastUpdated="19 November 2026"
+  lastUpdated="20 November 2026"
 >
-  <h2>Who these terms apply to</h2>
+  <h2>About us</h2>
   <p>
-    These terms apply whenever you ask CG Design &amp; Co. (ABN 25 672 082
-    550) to design, build, or maintain a website or related work ("the
-    services"). By agreeing to a quote or proposal from us, you accept
-    these terms.
+    CG Design &amp; Co. is a registered business name (ABN 25 672 082 550),
+    based at St Luke Street, Randwick NSW 2031, Australia. You can reach us
+    at <a href="mailto:info@cgdesignaus.com">info@cgdesignaus.com</a> or on
+    <a href="https://wa.me/447306100251" target="_blank" rel="noopener noreferrer">WhatsApp (+44 7306 100251)</a>.
   </p>
 
-  <h2>Quotes and pricing</h2>
+  <h2>Who these terms apply to</h2>
   <p>
-    We give you a fixed, written price before any work begins, based on the
-    pages and features you choose. That price won't change once agreed,
-    unless you ask us to add extra pages or features partway through — in
-    which case we'll agree the extra cost with you first. Figures shown by
-    the pricing estimator on this site are indicative until confirmed in
-    writing.
+    These terms apply whenever you ask us to design, build or maintain a
+    website, or do branding or setup work ("the services"), whether you're
+    a business or an individual. By accepting a quote or proposal from us,
+    you accept these terms.
   </p>
   <p>
-    Our fee covers design and build only. Your web address (domain name) is
-    $49 a year: we register it in your business name and renew it each year
-    while you're with us. The Complete package includes the first year.
+    Nothing in these terms takes away rights you have by law. If you're a
+    consumer, that includes the consumer guarantees under the Australian
+    Consumer Law and, if you live in the UK, your rights under the Consumer
+    Rights Act 2015 and the Consumer Contracts Regulations 2013.
   </p>
+
+  <h2>Prices and currency</h2>
+  <ul>
+    <li>
+      All prices are in Australian dollars (AUD). We're not registered for
+      GST, so no GST is added to our prices.
+    </li>
+    <li>
+      If you pay from outside Australia, your bank or card provider may
+      charge currency conversion fees. Those are set by them, not us.
+    </li>
+    <li>
+      Before any work begins, we give you a fixed, written price based on
+      the pages and features you choose. It won't change once agreed, unless
+      you ask for extra pages or features partway through, and then we'll
+      agree the extra cost with you first.
+    </li>
+    <li>
+      Figures from the quote builder on this site are estimates until we
+      confirm them in writing.
+    </li>
+    {FOUNDING_ACTIVE && (
+      <li>
+        Our founding client offer (half price on website packages) applies to
+        quotes accepted by {FOUNDING_ENDS_LABEL}. The crossed-out prices on
+        this site are our standard prices, which apply after that date.
+      </li>
+    )}
+    <li>
+      Your web address (domain name) is $49 a year. We register it in your
+      name or your business's name and renew it each year while you're with
+      us. The Complete package includes the first year.
+    </li>
+  </ul>
 
   <h2>Payment</h2>
   <ul>
-    <li>A 50% deposit is payable before work begins.</li>
+    <li>We take payments by card through Stripe.</li>
+    <li>For website projects, a 50% deposit is payable before work begins.</li>
     <li>The remaining 50% is due on completion, before the site goes live or files are handed over.</li>
-    <li>Any ongoing care/hosting plan is billed on the 1st of every month.</li>
+    <li>Quick jobs and branding are paid in full before we start, unless we agree otherwise in writing.</li>
+    <li>Any hosting &amp; care plan is billed on the 1st of every month.</li>
     <li>The hosting &amp; care plan includes up to 1 hour of content changes each month. Unused time doesn't roll over, and bigger changes are quoted before we start.</li>
     <li>Your web address is billed once a year, starting when it's registered. If you'd rather renew it yourself, we'll transfer it to you at any time.</li>
   </ul>
 
   <h2>What we need from you</h2>
   <p>
-    To keep your project on track, we need you to provide content (text,
+    To keep your project on track, we need you to send content (text,
     images, logos) and feedback within a reasonable time when we ask for
     it. Delays on your side may delay the delivery date.
+  </p>
+  <p>
+    By sending us content, you confirm you have the right to use it on your
+    website, and you let us use it for that purpose.
   </p>
 
   <h2>Ownership</h2>
   <p>
     Once the final payment has been made, the website and, if we registered
-    it on your behalf, its domain name, belong entirely to you. Until then,
-    the work remains our property. We may keep and display non-confidential
-    parts of the finished site in our own portfolio unless you ask us not
-    to.
+    it for you, its domain name belong to you. Until then, the work remains
+    ours.
+  </p>
+  <p>
+    Some parts of a website come from third parties, such as fonts, stock
+    photos, booking systems or payment tools. You can use them on your site
+    under their own licences and terms.
+  </p>
+  <p>
+    We may show non-confidential parts of the finished work in our
+    portfolio unless you ask us not to.
   </p>
 
-  <h2>Cancellation</h2>
+  <h2>Your right to cancel</h2>
   <p>
-    You can cancel a project at any time by telling us in writing. You'll
-    be charged for work already completed up to that point; any deposit
-    already paid covering that work is non-refundable, and anything paid
-    beyond work actually done will be returned. See our
-    <a href={`${base}/refund-policy`}>Refund Policy</a>
-    for details.
+    <strong>Consumers in the UK or EU:</strong> you can cancel within 14
+    days of accepting our quote, without giving a reason, by telling us in
+    writing (email is fine). If you asked us to start work during those 14
+    days, you'll pay for the work done up to the point you told us you were
+    cancelling. If we've fully completed the work at your request within the
+    14 days, the right to cancel no longer applies.
+  </p>
+  <p>
+    <strong>Everyone:</strong> you can cancel a project at any time by
+    telling us in writing. You'll pay for the work completed up to that
+    point, and anything you've paid beyond that is refunded. See our
+    <a href={`${base}/refund-policy/`}>Refund Policy</a> for details.
+  </p>
+  <p>
+    You can cancel a hosting &amp; care plan at any time. You won't be
+    charged again after your current month.
+  </p>
+
+  <h2>If something isn't right</h2>
+  <p>
+    We'll do the work with due care and skill, and fix anything we built
+    that doesn't work as agreed at no extra cost. Our services come with
+    guarantees that can't be excluded under the Australian Consumer Law and,
+    for UK consumers, the Consumer Rights Act 2015. For a major failure,
+    you're entitled to cancel and get a refund, or to compensation for the
+    drop in value. You're also entitled to compensation for any other loss
+    or damage that was reasonably foreseeable.
   </p>
 
   <h2>Liability</h2>
   <p>
-    We'll do the work with reasonable skill and care, but we can't
-    guarantee specific business outcomes (like a particular amount of
-    traffic, bookings, or sales) from a website alone. We're not liable
-    for losses caused by things outside our reasonable control — for
-    example, outages at your hosting provider or a third-party service
-    your site depends on. Nothing in these terms excludes, restricts, or
-    modifies any consumer guarantee, right, or remedy you have under the
-    Australian Consumer Law that cannot lawfully be excluded.
+    We can't guarantee specific business results (such as a particular
+    amount of traffic, bookings or sales) from a website alone. We're not
+    responsible for problems caused by things outside our reasonable
+    control, such as outages at a hosting provider or a third-party service
+    your site relies on.
+  </p>
+  <p>
+    If you're a business customer, and as far as the law allows, our total
+    liability for any project is limited to the amount you paid us for it,
+    and we're not liable for indirect losses such as lost profits.
+  </p>
+  <p>
+    Nothing in these terms excludes, restricts or changes any guarantee,
+    right or remedy you have under the Australian Consumer Law or other
+    consumer protection law that can't lawfully be excluded, or limits
+    liability for death or personal injury caused by negligence, or for
+    fraud.
   </p>
 
-  <h2>Governing law</h2>
+  <h2>Your personal data</h2>
   <p>
-    These terms are governed by the law of New South Wales, Australia,
-    and any dispute will be handled in the courts there.
+    We handle your personal data as described in our
+    <a href={`${base}/privacy-policy/`}>Privacy Policy</a>.
+  </p>
+
+  <h2>Governing law and disputes</h2>
+  <p>
+    If there's a problem, please tell us first and we'll do our best to sort
+    it out. These terms are governed by the law of New South Wales,
+    Australia, and the courts of New South Wales can hear any dispute.
+  </p>
+  <p>
+    If you're a consumer living in the UK or EU, you also keep the
+    protection of the mandatory laws of the country where you live, and you
+    can bring a claim in your local courts.
   </p>
 
   <h2>Changes to these terms</h2>
   <p>
-    We may update these terms from time to time; the date at the top shows
-    when they last changed. Any project already agreed in writing is
-    covered by the terms in place when you accepted your quote.
+    We may update these terms from time to time. The date at the top shows
+    when they last changed. A project already agreed in writing is covered
+    by the terms in place when you accepted your quote.
   </p>
 </LegalLayout>

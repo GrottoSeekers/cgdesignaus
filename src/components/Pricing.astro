@@ -1,7 +1,7 @@
 ---
 // Prices live in src/lib/pricing.ts so the packages, quote builder and quick jobs always agree.
 import {
-  FOUNDING_DISCOUNT_RATE, tiers, carePlan, webAddress, lowestQuickJobPrice, aud, founding,
+  FOUNDING_DISCOUNT_RATE, FOUNDING_ACTIVE, FOUNDING_ENDS_LABEL, PRICE_NOTE, tiers, carePlan, webAddress, lowestQuickJobPrice, aud, founding,
 } from "../lib/pricing";
 import QuoteBuilder from "./QuoteBuilder.astro";
 
@@ -10,6 +10,9 @@ interface Props {
   heading?: "h1" | "h2";
 }
 const { heading: Heading = "h2" } = Astro.props;
+// Headings inside the section sit one level below its title (h2 under a page h1). The
+// "sub-h" class keeps them looking the same whichever level they are.
+const Sub = Heading === "h1" ? "h2" : "h3";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 // Each package's button picks it in the quote builder below and opens the quote.
@@ -26,20 +29,22 @@ const startTier = tiers.find((t) => t.feature) ?? tiers[0];
 <p style="max-width: 380px; color: rgba(20,17,26,0.68); font-size: 1rem">The price you see is the price you pay.</p>
 </div>
 
+{FOUNDING_ACTIVE && (
 <div class="founding" style="position: relative; overflow: hidden; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; padding: 22px 28px; border-radius: 20px; background: #2f1147; color: #f3eefa; margin-bottom: 28px">
-<span style="font-family: 'Fraunces', serif; font-size: 2.4rem; font-weight: 600; line-height: 1; color: #ffffff; letter-spacing: -0.02em">{Math.round(FOUNDING_DISCOUNT_RATE * 100)}% off</span>
+<span style="font-family: 'Fraunces', serif; font-size: 2.4rem; font-weight: 600; line-height: 1; color: #ffffff; letter-spacing: -0.02em">{Math.round((1 - FOUNDING_DISCOUNT_RATE) * 100)}% off</span>
 <div style="display: flex; flex-direction: column; gap: 2px; flex: 1 1 360px">
 <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #d8bff0"><span class="live-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #7cd68c"></span>Founding client offer</span>
-<p style="font-size: 0.96rem; color: #f3eefa">Every package, for the first businesses we work with — plus priority turnaround and a real say in how it turns out.</p>
+<p style="font-size: 0.96rem; color: #f3eefa">Every website package, for quotes accepted by {FOUNDING_ENDS_LABEL} — plus priority turnaround and a real say in how it turns out. The crossed-out price is our standard price, which applies after the offer ends.</p>
 </div>
 </div>
+)}
 
 <div class="tiers" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(272px, 100%), 1fr)); gap: 24px; align-items: stretch">
 {tiers.map((t) => t.feature ? (
 <div class="tier tier-feature sel" data-tier={t.id} style="position: relative; border-radius: 24px; padding: 2px">
 <div style="position: relative; z-index: 1; height: 100%; box-sizing: border-box; background: #2f1147; border-radius: 22px; padding: 32px; display: flex; flex-direction: column; gap: 22px; color: #f3eefa">
-<div><span style="display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #d8bff0; margin-bottom: 8px">Recommended</span><h3 style="font-size: 1.35rem; margin-bottom: 6px; color: #ffffff">{t.name}</h3><p style="font-size: 0.9rem; color: rgba(243,238,250,0.78)">{t.tagline}</p></div>
-<div style="display: flex; align-items: baseline; gap: 12px"><span class="sr">{aud(founding(t.full))}</span><span class="price-count" aria-hidden="true" data-to={founding(t.full)} data-from={t.full} style="font-family: 'Fraunces', serif; font-size: 3.2rem; font-weight: 600; line-height: 1; letter-spacing: -0.02em; color: #ffffff">{aud(founding(t.full))}</span><span class="rrp" style="font-size: 1.05rem; color: rgba(243,238,250,0.55)">{aud(t.full)}</span></div>
+<div><span style="display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #d8bff0; margin-bottom: 8px">Recommended</span><Sub class="sub-h" style="font-size: 1.35rem; margin-bottom: 6px; color: #ffffff">{t.name}</Sub><p style="font-size: 0.9rem; color: rgba(243,238,250,0.78)">{t.tagline}</p></div>
+<div style="display: flex; align-items: baseline; gap: 12px"><span class="sr">{aud(founding(t.full))}</span><span class="price-count" aria-hidden="true" data-to={founding(t.full)} data-from={t.full} style="font-family: 'Fraunces', serif; font-size: 3.2rem; font-weight: 600; line-height: 1; letter-spacing: -0.02em; color: #ffffff">{aud(founding(t.full))}</span>{FOUNDING_ACTIVE && <span class="rrp" style="font-size: 1.05rem; color: rgba(243,238,250,0.7)"><span class="sr-only">Standard price </span>{aud(t.full)}</span>}</div>
 {t.note && <p class="tier-note tier-note-dark">{t.note}</p>}
 <ul class="ticks" style="list-style: none; margin: 0; padding: 22px 0 0; border-top: 1px solid rgba(243,238,250,0.18); display: flex; flex-direction: column; gap: 12px; font-size: 0.92rem; color: rgba(243,238,250,0.9); flex: 1">
 {t.includes.map((line) => <li><span class="tick tick-dark" aria-hidden="true">✓</span>{line}</li>)}
@@ -50,8 +55,8 @@ const startTier = tiers.find((t) => t.feature) ?? tiers[0];
 </div>
 ) : (
 <div class="tier" data-tier={t.id} style="background: #ffffff; border: 1px solid rgba(20,17,26,0.1); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 22px">
-<div><h3 style="font-size: 1.35rem; margin-bottom: 6px">{t.name}</h3><p style="font-size: 0.9rem; color: rgba(20,17,26,0.68)">{t.tagline}</p></div>
-<div style="display: flex; align-items: baseline; gap: 12px"><span class="sr">{aud(founding(t.full))}</span><span class="price-count" aria-hidden="true" data-to={founding(t.full)} data-from={t.full} style="font-family: 'Fraunces', serif; font-size: 3.2rem; font-weight: 600; line-height: 1; letter-spacing: -0.02em">{aud(founding(t.full))}</span><span class="rrp" style="font-size: 1.05rem; color: rgba(20,17,26,0.45)">{aud(t.full)}</span></div>
+<div><Sub class="sub-h" style="font-size: 1.35rem; margin-bottom: 6px">{t.name}</Sub><p style="font-size: 0.9rem; color: rgba(20,17,26,0.68)">{t.tagline}</p></div>
+<div style="display: flex; align-items: baseline; gap: 12px"><span class="sr">{aud(founding(t.full))}</span><span class="price-count" aria-hidden="true" data-to={founding(t.full)} data-from={t.full} style="font-family: 'Fraunces', serif; font-size: 3.2rem; font-weight: 600; line-height: 1; letter-spacing: -0.02em">{aud(founding(t.full))}</span>{FOUNDING_ACTIVE && <span class="rrp" style="font-size: 1.05rem; color: rgba(20,17,26,0.62)"><span class="sr-only">Standard price </span>{aud(t.full)}</span>}</div>
 {t.note && <p class="tier-note">{t.note}</p>}
 <ul class="ticks" style="list-style: none; margin: 0; padding: 22px 0 0; border-top: 1px solid rgba(20,17,26,0.1); display: flex; flex-direction: column; gap: 12px; font-size: 0.92rem; color: rgba(20,17,26,0.78); flex: 1">
 {t.includes.map((line) => <li><span class="tick" aria-hidden="true">✓</span>{line}</li>)}
@@ -61,7 +66,7 @@ const startTier = tiers.find((t) => t.feature) ?? tiers[0];
 </div>
 ))}
 </div>
-<p class="pay-line">Pay 50% to start and 50% when you're live. After that, just {aud(carePlan.price)}/month hosting &amp; care and {aud(webAddress.price)}/year for your web address. Nothing else.</p>
+<p class="pay-line">50% to start, 50% when you're live. Then {aud(carePlan.price)}/month hosting &amp; care and {aud(webAddress.price)}/year for your web address. Nothing else. {PRICE_NOTE}</p>
 
 
 <div class="quote" id="quote" style="margin-top: 28px; border-radius: 22px; border: 1px solid rgba(20,17,26,0.12); background: #ffffff; overflow: hidden">
@@ -87,10 +92,10 @@ const startTier = tiers.find((t) => t.feature) ?? tiers[0];
 <p class="care-price"><span>{aud(webAddress.price)}</span>/year</p>
 <div class="care-text">
 <p class="care-title">Your web address <span>· every year</span></p>
-<p>We register yourbusiness.com.au in your business name and renew it every year, so it never lapses. It's yours, and if you ever move on, we hand it over.</p>
+<p>We register yourbusiness.com in your business name and renew it every year, so it never lapses. It's yours, and if you ever move on, we hand it over.</p>
 </div>
 </div>
-<a href={`${base}/quick-jobs`} class="quick-link">Not after a full website? <strong>See quick jobs from {aud(lowestQuickJobPrice)}</strong> <span aria-hidden="true">→</span></a>
+<a href={`${base}/quick-jobs/`} class="quick-link">Not after a full website? <strong>See quick jobs from {aud(lowestQuickJobPrice)}</strong> <span aria-hidden="true">→</span></a>
 </div>
 </section>
 

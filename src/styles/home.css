@@ -210,8 +210,8 @@ a{color:#5b2695}a:hover{color:#2f1147}
 @keyframes cg-land{0%{opacity:.35;transform:translateY(26px)}100%{opacity:1;transform:none}}
 @keyframes cg-land-line{0%{width:0}100%{width:22px}}
 .cg .nav-link:active,.cg .btn:active,.cg .nav-cta:active{transform:scale(.94)}
-.cg section.landed .eyebrow,.cg section.landed h2{animation:cg-land .9s cubic-bezier(.16,1,.3,1) both}
-.cg section.landed h2{animation-delay:.08s}
+.cg section.landed .eyebrow,.cg section.landed h2:not(.sub-h){animation:cg-land .9s cubic-bezier(.16,1,.3,1) both}
+.cg section.landed h2:not(.sub-h){animation-delay:.08s}
 .cg section.landed .eyebrow::before{animation:cg-land-line .8s .2s cubic-bezier(.16,1,.3,1) both}
 
 /* before & after drag: the frame handles pointer drags; the range input stays for keyboard users */
@@ -233,7 +233,7 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg #hero .btn{min-height:50px !important;padding:0 22px !important;font-size:.95rem !important}
 .cg #hero .fade[style*="margin-bottom: 44px"]{margin-bottom:28px !important}
 .cg #hero .hero-badge{margin-bottom:18px !important}
-.cg h2{font-size:1.85rem !important;line-height:1.06 !important}
+.cg h2:not(.sub-h){font-size:1.85rem !important;line-height:1.06 !important}
 .cg .eyebrow{font-size:.7rem}
 .cg section .wrap > div:first-child[style*="margin-bottom"]{margin-bottom:24px !important;gap:10px !important}
 .cg section p[style*="max-width: 380px"]{font-size:.92rem !important}
@@ -241,7 +241,7 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg #client .device{width:220px !important;border-radius:38px !important;padding:8px !important}
 .cg #client .device > span{height:430px !important;border-radius:30px !important}
 .cg #client .work-card > div{margin-top:18px !important}
-.cg #client .work-card h3{font-size:1.25rem !important}
+.cg #client .work-card :is(h2,h3){font-size:1.25rem !important}
 /* before & after */
 .cg .ba-frame{height:420px !important;border-radius:16px !important}
 .cg .ba-overlay{height:378px !important}
@@ -260,7 +260,7 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .tier{padding:14px 10px !important;gap:8px !important;border-radius:16px !important;cursor:pointer;text-align:center}
 .cg .tier-feature{padding:2px !important}
 .cg .tier-feature > div{padding:12px 8px !important;gap:8px !important;border-radius:14px !important}
-.cg .tier h3{font-size:1rem !important;margin:0 !important}
+.cg .tier :is(h2,h3){font-size:1rem !important;margin:0 !important}
 .cg .tier p,.cg .tier .ticks,.cg .tier .btn{display:none !important}
 .cg .tier-feature > div > div:first-child > span{font-size:.55rem !important;margin-bottom:4px !important;letter-spacing:.1em !important}
 .cg .tier > div:nth-child(2),.cg .tier-feature > div > div:nth-child(2){flex-direction:column !important;align-items:center !important;gap:2px !important}
@@ -293,7 +293,7 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .steps{gap:10px !important}
 .cg .step{padding:14px 16px !important;border-radius:16px !important}
 .cg .step-node{left:-48px !important;top:12px !important;width:36px !important;height:36px !important;font-size:.85rem !important}
-.cg .step h3{font-size:1.05rem !important;margin:2px 0 4px !important}
+.cg .step :is(h2,h3){font-size:1.05rem !important;margin:2px 0 4px !important}
 .cg .step p{font-size:.84rem !important}
 .cg .step > span[style*="uppercase"]{font-size:.62rem !important}
 /* FAQ */
@@ -320,7 +320,7 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg .way-icon{width:34px;height:34px;border-radius:10px}
 .cg #contact p[style*="What happens next"],.cg .next-steps,.cg #contact p[style*="uppercase"]{display:none !important}
 .cg .contact-form{padding:20px 16px !important;gap:12px !important;border-radius:20px !important}
-.cg .contact-form h3{font-size:1.2rem !important}
+.cg .contact-form :is(h2,h3){font-size:1.2rem !important}
 .cg .contact-form > div:nth-child(2){grid-template-columns:1fr 1fr !important;gap:10px !important}
 .cg .field input{height:44px;border-radius:12px;font-size:16px}
 .cg .field label{font-size:.74rem}
@@ -336,13 +336,13 @@ a{color:#5b2695}a:hover{color:#2f1147}
 /* over the dark hero/footer the rail flips to white so it stays visible */
 /* Reduce Motion (often switched on to save battery): swap movement for dissolves, as iOS itself does.
    Fades, line draws, the price count-down and scroll-linked fills stay, and so do three small, contained
-   effects: the work screens scrolling inside their phone frames, the light sweep on the hero button and
-   the services strip under the hero. Drifting glows, floating and tilting mockups and slide-ins stop.
-   Everything ends fully visible. */
+   effect: the light sweep on the hero button. The work screens scrolling inside their phone frames, the
+   services strip under the hero, drifting glows, floating and tilting mockups and slide-ins all stop
+   (endless movement can't otherwise be paused: WCAG 2.2.2). Everything ends fully visible. */
 @keyframes cg-fade{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion: reduce){
-.cg .blob-a,.cg .blob-b,.cg .blob-c,.cg .hero-dark .bob,.cg .hero-dark .phone,.cg .nigel-strands,.cg .ba-frame.auto .ba-before,.cg .ba-frame.auto .ba-handle,.cg .ba-arrow,.cg .tier-feature::before,.cg .step-node-final,.cg .founding::after,.cg .hero-dark .scroll-dot{animation:none !important}
-.cg .site-header,.cg .hero-dark .line > span,.cg .hero-dark .fade,.cg .hero-dark .browser,.cg section.landed .eyebrow,.cg section.landed h2,.cg .hero-dark .browser{transform:none !important}
+.cg .marquee-track,.cg .scroll-col,.cg .blob-a,.cg .blob-b,.cg .blob-c,.cg .hero-dark .bob,.cg .hero-dark .phone,.cg .nigel-strands,.cg .ba-frame.auto .ba-before,.cg .ba-frame.auto .ba-handle,.cg .ba-arrow,.cg .tier-feature::before,.cg .step-node-final,.cg .founding::after,.cg .hero-dark .scroll-dot{animation:none !important}
+.cg .site-header,.cg .hero-dark .line > span,.cg .hero-dark .fade,.cg .hero-dark .browser,.cg section.landed .eyebrow,.cg section.landed h2:not(.sub-h),.cg .hero-dark .browser{transform:none !important}
 .cg section.landed .eyebrow::before{animation:none !important}
 .cg *,.cg *::before,.cg *::after{transition-property:opacity,color,background-color,border-color,box-shadow,grid-template-rows !important}
 .cg .rv,.cg .rv.rv-x{transform:none !important}
@@ -415,3 +415,9 @@ html{scroll-padding-top:78px}
 @keyframes cg-vt-out{to{opacity:0}}
 @keyframes cg-vt-in{from{opacity:0;transform:translateY(14px)}}
 @media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+
+/* "Skip to content": hidden until a keyboard user presses Tab, then shown top-left. */
+.skip-link{position:absolute;left:12px;top:-100px;z-index:1000;padding:12px 18px;border-radius:12px;background:#2f1147;color:#fff;font-weight:700;text-decoration:none}
+.skip-link:focus{top:12px}
+#main:focus{outline:none}
+.cg section[tabindex="-1"]:focus{outline:none}

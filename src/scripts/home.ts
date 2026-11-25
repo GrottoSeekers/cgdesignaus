@@ -166,4 +166,7 @@ document.addEventListener("click", (e) => {
   e.preventDefault();
   if (history.replaceState) history.replaceState(null, "", `#${id}`);
   glideTo(target);
+  // Move keyboard focus with the scroll (e.g. "Skip to content"), so the next Tab carries on from there.
+  if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+  target.focus({ preventScroll: true });
 });

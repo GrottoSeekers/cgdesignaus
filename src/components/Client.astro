@@ -81,6 +81,9 @@ interface Props {
   heading?: "h1" | "h2";
 }
 const { heading: Heading = "h2" } = Astro.props;
+// Headings inside the section sit one level below its title (h2 under a page h1). The
+// "sub-h" class keeps them looking the same whichever level they are.
+const Sub = Heading === "h1" ? "h2" : "h3";
 ---
 
 <section id="client" style="position: relative; padding: 112px 0 96px; background: #ffffff; overflow: hidden">
@@ -93,7 +96,7 @@ const { heading: Heading = "h2" } = Astro.props;
 </div>
 <div style="max-width: 360px">
 <p style="color: rgba(20,17,26,0.68); font-size: 1rem; margin-bottom: 10px">We branded, designed, wrote and launched every one of these ourselves. Tap any phone to see the live site.</p>
-<a href={`${base}/contact`} style="display: inline-flex; align-items: center; gap: 7px; min-height: 44px; font-weight: 700; font-size: 0.9rem; color: #5b2695; text-decoration: none">Start your project →</a>
+<a href={`${base}/contact/`} style="display: inline-flex; align-items: center; gap: 7px; min-height: 44px; font-weight: 700; font-size: 0.9rem; color: #5b2695; text-decoration: none">Start your project →</a>
 </div>
 </div>
 <div class:list={["showcase", track ? "showcase-track" : "showcase-grid"]} id="showcase" style={`gap: 40px; align-items: start; grid-template-columns: ${gridCols}; max-width: ${gridMax}; margin: 0 auto`}>
@@ -107,8 +110,8 @@ const { heading: Heading = "h2" } = Astro.props;
 </a>
 <span class="made"><span class="sr-only">We designed: </span>{c.made.join(" · ")}</span>
 <div style="width: 100%; max-width: 320px; margin-top: 18px; text-align: center">
-<span style="font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(20,17,26,0.55)">{c.kicker}</span>
-<h3 style="font-size: 1.5rem; margin: 6px 0 8px">{c.name}</h3>
+<span style="font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(20,17,26,0.64)">{c.kicker}</span>
+<Sub class="sub-h" style="font-size: 1.5rem; margin: 6px 0 8px">{c.name}</Sub>
 <p style="font-size: 0.92rem; color: rgba(20,17,26,0.68); margin-bottom: 6px">{c.blurb}</p>
 <div class="brand-row">
 <ul class="swatches" aria-label={`${c.name} brand colours`}>
