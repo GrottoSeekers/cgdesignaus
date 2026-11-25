@@ -150,7 +150,8 @@ const jsonLd = {
     </section>
 
     <!-- Who it's for: the one marquee on the page -->
-    <div class="goals" aria-label={`Coaching for: ${goals.join(", ")}`}>
+    <div class="goals">
+      <p class="sr">Coaching for: {goals.join(", ")}</p>
       <div class="goals-track" data-marquee>
         {[0, 1].map((n) => (
           <div class="goals-row" aria-hidden="true">

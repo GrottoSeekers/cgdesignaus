@@ -34,11 +34,11 @@ const sections: Section[] = [
   path="/start"
   credit={false}
 >
-  <div class="form-page" id="main">
+  <main class="form-page" id="main">
     <aside class="form-aside">
       <img src="/media/city-run-1200.webp" alt="" width="1200" height="1500" />
       <div class="form-aside-copy">
-        <h1>Let's get you <em>started.</em></h1>
+        <p class="aside-title display" aria-hidden="true">Let's get you <em>started.</em></p>
         <p>Three questions, then it's a WhatsApp chat with James. He'll reply himself.</p>
       </div>
     </aside>
@@ -63,7 +63,7 @@ const sections: Section[] = [
         <p class="done-note" style="color:var(--mute)">Or WhatsApp James on {phoneDisplay}.</p>
       </Fragment>
     </FormFlow>
-  </div>
+  </main>
 
   <script define:vars={{ planOptions, offerEnds: offer.ends, offerLabel: `${offer.label}: ${offer.headline}` }} is:inline>
     window.__start = { planOptions, offerEnds, offerLabel };

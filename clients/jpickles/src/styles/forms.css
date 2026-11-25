@@ -7,7 +7,8 @@
   .form-aside img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
   .form-aside::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgb(12 12 13 / .2), rgb(12 12 13 / .1) 40%, rgb(12 12 13 / .92)); }
   .form-aside-copy { position: absolute; left: 3rem; right: 3rem; bottom: 3rem; }
-  .form-aside h1 { font-size: clamp(2.6rem, 4vw, 3.8rem); line-height: 1; }
+  .form-aside .aside-title { font-size: clamp(2.6rem, 4vw, 3.8rem); line-height: 1; color: var(--bone); max-width: none; margin: 0; }
+  .form-aside .aside-title em { font-style: italic; color: var(--gold); padding-right: .04em; }
   .form-aside p { color: var(--mute); margin: 1rem 0 0; max-width: 36ch; }
   .form-aside .due { margin-top: 1.4rem; display: inline-flex; align-items: center; gap: .5rem; border: 1px solid var(--line-2); border-radius: 999px; padding: .55rem 1rem; color: var(--bone); font-size: .9rem; }
   .form-aside .due svg { width: 16px; height: 16px; color: var(--gold); }
