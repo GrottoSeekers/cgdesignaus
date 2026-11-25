@@ -336,12 +336,13 @@ a{color:#5b2695}a:hover{color:#2f1147}
 /* over the dark hero/footer the rail flips to white so it stays visible */
 /* Reduce Motion (often switched on to save battery): swap movement for dissolves, as iOS itself does.
    Fades, line draws, the price count-down and scroll-linked fills stay, and so do three small, contained
-   effect: the light sweep on the hero button. The work screens scrolling inside their phone frames, the
-   services strip under the hero, drifting glows, floating and tilting mockups and slide-ins all stop
-   (endless movement can't otherwise be paused: WCAG 2.2.2). Everything ends fully visible. */
+   effects: the light sweep on the hero button and the work screens scrolling inside their phone
+   frames (they pause on hover, and showing the client sites is the point of the section). The services
+   strip under the hero, drifting glows, floating and tilting mockups and slide-ins all stop.
+   Everything ends fully visible. */
 @keyframes cg-fade{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion: reduce){
-.cg .marquee-track,.cg .scroll-col,.cg .blob-a,.cg .blob-b,.cg .blob-c,.cg .hero-dark .bob,.cg .hero-dark .phone,.cg .nigel-strands,.cg .ba-frame.auto .ba-before,.cg .ba-frame.auto .ba-handle,.cg .ba-arrow,.cg .tier-feature::before,.cg .step-node-final,.cg .founding::after,.cg .hero-dark .scroll-dot{animation:none !important}
+.cg .marquee-track,.cg .blob-a,.cg .blob-b,.cg .blob-c,.cg .hero-dark .bob,.cg .hero-dark .phone,.cg .nigel-strands,.cg .ba-frame.auto .ba-before,.cg .ba-frame.auto .ba-handle,.cg .ba-arrow,.cg .tier-feature::before,.cg .step-node-final,.cg .founding::after,.cg .hero-dark .scroll-dot{animation:none !important}
 .cg .site-header,.cg .hero-dark .line > span,.cg .hero-dark .fade,.cg .hero-dark .browser,.cg section.landed .eyebrow,.cg section.landed h2:not(.sub-h),.cg .hero-dark .browser{transform:none !important}
 .cg section.landed .eyebrow::before{animation:none !important}
 .cg *,.cg *::before,.cg *::after{transition-property:opacity,color,background-color,border-color,box-shadow,grid-template-rows !important}
