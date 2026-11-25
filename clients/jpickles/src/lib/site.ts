@@ -121,9 +121,10 @@ export const reviews = [
 
 // Placeholder until James confirms. Shown as "to confirm" on the page.
 export const qualifications = [
-  { title: "Level 3 Personal Trainer", placeholder: true },
-  { title: "Nutrition qualification", placeholder: true },
-  { title: "First aid", placeholder: true },
+  { title: "Personal Trainer", detail: "Level 3" },
+  { title: "Official HYROX Coach", detail: "Foundation & Level 1" },
+  { title: "England Boxing Coach", detail: "Level 2" },
+  { title: "First Aid", detail: "FREC 3" },
 ];
 
 export const partners = [

@@ -396,7 +396,7 @@ const jsonLd = {
               <h3>Qualifications</h3>
               <ul class="creds">
                 {qualifications.map((q) => (
-                  <li class:list={{ tbc: q.placeholder }}>{q.title}{q.placeholder && <small>To confirm</small>}</li>
+                  <li>{q.title}<small>{q.detail}</small></li>
                 ))}
               </ul>
             </div>
