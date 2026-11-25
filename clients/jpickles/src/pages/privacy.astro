@@ -1,6 +1,6 @@
 ---
-// Privacy policy (UK GDPR). Gold "To confirm" marks are facts only James can give;
-// see the README. Not legal advice: worth a check before launch.
+// Privacy policy (UK GDPR). Filled in from James's answers (Nov 2026).
+// Not legal advice: worth a check by a solicitor or template service before launch.
 import Legal from "../components/Legal.astro";
 import { email, phoneDisplay } from "../lib/site";
 ---
@@ -9,7 +9,7 @@ import { email, phoneDisplay } from "../lib/site";
   <p>This explains what information I collect when you use this website or get coached by me, why, who else handles it and your rights. If anything is unclear, message me.</p>
 
   <h2>Who I am</h2>
-  <p>J.Pickles Coaching is the trading name of James Pickles, <mark class="tbc">To confirm: sole trader</mark>, based in Westhoughton and Leigh. I decide how your information is used (the "controller").</p>
+  <p>J.Pickles Coaching is the trading name of James Pickles, a sole trader based in Westhoughton and Leigh. I decide how your information is used (the "controller").</p>
   <p>Contact: <a href={`mailto:${email}`}>{email}</a> or WhatsApp {phoneDisplay}.</p>
 
   <h2>What I collect</h2>
@@ -18,7 +18,7 @@ import { email, phoneDisplay } from "../lib/site";
     <li><strong>Onboarding form:</strong> contact details, your goals, training history, lifestyle, nutrition habits, availability and health details such as injuries, medical conditions and anything that affects how you train.</li>
     <li><strong>Weekly check-ins:</strong> your weight, how training, food, sleep, energy and steps went, any pain or injuries, and comments.</li>
     <li><strong>Messages:</strong> anything you send me on WhatsApp, Instagram or email.</li>
-    <li><strong>Payments:</strong> what you've paid and when. <mark class="tbc">To confirm: how clients pay</mark></li>
+    <li><strong>Payments:</strong> what you've paid and when. Card payments go through Stripe, so I never see your full card details.</li>
     <li><strong>Reviews and photos:</strong> only if you give them to me and agree to them being shared.</li>
   </ul>
 
@@ -37,17 +37,18 @@ import { email, phoneDisplay } from "../lib/site";
   <ul>
     <li><strong>EmailJS</strong> sends your form answers to my inbox.</li>
     <li><strong>Microsoft Outlook</strong> is my email inbox.</li>
-    <li><strong>Supabase</strong> stores form answers for my coaching dashboard, in its London region. <mark class="tbc">To confirm: only if the dashboard is used</mark></li>
+    <li><strong>Supabase</strong> stores form answers for my coaching dashboard, in its London region.</li>
     <li><strong>Vercel</strong> hosts this website.</li>
     <li><strong>WhatsApp</strong> (Meta) for messages.</li>
-    <li><mark class="tbc">To confirm: the coaching app clients use, if any</mark></li>
+    <li><strong>FitR</strong>, the training app your programme, workouts and progress are kept in.</li>
+    <li><strong>Stripe</strong> takes card payments. Bank transfers go through my bank.</li>
   </ul>
   <p>Some of these companies are based in the US, so your information may be processed there. They protect it under the UK-US data bridge or the UK's approved contract clauses.</p>
 
   <h2>How long I keep it</h2>
   <ul>
-    <li>Coaching records, including health details and check-ins: while you're a client and <mark class="tbc">To confirm: 12 months</mark> after you finish, then deleted.</li>
-    <li>Enquiries that don't go further: <mark class="tbc">To confirm: 6 months</mark>.</li>
+    <li>Coaching records, including health details and check-ins: while you're a client and for 12 months after you finish, then deleted.</li>
+    <li>Enquiries that don't go further: 6 months.</li>
     <li>Payment records: 6 years, as HMRC requires.</li>
   </ul>
 

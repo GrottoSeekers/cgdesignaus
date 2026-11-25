@@ -1,6 +1,6 @@
 ---
-// Terms of coaching (consumer contract, England and Wales). Gold "To confirm" marks are
-// facts only James can give; see the README. Not legal advice: worth a check before launch.
+// Terms of coaching (consumer contract, England and Wales). Filled in from James's answers (Nov 2026).
+// Not legal advice: worth a check by a solicitor or template service before launch.
 import Legal from "../components/Legal.astro";
 import { email, phoneDisplay, ptTerms, offer } from "../lib/site";
 const offerOn = Date.now() < Date.parse(offer.ends);
@@ -10,20 +10,19 @@ const offerOn = Date.now() < Date.parse(offer.ends);
   <p>These terms apply when you book online coaching or 1:1 personal training with me. They're written to be read, so please do.</p>
 
   <h2>Who I am</h2>
-  <p>J.Pickles Coaching is the trading name of James Pickles, <mark class="tbc">To confirm: sole trader</mark>. Contact: <a href={`mailto:${email}`}>{email}</a> or WhatsApp {phoneDisplay}.</p>
+  <p>J.Pickles Coaching is the trading name of James Pickles, a sole trader. Contact: <a href={`mailto:${email}`}>{email}</a> or WhatsApp {phoneDisplay}.</p>
 
   <h2>Booking and prices</h2>
   <ul>
-    <li>Prices are shown on the website in pounds. <mark class="tbc">To confirm: VAT registered or not</mark></li>
+    <li>Prices are shown on the website in pounds. I'm not VAT registered, so there's no VAT to add.</li>
     <li>We agree your coaching over WhatsApp. The agreement starts when I confirm your place and you've paid.</li>
-    <li>Payment: <mark class="tbc">To confirm: how (bank transfer, card link, standing order) and when (in advance)</mark></li>
+    <li>Pay by bank transfer or by card through a secure Stripe link. Payment is due before your coaching or package starts.</li>
   </ul>
 
   <h2>Online coaching</h2>
   <ul>
     <li>Billed every 4 weeks, in advance.</li>
-    <li>Minimum term: <mark class="tbc">To confirm: none, or a number of months</mark></li>
-    <li>To stop, message me at least <mark class="tbc">To confirm: 7 days</mark> before your next payment. Coaching continues until the end of the period you've paid for.</li>
+    <li>No minimum term. Stop whenever you like: message me before your next payment is due and you won't be charged again. Coaching carries on until the end of the 4 weeks you've paid for.</li>
   </ul>
 
   <h2>1:1 personal training</h2>
@@ -42,7 +41,7 @@ const offerOn = Date.now() < Date.parse(offer.ends);
   </ul>
 
   <h2>Refunds after 14 days</h2>
-  <p><mark class="tbc">To confirm: James's refund policy for unused sessions or coaching after the 14 days, e.g. no refunds, or unused sessions refunded if you're injured or ill with a doctor's note</mark></p>
+  <p>After the 14 days, payments aren't refundable. That includes unused PT sessions and the rest of a 4-week block of online coaching. This doesn't affect your legal rights if I don't provide the coaching with reasonable care and skill.</p>
 
   {offerOn && (
     <div data-offer-only>
@@ -67,7 +66,7 @@ const offerOn = Date.now() < Date.parse(offer.ends);
   <p>Results depend on you following the plan, as well as on things outside anyone's control. Client results on this site are real, but yours may be different.</p>
 
   <h2>Liability</h2>
-  <p>I hold <mark class="tbc">To confirm: insurer and level of public liability / professional indemnity cover</mark>. Nothing in these terms limits my liability for death or injury caused by my negligence, or anything else that can't be limited by law. Otherwise I'm not responsible for losses that weren't reasonably foreseeable.</p>
+  <p>I'm insured as a personal trainer with Insure4Sport. Nothing in these terms limits my liability for death or injury caused by my negligence, or anything else that can't be limited by law. Otherwise I'm not responsible for losses that weren't reasonably foreseeable.</p>
 
   <h2>Complaints</h2>
   <p>If something isn't right, tell me first at <a href={`mailto:${email}`}>{email}</a> or on WhatsApp and I'll do my best to fix it.</p>

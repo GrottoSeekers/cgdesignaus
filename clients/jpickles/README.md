@@ -14,7 +14,7 @@ pathways, FAQ) and Red On (choose your level of coaching, credentials, one clear
 | `/start` | "Start coaching": name, number and which coaching option, then WhatsApp opens with that message ready to send to James. Every Start / Choose button links here (`?plan=silver` pre-picks the plan) |
 | `/onboarding` | Full onboarding & consultation form (replaces the Google Form) for James to send new clients after the first chat. Every question kept, 8 short steps, saves a draft as you go. Not linked from the site or shown in Google |
 | `/check-in` | Weekly check-in (replaces the Google Form). 5 steps, under 5 minutes, remembers the client's name and email for next Friday |
-| `/privacy`, `/terms` | Privacy policy (UK GDPR) and terms of coaching. Drafts: gold "To confirm" marks are facts James still needs to give |
+| `/privacy`, `/terms` | Privacy policy (UK GDPR) and terms of coaching, filled in from James's answers (Nov 2026). Update if he changes payment, refunds, apps or insurance |
 | `/404` | Custom not-found page |
 | `/coach` | James's private dashboard: check-ins grouped by client, weight trend, 4-week averages, flags (pain, too hard, poor food, low sleep), new-client forms, CSV export |
 
