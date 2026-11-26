@@ -1,5 +1,5 @@
 ---
-// Slim bar above the header on every page while the founding client offer runs, with a live
+// Slim bar across the top of the sticky header on every page, so it stays in view as you scroll, while the founding client offer runs, with a live
 // countdown to its end. It disappears by itself when the offer ends (see src/lib/countdown.ts).
 import { FOUNDING_ACTIVE, FOUNDING_ENDS, FOUNDING_ENDS_LABEL, FOUNDING_DISCOUNT_RATE } from "../lib/pricing";
 
@@ -11,7 +11,7 @@ const onPricing = Astro.url.pathname.replace(/\/$/, "") === `${base}/pricing`;
 {FOUNDING_ACTIVE && (
 <a href={onPricing ? "#pricing" : `${base}/pricing/`} class="offer-bar" data-offer>
   <span class="ob-tag"><span class="ob-dot" aria-hidden="true"></span>Founding clients</span>
-  <span class="ob-text"><strong>{off}% off</strong> every website package</span>
+  <span class="ob-text"><strong>{off}% off</strong><span class="ob-long"> every website package</span><span class="ob-short"> websites</span></span>
   <span class="ob-sep" aria-hidden="true"></span>
   <span class="ob-time">
     <span class="sr-only">Offer ends {FOUNDING_ENDS_LABEL}.</span>
@@ -30,7 +30,6 @@ const onPricing = Astro.url.pathname.replace(/\/$/, "") === `${base}/pricing`;
 <style>
   .offer-bar {
     position: relative;
-    z-index: 11;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -86,6 +85,7 @@ const onPricing = Astro.url.pathname.replace(/\/$/, "") === `${base}/pricing`;
   }
   .ob-n [data-cd] { display: inline-block; min-width: 2ch; text-align: right; }
   .ob-n [data-cd="d"] { min-width: 0; }
+  .ob-short { display: none; }
   .ob-cta {
     display: inline-flex;
     align-items: center;
@@ -98,15 +98,14 @@ const onPricing = Astro.url.pathname.replace(/\/$/, "") === `${base}/pricing`;
   }
 
   @media (max-width: 760px) {
-    .offer-bar { gap: 4px 10px; font-size: 0.78rem; padding: 7px 12px; }
-    .ob-tag, .ob-sep, .ob-cta { display: none; }
+    .offer-bar { flex-wrap: nowrap; gap: 8px; min-height: 36px; font-size: 0.76rem; padding: 6px 10px; white-space: nowrap; }
+    .ob-tag, .ob-sep, .ob-cta, .ob-long { display: none; }
+    .ob-short { display: inline; }
+    .ob-time, .ob-time > [data-countdown] { gap: 3px; }
     .ob-n { padding: 1px 5px; }
   }
-  @media (max-width: 380px) {
+  @media (max-width: 370px) {
     .ob-ends { display: none; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .offer-bar::after, .ob-dot { animation: none; }
   }
 </style>
 

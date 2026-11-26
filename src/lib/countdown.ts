@@ -5,7 +5,6 @@
 // runs out, every [data-offer] element on the page is hidden. The next build turns the offer
 // off for good; this covers a page someone left open past midnight.
 import { animate } from "motion";
-import { prefersReducedMotion } from "./motion-utils.js";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -19,7 +18,6 @@ export function startCountdowns() {
 
   const ends = new Date(timers[0].dataset.countdown ?? "").getTime();
   if (Number.isNaN(ends)) return;
-  const reduce = prefersReducedMotion();
 
   const tick = () => {
     const left = Math.max(0, ends - Date.now());
@@ -40,8 +38,9 @@ export function startCountdowns() {
         const next = parts[el.dataset.cd ?? ""];
         if (next === undefined || el.textContent === next) return;
         el.textContent = next;
-        // Big boxes on the pricing page give each new number a small drop-in.
-        if (!reduce && el.closest(".cd-boxes")) {
+        // Big boxes on the pricing page give each new number a small drop-in. Kept with Reduce
+        // Motion on too: it's small and contained (see the Reduce Motion note in home.css).
+        if (el.closest(".cd-boxes")) {
           animate(el, { y: [-6, 0], opacity: [0.35, 1] }, { duration: 0.35, ease: [0.16, 1, 0.3, 1] });
         }
       })
