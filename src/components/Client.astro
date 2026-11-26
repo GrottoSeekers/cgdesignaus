@@ -308,14 +308,15 @@ const Sub = Heading === "h1" ? "h2" : "h3";
 
 <script>
   // Auto-scroll: every phone starts at the top at the same moment and scrolls down at the same
-  // steady speed. Shorter pages wait at the bottom until the longest one gets there, then they all
-  // glide back to the top together and go again. Hovering a phone pauses just that one.
+  // steady speed. Each one then pauses at the bottom, glides back to the top and goes again on its
+  // own loop, so short pages don't sit still waiting for long ones (and any new client works the
+  // same way). Hovering a phone pauses just that one.
   // Distances are measured from the real layout, so the speed matches at every screen size.
   import { animate } from "motion";
 
   const PACE = 70; // px a second while scrolling down (on a 540px-tall screen; smaller phones scale it)
   const START = 2; // s at the top before scrolling
-  const HOLD = 2; // s at the bottom once the longest page arrives
+  const HOLD = 2; // s at the bottom before gliding back up
   const BACK = 2.5; // s to glide back to the top
 
   const cols = Array.from(document.querySelectorAll<HTMLElement>("#client .scroll-col"));
@@ -328,8 +329,8 @@ const Sub = Heading === "h1" ? "h2" : "h3";
     const pace = PACE * (win / 540);
     const dists = cols.map((c) => Math.max(0, c.offsetHeight - c.parentElement!.clientHeight));
     const times = dists.map((d) => d / pace);
-    const loop = START + Math.max(...times) + HOLD + BACK;
     runs = cols.map((col, i) => {
+      const loop = START + times[i] + HOLD + BACK;
       const down = (START + times[i]) / loop;
       return animate(
         col,
