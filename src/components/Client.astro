@@ -15,7 +15,6 @@ const clients = [
     blurb: "Prices, WhatsApp sign-up, Friday check-ins and a private coach dashboard.",
     href: "https://www.jpicklesfitnesscoaching.com",
     linkLabel: "Visit the live site",
-    dur: "36s",
     delay: "-2s",
     palette: ["#0C0C0D", "#F4F1EA", "#C9A45C", "#A9A59D"],
     fonts: "Bodoni Moda + Hanken Grotesk",
@@ -28,7 +27,6 @@ const clients = [
     blurb: "A launch site for a new house and pet sitting platform, with an early-access waitlist.",
     href: "https://www.myahsits.com/callumandniamh",
     linkLabel: "See Callum & Niamh's page",
-    dur: "22s",
     delay: "-4s",
     palette: ["#2C1A0E", "#FAF6EE", "#2F5D45", "#C4AB8A"],
     fonts: "Marcellus + Montserrat",
@@ -41,7 +39,6 @@ const clients = [
     blurb: "A full menu, live pricing and an order builder, in Indonesian and English.",
     href: "https://www.nir-ma-ta.com",
     linkLabel: "Visit nir-ma-ta.com",
-    dur: "20s",
     delay: "0s",
     palette: ["#EE1C25", "#121212", "#FFFFFF", "#F0F0F0"],
     fonts: "Archivo Black + Work Sans",
@@ -57,7 +54,6 @@ const clients = [
     blurb: "Rebuilt from a dated Wix template: recent work, clear prices and one-tap booking.",
     href: "https://www.nigelshairdressingwiganandrochdale.com",
     linkLabel: "Visit the live site",
-    dur: "34s",
     delay: "0s",
     palette: ["#2A1A14", "#F7F0E6", "#EFC3B0", "#C98B5A"],
     fonts: "Gloock + Hanken Grotesk",
@@ -70,7 +66,6 @@ const clients = [
     blurb: "A coming-soon site collecting priority access ahead of the first collection.",
     href: "https://rochses.com",
     linkLabel: "Preview rochses.com",
-    dur: "18s",
     delay: "-6s",
     palette: ["#F3EFE7", "#CBC2B2", "#8B7765", "#46403A"],
     fonts: "Cormorant Garamond + Inter",
@@ -81,6 +76,17 @@ const clients = [
     ],
   },
 ];
+
+// Auto-scroll speed: every phone scrolls at the same calm reading pace, so a long page takes
+// longer rather than racing past. The scroll down is 38% of each loop (see cg-autoscroll in
+// home.css); the rest is pausing at the top and bottom and scrolling back.
+const SCREEN_W = 256; // phone screen width on desktop (276px device minus padding)
+const SCREEN_H = 540; // visible screen height on desktop
+const PACE = 70; // px a second while scrolling down
+const scrollDur = (shots: { width: number; height: number }[]) => {
+  const pageH = shots.reduce((sum, s) => sum + (SCREEN_W * s.height) / s.width, 0);
+  return `${Math.max(20, Math.round(Math.max(0, pageH - SCREEN_H) / PACE / 0.38))}s`;
+};
 
 const n = clients.length;
 const track = n > 3;
@@ -118,7 +124,7 @@ const Sub = Heading === "h1" ? "h2" : "h3";
 <a href={c.href} target="_blank" rel="noopener" class="device" aria-label={`Visit ${c.name}`} style="display: block; width: 276px; max-width: 100%; padding: 10px; border-radius: 46px; background: #14111a; box-shadow: 0 50px 80px -40px rgba(47,17,71,0.45), inset 0 0 0 1px rgba(255,255,255,0.08)">
 <span style="position: relative; display: block; height: 540px; border-radius: 36px; overflow: hidden; background: #ffffff">
 <span aria-hidden="true" style="position: absolute; z-index: 2; top: 10px; left: 50%; width: 84px; height: 24px; margin-left: -42px; border-radius: 999px; background: #14111a"></span>
-<span class="scroll-col" style={`display: block; animation-duration: ${c.dur}; animation-delay: ${c.delay}`}>{c.shots.map((shot) => <img src={`${img}/${shot.src}`} alt={shot.alt} width={shot.width} height={shot.height} loading="lazy" decoding="async" style="display: block; width: 100%; height: auto" />)}</span>
+<span class="scroll-col" style={`display: block; animation-duration: ${scrollDur(c.shots)}; animation-delay: ${c.delay}`}>{c.shots.map((shot) => <img src={`${img}/${shot.src}`} alt={shot.alt} width={shot.width} height={shot.height} loading="lazy" decoding="async" style="display: block; width: 100%; height: auto" />)}</span>
 </span>
 </a>
 <span class="made"><span class="sr-only">We designed: </span>{c.made.join(" · ")}</span>
