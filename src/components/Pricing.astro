@@ -1,7 +1,7 @@
 ---
 // Prices live in src/lib/pricing.ts so the packages, quote builder and quick jobs always agree.
 import {
-  FOUNDING_DISCOUNT_RATE, FOUNDING_ACTIVE, FOUNDING_ENDS_LABEL, PRICE_NOTE, tiers, carePlan, webAddress, lowestQuickJobPrice, aud, founding,
+  FOUNDING_DISCOUNT_RATE, FOUNDING_ACTIVE, FOUNDING_ENDS, FOUNDING_ENDS_LABEL, PRICE_NOTE, tiers, carePlan, webAddress, lowestQuickJobPrice, aud, founding,
 } from "../lib/pricing";
 import QuoteBuilder from "./QuoteBuilder.astro";
 
@@ -30,11 +30,20 @@ const startTier = tiers.find((t) => t.feature) ?? tiers[0];
 </div>
 
 {FOUNDING_ACTIVE && (
-<div class="founding" style="position: relative; overflow: hidden; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; padding: 22px 28px; border-radius: 20px; background: #2f1147; color: #f3eefa; margin-bottom: 28px">
-<span style="font-family: 'Fraunces', serif; font-size: 2.4rem; font-weight: 600; line-height: 1; color: #ffffff; letter-spacing: -0.02em">{Math.round((1 - FOUNDING_DISCOUNT_RATE) * 100)}% off</span>
-<div style="display: flex; flex-direction: column; gap: 2px; flex: 1 1 360px">
+<div class="founding" data-offer style="position: relative; overflow: hidden; display: flex; flex-wrap: wrap; align-items: center; gap: 18px 32px; padding: 26px 28px; border-radius: 20px; background: #2f1147; color: #f3eefa; margin-bottom: 28px">
+<span class="founding-off" style="font-family: 'Fraunces', serif; font-size: 2.6rem; font-weight: 600; line-height: 1; color: #ffffff; letter-spacing: -0.02em">{Math.round((1 - FOUNDING_DISCOUNT_RATE) * 100)}% off</span>
+<div style="display: flex; flex-direction: column; gap: 4px; flex: 1 1 320px">
 <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #d8bff0"><span class="live-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #7cd68c"></span>Founding client offer</span>
-<p style="font-size: 0.96rem; color: #f3eefa">Every website package, for quotes accepted by {FOUNDING_ENDS_LABEL} — plus priority turnaround and a real say in how it turns out. The crossed-out price is our standard price, which applies after the offer ends.</p>
+<p style="font-size: 0.96rem; color: #f3eefa">Every website package, for quotes accepted by <strong style="color: #ffffff">11:59pm {FOUNDING_ENDS_LABEL}</strong> (Sydney time) — plus priority turnaround and a real say in how it turns out. The crossed-out price is our standard price, which applies after the offer ends.</p>
+</div>
+<div class="cd-wrap">
+<span class="cd-label">Offer ends in</span>
+<div class="cd-boxes" aria-hidden="true" data-countdown={FOUNDING_ENDS.toISOString()}>
+<span class="cd-box"><span class="cd-num" data-cd="d">–</span><span class="cd-unit">Days</span></span>
+<span class="cd-box"><span class="cd-num" data-cd="h">–</span><span class="cd-unit">Hours</span></span>
+<span class="cd-box"><span class="cd-num" data-cd="m">–</span><span class="cd-unit">Mins</span></span>
+<span class="cd-box"><span class="cd-num" data-cd="s">–</span><span class="cd-unit">Secs</span></span>
+</div>
 </div>
 </div>
 )}
@@ -248,6 +257,9 @@ const startTier = tiers.find((t) => t.feature) ?? tiers[0];
 
 <script>
   import { animate, inView } from "motion";
+  import { startCountdowns } from "../lib/countdown";
+
+  startCountdowns();
 
   const aud = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
 
