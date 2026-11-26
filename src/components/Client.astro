@@ -5,7 +5,6 @@ const img = `${base}/previews`;
 // Add a client = add one entry here. Layout follows the count:
 // 1 → single centred, 2 → two centred, 3 → row with the middle one raised,
 // 4+ → swipeable track, three per view, with arrows and dots.
-// `dur`/`delay` set the phone screenshot's auto-scroll speed and offset.
 // `palette` and `fonts` are the client's brand, shown under the blurb; `made` is what we
 // designed for them, shown as a badge on the phone.
 const clients = [
@@ -15,7 +14,6 @@ const clients = [
     blurb: "Prices, WhatsApp sign-up, Friday check-ins and a private coach dashboard.",
     href: "https://www.jpicklesfitnesscoaching.com",
     linkLabel: "Visit the live site",
-    delay: "-2s",
     palette: ["#0C0C0D", "#F4F1EA", "#C9A45C", "#A9A59D"],
     fonts: "Bodoni Moda + Hanken Grotesk",
     made: ["Brand", "Website"],
@@ -27,7 +25,6 @@ const clients = [
     blurb: "A launch site for a new house and pet sitting platform, with an early-access waitlist.",
     href: "https://www.myahsits.com/callumandniamh",
     linkLabel: "See Callum & Niamh's page",
-    delay: "-4s",
     palette: ["#2C1A0E", "#FAF6EE", "#2F5D45", "#C4AB8A"],
     fonts: "Marcellus + Montserrat",
     made: ["Logo", "Brand", "Website"],
@@ -39,7 +36,6 @@ const clients = [
     blurb: "A full menu, live pricing and an order builder, in Indonesian and English.",
     href: "https://www.nir-ma-ta.com",
     linkLabel: "Visit nir-ma-ta.com",
-    delay: "0s",
     palette: ["#EE1C25", "#121212", "#FFFFFF", "#F0F0F0"],
     fonts: "Archivo Black + Work Sans",
     made: ["Brand", "Website"],
@@ -54,7 +50,6 @@ const clients = [
     blurb: "Rebuilt from a dated Wix template: recent work, clear prices and one-tap booking.",
     href: "https://www.nigelshairdressingwiganandrochdale.com",
     linkLabel: "Visit the live site",
-    delay: "0s",
     palette: ["#2A1A14", "#F7F0E6", "#EFC3B0", "#C98B5A"],
     fonts: "Gloock + Hanken Grotesk",
     made: ["Logo", "Brand", "Website"],
@@ -66,7 +61,6 @@ const clients = [
     blurb: "A coming-soon site collecting priority access ahead of the first collection.",
     href: "https://rochses.com",
     linkLabel: "Preview rochses.com",
-    delay: "-6s",
     palette: ["#F3EFE7", "#CBC2B2", "#8B7765", "#46403A"],
     fonts: "Cormorant Garamond + Inter",
     made: ["Logo", "Brand", "Website"],
@@ -76,17 +70,6 @@ const clients = [
     ],
   },
 ];
-
-// Auto-scroll speed: every phone scrolls at the same calm reading pace, so a long page takes
-// longer rather than racing past. The scroll down is 38% of each loop (see cg-autoscroll in
-// home.css); the rest is pausing at the top and bottom and scrolling back.
-const SCREEN_W = 256; // phone screen width on desktop (276px device minus padding)
-const SCREEN_H = 540; // visible screen height on desktop
-const PACE = 70; // px a second while scrolling down
-const scrollDur = (shots: { width: number; height: number }[]) => {
-  const pageH = shots.reduce((sum, s) => sum + (SCREEN_W * s.height) / s.width, 0);
-  return `${Math.max(20, Math.round(Math.max(0, pageH - SCREEN_H) / PACE / 0.38))}s`;
-};
 
 const n = clients.length;
 const track = n > 3;
@@ -124,7 +107,7 @@ const Sub = Heading === "h1" ? "h2" : "h3";
 <a href={c.href} target="_blank" rel="noopener" class="device" aria-label={`Visit ${c.name}`} style="display: block; width: 276px; max-width: 100%; padding: 10px; border-radius: 46px; background: #14111a; box-shadow: 0 50px 80px -40px rgba(47,17,71,0.45), inset 0 0 0 1px rgba(255,255,255,0.08)">
 <span style="position: relative; display: block; height: 540px; border-radius: 36px; overflow: hidden; background: #ffffff">
 <span aria-hidden="true" style="position: absolute; z-index: 2; top: 10px; left: 50%; width: 84px; height: 24px; margin-left: -42px; border-radius: 999px; background: #14111a"></span>
-<span class="scroll-col" style={`display: block; animation-duration: ${scrollDur(c.shots)}; animation-delay: ${c.delay}`}>{c.shots.map((shot) => <img src={`${img}/${shot.src}`} alt={shot.alt} width={shot.width} height={shot.height} loading="lazy" decoding="async" style="display: block; width: 100%; height: auto" />)}</span>
+<span class="scroll-col" style="display: block">{c.shots.map((shot) => <img src={`${img}/${shot.src}`} alt={shot.alt} width={shot.width} height={shot.height} loading="lazy" decoding="async" style="display: block; width: 100%; height: auto" />)}</span>
 </span>
 </a>
 <span class="made"><span class="sr-only">We designed: </span>{c.made.join(" · ")}</span>
@@ -321,4 +304,61 @@ const Sub = Heading === "h1" ? "h2" : "h3";
       }, { amount: 1 });
     });
   }
+</script>
+
+<script>
+  // Auto-scroll: every phone starts at the top at the same moment and scrolls down at the same
+  // steady speed. Shorter pages wait at the bottom until the longest one gets there, then they all
+  // glide back to the top together and go again. Hovering a phone pauses just that one.
+  // Distances are measured from the real layout, so the speed matches at every screen size.
+  import { animate } from "motion";
+
+  const PACE = 70; // px a second while scrolling down (on a 540px-tall screen; smaller phones scale it)
+  const START = 2; // s at the top before scrolling
+  const HOLD = 2; // s at the bottom once the longest page arrives
+  const BACK = 2.5; // s to glide back to the top
+
+  const cols = Array.from(document.querySelectorAll<HTMLElement>("#client .scroll-col"));
+  let runs: ReturnType<typeof animate>[] = [];
+
+  function start() {
+    runs.forEach((r) => r.stop());
+    if (!cols.length) return;
+    const win = cols[0].parentElement!.clientHeight;
+    const pace = PACE * (win / 540);
+    const dists = cols.map((c) => Math.max(0, c.offsetHeight - c.parentElement!.clientHeight));
+    const times = dists.map((d) => d / pace);
+    const loop = START + Math.max(...times) + HOLD + BACK;
+    runs = cols.map((col, i) => {
+      const down = (START + times[i]) / loop;
+      return animate(
+        col,
+        { y: [0, 0, -dists[i], -dists[i], 0] },
+        {
+          duration: loop,
+          times: [0, START / loop, down, (loop - BACK) / loop, 1],
+          ease: ["linear", "linear", "linear", [0.65, 0, 0.35, 1]],
+          repeat: Infinity,
+        }
+      );
+    });
+    cols.forEach((col, i) => {
+      const device = col.closest<HTMLElement>(".device");
+      if (!device || device.dataset.hoverPause) return;
+      device.dataset.hoverPause = "1";
+      device.addEventListener("pointerenter", (e) => e.pointerType === "mouse" && runs[i]?.pause());
+      device.addEventListener("pointerleave", (e) => e.pointerType === "mouse" && runs[i]?.play());
+    });
+  }
+
+  start();
+  // Phone sizes change at a few breakpoints: restart in step when the layout changes width.
+  let lastW = window.innerWidth;
+  let t: number | undefined;
+  window.addEventListener("resize", () => {
+    if (window.innerWidth === lastW) return; // ignore iOS address-bar height changes
+    lastW = window.innerWidth;
+    clearTimeout(t);
+    t = window.setTimeout(start, 200);
+  });
 </script>
