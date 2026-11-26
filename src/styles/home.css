@@ -238,6 +238,12 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg #hero .btn{min-height:50px !important;padding:0 22px !important;font-size:.95rem !important}
 .cg #hero .fade[style*="margin-bottom: 44px"]{margin-bottom:28px !important}
 .cg #hero .hero-badge{margin-bottom:18px !important}
+/* J.Pickles showcase sits inside the page margins: the phone overlaps the laptop, not the screen edge */
+.cg #hero .hero-visual{padding:12px 0 28px 36px !important;max-width:440px !important;margin:0 auto}
+.cg #hero .hero-visual .phone{left:0 !important;width:112px !important;border-radius:20px !important;padding:5px !important}
+.cg #hero .hero-visual .phone > div{border-radius:15px !important}
+.cg #hero .browser-bar{padding:5px 8px !important}
+.cg #hero .browser-bar > span:last-child{margin:0 10px !important;font-size:.5rem !important;padding:2px 6px !important}
 .cg h2:not(.sub-h){font-size:1.85rem !important;line-height:1.06 !important}
 .cg .eyebrow{font-size:.7rem}
 .cg section .wrap > div:first-child[style*="margin-bottom"]{margin-bottom:24px !important;gap:10px !important}

@@ -28,7 +28,7 @@ export function startCountdowns() {
     }
     const s = Math.floor(left / 1000);
     const parts: Record<string, string> = {
-      d: String(Math.floor(s / 86400)),
+      d: pad(Math.floor(s / 86400)),
       h: pad(Math.floor((s % 86400) / 3600)),
       m: pad(Math.floor((s % 3600) / 60)),
       s: pad(s % 60),

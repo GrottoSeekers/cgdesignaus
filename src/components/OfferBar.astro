@@ -75,16 +75,20 @@ const onPricing = Astro.url.pathname.replace(/\/$/, "") === `${base}/pricing`;
   .ob-time { display: inline-flex; align-items: baseline; gap: 6px; }
   .ob-time > [data-countdown] { display: inline-flex; align-items: baseline; gap: 5px; }
   .ob-ends { color: rgba(243, 238, 250, 0.7); }
+  /* Fixed-size boxes so the bar keeps its exact shape as the numbers tick. */
   .ob-n {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 3.4em;
+    text-align: center;
     font-weight: 800;
     color: #ffffff;
     font-variant-numeric: tabular-nums;
-    padding: 2px 6px;
+    padding: 2px 0;
     border-radius: 6px;
     background: rgba(255, 255, 255, 0.09);
   }
-  .ob-n [data-cd] { display: inline-block; min-width: 2ch; text-align: right; }
-  .ob-n [data-cd="d"] { min-width: 0; }
+  .ob-n [data-cd] { display: inline-block; width: 1.3em; text-align: right; }
   .ob-short { display: none; }
   .ob-cta {
     display: inline-flex;
@@ -102,7 +106,7 @@ const onPricing = Astro.url.pathname.replace(/\/$/, "") === `${base}/pricing`;
     .ob-tag, .ob-sep, .ob-cta, .ob-long { display: none; }
     .ob-short { display: inline; }
     .ob-time, .ob-time > [data-countdown] { gap: 3px; }
-    .ob-n { padding: 1px 5px; }
+    .ob-n { padding: 1px 0; }
   }
   @media (max-width: 370px) {
     .ob-ends { display: none; }
