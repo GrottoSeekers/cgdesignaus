@@ -71,9 +71,8 @@ a{color:#5b2695}a:hover{color:#2f1147}
 .cg #pricing .tiers > div,.cg #process .steps > div{transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s}
 @media (hover:hover){.cg #pricing .tiers > div:hover,.cg #process .steps > div:hover{transform:translateY(-6px);box-shadow:0 30px 56px -30px rgba(20,17,26,.45)}}
 /* work showcase: phones auto-scroll through each live site */
-@keyframes cg-autoscroll{0%,8%{transform:translateY(0)}46%,54%{transform:translateY(calc(-100% + 540px))}92%,100%{transform:translateY(0)}}
-.cg .scroll-col{animation:cg-autoscroll 22s cubic-bezier(.45,0,.55,1) infinite;will-change:transform}
-@media (hover:hover){.cg .device:hover .scroll-col{animation-play-state:paused}}
+/* work phones auto-scroll: driven by the script in Client.astro (all in step, same speed) */
+.cg .scroll-col{will-change:transform}
 .cg .device{transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s}
 @media (hover:hover){.cg .device:hover{transform:translateY(-8px);box-shadow:0 60px 90px -40px rgba(47,17,71,.55)}}
 .cg .work-card a.visit{display:inline-flex;align-items:center;gap:7px;min-height:44px;font-weight:700;font-size:.9rem;color:#5b2695;text-decoration:none;transition:gap .25s}
@@ -396,9 +395,6 @@ html{scroll-padding-top:122px}
 .cg .faq-item:active{transform:scale(.99)}
 .cg .way:active .way-icon,.cg .perk:active .perk-icon{background:#2f1147;color:#fff}
 }
-/* phone screens are 430px tall, so the auto-scroll reaches the true bottom of each site */
-@keyframes cg-autoscroll-sm{0%,8%{transform:translateY(0)}46%,54%{transform:translateY(calc(-100% + 430px))}92%,100%{transform:translateY(0)}}
-@media (max-width:640px){.cg #client .scroll-col{animation-name:cg-autoscroll-sm}}
 /* hero mockups wait until they scroll into view on phones (script adds .hold only when they start below the fold).
    The animations are left off and then start fresh: iOS Safari doesn't reliably resume a paused transform animation. */
 .cg .hero-visual.hold .browser{animation:none;opacity:0}
