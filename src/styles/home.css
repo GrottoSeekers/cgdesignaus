@@ -31,11 +31,16 @@ a{color:#5b2695}a:hover{color:#2f1147}
 @keyframes cg-shine{0%,60%{transform:translateX(-120%) skewX(-20deg)}100%{transform:translateX(220%) skewX(-20deg)}}
 @keyframes cg-pulse{0%{box-shadow:0 0 0 0 rgba(124,214,140,.6)}100%{box-shadow:0 0 0 10px rgba(124,214,140,0)}}
 @keyframes cg-scroll-dot{0%{transform:translateY(0);opacity:1}80%{transform:translateY(12px);opacity:0}100%{opacity:0}}
-/* Nigel's hair strands (same paths/timing as the live site): draw in on first load, then sway */
-@keyframes nigel-draw{to{stroke-dashoffset:0}}
-@keyframes nigel-sway{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-2%) rotate(-1.2deg)}}
-.cg .nigel-strands{position:absolute;pointer-events:none;overflow:visible;transform-origin:70% 50%;animation:nigel-sway 9s ease-in-out infinite}
-.cg .nigel-strands path{animation:nigel-draw 3.2s cubic-bezier(.65,0,.35,1) forwards}
+/* J.Pickles speed lines (src/components/JPicklesLines.astro): fade in once the mockup has tilted in, then
+   streak right to left behind his photo for good, like the live site. Each line is a full-width track that
+   slides from off the right edge until its streak (--l wide) has left on the left. */
+@keyframes jp-in{from{opacity:0}to{opacity:1}}
+@keyframes jp-streak{from{transform:translateX(100%)}to{transform:translateX(calc(var(--l) * -1))}}
+.cg .jp-lines{position:absolute;overflow:hidden;pointer-events:none;mix-blend-mode:screen;animation:jp-in 1.6s cubic-bezier(.16,1,.3,1) both}
+.cg .jp-line{position:absolute;left:0;width:100%;animation:jp-streak linear infinite;will-change:transform}
+.cg .jp-line i{position:absolute;left:0;top:0;height:100%;border-radius:2px;background:linear-gradient(90deg,rgba(244,241,234,0),#f4f1ea 3%,rgba(244,241,234,.55) 30%,rgba(244,241,234,0))}
+.cg .jp-line.gold i{background:linear-gradient(90deg,rgba(201,164,92,0),#c9a45c 3%,rgba(201,164,92,.55) 30%,rgba(201,164,92,0))}
+.cg .jp-photo{position:absolute;display:block;max-width:none;border-radius:1.4%/1.15%}
 @keyframes cg-badge-sheen{0%{transform:translateX(-120%) skewX(-20deg)}100%{transform:translateX(420%) skewX(-20deg)}}
 @media (max-width:560px){.cg .hero-badge{font-size:.66rem !important;letter-spacing:.1em !important;gap:9px !important;white-space:nowrap;padding:7px 14px 7px 10px !important}.cg .hero-stat{font-size:1.5rem !important;white-space:nowrap}}
 .cg .hero-badge::after{content:"";position:absolute;top:0;left:0;width:25%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);animation:cg-badge-sheen 1.6s .9s cubic-bezier(.65,0,.35,1) both}
@@ -334,23 +339,11 @@ a{color:#5b2695}a:hover{color:#2f1147}
 }
 /* section nav rail (kept from the live site) */
 /* over the dark hero/footer the rail flips to white so it stays visible */
-/* Reduce Motion (often switched on to save battery): swap movement for dissolves, as iOS itself does.
-   Fades, line draws, the price count-down and scroll-linked fills stay, and so do three small, contained
-   effects: the light sweep on the hero button and the work screens scrolling inside their phone
-   frames (they pause on hover, and showing the client sites is the point of the section). The services
-   strip under the hero, drifting glows, floating and tilting mockups and slide-ins all stop.
-   Everything ends fully visible. */
+/* Reduce Motion: the owner wants every animation to play for everyone, including phones with Reduce Motion
+   switched on (often done to save battery), so there are no reduced-motion overrides on this site.
+   prefersReducedMotion() in src/lib/motion-utils.js always answers false for the same reason. */
 @keyframes cg-fade{from{opacity:0}to{opacity:1}}
-@media (prefers-reduced-motion: reduce){
-.cg .marquee-track,.cg .blob-a,.cg .blob-b,.cg .blob-c,.cg .hero-dark .bob,.cg .hero-dark .phone,.cg .nigel-strands,.cg .ba-frame.auto .ba-before,.cg .ba-frame.auto .ba-handle,.cg .ba-arrow,.cg .tier-feature::before,.cg .step-node-final,.cg .founding::after,.cg .hero-dark .scroll-dot{animation:none !important}
-.cg .site-header,.cg .hero-dark .line > span,.cg .hero-dark .fade,.cg .hero-dark .browser,.cg section.landed .eyebrow,.cg section.landed h2:not(.sub-h),.cg .hero-dark .browser{transform:none !important}
-.cg section.landed .eyebrow::before{animation:none !important}
-.cg *,.cg *::before,.cg *::after{transition-property:opacity,color,background-color,border-color,box-shadow,grid-template-rows !important}
-.cg .rv,.cg .rv.rv-x{transform:none !important}
-.cg .ticks.pre .tick{transform:none !important}
-.cg .tiers.pre.go .rrp::after{transition-property:transform !important}
-.cg .timeline-fill{transition:none !important}
-}
+
 
 :root{color-scheme:light}
 html{scroll-behavior:auto}
@@ -383,7 +376,7 @@ body{margin:0;background:#ffffff}
 .cg :focus-visible{outline:2px solid #2f1147;outline-offset:3px;border-radius:4px}
 .cg .hero-dark :focus-visible,.cg .site-footer :focus-visible{outline-color:#d8bff0}
 .cg .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-html{scroll-padding-top:78px}
+html{scroll-padding-top:122px}
 /* the FAQ intro only sticks beside the questions; once the columns stack (<920px) it would slide over them */
 @media (max-width:919px){.cg .faq-intro{position:static !important}}
 
@@ -403,7 +396,7 @@ html{scroll-padding-top:78px}
 /* hero mockups wait until they scroll into view on phones (script adds .hold only when they start below the fold).
    The animations are left off and then start fresh: iOS Safari doesn't reliably resume a paused transform animation. */
 .cg .hero-visual.hold .browser{animation:none;opacity:0}
-.cg .hero-visual.hold .nigel-strands path{animation:none}
+.cg .hero-visual.hold .jp-lines{animation:none;opacity:0}
 /* each phone screen gets its own layer so iOS Safari clips the auto-scrolling screenshot to the rounded screen */
 .cg #client .device > span{-webkit-transform:translateZ(0);transform:translateZ(0);isolation:isolate}
 
@@ -415,10 +408,19 @@ html{scroll-padding-top:78px}
 ::view-transition-new(root){animation:cg-vt-in .42s cubic-bezier(.16,1,.3,1) both}
 @keyframes cg-vt-out{to{opacity:0}}
 @keyframes cg-vt-in{from{opacity:0;transform:translateY(14px)}}
-@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+
 
 /* "Skip to content": hidden until a keyboard user presses Tab, then shown top-left. */
 .skip-link{position:absolute;left:12px;top:-100px;z-index:1000;padding:12px 18px;border-radius:12px;background:#2f1147;color:#fff;font-weight:700;text-decoration:none}
 .skip-link:focus{top:12px}
 #main:focus{outline:none}
 .cg section[tabindex="-1"]:focus{outline:none}
+
+/* founding offer countdown on the pricing page (numbers set by src/lib/countdown.ts) */
+.cg .cd-wrap{display:flex;flex-direction:column;gap:8px;flex:0 0 auto}
+.cg .cd-label{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#d8bff0}
+.cg .cd-boxes{display:flex;gap:8px}
+.cg .cd-box{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:64px;padding:10px 6px 8px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(216,191,240,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.cg .cd-num{display:block;font-family:"Fraunces",Georgia,serif;font-size:1.9rem;font-weight:600;line-height:1;color:#fff;font-variant-numeric:tabular-nums}
+.cg .cd-unit{margin-top:5px;font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(243,238,250,.62)}
+@media (max-width:560px){.cg .cd-wrap{flex:1 1 100%}.cg .cd-boxes{gap:6px}.cg .cd-box{flex:1;min-width:0;padding:8px 4px 6px;border-radius:12px}.cg .cd-num{font-size:1.45rem}.cg .cd-unit{font-size:.56rem}}

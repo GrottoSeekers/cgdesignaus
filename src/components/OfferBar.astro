@@ -1,0 +1,115 @@
+---
+// Slim bar across the top of the sticky header on every page, so it stays in view as you scroll, while the founding client offer runs, with a live
+// countdown to its end. It disappears by itself when the offer ends (see src/lib/countdown.ts).
+import { FOUNDING_ACTIVE, FOUNDING_ENDS, FOUNDING_ENDS_LABEL, FOUNDING_DISCOUNT_RATE } from "../lib/pricing";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const off = Math.round((1 - FOUNDING_DISCOUNT_RATE) * 100);
+const onPricing = Astro.url.pathname.replace(/\/$/, "") === `${base}/pricing`;
+---
+
+{FOUNDING_ACTIVE && (
+<a href={onPricing ? "#pricing" : `${base}/pricing/`} class="offer-bar" data-offer>
+  <span class="ob-tag"><span class="ob-dot" aria-hidden="true"></span>Founding clients</span>
+  <span class="ob-text"><strong>{off}% off</strong><span class="ob-long"> every website package</span><span class="ob-short"> websites</span></span>
+  <span class="ob-sep" aria-hidden="true"></span>
+  <span class="ob-time">
+    <span class="sr-only">Offer ends {FOUNDING_ENDS_LABEL}.</span>
+    <span aria-hidden="true" data-countdown={FOUNDING_ENDS.toISOString()}>
+      <span class="ob-ends">Ends in</span>
+      <span class="ob-n"><span data-cd="d">–</span>d</span>
+      <span class="ob-n"><span data-cd="h">–</span>h</span>
+      <span class="ob-n"><span data-cd="m">–</span>m</span>
+      <span class="ob-n ob-s"><span data-cd="s">–</span>s</span>
+    </span>
+  </span>
+  <span class="ob-cta">See prices <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+</a>
+)}
+
+<style>
+  .offer-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    min-height: 42px;
+    padding: 8px 16px;
+    box-sizing: border-box;
+    background: linear-gradient(90deg, #12071c, #2f1147 40%, #2f1147 60%, #12071c);
+    color: #f3eefa;
+    font-size: 0.84rem;
+    line-height: 1.3;
+    text-decoration: none;
+    text-align: center;
+    overflow: hidden;
+  }
+  .offer-bar:hover { color: #ffffff; }
+  .offer-bar::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 22%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: ob-sheen 6s 1.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes ob-sheen { 0% { transform: translateX(-120%) } 40%, 100% { transform: translateX(560%) } }
+  @keyframes ob-pulse { 0% { box-shadow: 0 0 0 0 rgba(124, 214, 140, 0.6) } 100% { box-shadow: 0 0 0 7px rgba(124, 214, 140, 0) } }
+
+  .ob-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: #d8bff0;
+  }
+  .ob-dot { width: 7px; height: 7px; border-radius: 50%; background: #7cd68c; animation: ob-pulse 1.8s ease-out infinite; }
+  .ob-text strong { color: #ffffff; font-weight: 800; }
+  .ob-sep { width: 1px; height: 14px; background: rgba(216, 191, 240, 0.3); }
+  .ob-time { display: inline-flex; align-items: baseline; gap: 6px; }
+  .ob-time > [data-countdown] { display: inline-flex; align-items: baseline; gap: 5px; }
+  .ob-ends { color: rgba(243, 238, 250, 0.7); }
+  .ob-n {
+    font-weight: 800;
+    color: #ffffff;
+    font-variant-numeric: tabular-nums;
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.09);
+  }
+  .ob-n [data-cd] { display: inline-block; min-width: 2ch; text-align: right; }
+  .ob-n [data-cd="d"] { min-width: 0; }
+  .ob-short { display: none; }
+  .ob-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 700;
+    color: #d8bff0;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(216, 191, 240, 0.4);
+  }
+
+  @media (max-width: 760px) {
+    .offer-bar { flex-wrap: nowrap; gap: 8px; min-height: 36px; font-size: 0.76rem; padding: 6px 10px; white-space: nowrap; }
+    .ob-tag, .ob-sep, .ob-cta, .ob-long { display: none; }
+    .ob-short { display: inline; }
+    .ob-time, .ob-time > [data-countdown] { gap: 3px; }
+    .ob-n { padding: 1px 5px; }
+  }
+  @media (max-width: 370px) {
+    .ob-ends { display: none; }
+  }
+</style>
+
+<script>
+  import { startCountdowns } from "../lib/countdown";
+  startCountdowns();
+</script>

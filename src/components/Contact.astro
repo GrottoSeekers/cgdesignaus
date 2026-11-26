@@ -265,12 +265,7 @@ const nextSteps = [
     margin-bottom: 18px;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .success-icon-circle,
-    .success-icon-check {
-      stroke-dashoffset: 0;
-    }
-  }
+  
 </style>
 
 <script>
@@ -411,7 +406,7 @@ const nextSteps = [
           // The form disappears, so the page gets shorter; bring the thank-you message
           // into view instead of leaving the visitor looking at the footer.
           requestAnimationFrame(() => {
-            const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            const reduce = false; // every animation plays, Reduce Motion or not (see home.css)
             successPanel.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
             successPanel.focus({ preventScroll: true });
           });

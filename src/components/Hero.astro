@@ -1,6 +1,6 @@
 ---
-import NigelStrands from "./NigelStrands.astro";
-import { aud, lowestPackagePrice } from "../lib/pricing";
+import JPicklesLines from "./JPicklesLines.astro";
+import { aud, lowestPackagePrice, FOUNDING_ACTIVE, BASE_PRICE } from "../lib/pricing";
 import { GOOGLE_PROFILE_URL, GOOGLE_RATING } from "../lib/business";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -29,7 +29,6 @@ const services = [
 <div class="wrap" style="position: relative; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr)); gap: 64px; align-items: center; padding-bottom: 88px">
 <div>
 <span class="fade hero-badge" style="position: relative; display: inline-flex; align-items: center; gap: 12px; padding: 8px 18px 8px 12px; border-radius: 999px; background: linear-gradient(rgba(29,15,43,0.85), rgba(29,15,43,0.85)) padding-box, linear-gradient(120deg, rgba(216,191,240,0.55), rgba(124,79,199,0.15) 45%, rgba(216,191,240,0.4)) border-box; border: 1px solid transparent; box-shadow: 0 10px 30px -14px rgba(124,79,199,0.7), inset 0 1px 0 rgba(255,255,255,0.06); font-size: 0.76rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #e9dcfa; margin-bottom: 28px; overflow: hidden; animation-delay: 0.05s">
-<span class="live-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #7cd68c; flex-shrink: 0"></span>
 <span>Web design studio</span>
 <span aria-hidden="true" style="width: 1px; height: 12px; background: rgba(216,191,240,0.3)"></span>
 <span style="color: rgba(233,220,250,0.7)">Sydney, Australia</span>
@@ -40,7 +39,7 @@ const services = [
 <span class="line" style="position: relative; padding-bottom: 0.18em"><span style="animation-delay: 0.41s"><em class="shimmer" style="font-style: italic; font-weight: 600">under a week.</em></span>
 <svg class="underline" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true" style="position: absolute; left: 0; bottom: 0; width: min(100%, 9.2em); height: 0.22em; overflow: visible"><path d="M4 16 C 90 4, 200 4, 396 12" fill="none" stroke="#b58cf0" stroke-width="5" stroke-linecap="round"></path></svg></span>
 </h1>
-<p class="fade" style="font-size: 1.22rem; color: rgba(243,238,250,0.76); max-width: 30em; margin-bottom: 36px; animation-delay: 0.6s">Fast, mobile-first websites and branding for local businesses, <strong style="color: #ffffff; font-weight: 700; white-space: nowrap">from {aud(lowestPackagePrice)}.</strong></p>
+<p class="fade" style="font-size: 1.22rem; color: rgba(243,238,250,0.76); max-width: 30em; margin-bottom: 36px; animation-delay: 0.6s">Fast, mobile-first websites and branding for local businesses, <strong style="color: #ffffff; font-weight: 700; white-space: nowrap">from {FOUNDING_ACTIVE && <><s style="color: rgba(243,238,250,0.5); font-weight: 600; text-decoration-thickness: 2px"><span class="sr-only">usually </span>{aud(BASE_PRICE)}</s> </>}{aud(lowestPackagePrice)}.</strong>{FOUNDING_ACTIVE && <span data-offer style="color: #d8bff0"> Founding client price, for a limited time.</span>}</p>
 <div class="fade" style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 44px; animation-delay: 0.72s">
 <a href={`${base}/contact/`} class="btn btn-glow" data-magnetic style="min-height: 56px; padding: 0 32px; font-size: 1rem">Get your free business check <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
 <a href="#client" class="btn btn-line" style="min-height: 56px; padding: 0 30px; font-size: 1rem">See our work</a>
@@ -56,18 +55,18 @@ const services = [
 <div class="browser" style="border-radius: 20px; overflow: hidden; border: 1px solid rgba(243,238,250,0.18); background: #1d0f2b; box-shadow: 0 60px 120px -40px rgba(0,0,0,0.8), 0 0 0 1px rgba(181,140,240,0.08), 0 0 80px -20px rgba(124,79,199,0.6)">
 <div style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: rgba(255,255,255,0.06); border-bottom: 1px solid rgba(243,238,250,0.08)">
 <span style="display: flex; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 50%; background: #ff5f57"></span><span style="width: 10px; height: 10px; border-radius: 50%; background: #febc2e"></span><span style="width: 10px; height: 10px; border-radius: 50%; background: #28c840"></span></span>
-<span style="flex: 1; margin: 0 24px; padding: 5px 10px; border-radius: 8px; background: rgba(255,255,255,0.07); text-align: center; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.03em; color: rgba(243,238,250,0.6); overflow: hidden; text-overflow: ellipsis; white-space: nowrap">nigelshairdressingwiganandrochdale.com</span>
+<span style="flex: 1; margin: 0 24px; padding: 5px 10px; border-radius: 8px; background: rgba(255,255,255,0.07); text-align: center; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.03em; color: rgba(243,238,250,0.6); overflow: hidden; text-overflow: ellipsis; white-space: nowrap">jpicklesfitnesscoaching.com</span>
 </div>
 <div style="position: relative; overflow: hidden; line-height: 0">
-<img src={`${img}/nigels-desktop-base.webp`} width="1120" height="680" fetchpriority="high" alt="Nigel's Hairdressing homepage: 'Beautiful hair, done at home.'" style="display: block; width: 100%; height: auto">
-<NigelStrands box={{ left: 42, top: 9.382, width: 58, height: 70.977 }} delay={0.9} />
+<img src={`${img}/jpickles-desktop-base.webp`} width="1120" height="680" fetchpriority="high" alt="J.Pickles Coaching homepage: 'Get strong. Run faster.'" style="display: block; width: 100%; height: auto">
+<JPicklesLines area={{ left: 0, top: 0, width: 100, height: 100 }} photo={{ src: `${img}/jpickles-desktop-photo.webp`, w: 418, h: 523, left: 59.089, top: 18.125, width: 37.34, height: 76.875 }} heroWidth={1120} count={30} seed={7} delay={0.9} />
 </div>
 </div>
 </div>
 <div class="phone" style="position: absolute; bottom: 0; left: -18px; width: 128px; padding: 6px; border-radius: 24px; background: #0b0512; border: 1px solid rgba(243,238,250,0.2); box-shadow: 0 40px 60px -24px rgba(0,0,0,0.8)">
 <div style="position: relative; overflow: hidden; border-radius: 18px; line-height: 0">
-<img src={`${img}/nigels-hero-base.webp`} width="760" height="1652" alt="Nigel's Hairdressing on a phone" style="display: block; width: 100%; height: auto">
-<NigelStrands box={{ left: 0, top: 8.2324, width: 100, height: 36.3196 }} delay={1.3} />
+<img src={`${img}/jpickles-hero-base.webp`} width="760" height="1404" alt="J.Pickles Coaching on a phone" style="display: block; width: 100%; height: auto">
+<JPicklesLines area={{ left: 0, top: 0, width: 100, height: 93.572 }} photo={{ src: `${img}/jpickles-hero-photo.webp`, w: 348, h: 264, left: 4.2105, top: 10.2564, width: 91.579, height: 37.651 }} heroWidth={380} count={16} seed={21} delay={1.3} />
 </div>
 </div>
 </div>
