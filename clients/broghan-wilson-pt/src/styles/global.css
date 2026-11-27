@@ -1330,3 +1330,9 @@ details[open] .plus {
 @media (max-width: 420px) {
   .proof .by { display: none; }
 }
+
+/* ---------- A/B variant: call box above the plans ---------- */
+.free-call-first {
+  margin: 0 auto 40px;
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line-2));
+}

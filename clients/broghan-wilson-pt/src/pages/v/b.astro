@@ -1,0 +1,8 @@
+---
+// Variant B. Visitors never see this URL: middleware.ts serves it at "/" to the
+// half of visitors in group B. Marked noindex, canonical points at "/".
+// Edit what B changes in src/ab-test.config.ts, not here.
+import SalesPage from "../../components/SalesPage.astro";
+---
+
+<SalesPage variant="b" />

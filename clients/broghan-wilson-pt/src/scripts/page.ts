@@ -28,6 +28,7 @@ import {
   utils,
 } from "animejs";
 import { animate, hover, inView, press, scroll } from "motion";
+import { initTracking, trackEvent } from "./track";
 
 declare global {
   interface Window {
@@ -56,6 +57,8 @@ const safe = (name: string, fn: () => void, reveal?: string) => {
 
 window.__bwReady = true;
 
+safe("tracking", initTracking);
+
 // ---------------------------------------------------------------------------
 // Videos (VSL + client videos): click-to-load so the page stays fast until
 // someone presses play.
@@ -70,6 +73,7 @@ safe("videos", () => {
       return;
     }
     btn.addEventListener("click", () => {
+      if (frame.classList.contains("vsl-frame")) trackEvent("vsl_play", { where: "hero" });
       if (type === "youtube" || type === "vimeo") {
         const iframe = document.createElement("iframe");
         iframe.src = embed || "";

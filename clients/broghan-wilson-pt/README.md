@@ -51,6 +51,74 @@ Broghan's own draft at broghanwilson.com.
 
 ## Still needed from Broghan
 
-The VSL, photos (clients, a portrait of him, screenshots/GIFs for the included cards), client
-videos, more reviews for the scrolling wall, his 3-part story, privacy policy and terms, and an
+The VSL, photos (clients, a portrait of him, screenshots/GIFs for the included cards), more
+written reviews (add them to `reviews` in `SalesPage.astro`; the wall goes to two rows at 6), his 3-part story, privacy policy and terms, and an
 answer for "Do I need a gym?".
+
+## A/B testing
+
+Visitors to `/` are split 50/50 between **Variant A** (the page as written) and **Variant B**
+(A plus a few overrides) before the page loads, so nobody sees it swap. Each visitor keeps their
+variant for 30 days (cookie `bw_ab_<test id>`). Search engines, link previews and site checkers
+always get A, and Variant B's page is marked noindex, so SEO only ever sees A.
+
+**Preview links** (they also stick on refresh, on phone or laptop):
+- `https://broghan-wilson-pt.vercel.app/?variant=a`
+- `https://broghan-wilson-pt.vercel.app/?variant=b`
+- `?variant=reset` forgets your variant and re-rolls 50/50.
+
+### Files
+
+| File | What it does |
+| --- | --- |
+| `src/ab-test.config.ts` | **The only file to edit.** Test id, on/off, split, and what Variant B changes. |
+| `middleware.ts` | Vercel Routing Middleware. Picks the variant, sets the cookie, serves `/v/b/` to group B. |
+| `src/components/SalesPage.astro` | The whole page. Takes `variant` and applies the config's overrides. |
+| `src/pages/index.astro` | Variant A at `/`. |
+| `src/pages/v/b.astro` | Variant B (only reached through the middleware; noindex). |
+| `src/scripts/track.ts` | Exposure and conversion tracking. |
+
+### Editing Variant B
+
+Everything is in `variants.b` in `src/ab-test.config.ts`:
+- `hero.headline`, `hero.uppercut`: swap the headline or subheading.
+- `hero.cta`: button label, and `action: "pricing"` (scroll to plans, direct checkout) or `"call"` (open the free-call booking).
+- `pricing.featured` (`"monthly"` / `"3months"`), `featuredFirst`, `flag`, `ctaLabels`: how the plans are presented.
+- `pricing.callFirst`, `callTitle`: move the book-a-call box above the plans and make it the yellow button.
+
+The current test (`lead-first-01`) asks whether leading with a free call beats direct checkout:
+B's hero button books a call, and the call box sits above the plans. Change one idea per test.
+
+### Reading the results
+
+Events: `experiment_view` (every page load), `click_join_today`, `click_select_monthly_plan`,
+`click_select_3month_plan`, `click_book_call`, `vsl_play`. Each carries the variant and where on
+the page it was clicked.
+
+- **Free (Hobby plan):** Vercel → broghan-wilson-pt → Analytics → **Pages**. Each event shows as a
+  page path `/ab/<test id>/<variant>/<event>`, e.g. `/ab/lead-first-01/b/click_select_3month_plan`.
+  Conversion rate = that row's **Visitors** ÷ the Visitors on `/ab/<test id>/<variant>/experiment_view`.
+  Compare A's rate with B's for the same event. Use the time filter to cover the whole test.
+- **Pro plan:** the same events also appear under Analytics → **Events**, filterable by `variant`.
+- `window.dataLayer` gets every event too, ready for Google Tag Manager / GA4.
+
+Rough guide: wait for a few hundred visitors per variant and at least a week before calling it.
+Stripe and Calendly are the real finish line; compare these clicks with actual sign-ups there.
+
+### Ending a test
+
+1. Set `enabled: false` in `src/ab-test.config.ts` and deploy. Everyone sees A, nothing else changes.
+2. If B won, copy B's settings into the page itself (the matching defaults in
+   `src/components/SalesPage.astro`), then empty `variants.b`.
+3. To start the next test, put the new idea in `variants.b`, give it a new `id`, set `enabled: true`.
+
+To remove A/B testing completely: delete `middleware.ts`, `src/ab-test.config.ts` and
+`src/pages/v/`, then in `SalesPage.astro` remove the config import and replace `ov.…` /
+`shownPlans` / `heroCta` / `callFirst` with the plain values. Keep `src/scripts/track.ts` if you
+still want the click tracking.
+
+## Client videos
+
+The "Hear it from my clients" video section is built but switched off (`showVideoTestimonials`
+in `src/components/SalesPage.astro`), because Broghan only has written testimonials so far.
+Set it to `true` and fill in `videoTestimonials` when he has videos.
