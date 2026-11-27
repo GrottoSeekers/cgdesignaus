@@ -4,34 +4,32 @@ import "@fontsource-variable/inter";
 import "../styles/global.css";
 
 // ---------------------------------------------------------------------------
-// Everything Broghan will change lives here. Anything in [BRACKETS] is a
-// placeholder waiting on him (copy, prices, photos and links aren't final).
+// Everything Broghan will change lives here. Copy, prices and links come from
+// his own draft (broghanwilson.com). Anything still in [BRACKETS] is a
+// placeholder waiting on him (photos, videos, more reviews, his story).
 //
 // Layout: the long-form structure of jamessmith.business (the page Broghan
-// called "perfect"), kept inside the rules of his own sales-page brief:
-// promise + VSL first, transparent pricing, a bold money-back guarantee,
-// direct checkout (no sales calls) and no social links. Every "Join today"
-// button scrolls to pricing, so nothing leads off the page.
+// called "perfect"): VSL first, results, what's included, how it works,
+// guarantee, transparent pricing with direct Stripe checkout, FAQ. Every
+// "Join today" button scrolls to pricing. No social links.
 // Photos and videos: drop files in public/images or public/video and set the
 // paths below. Empty paths show a labelled placeholder.
 // ---------------------------------------------------------------------------
 
-const site = "https://broghanwilsonpt.com/"; // [CONFIRM DOMAIN]
-const title = "Broghan Wilson PT — Coaching that lasts a lifetime, or your money back";
+const site = "https://broghanwilson.com/";
+const title = "Broghan Wilson Coaching";
 const description =
-  "A coaching system built around what you enjoy, what you actually eat, and a schedule that works for you. Backed by a money-back guarantee.";
-
-const clientsCoached: number | null = null; // e.g. 150 → the badge counts up to "150+"
+  "Online coaching with Broghan Wilson. A training and nutrition plan built around your life, weekly check-ins, and a 12-week results guarantee.";
 
 // ---- Hero ----
-const eyebrow = "[The step-by-step coaching system]";
+const status = "Online coaching, now taking clients";
 const headline = {
-  lead: "Helping you build small habits that last a",
-  highlight: "lifetime.",
-  close: "Or your money back.",
+  lead: "Become the version of yourself that you said",
+  highlight: "wasn’t possible.",
+  close: "",
 };
 const uppercut =
-  "A coaching system built around what you enjoy, what you actually eat, and a schedule that works for you — from someone who’s been in your exact position before.";
+  "The confidence you’re looking for is on the other side of stacking small habits and a program built only for you.";
 
 // VSL: { type: "youtube" | "vimeo", id } or { type: "mp4", src: "/video/vsl.mp4" }. "none" = placeholder.
 const vsl: { type: "none" | "youtube" | "vimeo" | "mp4"; id?: string; src?: string; poster?: string; runtime: string } = {
@@ -40,23 +38,35 @@ const vsl: { type: "none" | "youtube" | "vimeo" | "mp4"; id?: string; src?: stri
 };
 const vslCaption = "Straight from me, no script — what this is, why you need it, and what you get.";
 
+// ---- Ticker ----
+const tickerItems = ["Built only for you", "Weekly check-ins", "Nutrition that fits how you eat", "12-week results guarantee"];
+
 // ---- Results (quote + big outcome, like the reference) ----
-const resultsTitle = "Real people. Real results.";
-const resultsSub = "[ONE LINE — E.G. EVERY ONE OF THEM STARTED EXACTLY WHERE YOU ARE NOW.]";
+const resultsEyebrow = "Client results";
+const resultsTitle = "What my clients say";
 const results = [
-  { quote: "[CLIENT QUOTE — 2–3 SENTENCES IN THEIR OWN WORDS.]", outcome: "[Down XX kg in XX weeks]", name: "[CLIENT NAME]", photo: "" },
-  { quote: "[CLIENT QUOTE — 2–3 SENTENCES IN THEIR OWN WORDS.]", outcome: "[First ever pull-up]", name: "[CLIENT NAME]", photo: "" },
-  { quote: "[CLIENT QUOTE — 2–3 SENTENCES IN THEIR OWN WORDS.]", outcome: "[XX kg → XX kg]", name: "[CLIENT NAME]", photo: "" },
-  { quote: "[CLIENT QUOTE — 2–3 SENTENCES IN THEIR OWN WORDS.]", outcome: "[Fitter at 50 than at 30]", name: "[CLIENT NAME]", photo: "" },
+  {
+    quote:
+      "I started training after a long gap of 3 years. I felt nervous and completely unfit to get back to the gym. I’m grateful I met Broghan as my coach. From the very first session, Broghan understood my fitness levels, my limits and my aspirations. He designed a sustainable program that looked at consistently pushing me while maintaining empathy. He’s quickly built trust and I look forward to training with him in the coming year and beyond!",
+    outcome: "Back training after 3 years off",
+    name: "Shrey",
+    photo: "",
+  },
+  {
+    quote:
+      "Working with Broghan is amazing. He knows his stuff and gives amazing advice on anything gym related whether it is from what I can eat to help drop some weight, which exercise would help with my knee rehab and strengthening to giving advice on exercise to improve my Brazilian Jiu Jitsu! He has a great personality and does not rush you to finish your set or even your session. He will take his time to make sure you are working out with the right posture and right technique to prevent further injuries.",
+    outcome: "Weight, knee rehab and BJJ, covered",
+    name: "Daniel",
+    photo: "",
+  },
 ];
 
 // ---- Credibility + story ----
-const credibility = "[I’m not teaching this from a textbook. Everything I coach, I’ve done myself.]";
-const credibilitySub = "[ONE-LINE PROOF SUMMARY]";
+const credibility = "Built on over 10 years of experience, with methods I’ve tested first-hand and used with clients from all walks of life.";
 const stats = [
-  { value: null as number | null, suffix: "+", label: "Clients coached" },
-  { value: null as number | null, suffix: "", label: "Years coaching" },
-  { value: null as number | null, suffix: "kg", label: "Lost by clients" },
+  { value: 10, suffix: "+", label: "Years of experience" },
+  { value: 12, suffix: "", label: "Week results guarantee" },
+  { value: 3, suffix: "", label: "Phases in your first 12 weeks" },
 ];
 const story = [
   { title: "[Where I started]", body: "[TWO OR THREE SENTENCES.]" },
@@ -66,23 +76,31 @@ const story = [
 const portrait = ""; // e.g. "/images/broghan.jpg" (black & white works best)
 
 // ---- What's included ----
-const includedTitle = "Everything you get";
-const includedSub = "Everything you need. Nothing you don’t.";
+const includedTitle = "Everything you need to get in the best shape of your life, and stay there";
+const includedSub = "Everything below, built only for you. Now $50 USD a week.";
 const included = [
-  { title: "1:1 onboarding call", body: "[ONE SENTENCE — E.G. WE MAP OUT YOUR GOAL, YOUR WEEK AND YOUR STARTING POINT.]", media: "" },
-  { title: "Your training plan", body: "[ONE SENTENCE — GYM OR HOME, UPDATED AS YOU PROGRESS.]", media: "" },
-  { title: "Simple nutrition", body: "[ONE SENTENCE — FOOD YOU ACTUALLY LIKE.]", media: "" },
-  { title: "Weekly check-ins", body: "[ONE SENTENCE — DIRECT FEEDBACK FROM ME EVERY WEEK.]", media: "" },
-  { title: "Direct access to me", body: "[ONE SENTENCE — MESSAGE ME ANY TIME.]", media: "" },
-  { title: "Form reviews", body: "[ONE SENTENCE — SEND A VIDEO, GET CORRECTIONS.]", media: "" },
+  { title: "1:1 onboarding call", body: "We set your goals together.", media: "" },
+  { title: "Training program", body: "Personalised for you in Trainerize.", media: "" },
+  { title: "Nutrition", body: "Targets that fit how you eat.", media: "" },
+  { title: "Weekly check-ins", body: "Progress reviewed, plan adjusted.", media: "" },
+  { title: "Message me", body: "Support between check-ins.", media: "" },
+  { title: "Video form reviews", body: "Technique breakdowns on your lifts.", media: "" },
 ];
 
-// ---- Outcomes ----
-const outcomesTitle = "[In 12 weeks you’ll…]";
-const outcomes = [
-  { title: "[Outcome one]", body: "[ONE OR TWO SENTENCES.]" },
-  { title: "[Outcome two]", body: "[ONE OR TWO SENTENCES.]" },
-  { title: "[Outcome three]", body: "[ONE OR TWO SENTENCES.]" },
+// ---- How it works (a real sequence, so it's numbered) ----
+const stepsEyebrow = "How it works";
+const stepsTitle = "From joining to your first session";
+const steps = [
+  { title: "Join", body: "Sign up below and we’ll book in your onboarding call." },
+  {
+    title: "Onboarding call",
+    body: "We go through your goals and timeframe, where you’re at now and what’s held you back before. Plus a full nutrition consult, so your plan fits your day-to-day life.",
+  },
+  {
+    title: "Get your plan",
+    body: "I design your first 12 weeks across 3 phases. Then I set you up in Trainerize with your program, your nutrition plan and phase one (your first 4 weeks) mapped out.",
+  },
+  { title: "Check in and progress", body: "Weekly check-ins, plus a monthly assessment at the end of each phase to show how far you’ve come." },
 ];
 
 // ---- Video testimonials (portrait 9:16) ----
@@ -94,55 +112,82 @@ const videoTestimonials = [
 ];
 
 // ---- Review wall (two rows that scroll opposite ways) ----
-const reviews = Array.from({ length: 10 }, () => ({
-  name: "[NAME]",
-  text: "[CLIENT MESSAGE OR REVIEW — PASTE THE REAL WORDS, OR SWAP FOR A SCREENSHOT.]",
-}));
+const reviews = [
+  { name: "Shrey", text: "He designed a sustainable program that looked at consistently pushing me while maintaining empathy." },
+  ...Array.from({ length: 4 }, () => ({ name: "[NAME]", text: "[CLIENT MESSAGE OR REVIEW — PASTE THE REAL WORDS, OR SWAP FOR A SCREENSHOT.]" })),
+  { name: "Daniel", text: "He will take his time to make sure you are working out with the right posture and right technique to prevent further injuries." },
+  ...Array.from({ length: 4 }, () => ({ name: "[NAME]", text: "[CLIENT MESSAGE OR REVIEW — PASTE THE REAL WORDS, OR SWAP FOR A SCREENSHOT.]" })),
+];
 
-// ---- Guarantee ----
+// ---- Guarantee (a free month, not a refund) ----
 const guarantee = {
-  days: "[XX]",
-  heading: "Do the work. See the results. Or your money back.",
+  weeks: 12,
+  label: "12-week results guarantee",
+  heading: "Follow the plan for 12 weeks. If you don’t progress, your next month is on me.",
   terms:
-    "[GUARANTEE TERMS IN ONE OR TWO PLAIN SENTENCES — E.G. FOLLOW THE PLAN FOR XX DAYS. IF YOU DON’T SEE PROGRESS, I’LL REFUND YOU IN FULL. NO HOOPS.]",
+    "Train, hit your check-ins every week and follow your nutrition targets. We track your progress two ways: weekly check-ins, and a monthly assessment at the end of each phase. If your results haven’t moved towards your goal after 12 weeks, you get another month of coaching free. This applies to both plans, as long as you’ve completed the full 12 weeks.",
 };
 
-// ---- Pricing: direct checkout ----
-const pricingTitle = "Pick your level. Check out. Start this week.";
+// ---- Pricing: direct Stripe checkout ----
+const pricingTitle = "You only have to get it right once. Why not today?";
+const pricingSub =
+  "Honestly, I can’t predict every problem you’ll face. That’s why your coaching grows with you. As I learn what’s getting in your way, I’ll keep adjusting your plan to solve it.";
+const planFeatures = [
+  "1:1 onboarding call to set your goals",
+  "Personalised training program in Trainerize",
+  "Nutrition targets that fit how you eat",
+  "Weekly check-ins",
+  "Monthly assessment at the end of each phase",
+  "Message me for support between check-ins",
+  "Video form reviews",
+];
 const plans = [
   {
-    name: "[Coaching]",
-    price: "[$XXX]",
-    period: "/ month",
-    forWho: "[WHO THIS LEVEL IS FOR — ONE LINE.]",
-    features: ["[FEATURE 1]", "[FEATURE 2]", "[FEATURE 3]", "[FEATURE 4]"],
-    checkoutUrl: "", // Stripe / payment link
+    name: "Monthly",
+    price: "$200",
+    period: "USD / month",
+    note: "That’s $50 a week, billed monthly",
+    features: planFeatures,
+    cta: "Join monthly",
+    checkoutUrl: "https://buy.stripe.com/6oU00ja4V8RhcTb04xe3e00",
+    flag: "",
     featured: false,
   },
   {
-    name: "[Transformation]",
-    price: "[$XXX]",
-    period: "/ month",
-    forWho: "[WHO THIS LEVEL IS FOR — ONE LINE.]",
-    features: ["Everything in [Coaching], plus:", "[FEATURE 1]", "[FEATURE 2]", "[FEATURE 3]"],
-    checkoutUrl: "",
-    altLabel: "[OR PAY UPFRONT FOR XX MONTHS — SAVE $XX]",
-    altUrl: "",
+    name: "3 months",
+    price: "$500",
+    period: "USD all in",
+    note: "One payment for 12 weeks, about $42 a week",
+    features: planFeatures,
+    cta: "Join for 3 months",
+    checkoutUrl: "https://buy.stripe.com/00w5kDdh75F53iBcRje3e01",
+    flag: "Best value · Save $100",
     featured: true,
   },
 ];
+const plansNote = "12-week results guarantee on both plans: progress or your next month is free.";
+const freeCall = {
+  title: "Still unsure?",
+  body: "Book a free call and we can chat about your goals and whether online coaching is right for you.",
+  cta: "Book a call today",
+  url: "https://calendly.com/broghanwilsonpt/free-consultation",
+};
 
 // ---- FAQ ----
 const faqs = [
-  { q: "Who is this for?", a: "[ANSWER]" },
+  {
+    q: "What happens after I join?",
+    a: "We book in your onboarding call. We go through your goals and timeframe, where you’re at now and what’s held you back before, plus a full nutrition consult so your plan fits your day-to-day life.",
+  },
+  { q: "Which app do you use?", a: "Trainerize. Your program, your nutrition plan and each 4-week phase are set up there for you." },
+  {
+    q: "What’s the difference between the two plans?",
+    a: "Nothing in what you get: both include everything listed. Monthly is $200 USD a month, which is $50 a week. Three months is one payment of $500 USD for 12 weeks, about $42 a week, so you save $100.",
+  },
+  { q: "How does the results guarantee work?", a: guarantee.terms },
+  { q: "Not sure online coaching is right for you?", a: "Book a free call and we can chat about your goals and whether online coaching is right for you." },
   { q: "Do I need a gym?", a: "[ANSWER]" },
-  { q: "I’m a complete beginner. Is that OK?", a: "[ANSWER]" },
-  { q: "How much time does it take each week?", a: "[ANSWER]" },
-  { q: "How does the money-back guarantee work?", a: "[ANSWER]" },
-  { q: "Can I cancel?", a: "[ANSWER]" },
 ];
-
-const contact = { email: "[EMAIL]", phone: "[PHONE]" };
 
 // ---------------------------------------------------------------------------
 const year = new Date().getFullYear();
@@ -158,7 +203,7 @@ const pad = (n: number) => String(n + 1).padStart(2, "0");
 const wallRows = [reviews.slice(0, Math.ceil(reviews.length / 2)), reviews.slice(Math.ceil(reviews.length / 2))];
 // The seal ring's circumference (r = 58): the text is stretched to exactly this, so it never overlaps.
 // Non-breaking spaces round the bullets so the gap where the text meets itself never collapses.
-const sealText = "MONEY-BACK GUARANTEE\u00a0\u00a0•\u00a0\u00a0".repeat(2);
+const sealText = "RESULTS GUARANTEE\u00a0\u00a0•\u00a0\u00a0".repeat(2);
 const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
 ---
 
@@ -215,14 +260,13 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
         <div class="glow glow-hero" aria-hidden="true"></div>
         <div class="wrap hero-inner">
           <p class="proof" data-hero="proof">
-            <span class="faces" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
-            <span>Join <b class="count" data-count={clientsCoached ?? ""}>{clientsCoached ?? "[X]"}</b>+ people coached<span class="by"> by Broghan</span></span>
+            <span class="live" aria-hidden="true"></span>
+            <span>{status}</span>
           </p>
-          <p class="eyebrow" data-hero="eyebrow">{eyebrow}</p>
 
           <h1 class="headline" data-hero="headline">
             {headline.lead} <span class="hl">{headline.highlight}<i class="hl-bar" aria-hidden="true"></i></span>
-            <br />{headline.close}
+            {headline.close && <><br />{headline.close}</>}
           </h1>
 
           <p class="uppercut" data-hero="uppercut">{uppercut}</p>
@@ -245,7 +289,7 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
             <a class="btn btn-primary btn-xl" href="#pricing" data-magnetic>Join today <span class="nudge" aria-hidden="true">→</span></a>
             <p class="cta-note">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.9-7 9-4-1.1-7-4.5-7-9V6z"></path></svg>
-              {guarantee.days}-day money-back guarantee
+              {guarantee.label}
             </p>
           </div>
         </div>
@@ -256,7 +300,7 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
         <div class="ticker-track" data-marquee="-1" data-speed="32">
           {[0, 1].map(() => (
             <div class="ticker-set">
-              <span>No fad diets</span><i></i><span>No 2-hour sessions</span><i></i><span>No guesswork</span><i></i><span>A plan built around you</span><i></i>
+              {tickerItems.map((t) => <><span>{t}</span><i></i></>)}
             </div>
           ))}
         </div>
@@ -266,14 +310,15 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
       <section class="section" aria-labelledby="results-h">
         <div class="wrap">
           <div class="section-head">
+            <p class="eyebrow" data-reveal>{resultsEyebrow}</p>
             <h2 id="results-h" class="section-title" data-split>{resultsTitle}</h2>
-            <p data-reveal>{resultsSub}</p>
           </div>
           <div class="results">
             {
               results.map((r) => (
                 <figure class="result" data-reveal>
                   {r.photo ? <img class="avatar" src={r.photo} alt="" /> : <span class="avatar" aria-hidden="true"></span>}
+                  <span class="stars" aria-label="5 out of 5 stars">★★★★★</span>
                   <blockquote>“{r.quote}”</blockquote>
                   <p class="result-outcome">{r.outcome}</p>
                   <figcaption>{r.name}</figcaption>
@@ -290,7 +335,6 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
         <div class="wrap">
           <div class="section-head">
             <h2 id="story-h" class="section-title section-title-md" data-split>{credibility}</h2>
-            <p data-reveal>{credibilitySub}</p>
           </div>
           <div class="stats" data-reveal>
             {
@@ -333,7 +377,7 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
         <div class="wrap">
           <div class="section-head">
             <p class="eyebrow" data-reveal>What’s included</p>
-            <h2 id="included-h" class="section-title" data-split>{includedTitle}</h2>
+            <h2 id="included-h" class="section-title section-title-md" data-split>{includedTitle}</h2>
             <p data-reveal>{includedSub}</p>
           </div>
           <div class="included">
@@ -359,11 +403,12 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
       <section class="section section-tight" aria-labelledby="outcomes-h">
         <div class="wrap wrap-narrow">
           <div class="section-head">
-            <h2 id="outcomes-h" class="section-title section-title-md" data-split>{outcomesTitle}</h2>
+            <p class="eyebrow" data-reveal>{stepsEyebrow}</p>
+            <h2 id="outcomes-h" class="section-title section-title-md" data-split>{stepsTitle}</h2>
           </div>
           <ol class="outcomes">
             {
-              outcomes.map((o, i) => (
+              steps.map((o, i) => (
                 <li data-reveal>
                   <span class="outcome-num" data-num>{pad(i)}</span>
                   <div>
@@ -448,9 +493,10 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
                 <defs><path id="seal-path" d="M75,75 m-58,0 a58,58 0 1,1 116,0 a58,58 0 1,1 -116,0"></path></defs>
                 <text><textPath href="#seal-path" textLength={sealLength} lengthAdjust="spacing">{sealText}</textPath></text>
               </svg>
-              <div class="seal-core"><span>{guarantee.days}</span><small>days</small></div>
+              <div class="seal-core"><span>{guarantee.weeks}</span><small>weeks</small></div>
             </div>
             <div class="guarantee-copy">
+              <p class="guarantee-label">{guarantee.label}</p>
               <h2 id="guarantee-h">{guarantee.heading}</h2>
               <p>{guarantee.terms}</p>
             </div>
@@ -465,20 +511,22 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
           <div class="section-head">
             <p class="eyebrow" data-reveal>Pricing</p>
             <h2 id="pricing-h" class="section-title section-title-lg" data-split>{pricingTitle}</h2>
+            <p data-reveal>{pricingSub}</p>
           </div>
 
           <div class="plans">
             {
               plans.map((plan) => (
                 <article class:list={["plan", { featured: plan.featured }]} data-plan>
-                  {plan.featured && <p class="plan-flag">Most popular</p>}
+                  {plan.flag && <p class="plan-flag">{plan.flag}</p>}
                   <div class="plan-body">
                     <p class="plan-name">{plan.name}</p>
                     <p class="plan-price">
                       <span class="price" data-scramble>{plan.price}</span>
                       <span class="period">{plan.period}</span>
                     </p>
-                    <p class="plan-for">{plan.forWho}</p>
+                    <p class="plan-for">{plan.note}</p>
+                    <p class="plan-includes">Includes</p>
                     <ul class="plan-features">
                       {plan.features.map((f) => (
                         <li>
@@ -488,24 +536,27 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
                       ))}
                     </ul>
                     <a class:list={["btn", plan.featured ? "btn-primary" : "btn-outline"]} href={checkout(plan.checkoutUrl)}>
-                      Start now — {plan.price}
+                      {plan.cta}
                     </a>
-                    {plan.altLabel && (
-                      <a class="btn btn-ghost" href={checkout(plan.altUrl)}>
-                        {plan.altLabel}
-                      </a>
-                    )}
-                    <p class="plan-small">Secure checkout · Cancel anytime · {guarantee.days}-day guarantee</p>
+                    <p class="plan-small">Secure checkout with Stripe</p>
                   </div>
                 </article>
               ))
             }
           </div>
 
-          <p class="questions" data-reveal>
-            Questions first? Email <a href={`mailto:${contact.email}`}>{contact.email}</a> or text
-            <a href={`sms:${contact.phone}`}>{contact.phone}</a>. Not required — just here if you need it.
+          <p class="plans-note" data-reveal>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.9-7 9-4-1.1-7-4.5-7-9V6z"></path></svg>
+            {plansNote}
           </p>
+
+          <div class="free-call" data-reveal>
+            <div>
+              <h3>{freeCall.title}</h3>
+              <p>{freeCall.body}</p>
+            </div>
+            <a class="btn btn-outline" href={freeCall.url} target="_blank" rel="noopener">{freeCall.cta} <span aria-hidden="true">↗</span></a>
+          </div>
         </div>
       </section>
 
@@ -535,7 +586,7 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
       <section class="final">
         <div class="wrap final-inner" data-reveal>
           <h2 class="final-title">Ready? Let’s go.</h2>
-          <p>Pick your plan, check out, and start this week. Backed by the {guarantee.days}-day money-back guarantee.</p>
+          <p>Pick your plan, check out, and start this week. Backed by the {guarantee.label}.</p>
           <a class="btn btn-dark btn-xl" href="#pricing">Choose your plan ↑</a>
         </div>
       </section>
@@ -543,7 +594,7 @@ const sealLength = Math.round(2 * Math.PI * 58 * 100) / 100;
 
     <footer class="footer">
       <div class="wrap footer-inner">
-        <span>© {year} Broghan Wilson PT. All rights reserved.</span>
+        <span>© {year} Broghan Wilson Coaching. All rights reserved.</span>
         <span class="footer-links"><a href="/privacy/">Privacy Policy</a><a href="/terms/">Terms</a></span>
       </div>
     </footer>

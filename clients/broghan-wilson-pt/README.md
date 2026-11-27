@@ -43,7 +43,14 @@ npm run build      # static output in dist/
 - **Legal**: `src/pages/privacy.astro`, `src/pages/terms.astro` are placeholders for Broghan's text.
 - **Reference recordings**: `reference/` (the recordings themselves live in the client's Google Drive).
 
+## Content
+
+Copy, prices, Stripe checkout links, the Calendly link, the two client testimonials, the
+included list, the 4-step "How it works" and the 12-week results guarantee all come from
+Broghan's own draft at broghanwilson.com.
+
 ## Still needed from Broghan
 
-Domain, final headline/subheading, client results, quotes, photos and videos, his story and stats, VSL file or link, guarantee length and terms, plan names,
-prices, features and checkout links, contact email/phone, privacy policy and terms.
+The VSL, photos (clients, a portrait of him, screenshots/GIFs for the included cards), client
+videos, more reviews for the scrolling wall, his 3-part story, privacy policy and terms, and an
+answer for "Do I need a gym?".

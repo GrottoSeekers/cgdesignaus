@@ -1213,6 +1213,106 @@ details[open] .plus {
   visibility: hidden;
 }
 
+/* ---------- Content additions: status dot, guarantee label, plan notes, free call ---------- */
+.live {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  margin-left: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.live::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: ring 1.8s var(--ease-out) infinite;
+}
+.proof:has(.live) {
+  padding: 8px 18px 8px 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--text);
+}
+.result .stars {
+  margin-left: 0;
+  font-size: 15px;
+  letter-spacing: 3px;
+  color: var(--accent);
+}
+.guarantee-label {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #4a4b50;
+}
+.plan-for {
+  margin-top: -10px;
+}
+.plan-includes {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.plans-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  max-width: 640px;
+  margin: 40px auto 0;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--soft);
+}
+.plans-note svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.free-call {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 32px;
+  max-width: 984px;
+  margin: 48px auto 0;
+  padding: 32px 36px;
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+}
+.free-call > div {
+  flex: 1 1 360px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.free-call h3 {
+  font-size: 28px;
+}
+.free-call p {
+  color: #b4b6be;
+}
+@media (max-width: 600px) {
+  .free-call { padding: 26px 22px; }
+  .free-call .btn { width: 100%; }
+  .plans-note { align-items: flex-start; text-align: left; }
+}
+
 /* ---------- Legal pages ---------- */
 .legal {
   padding-top: 64px;

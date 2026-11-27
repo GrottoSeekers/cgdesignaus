@@ -1,7 +1,7 @@
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: "https://broghanwilsonpt.com", // [CONFIRM DOMAIN]
+  site: "https://broghanwilson.com",
   build: {
     inlineStylesheets: "always",
   },
