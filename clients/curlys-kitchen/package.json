@@ -1,0 +1,19 @@
+{
+  "name": "curlys-kitchen",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Curly's Kitchen: steak and chicken boxes in Walkden, Worsley. Built by CG Design & Co.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource-variable/schibsted-grotesk": "^5.3.0",
+    "astro": "^6.4.8",
+    "gsap": "^3.15.1",
+    "three": "^0.187.0"
+  }
+}

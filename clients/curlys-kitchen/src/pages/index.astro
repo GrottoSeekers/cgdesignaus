@@ -1,0 +1,540 @@
+---
+import "@fontsource-variable/fraunces/opsz.css";
+import "@fontsource-variable/fraunces/opsz-italic.css";
+import "@fontsource-variable/schibsted-grotesk";
+import "../styles/global.css";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+
+const site = "https://www.curlyskitchen.co.uk/";
+const title = "Curly's Kitchen | Steak boxes & takeaway in Walkden, Worsley";
+const description =
+  "Steak, chicken and surf n turf boxes cooked to order in Walkden, Worsley. 5.0 on Google, food hygiene 5. Open Mon to Fri 5 to 10pm, Sunday 3 to 9pm.";
+
+// ---------- Business details (change them here) ----------
+const phoneDisplay = "07309 449502";
+const tel = "tel:+447309449502";
+const instagram = "https://www.instagram.com/curlyskitchen1/";
+const instagramDm = "https://ig.me/m/curlyskitchen1";
+const maps = "https://share.google/6NVpR5qRHAozKfPLP"; // their Google Business link, from the Instagram bio
+const fsa = "https://ratings.food.gov.uk/";
+const address = ["First floor, Linnyshaw Mill", "260 Manchester Road", "Walkden, Worsley", "M28 3TR"];
+
+// Opening hours. 0 = Sunday. Times are 24h, UK time. The live "Open now" badge reads this.
+const hours = [
+  { day: "Monday", d: 1, open: "17:00", close: "22:00" },
+  { day: "Tuesday", d: 2, open: "17:00", close: "22:00" },
+  { day: "Wednesday", d: 3, open: "17:00", close: "22:00" },
+  { day: "Thursday", d: 4, open: "17:00", close: "22:00" },
+  { day: "Friday", d: 5, open: "17:00", close: "22:00" },
+  { day: "Saturday", d: 6, open: null, close: null },
+  { day: "Sunday", d: 0, open: "15:00", close: "21:00" },
+];
+// Same hours grouped for the table: Mon to Fri / Sat / Sun.
+const hourRows = [
+  { label: "Monday to Friday", days: [1, 2, 3, 4, 5], open: "17:00", close: "22:00" },
+  { label: "Saturday", days: [6], open: null, close: null },
+  { label: "Sunday", days: [0], open: "15:00", close: "21:00" },
+];
+const fmt = (t: string | null) => {
+  if (!t) return "";
+  const [h, m] = t.split(":").map(Number);
+  const h12 = h % 12 || 12;
+  return `${h12}${m ? ":" + String(m).padStart(2, "0") : ""}${h < 12 ? "am" : "pm"}`;
+};
+
+// A photo or reel shows only once its file is in public/media (see README).
+const has = (p: string) => existsSync(join(process.cwd(), "public", p));
+
+// ---------- Menu ----------
+const menu = [
+  { slug: "steak-box", name: "Steak box", line: "Steak, chips and peppers with the signature sauce." },
+  { slug: "surf-n-turf", name: "Surf n turf", line: "Steak and prawns in one box." },
+  { slug: "crispy-chicken", name: "Crispy chicken", line: "On its own, or half and half with steak." },
+  { slug: "wraps", name: "Wraps", line: "Steak or chicken, packed full." },
+  { slug: "burrito", name: "The burrito", line: "However you want it." },
+  { slug: "shakes", name: "Shakes", line: "Get the Biscoff." },
+].map((m) => {
+  const src = `/media/menu-${m.slug}.webp`;
+  return { ...m, img: has(src) ? src : null };
+});
+
+// ---------- Reviews (Google, word for word, trimmed) ----------
+const reviews = [
+  { q: "Food seasoned perfect and fresh when I collected it. Service was impeccable!", who: "Owen N." },
+  { q: "The steak and chicken wraps were so good! Packed with meat and really tasty.", who: "Jenny H." },
+  { q: "I actually licked the tray clean, then took the others out the bin and finished them.", who: "Charlie M." },
+  { q: "The steak and fries are to die for and became a very dangerous Friday night meal!", who: "Thomas W." },
+  { q: "Drove an hour, was not disappointed. If you haven't been, get yourself there!", who: "Jade S." },
+  { q: "Amazing Biscoff shake, great service from the lads.", who: "Oliver W." },
+  { q: "More than just a food place, it's a community.", who: "Jamosfooty_" },
+  { q: "I hate spice and the boys always cater to it.", who: "Alex W." },
+  { q: "Everything was cooked to perfection.", who: "Rachel A." },
+  { q: "Food is bang on. Pre-orders available so you aren't waiting around.", who: "Jamie F." },
+];
+const rowA = reviews.slice(0, 5);
+const rowB = reviews.slice(5);
+
+// ---------- Reels from their Instagram ----------
+const reels = [
+  { slug: "big-boxes", title: "Big boxes on the fly", ig: "https://www.instagram.com/p/De1fWddTGCi/" },
+  { slug: "surf-n-turf", title: "Surf n turf", ig: "https://www.instagram.com/p/DetrzhmTFsJ/" },
+  { slug: "eighteen", title: "All this for £18", ig: "https://www.instagram.com/p/Deruw05ttVK/" },
+].map((r) => {
+  const video = `/media/reel-${r.slug}.mp4`;
+  const poster = `/media/reel-${r.slug}.webp`;
+  return { ...r, video: has(video) ? video : null, poster: has(poster) ? poster : null };
+});
+
+const extras = ["Pre-orders welcome", "Vegan options", "Kids' menu", "Dogs welcome outside"];
+
+// Tabler icons (MIT), outline.
+const icon = {
+  phone: '<path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"/>',
+  pin: '<path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"/>',
+  instagram: '<path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4l0 -10"/><path d="M8.5 12a3.5 3.5 0 1 0 7 0a3.5 3.5 0 0 0 -7 0"/><path d="M17 7v.01"/>',
+  message: '<path d="M8 9h8"/><path d="M8 13h6"/><path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z"/>',
+  arrow: '<path d="M17 7l-10 10"/><path d="M8 7l9 0l0 9"/>',
+  down: '<path d="M12 5l0 14"/><path d="M18 13l-6 6"/><path d="M6 13l6 6"/>',
+  star: '<path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z"/>',
+  menu: '<path d="M4 6l16 0"/><path d="M4 12l16 0"/><path d="M4 18l16 0"/>',
+  bowl: '<path d="M4 11h16a1 1 0 0 1 1 1v.5c0 1.5 -2.517 5.573 -4 6.5v1a1 1 0 0 1 -1 1h-8a1 1 0 0 1 -1 -1v-1c-1.687 -1.054 -4 -5 -4 -6.5v-.5a1 1 0 0 1 1 -1z"/><path d="M12 4a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2"/><path d="M16 4a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2"/><path d="M8 4a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2"/>',
+  quote: '<path d="M10 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"/><path d="M19 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"/>',
+  play: '<path d="M6 4v16a1 1 0 0 0 1.524 .852l13 -8a1 1 0 0 0 0 -1.704l-13 -8a1 1 0 0 0 -1.524 .852z"/>',
+  globe: '<path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/><path d="M3.6 9h16.8"/><path d="M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18"/><path d="M12.5 3a17 17 0 0 1 0 18"/>',
+  mail: '<path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"/><path d="M3 7l9 6l9 -6"/>',
+  whatsapp: '<path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"/><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1"/>',
+};
+
+// CG Design & Co. credit strip (same links as the other client footers).
+const cgLinks = [
+  { label: "cgdesignaus.com", href: "https://cgdesignaus.com", external: true, icon: icon.globe },
+  { label: "cgdesignaus@outlook.com", href: "mailto:cgdesignaus@outlook.com", external: false, icon: icon.mail },
+  { label: "WhatsApp", href: "https://wa.me/447306100251", external: true, icon: icon.whatsapp },
+  { label: "@cgdesignaus", href: "https://www.instagram.com/cgdesignaus", external: true, icon: icon.instagram },
+];
+
+const ext = { target: "_blank", rel: "noopener noreferrer" };
+
+const dayCodes = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  name: "Curly's Kitchen",
+  description,
+  url: site,
+  image: new URL("/media/og.jpg", site).href,
+  logo: new URL("/media/logo.webp", site).href,
+  telephone: "+447309449502",
+  priceRange: "££",
+  servesCuisine: ["Steak", "Grill", "Takeaway"],
+  acceptsReservations: false,
+  hasMenu: instagram,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "First floor, Linnyshaw Mill, 260 Manchester Road",
+    addressLocality: "Walkden, Worsley",
+    addressRegion: "Greater Manchester",
+    postalCode: "M28 3TR",
+    addressCountry: "GB",
+  },
+  openingHoursSpecification: hours
+    .filter((h) => h.open)
+    .map((h) => ({
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: `https://schema.org/${h.day}`,
+      opens: h.open,
+      closes: h.close,
+    })),
+  openingHours: hours.filter((h) => h.open).map((h) => `${dayCodes[h.d]} ${h.open}-${h.close}`),
+  sameAs: [instagram],
+};
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={site} />
+    <meta name="theme-color" content="#f0511e" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Curly's Kitchen | Steak, chips & the sauce" />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={site} />
+    <meta property="og:image" content={new URL("/media/og.jpg", site).href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script is:inline>
+      // Hide animated elements only when JS runs; the failsafe shows them after 2.5s.
+      document.documentElement.classList.add("js");
+      setTimeout(function () { document.documentElement.classList.add("motion-ready"); }, 2500);
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="nav" data-nav>
+      <div class="wrap nav-inner">
+        <a class="brand" href="#top" aria-label="Curly's Kitchen, back to top">
+          <img src="/media/logo.webp" width="44" height="44" alt="" />
+          <span class="brand-name">Curly's Kitchen</span>
+        </a>
+        <nav class="nav-links" aria-label="Sections">
+          <a href="#menu">Menu</a>
+          <a href="#reviews">Reviews</a>
+          <a href="#visit">Hours &amp; directions</a>
+        </nav>
+        <div class="nav-end">
+          <span class="status" data-status hidden><span class="status-dot"></span><span data-status-text></span></span>
+          <a class="btn btn-sm nav-call" href={tel} data-magnetic>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.phone} />
+            <span>{phoneDisplay}</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- Hero -->
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <p class="ribbon" data-hero-fade>
+          <span class="ribbon-tag">News</span>
+          New shop at Boothstown Precinct in the new year.
+        </p>
+        <div class="wrap hero-grid">
+          <div class="hero-copy">
+            <p class="kicker" data-hero-fade>Takeaway · Walkden, Worsley</p>
+            <h1 id="hero-title" class="hero-title">
+              <span class="line"><span>Steak, chips</span></span>
+              <span class="line"><span>&amp; the <em>sauce.</em></span></span>
+            </h1>
+            <p class="hero-sub" data-hero-fade>
+              Steak, chicken and surf n turf boxes, cooked to order. Big portions. Most meals £10 to £20.
+            </p>
+            <div class="hero-actions" data-hero-fade>
+              <a class="btn btn-lg" href={tel} data-magnetic>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.phone} />
+                Call to order
+              </a>
+              <a class="btn btn-lg btn-ghost" href="#menu">See the menu</a>
+            </div>
+            <ul class="proof" data-hero-fade>
+              <li>
+                <span class="stars" aria-hidden="true">
+                  {[0, 1, 2, 3, 4].map(() => <svg viewBox="0 0 24 24" fill="currentColor" set:html={icon.star} />)}
+                </span>
+                <span><strong>5.0</strong> from 42 Google reviews</span>
+              </li>
+              <li>
+                <span class="fhr-mini" aria-hidden="true">5</span>
+                <span>Food hygiene rating <strong>5</strong></span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="hero-stage" data-stage>
+            <span class="stage-disc" data-disc aria-hidden="true"></span>
+            <canvas class="stage-canvas" data-box-canvas aria-hidden="true"></canvas>
+            <img class="stage-fallback" src="/media/logo.webp" width="256" height="256" alt="" />
+            <p class="stage-hint" data-hero-fade>Drag to spin</p>
+          </div>
+        </div>
+        <a class="scroll-cue" href="#menu" aria-label="Scroll to the menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.down} />
+        </a>
+      </section>
+
+      <!-- Marquee -->
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker-track" data-ticker>
+          {[0, 1].map(() => (
+            <span class="ticker-set">
+              {["Steak box", "Surf n turf", "Crispy chicken", "Wraps", "Burritos", "Biscoff shakes"].map((t) => (
+                <span class="ticker-item">{t}<span class="ticker-dot"></span></span>
+              ))}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <!-- Menu -->
+      <section class="menu" id="menu" aria-labelledby="menu-title">
+        <div class="wrap menu-grid">
+          <header class="menu-head">
+            <p class="kicker" data-reveal>On the menu</p>
+            <h2 id="menu-title" class="h2" data-split>What goes in <em>the box.</em></h2>
+            <p class="lede" data-reveal>Pick your meat, pick your sides, and get it with the sauce. Everything is cooked when you order it.</p>
+          </header>
+          <ol class="dishes" data-dishes>
+            {menu.map((m, i) => (
+              <li class="dish" data-dish data-img={m.img ?? undefined}>
+                <span class="dish-rule" aria-hidden="true"></span>
+                <span class="dish-no" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                <div class="dish-copy">
+                  <h3>{m.name}</h3>
+                  <p>{m.line}</p>
+                </div>
+                {m.img && (
+                  <span class="dish-thumb">
+                    <img src={m.img} alt={m.name} width="240" height="300" loading="lazy" decoding="async" />
+                  </span>
+                )}
+              </li>
+            ))}
+          </ol>
+          <p class="menu-note" data-reveal>
+            Vegan options and a kids' menu too. Specials go up on
+            <a href={instagram} {...ext}>Instagram</a> first.
+          </p>
+        </div>
+        <div class="dish-float" data-float aria-hidden="true"><img alt="" /></div>
+      </section>
+
+      <!-- The sauce -->
+      <section class="sauce dark" aria-label="What people say about the sauce">
+        <div class="wrap sauce-inner">
+          <svg class="sauce-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.quote} />
+          <blockquote>
+            <p class="sauce-text" data-scrub-words>10/10 food. The signature sauce is <em>the best.</em> 100% recommend to anyone who hasn't tried it yet.</p>
+            <footer class="sauce-cite" data-reveal>Lorcan R., Google review</footer>
+          </blockquote>
+          <p class="sauce-reply" data-reveal>
+            <img src="/media/logo.webp" width="40" height="40" alt="" loading="lazy" />
+            <span><strong>Curly's replied:</strong> “We've put a lot of effort into mastering that sauce.”</span>
+          </p>
+        </div>
+      </section>
+
+      <!-- Reviews -->
+      <section class="reviews" id="reviews" aria-labelledby="reviews-title">
+        <div class="wrap reviews-head">
+          <p class="kicker" data-reveal>Google reviews</p>
+          <h2 id="reviews-title" class="h2 reviews-title">
+            <span class="score" data-score>5.0</span>
+            <span class="reviews-of" data-split>from 42 reviews. <em>All five stars.</em></span>
+          </h2>
+        </div>
+        <div class="belts" data-belts>
+          {[rowA, rowB].map((row, r) => (
+            <div class={`belt ${r ? "belt-rev" : ""}`}>
+              <ul class="belt-track">
+                {[...row, ...row].map((rv, i) => (
+                  <li class="rv" aria-hidden={i >= row.length ? "true" : undefined}>
+                    <span class="rv-stars" aria-label="5 stars">
+                      {[0, 1, 2, 3, 4].map(() => <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" set:html={icon.star} />)}
+                    </span>
+                    <p>“{rv.q}”</p>
+                    <span class="rv-who">{rv.who}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div class="wrap">
+          <a class="text-link" href={maps} {...ext} data-reveal>
+            Read them all on Google
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.arrow} />
+          </a>
+        </div>
+      </section>
+
+      <!-- Reels -->
+      <section class="reels dark" aria-labelledby="reels-title">
+        <div class="wrap reels-head">
+          <h2 id="reels-title" class="h2" data-split>Straight off <em>the grill.</em></h2>
+          <a class="text-link" href={instagram} {...ext} data-reveal>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.instagram} />
+            11k follow along on Instagram
+          </a>
+        </div>
+        <div class="reel-track" data-reel-track>
+          {reels.map((r) => (
+            <article class="reel" data-reel>
+              {r.video ? (
+                <div class="reel-media">
+                  <video muted loop playsinline preload="none" poster={r.poster ?? undefined} data-autoplay>
+                    <source src={r.video} type="video/mp4" />
+                  </video>
+                </div>
+              ) : (
+                <a class="reel-media reel-empty" href={r.ig} {...ext} aria-label={`Watch ${r.title} on Instagram`}>
+                  <span class="reel-empty-title" aria-hidden="true">{r.title}</span>
+                  <img src="/media/logo.webp" width="120" height="120" alt="" loading="lazy" />
+                  <span class="reel-play">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" set:html={icon.play} />
+                  </span>
+                </a>
+              )}
+              <a class="reel-cap" href={r.ig} {...ext}>
+                <span>{r.title}</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.arrow} />
+              </a>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- Visit -->
+      <section class="visit" id="visit" aria-labelledby="visit-title">
+        <div class="wrap visit-grid">
+          <div class="visit-copy">
+            <p class="kicker" data-reveal>Hours &amp; directions</p>
+            <h2 id="visit-title" class="h2" data-split>Come <em>hungry.</em></h2>
+            <address class="addr" data-reveal>
+              {address.map((l) => <span>{l}</span>)}
+            </address>
+            <div class="visit-actions" data-reveal>
+              <a class="btn" href={tel} data-magnetic>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.phone} />
+                Call {phoneDisplay}
+              </a>
+              <a class="btn btn-ghost" href={maps} {...ext}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.pin} />
+                Directions
+              </a>
+            </div>
+            <ul class="extras" data-reveal>
+              {extras.map((e) => <li>{e}</li>)}
+            </ul>
+          </div>
+
+          <div class="visit-side">
+            <div class="hours" data-reveal>
+              <div class="hours-head">
+                <h3>Opening hours</h3>
+                <span class="status status-lg" data-status hidden><span class="status-dot"></span><span data-status-text></span></span>
+              </div>
+              <table>
+                <tbody>
+                  {hourRows.map((h) => (
+                    <tr data-days={h.days.join(",")}>
+                      <th scope="row">{h.label}</th>
+                      <td>{h.open ? `${fmt(h.open)} to ${fmt(h.close)}` : "Closed"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <a class="fhr" href={fsa} {...ext} data-reveal aria-label="Food hygiene rating 5, very good. Inspected 17 March 2026. Check on the Food Standards Agency website.">
+              <span class="fhr-score" aria-hidden="true">
+                <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><b>5</b>
+              </span>
+              <span class="fhr-copy">
+                <strong>Food hygiene rating 5</strong>
+                <span>Very good. Inspected 17 March 2026.</span>
+              </span>
+            </a>
+
+            <div class="moving" data-reveal>
+              <p class="moving-kicker">Moving soon</p>
+              <p class="moving-text">Our new shop opens at <strong>Boothstown Precinct</strong> in the new year. We're here as usual until Christmas.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Close -->
+      <section class="close" aria-labelledby="close-title">
+        <div class="wrap close-inner">
+          <h2 id="close-title" class="close-title" data-split>Hungry? <em>Give us a ring.</em></h2>
+          <div class="close-actions" data-reveal>
+            <a class="btn btn-lg btn-ink" href={tel} data-magnetic>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.phone} />
+              {phoneDisplay}
+            </a>
+            <a class="btn btn-lg btn-cream-ghost" href={instagramDm} {...ext}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.message} />
+              Message on Instagram
+            </a>
+          </div>
+          <p class="close-note" data-reveal>Ring ahead and it's ready when you get here.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot dark">
+      <div class="wrap">
+        <p class="foot-word" aria-hidden="true" data-foot-word>Curly's Kitchen</p>
+        <div class="foot-grid">
+          <ul class="foot-links">
+            <li>
+              <a href={tel}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.phone} />
+                <span><strong>Call</strong> {phoneDisplay}</span>
+              </a>
+            </li>
+            <li>
+              <a href={instagram} {...ext}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.instagram} />
+                <span><strong>Instagram</strong> @curlyskitchen1</span>
+              </a>
+            </li>
+            <li>
+              <a href={maps} {...ext}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.pin} />
+                <span><strong>Find us</strong> 260 Manchester Road, M28 3TR</span>
+              </a>
+            </li>
+          </ul>
+          <p class="foot-small">&copy; {new Date().getFullYear()} Curly's Kitchen. Mon to Fri 5 to 10pm, Sun 3 to 9pm.</p>
+        </div>
+      </div>
+    </footer>
+
+    <aside class="cg-credit" aria-label="Website credit">
+      <div class="wrap">
+        <div class="cg-credit-lead">
+          <img src="/media/cgd-logo.webp" alt="CG Design" width="62" height="24" />
+          <span>Want a website like this? Reach out to CG Design.</span>
+        </div>
+        <div class="cg-credit-links">
+          {cgLinks.map((l) => (
+            <a href={l.href} {...(l.external && ext)}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={l.icon} />
+              {l.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </aside>
+
+    <!-- Phones: app-style tab bar, always on screen -->
+    <nav class="tabbar" aria-label="Quick links">
+      <a href="#menu" data-tab="menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.bowl} />
+        Menu
+      </a>
+      <a href="#reviews" data-tab="reviews">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.star} />
+        Reviews
+      </a>
+      <a class="tab-main" href={tel} aria-label={`Call to order, ${phoneDisplay}`}>
+        <span class="tab-main-dot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.phone} />
+        </span>
+        Order
+      </a>
+      <a href="#visit" data-tab="visit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.pin} />
+        Find us
+      </a>
+      <a href={instagram} {...ext}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.instagram} />
+        Instagram
+      </a>
+    </nav>
+
+    <script type="application/json" id="hours-data" set:html={JSON.stringify(hours)} />
+    <script>
+      import "../scripts/main.ts";
+    </script>
+  </body>
+</html>
