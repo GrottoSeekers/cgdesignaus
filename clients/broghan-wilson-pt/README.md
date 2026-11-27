@@ -67,6 +67,19 @@ always get A, and Variant B's page is marked noindex, so SEO only ever sees A.
 - `https://broghan-wilson-pt.vercel.app/?variant=b`
 - `?variant=reset` forgets your variant and re-rolls 50/50.
 
+### Deploying
+
+Build Vercel's output locally, then deploy exactly that, so what's tested is what goes live:
+
+```bash
+npx vercel pull --yes --environment=production
+npx vercel build --prod
+npx vercel deploy --prebuilt --prod
+```
+
+`middleware.ts` imports the config as `./src/ab-test.config.js` (with `.js`). Vercel runs the
+middleware without bundling, so leaving the extension off breaks the homepage with a 500.
+
 ### Files
 
 | File | What it does |

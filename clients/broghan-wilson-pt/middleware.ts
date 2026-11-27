@@ -3,7 +3,7 @@
 // The choice is kept in a cookie so a visitor sees the same version every time.
 // Settings live in src/ab-test.config.ts.
 import { next, rewrite } from "@vercel/functions/middleware";
-import { experiment, type Variant } from "./src/ab-test.config";
+import { experiment, type Variant } from "./src/ab-test.config.js";
 
 export const config = { matcher: ["/"] };
 
