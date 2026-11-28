@@ -12,11 +12,11 @@ npm run dev        # http://localhost:4321
 npm run build      # static output in dist/
 ```
 
-- Page and all copy: `src/pages/index.astro`. Phone, address, hours, menu, reviews and reels are plain data at the top.
-- Styles and colour tokens: `src/styles/global.css` (orange `#f0511e` and cream from their logo, warm espresso black).
+- Page and all copy: `src/pages/index.astro`. Phone, address, hours, the spin ring, menu and reviews are plain data at the top.
+- Styles and colour tokens: `src/styles/global.css` (orange `#f0511e` and cream from their logo, warm near-black). Bold and playful: chunky headings on tilted "sticker" blocks, slanted section edges, photo panels.
 - Motion: `src/scripts/main.ts` (GSAP + ScrollTrigger + SplitText).
-- 3D takeaway box: `src/scripts/box.ts` (Three.js, loaded after the first paint, pauses when off screen).
-- Fonts: Fraunces (headings) and Schibsted Grotesk (text), self-hosted via Fontsource.
+- Drag-to-spin ring of real dishes: `src/scripts/spin.ts` (Three.js, loaded after the first paint, pauses when off screen). The dishes, names and one-liners are the `spin` list in `index.astro`.
+- Fonts: Grandstander (headings) and Barlow (text), self-hosted via Fontsource.
 - Logo: cut from their Instagram profile picture (`assets/originals/`).
 
 ## Buttons
@@ -27,33 +27,31 @@ Phones get an app-style tab bar (Menu, Reviews, Order, Find us, Instagram).
 The "Open now / Opens 5pm" badge works out UK time in the browser from `hours` in `index.astro`.
 Change the hours there and the badge, table and Google data all follow.
 
-## Photos and reels
+## Photos
 
-The page is designed to look finished without photos. Each photo or reel appears once its file is in
-`public/media/`:
+All food photos are Curly's own, from their Instagram (`assets/originals/ig-*.jpg`). The site uses:
 
-| File | Where it shows |
-| --- | --- |
-| `menu-steak-box.webp`, `menu-surf-n-turf.webp`, `menu-crispy-chicken.webp`, `menu-wraps.webp`, `menu-burrito.webp`, `menu-shakes.webp` | Menu: a thumbnail on phones, a photo that follows the cursor on desktop |
-| `reel-big-boxes.mp4/.webp`, `reel-surf-n-turf.mp4/.webp`, `reel-eighteen.mp4/.webp` | "Straight off the grill" (silent loops that play while on screen) |
+- `public/media/spin-<name>.webp` (512x683): cards on the 3D ring
+- `public/media/photo-<name>.webp` (720x900): menu cards
+- `public/media/boxes-four-tall.webp`, `new-shop.webp`: the two photo panels. `new-shop` is their own image of how the Boothstown shop will look.
 
-Keep originals in `assets/originals/`, then:
+To add or swap a photo, keep the original in `assets/originals/`, then:
 
 ```bash
-tools/media.sh menu assets/originals/steak.jpg steak-box
-tools/media.sh reel assets/originals/big-boxes.mp4 big-boxes 2   # 2 = start the loop 2s in
+convert assets/originals/ig-NAME.jpg -resize 512x683^ -gravity center -extent 512x683 -quality 78 public/media/spin-NAME.webp
+convert assets/originals/ig-NAME.jpg -resize 720x900^ -gravity center -extent 720x900 -quality 78 public/media/photo-NAME.webp
 ```
 
-Then `npm run build`, check it, commit and merge to `main`.
+and reference `NAME` in the `spin` or `menu` list. `tools/media.sh` still makes silent reel loops if they send videos.
 
 ## Motion
 
-- Hero: headline rises line by line, the orange disc springs in, the 3D box's lid peeks open with steam, and it opens fully as you scroll. Drag to spin it.
-- Ticker: dish names scroll on their own and speed up with your scroll.
-- Menu: rules draw across, dishes rise in.
-- The sauce: the quote's words light up as you read.
-- Reviews: the 5.0 counts up; two rows of reviews drift in opposite directions (tap and hold to pause).
-- Reels: rise in; loops play only while on screen.
+- Hero: stickers slap on, then the ring of real dishes fades in. Drag or flick it (or use the arrows); it settles on a dish and the label swaps. Idle, it moves on every few seconds; scrolling turns it too.
+- Stickers across the page pop in as they arrive.
+- Menu cards rise in; photos drift slightly as you scroll.
+- The sauce quote rises line by line.
+- Reviews: the 5.0 counts up; two rows drift in opposite directions (tap and hold to pause).
+- Photo panels wipe up.
 - Footer: the wordmark rises word by word.
 
 All of it runs on phones, and it plays with Reduce Motion on too (studio convention).
