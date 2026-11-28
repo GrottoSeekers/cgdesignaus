@@ -3,7 +3,7 @@ import { defineConfig } from "astro/config";
 // Placeholder domain until Curly's picks one. Change `site` here, and the
 // URLs in public/robots.txt and public/sitemap.xml, once it's bought.
 export default defineConfig({
-  site: "https://www.curlyskitchen.co.uk",
+  site: "https://curlys-kitchen-five.vercel.app",
   build: {
     inlineStylesheets: "always",
   },

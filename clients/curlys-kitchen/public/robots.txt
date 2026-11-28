@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://www.curlyskitchen.co.uk/sitemap.xml
+Sitemap: https://curlys-kitchen-five.vercel.app/sitemap.xml

@@ -59,8 +59,8 @@ All of it runs on phones, and it plays with Reduce Motion on too (studio convent
 ## Deploy (Vercel)
 
 Same as the other clients: import the repo, set **Root Directory** to `clients/curlys-kitchen`, deploy,
-then add the domain. `astro.config.mjs`, `robots.txt` and `sitemap.xml` use `www.curlyskitchen.co.uk`
-as a placeholder; change them once a domain is bought. No environment variables are needed.
+then add the domain. `astro.config.mjs`, `index.astro`, `robots.txt` and `sitemap.xml` point at the preview
+address `curlys-kitchen-five.vercel.app`; change them once a domain is bought. No environment variables are needed.
 
 ## To confirm with Curly's
 
